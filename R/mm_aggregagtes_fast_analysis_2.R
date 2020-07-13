@@ -10,15 +10,15 @@
 #
 #******************************************************************
 
-folder    <- "./basic_interest"                  # data files folder
+folder    <- "./payback"                  # data files folder
 baseName  <- "Sim_"                     # data files base name (same as .lsd file)
-nExp      <- 3                          # number of experiments (sensitivity/different cases)
+nExp      <- 5                          # number of experiments (sensitivity/different cases)
 iniDrop   <- 0                          # initial time steps to drop from analysis (0=none)
 nKeep     <- -1                         # number of time steps to keep (-1=all)
 cores     <- 0                          # maximum number of cores to allocate (0=all)
 savDat    <- F                          # save processed data files and re-use if available?
 
-expVal <- c( "0.0025", "0.005", "0.01")                           # case parameter values
+expVal <- c( "12", "24", "36", "48", "60")                           # case parameter values
 
 # Aggregated variables to use
 logVars <- c( "Real_GDP",               # Real GDP
@@ -472,6 +472,8 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
   emp_sd    <-
   profits_sd<-
   wage_sd   <-
+  pr_sh_sd  <-
+  wg_sh_sd  <-
   prod_sd   <-
   mk_sd     <-
   kl_sd     <-
@@ -1081,7 +1083,7 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         mean( pcu_rt ),
         mean( inve_gr ), 
         mean( k_gr ),
-        mean( u_gr ), 
+        mean( u_rt ), 
         mean( emp_gr ),
         mean( kl_rt ),
       
@@ -1090,7 +1092,7 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         sd( pcu_rt ) / sqrt( nSize ),
         sd( inve_gr ) / sqrt( nSize ),
         sd( k_gr ) / sqrt( nSize ),
-        sd( u_gr ) / sqrt( nSize ),
+        sd( u_rt ) / sqrt( nSize ),
         sd( emp_gr ) / sqrt( nSize ),
         sd( kl_rt ) / sqrt( nSize ),
         
