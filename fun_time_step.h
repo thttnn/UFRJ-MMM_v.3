@@ -76,6 +76,7 @@ V("Class_Financial_Obligations");
 V("Class_Liquidity_Preference");
 V("Class_Retained_Deposits");
 V("Class_Internal_Funds");
+V("Class_Desired_Debt_Rate");
 V("Class_Max_Loans");
 V("Class_Demand_Loans");
 V("Class_Effective_Loans");
@@ -200,16 +201,12 @@ V("Bank_Stock_Loans_Long_Term");
 V("Bank_Total_Stock_Loans");
 V("Bank_Stock_Deposits");
 V("Bank_Default_Share");
-V("Bank_Net_Worth");
 V("Financial_Sector_Accumulated_Profits");
 V("Financial_Sector_Stock_Loans_Short_Term");
 V("Financial_Sector_Stock_Loans_Long_Term");
 V("Financial_Sector_Total_Stock_Loans");
 V("Financial_Sector_Short_Term_Rate");
 V("Financial_Sector_Stock_Deposits");
-
-/*****SECTOR RESULTS*****/
-V("Bank_Exit");
 V("Financial_Sector_Normalized_HHI");
 
 /*****MACRO RESULTS*****/

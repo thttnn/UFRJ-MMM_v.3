@@ -73,7 +73,7 @@ if (v[2]==0)													//if it is class adjustment period
    	if(v[10]<0)
    		v[12]=v[7]; 	
   }
-else																																 //if it is not class adjustment period
+else																//if it is not class adjustment period
 	v[12]=v[0]; 													//use lase period autonomous consumption                                                                       		
 RESULT(max(0,v[12]))
 
@@ -108,9 +108,9 @@ Class' nominal desired expenses depends on effective domestic consumption times 
 	v[2]=V("Exchange_Rate");                                     //exchange rate
 	
 	cur=SEARCH_CNDS(root, "id_consumption_goods_sector", 1);     //identifies the consumption goods sector
-		v[3]=VS(cur, "Sector_Avg_Price");                               //sector average price
-		v[4]=VS(cur, "Sector_External_Price");                           //sector external price
-		v[5]=v[0]*v[3] + v[1]*v[2]*v[4];     																							 //total nominal expenses                  	
+		v[3]=VS(cur, "Sector_Avg_Price");                        //sector average price
+		v[4]=VS(cur, "Sector_External_Price");                   //sector external price
+		v[5]=v[0]*v[3] + v[1]*v[2]*v[4];     					 //total nominal expenses                  	
 RESULT(v[5])
 
 
@@ -248,7 +248,7 @@ Evolves based on average debt rate and income growth.
 	v[5]=V("Class_Avg_Debt_Rate");
 	v[6]=V("class_desired_debt_rate");
 	v[7]=VL("Class_Liquidity_Preference",1);
-	v[8]=V("liquidity_preference_adjustment");
+	v[8]=V("class_liquidity_preference_adjustment");
 	
 	if(v[1]==1)
 	{
@@ -263,7 +263,6 @@ Evolves based on average debt rate and income growth.
 	
 	v[10]=max(0,(min(1,v[9])));
 RESULT(v[10])
-
 
 
 EQUATION("Class_Retained_Deposits")
@@ -295,13 +294,45 @@ Total available funds for class expenses in the current period
 RESULT(max(0,v[3]))	
 
 
+EQUATION("Class_Desired_Debt_Rate")
+/*
+Class desired debt rate. 
+Formulation proposed by Moreira (2010) 
+Evolves based on nominal income growth.
+*/
+	v[0]=V("class_period");
+	v[1]=fmod((double)t,v[0]);
+	v[2]=VL("Class_Nominal_Income",1);
+	v[3]=VL("Class_Nominal_Income",v[0]);
+	if(v[3]!=0)
+		v[4]=(v[2]-v[3])/v[3];
+	else
+		v[4]=0;
+		
+	v[10]=VL("Class_Desired_Debt_Rate",1);
+	v[11]=V("class_debt_rate_adjustment");
+		
+	if(v[1]==1)
+	{
+		if(v[4]>0)
+			v[12]=v[10]+v[11];
+		else
+			v[12]=v[10]-v[11];
+	}
+	else
+			v[12]=v[10];
+	
+	v[13]=max(0,(min(1,v[12])));
+RESULT(v[13])
+
+
 EQUATION("Class_Max_Loans")
 /*
 Class available debt depends on the difference between desired stock of debt and current stock of debt. 
 If current stock of debt is greater than desired, the class must repay some debt reducing the amount of external funds for investment. 
 If the currest amount is smaller than desired, that difference is available to the class as external finance, but that does not mean that the class will increase effective debt by this amount.
 */
-	v[0]=V("class_desired_debt_rate");
+	v[0]=V("Class_Desired_Debt_Rate");
 	v[1]=VL("Class_Stock_Loans",1);
 	v[2]=VL("Class_Stock_Deposits",1);
 	v[3]=VL("Class_Avg_Nominal_Income",1);

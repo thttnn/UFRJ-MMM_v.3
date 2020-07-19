@@ -141,6 +141,12 @@ v[149]=v[112]*v[141] + v[113]*v[142] + v[114]*v[143];											//total imports
 v[150]=v[146]+v[147]+v[145];																	//GDP
 v[151]=(v[141]*v[101]+v[142]*v[102]+v[143]*v[100])/(v[141]+v[142]+v[143]);						//initial price index
 
+v[152]=V("initial_firm_desired_debt_rate");
+v[153]=V("initial_firm_liquidity_preference");
+v[154]=V("initial_extra_debt_payment");
+v[155]=V("initial_class_desired_debt_rate");
+v[156]=V("initial_class_liquidity_preference");
+
 //Begin Writting Macro Variables
 CYCLE(cur, "MACRO")
 {
@@ -179,6 +185,8 @@ CYCLE(cur, "CLASSES")
 			WRITELLS(cur, "Class_Avg_Nominal_Income", v[164], 0, 1);
 			WRITELLS(cur, "Class_Avg_Real_Income", (v[164]/v[101]), 0, 1);
 			WRITELLS(cur, "Class_Real_Autonomous_Consumption", v[165], 0, 1);         			//write class' autonomous consumption
+			WRITELLS(cur, "Class_Liquidity_Preference", v[156], 0, 1);
+			WRITELLS(cur, "Class_Desired_Debt_Rate", v[155], 0, 1);
 			WRITELLS(cur, "Class_Debt_Rate", 0, 0, 1);                              			//0, no debt initially
 			WRITELLS(cur, "Class_Stock_Deposits", 0, 0, 1);
 			WRITES(cur, "id_class_bank", v[166]);
@@ -316,6 +324,9 @@ CYCLE(cur, "SECTORS")
 		WRITELLS(cur1, "Firm_Stock_Deposits", 0, 0, 1);											//no financial assets initially
 	  	WRITELLS(cur1, "Firm_Stock_Loans", 0, 0, 1);                                    		//no debt initially
 	  	WRITELLS(cur1, "Firm_Avg_Debt_Rate", 0, 0, 1);                       					//no debt initially
+	  	WRITELLS(cur1, "Firm_Desired_Debt_Rate", v[152], 0, 1);                       					//no debt initially
+	  	WRITELLS(cur1, "Firm_Liquidity_Preference", v[153], 0, 1);                       					//no debt initially
+	  	WRITELLS(cur1, "Firm_Extra_Debt_Payment", v[154], 0, 1);                       					//no debt initially
 		
 	  		//Begin writting Capital Goods Variables and parameters
 	  		cur2=SEARCHS(cur1, "CAPITALS");														//search the first and only instance of capital below firms

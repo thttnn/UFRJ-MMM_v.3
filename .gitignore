@@ -1,1 +1,3 @@
 Res_*/
+*.RData
+*.RHistory

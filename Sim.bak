@@ -59,6 +59,7 @@ Label Root
 			Var: Class_Retained_Deposits
 			Var: Class_Stock_Deposits
 			Var: Class_Stock_Loans
+			Var: Class_Desired_Debt_Rate
 
 		}
 
@@ -401,7 +402,7 @@ Label Root
 		Param: bargain_power_adjustment
 		Param: class_period
 		Param: crisis_threshold
-		Param: debt_rate_adjustment
+		Param: firm_debt_rate_adjustment
 		Param: depreciation_period
 		Param: desired_degree_capacity_utilization
 		Param: desired_inventories_proportion
@@ -423,7 +424,7 @@ Label Root
 		Param: innovation_proportion
 		Param: investment_period
 		Param: learning_adjustment
-		Param: liquidity_preference_adjustment
+		Param: firm_liquidity_preference_adjustment
 		Param: market_share_expansion
 		Param: markup_period
 		Param: minimum_passthrough
@@ -489,6 +490,13 @@ Label Root
 		Var: Avg_Speculative_Share
 		Var: Exit_Bankruptcy_Events
 		Var: Exit_Bankruptcy_Share
+		Param: class_liquidity_preference_adjustment
+		Param: class_debt_rate_adjustment
+		Param: initial_class_desired_debt_rate
+		Param: initial_class_liquidity_preference
+		Param: initial_extra_debt_payment
+		Param: initial_firm_desired_debt_rate
+		Param: initial_firm_liquidity_preference
 
 	}
 
@@ -609,7 +617,7 @@ Param: antecipation 0 n + n n	0.5
 Param: bargain_power_adjustment 0 n + n n	0
 Param: class_period 0 n + n n	4
 Param: crisis_threshold 0 n + n n	0
-Param: debt_rate_adjustment 0 n + n n	0
+Param: firm_debt_rate_adjustment 0 n + n n	0
 Param: depreciation_period 0 n + n n	60
 Param: desired_degree_capacity_utilization 0 n + n n	0.85
 Param: desired_inventories_proportion 0 n + n n	0.1
@@ -624,19 +632,19 @@ Param: external_price_growth 0 n + n n	0
 Param: extra_debt_payment_adjustment 0 n + n n	0
 Param: financial_cost_weight 0 n + n n	0
 Param: government_period 0 n + n n	4
-Param: indirect_tax_rate 0 n + n n	0.1
+Param: indirect_tax_rate 0 n + n n	0.2
 Param: initial_external_price 0 n + n n	1
 Param: initial_markup 0 n + n n	1.5
 Param: initial_quality 0 n + n n	1
 Param: innovation_proportion 0 n + n n	0.5
 Param: investment_period 0 n + n n	6
 Param: learning_adjustment 0 n + n n	0.2
-Param: liquidity_preference_adjustment 0 n + n n	0
+Param: firm_liquidity_preference_adjustment 0 n + n n	0
 Param: market_share_expansion 0 n + n n	1
 Param: markup_period 0 n + n n	8
 Param: minimum_passthrough 0 n + n n	0.5
 Param: number_object_banks 0 n + n n	5
-Param: payback_period 0 n + n n	18
+Param: payback_period 0 n + n n	24
 Param: rnd_revenue_proportion 0 n + n n	0.01
 Param: std_dev_innovation 0 n + n n	0.005
 Param: strategic_price_weight 0 n + n n	0.5
@@ -673,7 +681,7 @@ Var: Total_Autonomous_Investment 0 s + n n
 Var: Total_Capital_Stock 0 n + n n
 Var: Total_Classes_Expenses 0 n + n n
 Var: Total_Consumption 0 n + n n
-Var: Total_Distributed_Profits 0 n + n n
+Var: Total_Distributed_Profits 0 s + n n
 Var: Total_Domestic_Capital_Goods_Demand 0 n + n n
 Var: Total_Domestic_Consumption_Demand 0 n + n n
 Var: Total_Domestic_Intermediate_Demand 0 n + n n
@@ -688,7 +696,7 @@ Var: Total_Investment_Expenses 0 n + n n
 Var: Total_Productive_Capacity_Depreciated 0 n + n n
 Var: Total_Productive_Capacity_Expansion 0 s + n n
 Var: Total_Productive_Capacity_Replacement 0 s + n n
-Var: Total_Profits 0 n + n n
+Var: Total_Profits 0 s + n n
 Var: Total_Wages 0 n + n n
 Var: Unemployment 5 s + n n	0.18	0.18	0.18	0.18	0.18
 Var: Wage_Share 0 s + n n
@@ -697,12 +705,19 @@ Var: Avg_Ponzi_Share 0 s + n n
 Var: Avg_Speculative_Share 0 s + n n
 Var: Exit_Bankruptcy_Events 0 s + n n
 Var: Exit_Bankruptcy_Share 0 s + n n
+Param: class_liquidity_preference_adjustment 0 n + n n	0
+Param: class_debt_rate_adjustment 0 n + n n	0
+Param: initial_class_desired_debt_rate 0 n + n n	0.5
+Param: initial_class_liquidity_preference 0 n + n n	0.05
+Param: initial_extra_debt_payment 0 n + n n	0
+Param: initial_firm_desired_debt_rate 0 n + n n	0.5
+Param: initial_firm_liquidity_preference 0 n + n n	0.05
 
 Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
 Param: class_autonomous_consumption_adjustment_deposits 0 n + n n	0	0	0
 Param: class_desired_debt_rate 0 n + n n	0.5	0.5	0.5
-Param: class_direct_tax 0 n + n n	0.1	0.1	0.1
+Param: class_direct_tax 0 n + n n	0.2	0.2	0.2
 Param: class_profit_share 0 n + n n	0.6	0.3	0.1
 Param: class_propensity_to_consume 0 n + n n	0.7	0.8	0.95
 Param: class_propensity_to_import 0 n + n n	0.15	0.1	0
@@ -741,6 +756,7 @@ Var: Class_Real_Income 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Class_Retained_Deposits 0 s + n n
 Var: Class_Stock_Deposits 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Class_Stock_Loans 0 s + n n
+Var: Class_Desired_Debt_Rate 1 s + n n	0	0	0
 
 Object: CLASS_LOANS C	1	1	1
 Param: class_loan_fixed_amortization 0 n + n n	0	0	0
@@ -862,7 +878,7 @@ Param: id_consumption_goods_sector 0 n + n n	1	0	0
 Param: id_intermediate_goods_sector 0 n + n n	0	0	1
 Param: initial_productivity 0 n + n n	1	0.5	1
 Param: initial_wage 0 n + n n	1	1	1
-Param: input_tech_coefficient 0 n + n n	0.4	0.4	0.4
+Param: input_tech_coefficient 0 n + n n	0.5	0.5	0.5
 Param: markup_apropriation 0 n + n n	0.5	1	0
 Param: number_object_firms 0 n + n n	20	20	20
 Param: sector_exports_coefficient 0 n + n n	0	0	0
@@ -919,7 +935,7 @@ Var: Sector_Stock_Loans 0 s + n n
 Var: Sector_Sum_Market_Share 0 s + n n
 Var: Sector_Turbulence 0 s + n n
 Var: Sector_Unemployment 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
-Param: profits_distribution_rate 0 n + n n	0.9	0.9	0.9
+Param: profits_distribution_rate 0 n + n n	0.95	0.95	0.95
 Var: Sector_Avg_Desired_Debt_Rate 0 n + n n
 Var: Sector_Avg_Interest_Rate_Long_Term 0 n + n n
 Var: Sector_Avg_Interest_Rate_Short_Term 0 n + n n
@@ -1146,7 +1162,7 @@ Var: EMP_G 0 s + n n
 SIM_NUM 1
 SEED 1
 MAX_STEP 500
-EQUATION fun_micro_macro_v.3.0.cpp
+EQUATION fun_micro_macro_v.3.6.cpp
 MODELREPORT report_Sim1.html
 
 DESCRIPTION
@@ -1209,7 +1225,7 @@ _INIT_
 
 END_DESCRIPTION
 
-Parameter_debt_rate_adjustment
+Parameter_firm_debt_rate_adjustment
 (no description available)
 _INIT_
 All 1 instances equal to 0.
@@ -1341,7 +1357,7 @@ _INIT_
 All 3 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_liquidity_preference_adjustment
+Parameter_firm_liquidity_preference_adjustment
 (no description available)
 _INIT_
 All 1 instances equal to 0.
@@ -1738,6 +1754,48 @@ _INIT_
 
 END_DESCRIPTION
 
+Parameter_class_liquidity_preference_adjustment
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_class_debt_rate_adjustment
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_initial_class_desired_debt_rate
+(no description available)
+_INIT_
+All 1 instances equal to 0.5.
+END_DESCRIPTION
+
+Parameter_initial_class_liquidity_preference
+(no description available)
+_INIT_
+All 1 instances equal to 0.05.
+END_DESCRIPTION
+
+Parameter_initial_extra_debt_payment
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_initial_firm_desired_debt_rate
+(no description available)
+_INIT_
+All 1 instances equal to 0.5.
+END_DESCRIPTION
+
+Parameter_initial_firm_liquidity_preference
+(no description available)
+_INIT_
+All 1 instances equal to 0.05.
+END_DESCRIPTION
+
 Object_CLASSES
 (no description available)
 _INIT_
@@ -1765,7 +1823,7 @@ END_DESCRIPTION
 Parameter_class_direct_tax
 (no description available)
 _INIT_
-All 4 instances equal to 0.
+All 3 instances equal to 0.2.
 END_DESCRIPTION
 
 Parameter_class_profit_share
@@ -2010,6 +2068,14 @@ Variable_Class_Stock_Loans
 Class Stock of Debt
 _INIT_
 
+END_DESCRIPTION
+
+Variable_Class_Desired_Debt_Rate
+Class desired debt rate. 
+Formulation proposed by Moreira (2010) 
+Evolves based on nominal income growth.
+_INIT_
+All 3 instances equal to 0.
 END_DESCRIPTION
 
 Object_CLASS_LOANS
@@ -2719,7 +2785,7 @@ END_DESCRIPTION
 Parameter_input_tech_coefficient
 (no description available)
 _INIT_
-All 3 instances equal to 0.45.
+All 3 instances equal to 0.5.
 END_DESCRIPTION
 
 Parameter_markup_apropriation
@@ -3072,7 +3138,7 @@ END_DESCRIPTION
 Parameter_profits_distribution_rate
 (no description available)
 _INIT_
-All 3 instances equal to 0.9.
+All 3 instances equal to 0.95.
 END_DESCRIPTION
 
 Variable_Sector_Avg_Desired_Debt_Rate

@@ -1,4 +1,10 @@
 
+
+/*******************************************************************************
+Interest Rates
+*******************************************************************************/
+
+
 EQUATION("Basic_Interest_Rate")
 /*
 Nominal Interest rate is set by the central bank following a (possible) dual mandate Taylor Rule, considering the inflation and unemployment gaps.
@@ -56,7 +62,7 @@ RESULT(v[2])
 
 EQUATION("Interest_Rate_Loans_Short_Term")
 /*
-Interest Rate on Bank loans is a positive spreaded base interest rate
+Interest Rate on Bank short term loans is a positive spreaded base interest rate
 */
 v[0]=V("Basic_Interest_Rate");
 v[1]=V("short_term_loans_spread");
@@ -66,12 +72,39 @@ RESULT(v[2])
 
 EQUATION("Interest_Rate_Loans_Long_Term")
 /*
-Interest Rate on Bank loans is a positive spreaded base interest rate
+Interest Rate on Bank long term loans is a positive spreaded base interest rate
 */
 v[0]=V("Basic_Interest_Rate");
 v[1]=V("long_term_loans_spread");
 v[2]=(1+v[1])*v[0];
 RESULT(v[2])
+
+
+/*******************************************************************************
+Financial Sector Aggregates
+*******************************************************************************/
+
+
+EQUATION("Avg_Competitiveness_Financial_Sector")
+/*
+Average competitiveness, weighted by firm's market share
+*/
+	v[0]=0;                                           //initializes the CYCLE
+	CYCLE(cur, "BANKS")                               //CYCLE trought all banks in the sector
+	{
+		v[1]=VS(cur, "Bank_Competitiveness");         //bank's competitiveness
+		v[2]=VLS(cur, "Bank_Market_Share", 1);        //bank's market share in the last period
+		v[0]=v[0]+v[1]*v[2];                          //sector average competitiveness will be a average of bank competitiveness weighted by their respective market shares
+	}
+RESULT(v[0])
+
+
+EQUATION("Avg_Interest_Rate_Long_Term")
+/*
+Average weighted by firm's market share
+*/
+v[0]=WHTAVE("Bank_Interest_Rate_Long_Term", "Bank_Market_Share");
+RESULT(v[0])
 
 
 EQUATION("Financial_Sector_Stock_Loans_Short_Term")
@@ -98,39 +131,12 @@ v[0]=SUM("Bank_Total_Stock_Loans");
 RESULT(v[0])
 
 
-EQUATION("Financial_Sector_Short_Term_Rate");
-/*
-Share of short term loans over total loans
-Analysis Variable
-*/
-	v[0]=V("Financial_Sector_Stock_Loans_Short_Term");
-	v[1]=V("Financial_Sector_Total_Stock_Loans");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
-RESULT(v[2])
-
-
 EQUATION("Financial_Sector_Defaulted_Loans")
 /*
 Total defaulted of loans
 */
 v[0]=SUM("Bank_Defaulted_Loans");
 RESULT(v[0])
-
-
-EQUATION("Financial_Sector_Default_Rate")
-/*
-Total Stock of loans
-*/
-v[0]=V("Financial_Sector_Defaulted_Loans");
-v[1]=V("Financial_Sector_Stock_Loans_Long_Term");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
 
 
 EQUATION("Financial_Sector_Stock_Deposits")
@@ -166,19 +172,6 @@ v[0]=SUM("Bank_Effective_Loans");
 RESULT(v[0])
 
 
-EQUATION("Financial_Sector_Demand_Met")
-/*
-Share of demand for new loans met
-*/
-	v[0]=V("Financial_Sector_Effective_Loans");
-	v[1]=V("Financial_Sector_Demand_Loans");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=1;
-RESULT(v[2])
-
-
 EQUATION("Financial_Sector_Interest_Payment")
 /*
 Total interest payment on deposits, 
@@ -205,7 +198,7 @@ RESULT(v[0])
 
 EQUATION("Financial_Sector_Profits")
 /*
-Total Stock of deposits of the financial sector
+Total current profits of the financial sector
 */
 v[0]=SUM("Bank_Profits");
 RESULT(v[0])
@@ -213,7 +206,7 @@ RESULT(v[0])
 
 EQUATION("Financial_Sector_Distributed_Profits")
 /*
-Total Stock of deposits of the financial sector
+Total distributed profits of the financial sector
 */
 v[0]=SUM("Bank_Distributed_Profits");
 RESULT(v[0])
@@ -221,33 +214,79 @@ RESULT(v[0])
 
 EQUATION("Financial_Sector_Accumulated_Profits")
 /*
-Total Stock of deposits of the financial sector
+Total accumulated profits of the financial sector
 */
-v[0]=VL("Financial_Sector_Accumulated_Profits",1);
-v[1]=V("Financial_Sector_Profits");
-v[2]=V("Financial_Sector_Distributed_Profits");
-v[3]=v[1]-v[2]+v[0];
-RESULT(v[3])
-
-
-EQUATION("Financial_Sector_Accumulated_Profits_2")
 v[0]=SUM("Bank_Accumulated_Profits");
 RESULT(v[0])
 
 
-EQUATION("Financial_Sector_Compulsory_Reserves");
+EQUATION("Financial_Sector_Rescue")
 /*
-Total Compulsory reserves given policy rate
+Total rescue of the financial sector
 */
-v[0]=V("Financial_Sector_Total_Stock_Loans");
-v[1]=V("compulsory_reserves_rate");
-v[2]=v[0]*v[1];
+v[0]=SUM("Bank_Rescue");
+RESULT(v[0])
+
+
+EQUATION("Financial_Sector_Accumulated_Rescue")
+/*
+Total accumulated rescue of the financial sector
+*/
+v[0]= CURRENT + V("Financial_Sector_Rescue");
+RESULT(v[0])
+
+
+/*******************************************************************************
+Financial Sector Analysis
+*******************************************************************************/
+
+
+EQUATION("Financial_Sector_Short_Term_Rate");
+/*
+Share of short term loans over total loans
+Analysis Variable
+*/
+	v[0]=V("Financial_Sector_Stock_Loans_Short_Term");
+	v[1]=V("Financial_Sector_Total_Stock_Loans");
+	if(v[1]!=0)
+		v[2]=v[0]/v[1];
+	else
+		v[2]=0;
+RESULT(v[2])
+
+
+EQUATION("Financial_Sector_Default_Rate")
+/*
+Total Defaluted Loans over total stock of loans
+Analysis Variable
+*/
+v[0]=V("Financial_Sector_Defaulted_Loans");
+v[1]=V("Financial_Sector_Stock_Loans_Long_Term");
+if(v[1]!=0)
+	v[2]=v[0]/v[1];
+else
+	v[2]=0;
+RESULT(v[2])
+
+
+EQUATION("Financial_Sector_Demand_Met")
+/*
+Share of demand for new loans met
+Analysis Variable
+*/
+	v[0]=V("Financial_Sector_Effective_Loans");
+	v[1]=V("Financial_Sector_Demand_Loans");
+	if(v[1]!=0)
+		v[2]=v[0]/v[1];
+	else
+		v[2]=1;
 RESULT(v[2])
 
 
 EQUATION("Financial_Sector_Leverage")
 /*
 Total Stock of Loans over Total Stock of Deposits
+Analysis Variable
 */
 v[0]=V("Financial_Sector_Total_Stock_Loans");
 v[1]=V("Financial_Sector_Stock_Deposits");
@@ -258,31 +297,9 @@ else
 RESULT(v[2])
 
 
-EQUATION("Avg_Competitiveness_Financial_Sector")
-/*
-Average competitiveness, weighted by firm's market share
-*/
-	v[0]=0;                                         //initializes the CYCLE
-	CYCLE(cur, "BANKS")                             //CYCLE trought all banks in the sector
-	{
-		v[1]=VS(cur, "Bank_Competitiveness");         //bank's competitiveness
-		v[2]=VLS(cur, "Bank_Market_Share", 1);        //bank's market share in the last period
-		v[0]=v[0]+v[1]*v[2];                          //sector average competitiveness will be a average of bank competitiveness weighted by their respective market shares
-	}
-RESULT(v[0])
-
-
-EQUATION("Avg_Interest_Rate_Long_Term")
-/*
-Average weighted by firm's market share
-*/
-	v[0]=WHTAVE("Bank_Interest_Rate_Long_Term", "Bank_Market_Share");
-RESULT(v[0])
-
-
 EQUATION("Financial_Sector_Normalized_HHI")
 /*
-Sector Variable for Analysis
+Financial Sector Variable for Analysis
 */
 	v[0]=0;                           		//initializes the CYCLE    
 	CYCLE(cur, "BANKS")               		//CYCLE trought all firms of the sector
@@ -315,7 +332,7 @@ RESULT(v[0])
 
 EQUATION("Total_Stock_Loans_Growth")
 /*
-Average weighted by firm's market share
+Total credit growth
 */
 v[0]=V("Financial_Sector_Total_Stock_Loans");
 v[1]=VL("Financial_Sector_Total_Stock_Loans", 1);
@@ -323,6 +340,16 @@ if(v[1]!=0)
 	v[2]=(v[0]-v[1])/v[1];
 else
 	v[2]=0;
+RESULT(v[2])
+
+
+EQUATION("Financial_Sector_Compulsory_Reserves");
+/*
+Total Compulsory reserves given policy rate
+*/
+v[0]=V("Financial_Sector_Total_Stock_Loans");
+v[1]=V("compulsory_reserves_rate");
+v[2]=v[0]*v[1];
 RESULT(v[2])
 
 

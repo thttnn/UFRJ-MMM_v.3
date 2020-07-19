@@ -57,7 +57,7 @@ Evolves based on average debt rate and profit growth.
 	v[5]=V("Firm_Avg_Debt_Rate");
 	v[6]=V("Firm_Desired_Debt_Rate");
 	v[7]=VL("Firm_Liquidity_Preference",1);
-	v[8]=V("liquidity_preference_adjustment");
+	v[8]=V("firm_liquidity_preference_adjustment");
 	
 	if(v[1]==1)
 	{
@@ -119,7 +119,7 @@ Evolves based on capacity utilization and profit growth.
 		
 	v[9]=V("desired_degree_capacity_utilization");
 	v[10]=VL("Firm_Desired_Debt_Rate",1);
-	v[11]=V("debt_rate_adjustment");
+	v[11]=V("firm_debt_rate_adjustment");
 	
 	if(v[1]==1)
 	{

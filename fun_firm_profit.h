@@ -102,7 +102,7 @@ Firm interest receivment on deposits
 v[0]=VL("Firm_Stock_Deposits",1);
 v[1]=V("Interest_Rate_Deposits");
 v[2]=v[0]*v[1];
-RESULT(0)
+RESULT(v[2])
 
 
 EQUATION("Firm_Net_Profits")

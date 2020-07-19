@@ -48,7 +48,6 @@ Stores the value of the function
 RESULT(v[0])
 
 
-
 EQUATION("Total_Taxes")
 /*
 Sum of income and indirect taxes
