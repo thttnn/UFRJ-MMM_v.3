@@ -1,9 +1,14 @@
-MICRO-MACRO MULTISECTORAL MODEL (ver. 3.5)
+MICRO-MACRO MULTISECTORAL MODEL (ver. 3.6)
 
 *********************************************************************************************************************************************
 
 This is a (preliminary) new version of the model created by Dweck (2006) and used in Dweck, Vianna and Barbosa (2018). 
 Coded by Matheus Vianna.
+
+************
+Version 3.5:
+************
+--Tests and bug fixes.
 
 ************
 Version 3.4:

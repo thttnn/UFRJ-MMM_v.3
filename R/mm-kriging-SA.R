@@ -19,14 +19,14 @@ if( exists( "folder" ) )				        # check for previous run (interactive mode)
 # ====== User parameters ======
 
 # Database files
-folder   <- "kriging3"                    # data files folder
-baseName <- "Sim"                    # data files base name (same as .lsd file)
-varName <- "GDP_G"                        # analysis variable name
+folder   <- "Res_Kriging"                    # data files folder
+baseName <- "Sim_1"                    # data files base name (same as .lsd file)
+varName <- "DEBT_RT_FI"                        # analysis variable name
 iniDrop <- 100                        # initial time steps to drop from analysis (0=none)
 nKeep <- -1                           # number of time steps to keep (-1=all)
 cores <- 0                            # maximum number of cores to allocate (0=all)
 savDat <- TRUE                        # save processed data files and re-use if available?
-onlyCross <- TRUE                   # use only cross validation to select model
+onlyCross <- FALSE                   # use only cross validation to select model
 optimPar <- FALSE                     # find optimized parameters (default: max/min)
 
 # Force selection of specific trend model and correlation function (0=auto)

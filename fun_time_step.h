@@ -248,8 +248,6 @@ V("M_r");
 V("PDEBT");
 V("PROD");                                       
 V("PROFITS");
-
-
 V("GDP_G");
 V("CON_G");
 V("INV_G");
