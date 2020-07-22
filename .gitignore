@@ -1,3 +1,4 @@
 Res_*/
 *.RData
 *.RHistory
+*.bak
