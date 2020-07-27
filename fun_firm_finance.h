@@ -21,9 +21,11 @@ Interest rate paid by the firm depends on a individual spread over basic interes
 */
 	v[0]=V("risk_premium_adjustment");
 	v[1]=V("Firm_Avg_Debt_Rate");
-	v[2]=V("Interest_Rate_Loans_Short_Term");
-	v[3]=(1+v[1]*v[0])*v[2];	
-RESULT(v[3])
+	v[2]=V("id_firm_bank");
+	cur=SEARCH_CNDS(root, "id_bank", v[2]);
+	v[3]=VS(cur, "Bank_Interest_Rate_Short_Term");
+	v[4]=(1+v[1]*v[0])*v[3];	
+RESULT(v[4])
 
 
 EQUATION("Firm_Interest_Rate_Long_Term")

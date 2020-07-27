@@ -170,8 +170,49 @@ Bank's effective interest rate on loans is a average between the desired interes
 */
 	v[0]=VL("Bank_Interest_Rate_Long_Term",1);                                 //bank's interest rate on loans in the last period
 	v[1]=V("Bank_Desired_Interest_Rate_Long_Term");                            //bank's desired interest rate on loans
-	v[2]=V("parameter2");                                                      //weight parameter
+	v[2]=V("price_strategy_long_term");                                        //weight parameter for long term interest rates
 	v[3]=VL("Avg_Interest_Rate_Long_Term", 1);                                 //sector average interest rate on loans in the last period
+	v[4]=v[2]*(v[1])+(1-v[2])*(v[3]);                                          //firm's price is a average between the desired price and the sector average price
+	if(v[1]>0)                                                                 //if desired interest rate is positive
+		v[5]=max(0,v[4]);                                                      //bank's interest rate can never be negative
+	else                                                                       //if desired interest rate is not positive
+		v[5]=v[0];                                                             //bank's interest rate will be the last period's
+RESULT(v[5])
+
+
+EQUATION("Bank_Desired_Short_Term_Spread")
+/*
+Bank Variable
+*/
+	v[0]=VL("Bank_Desired_Short_Term_Spread",1);                           //bank desired spread in the last period 
+  	v[1]=VL("Bank_Competitiveness",1);                                     //bank's competitiveness in the last period
+  	v[2]=VL("Avg_Competitiveness_Financial_Sector",1);                     //sector's average competitiveness in the last period
+  	if (v[2]!=0)
+  		v[3]=(v[1]-v[2])/v[2];                                             //diference between bank's competitiveness and sector's average competitiveness 
+  	else
+  		v[3]=0;
+  	v[4]=v[0]*(1+v[3]);	                                                                  					
+RESULT(max(0,v[4])) 
+
+
+EQUATION("Bank_Desired_Interest_Rate_Short_Term")
+/*
+Bank desired interest rate on loans is the current base interest rate with a bank desired spread
+*/
+	v[0]=V("Bank_Desired_Short_Term_Spread");                        //bank's desired spread
+	v[1]=V("Basic_Interest_Rate");                          		 //central bank interest rate
+	v[2]=(1+v[0])*v[1];                                  	         //bank's desired interest rate
+RESULT(v[2])
+
+
+EQUATION("Bank_Interest_Rate_Short_Term")
+/*
+Bank's effective interest rate on loans is a average between the desired interest rate and the sector average interest rate
+*/
+	v[0]=VL("Bank_Interest_Rate_Short_Term",1);                                //bank's interest rate on loans in the last period
+	v[1]=V("Bank_Desired_Interest_Rate_Short_Term");                           //bank's desired interest rate on loans
+	v[2]=V("price_strategy_short_term");                                       //weight parameter for short tem interest rates
+	v[3]=VL("Avg_Interest_Rate_Short_Term", 1);                                //sector average interest rate on loans in the last period
 	v[4]=v[2]*(v[1])+(1-v[2])*(v[3]);                                          //firm's price is a average between the desired price and the sector average price
 	if(v[1]>0)                                                                 //if desired interest rate is positive
 		v[5]=max(0,v[4]);                                                      //bank's interest rate can never be negative

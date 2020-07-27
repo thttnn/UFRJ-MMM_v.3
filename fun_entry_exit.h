@@ -229,7 +229,7 @@ In this variable a new firm enters if there is market space available and the en
 			WRITELS(cur1, "Capital_Good_Acumulated_Production",0,t);	//write current capital acumulated production as zero
 			}
 		
-			v[13]=V("Interest_Rate_Loans_Long_Term");
+			v[13]=VS(cur6,"Bank_Interest_Rate_Long_Term");
 			
 			CYCLE_SAFES(cur, cur1, "FIRM_LOANS")
 			{

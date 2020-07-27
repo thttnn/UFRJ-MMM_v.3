@@ -136,7 +136,7 @@ Interest rate paid by the class depends on a specific spread over basic interest
 	v[0]=V("risk_premium_adjustment");
 	v[1]=V("Class_Avg_Debt_Rate");
 	v[2]=1+v[1]*v[0];
-	v[3]=V("Interest_Rate_Loans_Short_Term");
+	v[3]=V("Avg_Interest_Rate_Short_Term");
 	v[4]=v[2]*v[3];
 RESULT(v[4])
 
