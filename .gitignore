@@ -5,3 +5,4 @@ Res_*/
 *.exe
 *.o
 makefile
+elements.txt
