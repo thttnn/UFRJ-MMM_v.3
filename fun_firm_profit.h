@@ -155,3 +155,46 @@ Net profits over total capital (last period)
 	else
 		v[2]=0;
 RESULT(v[2])
+
+
+EQUATION("Firm_Net_Revenue_2")
+/*
+Total Firm exepenses in each period, excluding investment
+-Production Wages
+-RND Wages
+-Inputs for the next period
+-Taxes
+-Financial Obligations
+*/
+	v[0]=V("Firm_Revenue");
+	v[1]=V("indirect_tax_rate");
+	v[2]=V("rnd_revenue_proportion");
+	v[3]=V("Firm_Financial_Obligations");
+	v[4]=V("Firm_Input_Demand_Next_Period");
+	cur=SEARCH_CND("id_intermediate_goods_sector", 1);    
+	v[5]=VS(cur,"Sector_Avg_Price");                      
+	v[6]=v[4]*v[6];										  //next period's inputs expenses
+	v[7]=V("Firm_Wage");
+	v[8]=V("Firm_Avg_Productivity");
+	v[9]=V("Firm_Effective_Production");
+	if(v[8]!=0)
+		v[10]=v[9]*(v[7]/v[8]);                           //production wages
+	else
+		v[10]=0;
+	v[11]=v[0]*v[2];									  //rnd wages
+	v[12]=v[10]+v[11];                                    //wages payroll
+	v[13]=v[0]*v[1];                                      //tax payment
+	
+	v[14]=V("Firm_Deposits_Return");
+	v[15]=v[0]-v[12]-v[13]-v[6]-v[3]+v[14];
+RESULT(v[15])
+
+
+
+
+
+
+
+
+
+

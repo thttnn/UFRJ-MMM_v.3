@@ -58,7 +58,6 @@ The intermediate goods sectors demand exactly the amount they will need to produ
 RESULT(v[15])
 
 
-
 EQUATION("Firm_Stock_Inputs")
 /*
 The stock of inputs of each firm at the end of the period is calculated by summing the stock of inputs in the last period with the amount demanded for the production in the next period minus the amount used in the production of the current period
@@ -82,7 +81,7 @@ Unitary costs of the inputs. It's given by the domestic input price plus the ext
 */
 	cur=SEARCH_CND("id_intermediate_goods_sector", 1);    //search the inputs for the one from the intermediate sector
 	v[1]=VLS(cur,"Sector_Avg_Price",1);                   //intermediate sector average price
-	v[2]=VS(cur,"Sector_External_Price");                 //sector external price
+	v[2]=VLS(cur,"Sector_External_Price",1);              //sector external price
 	v[3]=V("input_tech_coefficient");                     //input technical relationship 
 	v[5]=V("Exchange_Rate");                              //exchange rate
 	v[6]=VLS(cur,"Sector_Demand_Met",1);                  //demand for inputs met by the domestic production in the last period
