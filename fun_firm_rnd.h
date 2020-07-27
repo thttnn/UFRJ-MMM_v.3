@@ -17,8 +17,8 @@ EQUATION("Firm_Quality")
 The new quality is the maximum among the previous one and the ones possibly obtained imitation and innovation. 
 */
 	v[0]=VL("Firm_Quality", 1);       				//frontier quality of the firm in the last period
-	v[1]=V("firm_imitation_quality");          		//quality achievied with imitation in that period
-	v[2]=V("firm_innovation_quality");         		//quality achievied with innovation in that period
+	v[1]=V("Firm_Imitation_Quality");          		//quality achievied with imitation in that period
+	v[2]=V("Firm_Innovation_Quality");         		//quality achievied with innovation in that period
 	v[3]=max(v[0],max(v[1],v[2]));        			//current frontier quality is the maximum between the three
 RESULT(v[3])
 
