@@ -60,31 +60,6 @@ v[2]=(1-v[1])*v[0];
 RESULT(v[2])
 
 
-EQUATION("Interest_Rate_Loans_Short_Term")
-/*
-Interest Rate on Bank short term loans is a positive spreaded base interest rate
-*/
-v[0]=V("Basic_Interest_Rate");
-v[1]=V("short_term_loans_spread");
-v[2]=(1+v[1])*v[0];
-RESULT(v[2])
-
-
-EQUATION("Interest_Rate_Loans_Long_Term")
-/*
-Interest Rate on Bank long term loans is a positive spreaded base interest rate
-*/
-v[0]=V("Basic_Interest_Rate");
-v[1]=V("long_term_loans_spread");
-v[2]=(1+v[1])*v[0];
-RESULT(v[2])
-
-
-/*******************************************************************************
-Financial Sector Aggregates
-*******************************************************************************/
-
-
 EQUATION("Avg_Competitiveness_Financial_Sector")
 /*
 Average competitiveness, weighted by firm's market share
@@ -105,6 +80,19 @@ Average weighted by firm's market share
 */
 v[0]=WHTAVE("Bank_Interest_Rate_Long_Term", "Bank_Market_Share");
 RESULT(v[0])
+
+
+EQUATION("Avg_Interest_Rate_Short_Term")
+/*
+Average weighted by firm's market share
+*/
+v[0]=WHTAVE("Bank_Interest_Rate_Short_Term", "Bank_Market_Share");
+RESULT(v[0])
+
+
+/*******************************************************************************
+Financial Sector Aggregates
+*******************************************************************************/
 
 
 EQUATION("Financial_Sector_Stock_Loans_Short_Term")

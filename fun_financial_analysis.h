@@ -236,7 +236,7 @@ EQUATION("IR_ST")
 Interest Rate on Short Term Loans
 */
 cur = SEARCHS(root, "FINANCIAL");
-v[0]=VS(cur, "Interest_Rate_Loans_Short_Term");
+v[0]=VS(cur, "Avg_Interest_Rate_Short_Term");
 RESULT(v[0])  
 
 EQUATION("IR_LT")

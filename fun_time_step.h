@@ -8,7 +8,6 @@ Determines the order in which the variables will be calculated in each time step
 /*****INTEREST RATES*****/
 V("Basic_Interest_Rate");  
 V("Interest_Rate_Deposits");
-V("Interest_Rate_Loans_Short_Term");
 V("Bank_Competitiveness");
 V("Avg_Competitiveness_Financial_Sector");
 V("Bank_Market_Share");
@@ -16,7 +15,10 @@ V("Bank_Desired_Long_Term_Spread");
 V("Bank_Desired_Interest_Rate_Long_Term");
 V("Bank_Interest_Rate_Long_Term");  
 V("Avg_Interest_Rate_Long_Term");
-V("Interest_Rate_Loans_Long_Term");
+V("Bank_Desired_Short_Term_Spread");
+V("Bank_Desired_Interest_Rate_Short_Term");
+V("Bank_Interest_Rate_Short_Term");  
+V("Avg_Interest_Rate_Short_Term");
 V("Firm_Avg_Debt_Rate");							   		
 V("Firm_Interest_Rate_Short_Term");
 V("Firm_Interest_Rate_Long_Term");

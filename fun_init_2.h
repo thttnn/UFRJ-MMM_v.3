@@ -369,8 +369,8 @@ CYCLE(cur, "FINANCIAL")
 {
 	v[250]=VS(cur, "real_interest_rate");
 	v[251]=VS(cur, "deposits_spread");
-	v[252]=VS(cur, "short_term_loans_spread");
-	v[253]=VS(cur, "long_term_loans_spread");
+	v[252]=VS(cur, "initial_short_term_loans_spread");
+	v[253]=VS(cur, "initial_long_term_loans_spread");
 
 	WRITELLS(cur, "Basic_Interest_Rate", v[250], 0, 1);
 	WRITELLS(cur, "Avg_Competitiveness_Financial_Sector", 1, 0, 1);
@@ -391,6 +391,7 @@ CYCLE(cur, "FINANCIAL")
 		//WRITELLS(cur1, "Bank_Accumulated_Profits", 0, 0, 1);
 		WRITELLS(cur1, "Bank_Demand_Met", 1, 0, 1);
 		WRITELLS(cur1, "Bank_Desired_Long_Term_Spread", v[253], 0, 1);
+		WRITELLS(cur1, "Bank_Desired_Short_Term_Spread", v[252], 0, 1);
 		WRITELLS(cur1, "Bank_Interest_Rate_Long_Term", ((1+v[253])*v[250]), 0, 1);
 		}
 }
