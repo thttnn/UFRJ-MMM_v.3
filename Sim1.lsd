@@ -123,7 +123,6 @@ Label Root
 			Param: default_sensitivity
 			Param: deposits_spread
 			Param: e_interest
-			Param: e_loans
 			Param: financial_sector_accumulated_losses
 			Param: financial_sector_profits_distribution_rate
 			Param: fragility_sensitivity
@@ -168,6 +167,8 @@ Label Root
 			Var: Financial_Sector_Rescue
 			Var: Avg_Interest_Rate_Short_Term
 			Param: price_strategy_short_term
+			Param: e_default
+			Param: e_rationing
 
 		}
 
@@ -783,8 +784,7 @@ Param: debt_rate_interest_sensitivity 0 n + n n	0
 Param: debt_rate_target 0 n + n n	0.2
 Param: default_sensitivity 0 n + n n	0
 Param: deposits_spread 0 n + n n	0.5
-Param: e_interest 0 n + n n	0.1
-Param: e_loans 0 n + n n	1
+Param: e_interest 0 n + n n	0
 Param: financial_sector_accumulated_losses 0 s + n n	0
 Param: financial_sector_profits_distribution_rate 0 n + n n	0.9
 Param: fragility_sensitivity 0 n + n n	0
@@ -829,6 +829,8 @@ Var: Financial_Sector_Accumulated_Rescue 0 s + n n
 Var: Financial_Sector_Rescue 0 s + n n
 Var: Avg_Interest_Rate_Short_Term 0 s + n n
 Param: price_strategy_short_term 0 n + n n	0
+Param: e_default 0 n + n n	1
+Param: e_rationing 0 n + n n	1
 
 Object: BANKS C	1
 Param: bank_defaulted_loans_temporary 0 s + n n	0
@@ -2207,13 +2209,7 @@ END_DESCRIPTION
 Parameter_e_interest
 (no description available)
 _INIT_
-All 1 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_e_loans
-(no description available)
-_INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_financial_sector_accumulated_losses
@@ -2488,6 +2484,18 @@ Parameter_price_strategy_short_term
 (no description available)
 _INIT_
 All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_e_default
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_e_rationing
+(no description available)
+_INIT_
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Object_BANKS

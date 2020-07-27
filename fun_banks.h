@@ -107,21 +107,18 @@ EQUATION("Bank_Competitiveness")
 /*
 Bank competitiveness depends negativelly on the bank interest rate on loans and the loans not met
 */
-	v[0]=VL("Bank_Interest_Rate_Long_Term",1);                  	   //bank interest rate on loans in the last period
-	v[1]=V("e_interest");                                              //interest rate elasticity
-	v[2]=VL("Bank_Total_Stock_Loans", 1);
-	v[3]=VL("Bank_Defaulted_Loans",1);
-	v[4]=VL("Bank_Competitiveness",1);                                 //bank's competitiveness in the last period
-	if(v[2]!=0)
-		v[5]=(v[2]-v[3])/v[2];										   //bank's loan not met in the last period
-	else
-		v[5]=0;
-	v[8]=VL("Bank_Demand_Met",1);
-	v[6]=V("e_loans");                                                 //loans not met elasticity	
-   	if(v[0]!=0&&v[5]!=0)                                               //if the interest ratec was not zero neither the loans not met
-     	v[7]=(1/pow(v[0],v[1]))*(pow(v[5],v[6]));   				   //bank's competitiveness will be given by the inverse of the interest rate, powered by its elasticicty, and the loans not met, powered by its elasticicty
+	v[0]=VL("Bank_Competitiveness",1);                                 //bank's competitiveness in the last period
+	v[1]=VL("Bank_Default_Share",1);                                   //bank share of defaulted loans
+	v[2]=VL("Bank_Demand_Met",1);                                      //bank demand not met
+	v[3]=VL("Bank_Interest_Rate_Long_Term",1);                  	   //bank interest rate on loans in the last period
+	
+	v[4]=V("e_default");
+	v[5]=V("e_rationing");  
+	v[6]=V("e_interest");	
+   	if(v[2]!=0&&v[3]!=0)                                      //if competitiveness' determinants are not zero
+     	v[7]=(pow((1-v[1]),v[4]))*(1/pow(v[2],v[5]))*(1/pow(v[3],v[6])); //bank's competitiveness will be given by the inverse of the interest rate, powered by its elasticicty, and the loans not met, powered by its elasticicty
    	else                                                               //if either the interest rate or the loans not met was zero 
-     	v[7]=v[4];                                                     //bank's competitiveness will be the competitiveness in the last period
+     	v[7]=v[0];                                                     //bank's competitiveness will be the competitiveness in the last period
 RESULT(v[7])
 
 
