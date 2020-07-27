@@ -756,7 +756,7 @@ Var: Gini_Wealth_Class 0 s + n n
 Var: Gini_Wealth_Population 0 s + n n
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
 Param: begin_surplus_target_rule 0 n + n n	-1
-Param: switch_government_composition 0 n + n n	0
+Param: switch_government_composition 0 n + n n	1
 
 Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
