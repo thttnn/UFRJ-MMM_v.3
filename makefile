@@ -1,7 +1,7 @@
 # Model compilation options
 TARGET=lsd
-FUN=fun_micro_macro_v.3.6
-FUN_EXTRA= fun_time_step.h fun_init_2.h fun_init_3.h fun_initialization.h fun_analysis.h fun_macro.h fun_classes.h fun_external_sector.h fun_government.h fun_financial.h fun_banks.h fun_sector_external.h fun_sector_aggregates.h fun_sector_demand.h fun_entry_exit.h fun_firm_capital.h fun_firm_finance.h fun_firm_investment.h fun_firm_price.h fun_firm_production.h fun_firm_profit.h fun_firm_rnd.h fun_firm_sales.h fun_firm_inputs.h fun_capital_goods.h   fun_sector_analysis.h fun_initialization.h  fun_financial_analysis.h
+FUN=fun_micro_macro_v.3.8
+FUN_EXTRA= fun_time_step.h fun_init.h fun_analysis.h fun_macro.h fun_classes.h fun_external_sector.h fun_government.h fun_financial.h fun_banks.h fun_sector_external.h fun_sector_aggregates.h fun_sector_demand.h fun_entry_exit.h fun_firm_capital.h fun_firm_finance.h fun_firm_investment.h fun_firm_price.h fun_firm_production.h fun_firm_profit.h fun_firm_rnd.h fun_firm_sales.h fun_firm_inputs.h fun_capital_goods.h   fun_sector_analysis.h  fun_financial_analysis.h
 SWITCH_CC=-Og -ggdb3
 SWITCH_CC_LNK=
 
