@@ -287,7 +287,7 @@ EQUATION("G_r")
 Quarterly Real Government Expenses
 */
 cur = SEARCHS(root, "GOVERNMENT");
-v[0]=VS(cur, "Government_Wages");
+v[0]=VS(cur, "Government_Effective_Expenses");
 cur1 = SEARCHS(root, "MACRO");
 v[1]=VS(cur1, "Price_Index");
 v[2]=v[0]/v[1];
