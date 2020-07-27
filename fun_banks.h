@@ -352,10 +352,11 @@ Total interest payment from firms and classes
 		v[5]=VS(cur, "Class_Interest_Payment");
 		v[4]=v[4]+v[5];
 	}
-	v[6]=V("Bank_Market_Share");
-	v[7]=v[0]+v[6]*v[4];
+	v[6]=V("Government_Interest_Payment");
+	v[7]=V("Bank_Market_Share");
+	v[8]=v[0]+v[7]*(v[4]+v[6]);
 	
-RESULT(v[7])
+RESULT(v[8])
 
 
 EQUATION("Bank_Debt_Payment")

@@ -105,7 +105,15 @@ Must be called by the sectors.
 			} 
 		v[2]=v[2]+v[3];                                              		//sums up the demand for imputs of all setors
 		}
-RESULT(v[2])
+	cur = SEARCH_CND("id_intermediate_goods_sector", 1);
+	v[0]=VLS(cur, "Sector_Avg_Price", 1);
+	v[1]=V("Government_Effective_Inputs");
+	if(v[0]!=1)
+		v[5]=v[1]/v[0];
+	else
+		v[5]=0;
+	v[6]=v[2]+v[5];
+RESULT(v[6])
 
 
 EQUATION("Total_Domestic_Consumption_Demand")
@@ -119,7 +127,15 @@ Must be called by the sector.
 		v[1]=VS(cur, "Class_Real_Consumption_Demand");      	    //class consumption
 		v[0]=v[0]+v[1];                                       		//sums up all classes consumption
 	}
-RESULT(v[0])
+	cur = SEARCH_CND("id_consumption_goods_sector", 1);
+	v[4]=VLS(cur, "Sector_Avg_Price", 1);
+	v[5]=V("Government_Effective_Consumption");
+	if(v[4]!=1)
+		v[6]=v[5]/v[4];
+	else
+		v[6]=0;
+	v[7]=v[0]+v[6];
+RESULT(v[7])
 
 
 EQUATION("Total_Domestic_Capital_Goods_Demand")
@@ -137,8 +153,16 @@ Must be called by the sectors.
 			v[2]=v[2]+v[3];                                     //sums up all capital goods demand
 		}
 		v[1]=v[1]+v[2];                                       	//sums up all firm's capital goods demand
-	}                                      
-RESULT(v[1])
+	}
+	cur = SEARCH_CND("id_capital_goods_sector", 1);
+	v[4]=VLS(cur, "Sector_Avg_Price", 1);
+	v[5]=V("Government_Effective_Investment");
+	if(v[4]!=1)
+		v[6]=v[5]/v[4];
+	else
+		v[6]=0;
+	v[7]=v[1]+v[6];
+RESULT(v[7])
 
 
 EQUATION("Price_Capital_Goods")
@@ -209,9 +233,9 @@ The total wage is calculated by the sum of the wages paid by the sectors with go
 		}
 		v[0]=v[0]+v[1];                                          	//sums up all wages of all sectors
 	}
-	v[6]=V("Government_Wages");                                		//wages paid by the government
-	v[7]=v[0]+v[6];                                            		//sums up productive sectors wages with government wages
-RESULT(v[7])
+	v[6]=V("Government_Effective_Wages");                           //wages paid by the government
+	v[8]=v[0]+v[6];                                            //sums up productive sectors wages with government wages
+RESULT(v[8])
 
 
 EQUATION("Total_Investment_Expenses")
@@ -706,7 +730,7 @@ EQUATION("GDP_Demand")
 GDP calculated by the demand perspective
 */
 	v[0]=V("Total_Classes_Expenses");
-	v[1]=V("Government_Wages");
+	v[1]=V("Government_Effective_Expenses");
 	v[2]=V("Total_Exports");
 	v[3]=V("Total_Imports");
 	v[4]=V("Total_Inventories_Variation");
@@ -894,5 +918,81 @@ Aggregated average class debt rate, wheighted by the income of each class
 RESULT(v[2])
 
 
+EQUATION("Gini_Income_Class")
+/*
+Gini Index for income classes. Fixed rate.
+*/
+v[0]=COUNT("CLASSES");               //count number of income classes
+v[1]=MIN("Class_Income_Share");      //lowest income share
+v[2]=MED("Class_Income_Share");      //median income share
+v[3]=MAX("Class_Income_Share");      //high income share
+
+v[4]=1/v[0];                         //lowest class share of population
+v[5]=1/v[0];                         //mid class share of population
+v[6]=1/v[0];                         //high class share of population
+
+v[7]=v[4]*v[1]+v[5]*v[2]+v[6]*v[3]+2*v[5]*v[1]+2*v[6]*v[2]+2*v[6]*v[1];
+v[8]=0.5-(v[7]/2);
+RESULT(v[8])
+
+
+EQUATION("Gini_Wealth_Class")
+/*
+Gini Index for wealth. Fixed rate.
+*/
+v[0]=COUNT("CLASSES");               //count number of income classes
+v[1]=MIN("Class_Wealth_Share");      //lowest income share
+v[2]=MED("Class_Wealth_Share");      //median income share
+v[3]=MAX("Class_Wealth_Share");      //high income share
+
+v[4]=1/v[0];                         //lowest class share of population
+v[5]=1/v[0];                         //mid class share of population
+v[6]=1/v[0];                         //high class share of population
+
+v[7]=v[4]*v[1]+v[5]*v[2]+v[6]*v[3]+2*v[5]*v[1]+2*v[6]*v[2]+2*v[6]*v[1];
+v[8]=0.5-(v[7]/2);
+RESULT(v[8])
+
+
+EQUATION("Gini_Income_Population")
+/*
+Gini Index for income classes. Based on Population share
+*/
+v[1]=MIN("Class_Income_Share");      //lowest income share
+v[2]=MED("Class_Income_Share");      //median income share
+v[3]=MAX("Class_Income_Share");      //high income share
+
+cur1=SEARCH_CND("Class_Income_Share",v[1]);
+cur2=SEARCH_CND("Class_Income_Share",v[2]);
+cur3=SEARCH_CND("Class_Income_Share",v[3]);
+
+v[4]=VS(cur1,"class_population_share");                         //lowest class share of population
+v[5]=VS(cur2,"class_population_share");                         //mid class share of population
+v[6]=VS(cur3,"class_population_share");                         //high class share of population
+
+v[7]=v[4]*v[1]+v[5]*v[2]+v[6]*v[3]+2*v[5]*v[1]+2*v[6]*v[2]+2*v[6]*v[1];
+v[8]=0.5-(v[7]/2);
+RESULT(v[8])
+
+
+EQUATION("Gini_Wealth_Population")
+/*
+Gini Index for wealth. Fixed rate.
+*/
+v[1]=MIN("Class_Wealth_Share");      //lowest income share
+v[2]=MED("Class_Wealth_Share");      //median income share
+v[3]=MAX("Class_Wealth_Share");      //high income share
+
+cur1=SEARCH_CND("Class_Wealth_Share",v[1]);
+cur2=SEARCH_CND("Class_Wealth_Share",v[2]);
+cur3=SEARCH_CND("Class_Wealth_Share",v[3]);
+
+v[4]=VS(cur1,"class_population_share");                         //lowest class share of population
+v[5]=VS(cur2,"class_population_share");                         //mid class share of population
+v[6]=VS(cur3,"class_population_share");                         //high class share of population
+
+v[7]=v[4]*v[1]+v[5]*v[2]+v[6]*v[3]+2*v[5]*v[1]+2*v[6]*v[2]+2*v[6]*v[1];
+v[8]=0.5-(v[7]/2);
+RESULT(v[8])
 
 
