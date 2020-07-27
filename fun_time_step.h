@@ -189,7 +189,7 @@ V("Total_Distributed_Profits");
 V("Total_Profits"); 
 V("Total_Wages");  
 V("Class_Nominal_Income"); 
-V("Class_Income_Tax");                            		
+V("Class_Taxation");                             		
 V("Class_Real_Income"); 
 
 /*****FINANCIAL SECTOR CONSOLIDATION*****/
@@ -237,6 +237,12 @@ V("Sector_Unemployment");
 V("Unemployment");                                      	
 
 /*****ANALYSIS*****/
+V("Class_Income_Share");
+V("Class_Wealth_Share");
+V("Gini_Income_Class");
+V("Gini_Wealth_Class");
+V("Gini_Income_Population");
+V("Gini_Wealth_Population");
 V("P");                                                
 V("U");                                               
 V("G_n");                                              

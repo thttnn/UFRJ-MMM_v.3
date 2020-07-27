@@ -11,8 +11,7 @@ MODELBEGIN
 /*****EQUATION FILES*****/
 
 #include "fun_time_step.h"          				// Time Step Variable
-#include "fun_init_2.h"               				// Initialization Variables
-//#include "fun_initialization.h"               		// Initialization Variables
+#include "fun_init.h"               				// Initialization Variables
 #include "fun_macro.h"              				// Macro Object Variables 
 	#include "fun_classes.h"            			// Income Classes Object Variables
 	#include "fun_government.h"         			// Government Object Variables
