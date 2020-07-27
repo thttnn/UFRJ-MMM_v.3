@@ -233,7 +233,7 @@ The total wage is calculated by the sum of the wages paid by the sectors with go
 		}
 		v[0]=v[0]+v[1];                                          	//sums up all wages of all sectors
 	}
-	v[6]=V("Government_Wages");                                		//wages paid by the government
+	v[6]=V("Government_Effective_Wages");                                		//wages paid by the government
 	v[7]=v[0]+v[6];                                            		//sums up productive sectors wages with government wages
 RESULT(v[7])
 
