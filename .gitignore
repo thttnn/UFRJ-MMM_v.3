@@ -4,4 +4,4 @@ Res_*/
 *.bak
 *.exe
 *.o
-
+makefile
