@@ -189,7 +189,7 @@ V("Total_Distributed_Profits");
 V("Total_Profits"); 
 V("Total_Wages");  
 V("Class_Nominal_Income"); 
-V("Class_Income_Tax");                            		
+V("Class_Taxation");                             		
 V("Class_Real_Income"); 
 
 /*****FINANCIAL SECTOR CONSOLIDATION*****/
