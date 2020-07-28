@@ -175,7 +175,6 @@ CYCLE(cur, "CLASSES")
 	v[163]=VS(cur, "class_direct_tax");															//class parameter
 	v[164]=(v[161]*v[148]+v[162]*(v[146]))*(1-v[163]);             								//class nominal net income																		//total imports
 	v[165]=v[41]*v[162];																		//class initial autonomous consumption
-	v[166]=SEARCH_INSTS(root, cur);	
 		for (i=1 ; i<=v[2] ; i++)                          										//for (class_period) lags
 			{
 			WRITELLS(cur, "Class_Nominal_Income", v[164], 0, i);            					//writes Class_Nominal_Income
@@ -190,7 +189,6 @@ CYCLE(cur, "CLASSES")
 			WRITELLS(cur, "Class_Desired_Debt_Rate", v[155], 0, 1);
 			WRITELLS(cur, "Class_Debt_Rate", 0, 0, 1);                              			//0, no debt initially
 			WRITELLS(cur, "Class_Stock_Deposits", 0, 0, 1);
-			WRITES(cur, "id_class_bank", v[166]);
 }
 v[167]=COUNT("CLASSES");
 

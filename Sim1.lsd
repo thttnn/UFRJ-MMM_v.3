@@ -26,7 +26,6 @@ Label Root
 			Param: class_propensity_to_import
 			Param: class_wage_share
 			Param: id_class
-			Param: id_class_bank
 			Var: Class_Available_Deposits
 			Var: Class_Avg_Debt_Rate
 			Var: Class_Avg_Nominal_Income
@@ -769,7 +768,6 @@ Param: class_propensity_to_consume 0 n + n n	0.7	0.8	0.95
 Param: class_propensity_to_import 0 n + n n	0.15	0.1	0
 Param: class_wage_share 0 n + n n	0.5	0.3	0.2
 Param: id_class 0 n + n n	1	2	3
-Param: id_class_bank 0 n + n n	0	0	0
 Var: Class_Available_Deposits 0 s + n n
 Var: Class_Avg_Debt_Rate 0 n + n n
 Var: Class_Avg_Nominal_Income 1 n + n n	0	0	0
@@ -1990,12 +1988,6 @@ Parameter_id_class
 (no description available)
 _INIT_
 
-END_DESCRIPTION
-
-Parameter_id_class_bank
-(no description available)
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Class_Available_Deposits
