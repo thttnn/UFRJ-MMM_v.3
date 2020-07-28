@@ -385,6 +385,7 @@ CYCLE(cur, "FINANCIAL")
 	WRITELLS(cur, "Basic_Interest_Rate", v[250], 0, 1);
 	WRITELLS(cur, "Avg_Competitiveness_Financial_Sector", 1, 0, 1);
 	WRITELLS(cur, "Avg_Interest_Rate_Long_Term", ((1+v[253])*v[250]), 0, 1);
+	WRITELLS(cur, "Avg_Interest_Rate_Short_Term", ((1+v[252])*v[250]), 0, 1);
 	
 	cur1=SEARCHS(cur, "BANKS");
 	for(i=1; i<=(v[40]-1); i++)																//for the number of firms of each sector (defined by the parameter)
@@ -402,6 +403,7 @@ CYCLE(cur, "FINANCIAL")
 		WRITELLS(cur1, "Bank_Demand_Met", 1, 0, 1);
 		WRITELLS(cur1, "Bank_Desired_Long_Term_Spread", v[253], 0, 1);
 		WRITELLS(cur1, "Bank_Interest_Rate_Long_Term", ((1+v[253])*v[250]), 0, 1);
+		WRITELLS(cur1, "Bank_Interest_Rate_Short_Term", ((1+v[252])*v[250]), 0, 1);
 		}
 }
 

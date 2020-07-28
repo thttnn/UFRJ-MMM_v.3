@@ -116,6 +116,7 @@ Label Root
 				Var: Bank_Desired_Interest_Rate_Short_Term
 				Var: Bank_Desired_Short_Term_Spread
 				Var: Bank_Interest_Rate_Short_Term
+				Param: id_public_bank
 
 			}
 
@@ -173,6 +174,8 @@ Label Root
 			Param: price_strategy_short_term
 			Param: e_default
 			Param: e_rationing
+			Param: public_long_term_spread
+			Param: public_short_term_spread
 
 		}
 
@@ -873,11 +876,13 @@ Var: Financial_Sector_Default_Rate 0 s + n n
 Var: Financial_Sector_Defaulted_Loans 0 s + n n
 Var: Financial_Sector_Accumulated_Rescue 0 s + n n
 Var: Financial_Sector_Rescue 0 s + n n
-Var: Avg_Interest_Rate_Short_Term 0 n + n n
-Param: price_strategy_long_term 0 n + n n	0
-Param: price_strategy_short_term 0 n + n n	0
+Var: Avg_Interest_Rate_Short_Term 0 s + n n
+Param: price_strategy_long_term 0 n + n n	0.1
+Param: price_strategy_short_term 0 n + n n	0.1
 Param: e_default 0 n + n n	1
 Param: e_rationing 0 n + n n	1
+Param: public_long_term_spread 0 n + n n	1
+Param: public_short_term_spread 0 n + n n	0.5
 
 Object: BANKS C	1
 Param: bank_defaulted_loans_temporary 0 s + n n	0
@@ -911,6 +916,7 @@ Var: Bank_Rescue 0 s + n n
 Var: Bank_Desired_Interest_Rate_Short_Term 0 n + n n
 Var: Bank_Desired_Short_Term_Spread 0 n + n n
 Var: Bank_Interest_Rate_Short_Term 0 n + n n
+Param: id_public_bank 0 n + n n	0
 
 Object: GOVERNMENT C	1
 Param: government_expectations 0 n + n n	0.3
@@ -2658,6 +2664,18 @@ _INIT_
 All 1 instances equal to 1.
 END_DESCRIPTION
 
+Parameter_public_long_term_spread
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_public_short_term_spread
+(no description available)
+_INIT_
+All 1 instances equal to 0.5.
+END_DESCRIPTION
+
 Object_BANKS
 (no description available)
 _INIT_
@@ -2855,6 +2873,12 @@ Bank's effective interest rate on loans is a average between the desired interes
 Bank's effective interest rate on loans is a average between the desired interest rate and the sector average interest rate
 _INIT_
 
+END_DESCRIPTION
+
+Parameter_id_public_bank
+(no description available)
+_INIT_
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Object_GOVERNMENT
