@@ -176,7 +176,17 @@ Bank's effective interest rate on loans is a average between the desired interes
 		v[5]=max(0,v[4]);                                                      //bank's interest rate can never be negative
 	else                                                                       //if desired interest rate is not positive
 		v[5]=v[0];                                                             //bank's interest rate will be the last period's
-RESULT(v[5])
+	
+	v[6]=V("id_public_bank");
+	if(v[6]==1)
+	{
+		v[7]=V("public_long_term_spread");                               //public bank long term spread 
+		v[8]=V("Basic_Interest_Rate");                          		 //central bank interest rate
+		v[9]=(1+v[7])*v[8];                                  	         //publiuc bank's interest rate
+	}
+	else
+		v[9]=v[5];
+RESULT(v[9])
 
 
 EQUATION("Bank_Desired_Short_Term_Spread")
@@ -217,7 +227,17 @@ Bank's effective interest rate on loans is a average between the desired interes
 		v[5]=max(0,v[4]);                                                      //bank's interest rate can never be negative
 	else                                                                       //if desired interest rate is not positive
 		v[5]=v[0];                                                             //bank's interest rate will be the last period's
-RESULT(v[5])
+	
+	v[6]=V("id_public_bank");
+	if(v[6]==1)
+	{
+		v[7]=V("public_short_term_spread");                               //public bank short term spread 
+		v[8]=V("Basic_Interest_Rate");                          		 //central bank interest rate
+		v[9]=(1+v[7])*v[8];                                  	         //publiuc bank's interest rate
+	}
+	else
+		v[9]=v[5];
+RESULT(v[9])
 
 
 /**********************************************************************
