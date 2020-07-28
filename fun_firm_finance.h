@@ -63,10 +63,12 @@ Evolves based on average debt rate and profit growth.
 	
 	if(v[1]==1)
 	{
-		if(v[4]<=0)
+		if(v[4]<0&&v[5]>v[6])
 			v[9]=v[7]+v[8];
-		else
+		else if(v[4]>0&&v[5]<v[6])
 			v[9]=v[7]-v[8];
+		else
+			v[9]=v[7];
 	}
 	else
 			v[9]=v[7];
@@ -186,11 +188,12 @@ It is assumed that the firm has 2 investment period to repay. This can be change
 	v[7]=v[0]*v[6];
 	v[8]=V("firm_effective_loans");
 	v[9]=V("amortization_period");
+	v[10]=V("Firm_Desired_Investment_Expenses");
 	
 	cur = ADDOBJ("FIRM_LOANS");
 	WRITES(cur, "firm_loan_total_amount", v[8]);
 	WRITES(cur, "firm_loan_fixed_object", 0);
-	if(v[1]==1)
+	if(v[10]!=0)
 	{
 		WRITES(cur, "firm_loan_fixed_amortization", (v[8]/v[9]));
 		WRITES(cur, "id_firm_loan_long_term", 1);

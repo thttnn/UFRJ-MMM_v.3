@@ -667,7 +667,7 @@ Param: external_price_growth 0 n + n n	0
 Param: extra_debt_payment_adjustment 0 n + n n	0.01
 Param: financial_cost_weight 0 n + n n	0
 Param: government_period 0 n + n n	4
-Param: indirect_tax_rate 0 n + n n	0.15
+Param: indirect_tax_rate 0 n + n n	0.1
 Param: initial_external_price 0 n + n n	1
 Param: initial_markup 0 n + n n	1.5
 Param: initial_quality 0 n + n n	1
@@ -1007,8 +1007,8 @@ Var: Sector_Turbulence 0 s + n n
 Var: Sector_Unemployment 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
 Param: profits_distribution_rate 0 n + n n	0.95	0.95	0.95
 Var: Sector_Avg_Desired_Debt_Rate 0 n + n n
-Var: Sector_Avg_Interest_Rate_Long_Term 0 n + n n
-Var: Sector_Avg_Interest_Rate_Short_Term 0 n + n n
+Var: Sector_Avg_Interest_Rate_Long_Term 0 s + n n
+Var: Sector_Avg_Interest_Rate_Short_Term 0 s + n n
 Var: Sector_Avg_Modernization_Rate 0 n + n n
 
 Object: FIRMS C	1	1	1
