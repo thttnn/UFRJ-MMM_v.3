@@ -68,7 +68,7 @@ switch_interest_payment
 		{
 			if(v[6]==1)
 				v[8]=v[4]*v[2];
-			if(v[7]==1)
+			else 
 				v[8]=v[4]*v[1];
 		}
 		v[3]=v[3]+v[8];

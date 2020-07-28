@@ -532,6 +532,7 @@ Label Root
 		Param: begin_expenses_ceiling_rule
 		Param: begin_surplus_target_rule
 		Param: switch_government_composition
+		Param: switch_interest_payment
 
 	}
 
@@ -646,7 +647,7 @@ Var: Initialization 0 n + n n
 Var: Time_Step 0 n + n n
 
 Object: MACRO C	1
-Param: amortization_period 0 n + n n	12
+Param: amortization_period 0 n + n n	24
 Param: annual_period 0 n + n n	4
 Param: antecipation 0 n + n n	0.5
 Param: bargain_power_adjustment 0 n + n n	0
@@ -664,7 +665,7 @@ Param: exports_elasticity_income 0 n + n n	1
 Param: exports_elasticity_price 0 n + n n	0.5
 Param: external_price_competitiveness 0 n + n n	1
 Param: external_price_growth 0 n + n n	0
-Param: extra_debt_payment_adjustment 0 n + n n	0.01
+Param: extra_debt_payment_adjustment 0 n + n n	0
 Param: financial_cost_weight 0 n + n n	0
 Param: government_period 0 n + n n	4
 Param: indirect_tax_rate 0 n + n n	0.1
@@ -745,7 +746,7 @@ Param: class_debt_rate_adjustment 0 n + n n	0
 Param: initial_class_desired_debt_rate 0 n + n n	0.5
 Param: initial_class_liquidity_preference 0 n + n n	0.05
 Param: initial_extra_debt_payment 0 n + n n	0
-Param: initial_firm_desired_debt_rate 0 n + n n	0.5
+Param: initial_firm_desired_debt_rate 0 n + n n	0.8
 Param: initial_firm_liquidity_preference 0 n + n n	0.05
 Param: government_rnd_adjustment 0 n + n n	0.1
 Param: taxation_structure 0 n + n n	1
@@ -757,6 +758,7 @@ Var: Gini_Wealth_Population 0 s + n n
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
 Param: begin_surplus_target_rule 0 n + n n	-1
 Param: switch_government_composition 0 n + n n	0
+Param: switch_interest_payment 0 n + n n	0
 
 Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
@@ -1928,6 +1930,12 @@ Parameter_switch_government_composition
 (no description available)
 _INIT_
 All 1 instances equal to 2.
+END_DESCRIPTION
+
+Parameter_switch_interest_payment
+(no description available)
+_INIT_
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Object_CLASSES

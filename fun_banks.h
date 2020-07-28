@@ -70,7 +70,7 @@ RESULT(v[7])
 
 EQUATION("Bank_Effective_Loans")
 /*
-Effectrive Loans is the minimum between demanded loans and max loans.
+Effective Loans is the minimum between demanded loans and max loans.
 */
 	v[0]=V("Bank_Demand_Loans");
 	v[1]=V("Bank_Max_Total_Loans");
