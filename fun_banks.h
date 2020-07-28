@@ -24,7 +24,7 @@ Might impact effective loans
 	v[9]=V("default_sensitivity");
 	v[10]=v[9]*v[8];
 	
-	if(v[1]!=0)//no regulatory rule and no sensitivity
+	if(v[1]!=0)//no regulatory rule 
 	{
 		v[5]=v[0]/(v[1]+v[4]+v[10]);
 		v[12]=max(0,v[5]);
@@ -75,14 +75,14 @@ Effective Loans is the minimum between demanded loans and max loans.
 	v[0]=V("Bank_Demand_Loans");
 	v[1]=V("Bank_Max_Total_Loans");
 	v[2]=V("depreciation_period");
-	v[4]=VL("Bank_Total_Stock_Loans",1);
-	v[5]=max(0,(v[1]-v[4]));
-	
-	if(v[1]!=-1&&t>100)
-		v[3]=min(v[0],v[5]);
+	v[3]=VL("Bank_Total_Stock_Loans",1);
+	v[4]=max(0,(v[1]-v[3]));
+	v[5]=V("id_public_bank");
+	if(v[1]!=-1&&t>100&&v[5]!=1)
+		v[6]=min(v[0],v[4]);
 	else//no regulatory rule, all demand met
-		v[3]=v[0];
-RESULT(max(0,v[3]))
+		v[6]=v[0];
+RESULT(max(0,v[6]))
 
 
 EQUATION("Bank_Demand_Met")
