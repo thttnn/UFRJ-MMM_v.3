@@ -176,16 +176,11 @@ EQUATION("Firm_Effective_Loans")
 /*
 Firm effective loans is the amount demanded.
 This variable also creates the object LOAN.
-It is assumed that the firm has 2 investment period to repay. This can be changed
 */
-	v[0]=V("Firm_Demand_Loans");
-	v[1]=V("Firm_Investment_Period");
 	v[2]=V("annual_period");
 	v[3]=V("Firm_Interest_Rate_Short_Term");
 	v[4]=V("investment_period");
 	v[5]=V("Firm_Interest_Rate_Long_Term");
-	v[6]=V("Financial_Sector_Demand_Met");
-	v[7]=v[0]*v[6];
 	v[8]=V("firm_effective_loans");
 	v[9]=V("amortization_period");
 	v[10]=V("Firm_Desired_Investment_Expenses");
