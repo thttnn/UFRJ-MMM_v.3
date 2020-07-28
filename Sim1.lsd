@@ -664,7 +664,7 @@ Param: exports_elasticity_income 0 n + n n	1
 Param: exports_elasticity_price 0 n + n n	0.5
 Param: external_price_competitiveness 0 n + n n	1
 Param: external_price_growth 0 n + n n	0
-Param: extra_debt_payment_adjustment 0 n + n n	0
+Param: extra_debt_payment_adjustment 0 n + n n	0.01
 Param: financial_cost_weight 0 n + n n	0
 Param: government_period 0 n + n n	4
 Param: indirect_tax_rate 0 n + n n	0.15
@@ -1052,7 +1052,7 @@ Var: Firm_Effective_Production 0 n + n n
 Var: Firm_Effective_Productive_Capacity_Variation 0 s + n n
 Var: Firm_Expected_Sales 0 n + n n
 Var: Firm_Expected_Sales_Long_Term 0 n + n n
-Var: Firm_Extra_Debt_Payment 1 n + n n	0	0	0
+Var: Firm_Extra_Debt_Payment 1 s + n n	0	0	0
 Var: Firm_Financial_Obligations 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Firm_Financial_Position 0 s + n n
 Var: Firm_Frontier_Productivity 6 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
@@ -1370,7 +1370,7 @@ END_DESCRIPTION
 Parameter_extra_debt_payment_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Parameter_financial_cost_weight
