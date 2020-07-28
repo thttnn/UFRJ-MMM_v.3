@@ -321,7 +321,7 @@ Evolves based on average debt rate and profit growth.
 	
 	if(v[1]==1)
 	{
-		if(v[5]>=v[6])
+		if(v[5]>=v[6]&&v[4]<0)
 			v[9]=v[7]+v[8];
 		else
 			v[9]=v[7]-v[8];
