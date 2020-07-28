@@ -102,6 +102,8 @@ RESULT(v[2])
 Bank Competition
 *********************************************************************/
 
+EQUATION_DUMMY("Bank_Number_Clients", "Loans_Distribution_Firms")
+
 
 EQUATION("Bank_Competitiveness")
 /*

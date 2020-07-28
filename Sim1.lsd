@@ -87,7 +87,7 @@ Label Root
 			Label BANKS
 			{
 				Param: bank_defaulted_loans_temporary
-				Param: bank_number_clients
+				Var: Bank_Number_Clients
 				Param: id_bank
 				Var: Bank_Accumulated_Defaulted_Loans
 				Var: Bank_Accumulated_Profits
@@ -881,7 +881,7 @@ Param: e_rationing 0 n + n n	1
 
 Object: BANKS C	1
 Param: bank_defaulted_loans_temporary 0 s + n n	0
-Param: bank_number_clients 0 s + n n	0
+Var: Bank_Number_Clients 0 s + n n
 Param: id_bank 0 n + n n	1
 Var: Bank_Accumulated_Defaulted_Loans 1 s + n n	0
 Var: Bank_Accumulated_Profits 1 s + n n	0
@@ -2670,7 +2670,7 @@ _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_bank_number_clients
+Variable_Bank_Number_Clients
 (no description available)
 _INIT_
 All 1 instances equal to 0.

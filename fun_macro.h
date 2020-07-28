@@ -56,7 +56,7 @@ CYCLE(cur, "BANKS")
 		}
 	v[10]=v[10]+v[9];
 	}
-WRITES(cur, "bank_number_clients", v[10]);
+WRITES(cur, "Bank_Number_Clients", v[10]);
 }	
 RESULT(0)
 
