@@ -48,16 +48,32 @@ RESULT(v[4])
 EQUATION("Firm_Interest_Payment")
 /* 
 Sum up total interest payment on all firm's loans. Interest rates are fixed for each loan. 
+switch_interest_payment
+0-->pre-fixed interest
+1-->pos-fixed interest
 */
-	v[0]=0;												//initializes the CYCLE
+	v[0]=V("switch_interest_payment");
+	v[1]=V("Firm_Interest_Rate_Long_Term");
+	v[2]=V("Firm_Interest_Rate_Short_Term");
+	v[3]=0;												//initializes the CYCLE
 	CYCLE(cur, "FIRM_LOANS")							//CYCLE trough all firm's loans
 	{
-		v[1]=VS(cur, "firm_loan_total_amount");			//debt current amount 
-		v[2]=VS(cur, "firm_loan_interest_rate");		//debt interest rate
-		v[3]=v[1]*v[2];									//current debt interest payment
-		v[0]=v[0]+v[3];									//sum up interest payment of all loans
+		v[4]=VS(cur, "firm_loan_total_amount");			//debt current amount 
+		v[5]=VS(cur, "firm_loan_interest_rate");		//debt interest rate
+		v[6]=VS(cur, "id_firm_loan_short_term");
+		v[7]=VS(cur, "id_firm_loan_long_term");
+		if(v[0]==0)
+			v[8]=v[4]*v[5];
+		if(v[0]==1)
+		{
+			if(v[6]==1)
+				v[8]=v[4]*v[2];
+			if(v[7]==1)
+				v[8]=v[4]*v[1];
+		}
+		v[3]=v[3]+v[8];
 	}                                      			               
-RESULT(v[0])								
+RESULT(v[3])								
 
 
 EQUATION("Firm_Debt_Payment")
