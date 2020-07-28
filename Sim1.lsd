@@ -746,7 +746,7 @@ Param: class_debt_rate_adjustment 0 n + n n	0
 Param: initial_class_desired_debt_rate 0 n + n n	0.5
 Param: initial_class_liquidity_preference 0 n + n n	0.05
 Param: initial_extra_debt_payment 0 n + n n	0
-Param: initial_firm_desired_debt_rate 0 n + n n	0.8
+Param: initial_firm_desired_debt_rate 0 n + n n	0.5
 Param: initial_firm_liquidity_preference 0 n + n n	0.05
 Param: government_rnd_adjustment 0 n + n n	0.1
 Param: taxation_structure 0 n + n n	1
