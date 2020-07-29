@@ -876,9 +876,9 @@ Var: Financial_Sector_Default_Rate 0 s + n n
 Var: Financial_Sector_Defaulted_Loans 0 s + n n
 Var: Financial_Sector_Accumulated_Rescue 0 s + n n
 Var: Financial_Sector_Rescue 0 s + n n
-Var: Avg_Interest_Rate_Short_Term 0 s + n n
+Var: Avg_Interest_Rate_Short_Term 1 s + n n	0
 Param: price_strategy_long_term 0 n + n n	0.1
-Param: price_strategy_short_term 0 n + n n	0.1
+Param: price_strategy_short_term 0 n + n n	0
 Param: e_default 0 n + n n	1
 Param: e_rationing 0 n + n n	1
 Param: public_long_term_spread 0 n + n n	1
@@ -915,7 +915,7 @@ Var: Bank_Total_Stock_Loans 1 s + n n	0
 Var: Bank_Rescue 0 s + n n
 Var: Bank_Desired_Interest_Rate_Short_Term 0 n + n n
 Var: Bank_Desired_Short_Term_Spread 0 n + n n
-Var: Bank_Interest_Rate_Short_Term 0 n + n n
+Var: Bank_Interest_Rate_Short_Term 1 n + n n	0
 Param: id_public_bank 0 n + n n	0
 
 Object: GOVERNMENT C	1
@@ -2637,7 +2637,7 @@ Variable_Avg_Interest_Rate_Short_Term
 Average weighted by firm's market share
 Average weighted by firm's market share
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_price_strategy_long_term
@@ -2872,7 +2872,7 @@ Variable_Bank_Interest_Rate_Short_Term
 Bank's effective interest rate on loans is a average between the desired interest rate and the sector average interest rate
 Bank's effective interest rate on loans is a average between the desired interest rate and the sector average interest rate
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_id_public_bank

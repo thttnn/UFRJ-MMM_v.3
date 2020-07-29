@@ -394,6 +394,10 @@ CYCLE(cur, "FINANCIAL")
 		{
 		v[254]=SEARCH_INSTS(root, cur1);													//search current firm position in the total economy
 		WRITES(cur1, "id_bank", v[254]); 
+		if(v[254]==1)
+			WRITES(cur1, "id_public_bank", 0);
+		else
+			WRITES(cur1, "id_public_bank", 0);
 		//WRITES(cur1, "fragility_sensitivity", uniform(0.5, 1.5));
 		//WRITES(cur1, "default_sensitivity", uniform(0.5, 1.5));
 		WRITELLS(cur1, "Bank_Market_Share", (1/v[40]), 0, 1); 
