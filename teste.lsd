@@ -768,7 +768,7 @@ Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
 Param: class_autonomous_consumption_adjustment_deposits 0 n + n n	0	0	0
 Param: class_desired_debt_rate 0 n + n n	0.5	0.5	0.5
-Param: class_direct_tax 0 n + n n	0.1	0.1	0.1
+Param: class_direct_tax 0 n + n n	0.2	0.2	0.2
 Param: class_population_share 0 n + n n	0.05	0.3	0.65
 Param: class_profit_share 0 n + n n	0.6	0.3	0.1
 Param: class_propensity_to_consume 0 n + n n	0.7	0.8	0.95
@@ -926,7 +926,7 @@ Param: government_demand_growth 0 n + n n	0.005
 Param: government_expectations 0 n + n n	0.3
 Param: government_max_debt 0 n + n n	1
 Param: government_min_debt 0 n + n n	0
-Param: government_productivity_passtrought 0 n + n n	0.5
+Param: government_productivity_passtrought 0 n + n n	1
 Param: government_surplus_rate_target 0 n + n n	0
 Param: government_surplus_target_adjustment 0 n + n n	0
 Var: Government_Debt 4 s + n n	0	0	0	0
@@ -1973,7 +1973,7 @@ END_DESCRIPTION
 Parameter_class_direct_tax
 (no description available)
 _INIT_
-All 3 instances equal to 0.1.
+All 3 instances equal to 0.2.
 END_DESCRIPTION
 
 Parameter_class_population_share

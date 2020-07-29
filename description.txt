@@ -14,70 +14,107 @@ Version 3.8:
 ---Two(Three) types of fiscal rules.
 --Introduction of Gini Index for Analysis
 
-GOVERNMENT EXPENSES:
-Control Parameter: "switch_government_composition": 
-Determines the composition and priority of government expenses, and initial distribution
-	0--> Government Wages(100%) [Only Public Workers]
-	1--> Government Wages(100%) + Unemployment Benefits(0%) [Public Workers and Unemployment Benefits]
-	2--> Government Wages(70%) + Unemployment Benefits(0%) + Government Consumption, Investment and Intermediate Demand(10% each) [Public Workers, Unemployment Benefits, and Demand to Sectors]
+****************************
+CONTROLS AND CONFIGURATIONS
+****************************
 
-Other Relevant Parameters (to be subjected to sensitivity):
-"government_productivity_passtrought": determines how desired goverment wages grow based on average productivity of the economy
-"government_demand_growth": determined desired real growth rate of government demand (consumption, investment and inputs)
-"government_benefit": determines the share of average wage to be paid as unemployment benefits
-"switch_unemployment_benefits": determines how unemployment benefits are distributed
-	0--> distributed by wage shares
-	1--> distributed to lowest income class only
+GOVERNMENT EXPENSES:
+Control Parameter: 
+	"switch_government_composition": 					determines the composition and priority of government expenses, and initial distribution
+		0--> 											Government Wages(100%) [Only Public Workers] [Baseline]
+		1-->											Government Wages(100%) + Unemployment Benefits(0%) [Public Workers and Unemployment Benefits]
+		2--> 											Government Wages(70%) + Unemployment Benefits(0%) + Government Consumption, Investment and Intermediate Demand(10% each) [Public Workers, Unemployment Benefits, and Demand to Sectors]
+
+Other Relevant Parameters:
+	"government_productivity_passtrought": 				determines how desired goverment wages grow based on average productivity of the economy [Baseline==0.5]
+	"government_demand_growth": 						determined desired real growth rate of government demand (consumption, investment and inputs) [Baseline==0.005]
+	"government_benefit": 								determines the share of average wage to be paid as unemployment benefits [Baseline==0.5]
+	"switch_unemployment_benefits": 					determines how unemployment benefits are distributed
+		0--> 											distributed by wage shares
+		1--> 											distributed to lowest income class only [Baseline]
 
 TAXATION STRUCTURE:
-Control Parameter: "taxation_structure": 
-Determines which types of taxes will be used
-	0--> Only Wages
-	1--> Wages and Profits
-	2--> Wages, Profits and Interest
-	3--> Wages, Profits, Interest and Wealth
+Control Parameter: 
+	"taxation_structure": 								determines which types of taxes will be used
+		0-->											Only Wages
+		1--> 											Wages and Profits [Baseline]
+		2--> 											Wages, Profits and Interest
+		3-->											Wages, Profits, Interest and Wealth
 
-Other Relevant Parameters (to be subjected to sensitivity):
-"class_direct_tax": determines the tax rate on income, used in cases 1, 2 and 3
-"class_wealth_tax": determines the tax rate on wealth, used in case 4
+Other Relevant Parameters:
+	"class_direct_tax": 								determines the tax rate on income, used in cases 1, 2 and 3 [Baseline==0.1]
+	"class_wealth_tax": 								determines the tax rate on wealth, used in case 4 [Baseline==0.1]
 
 FISCAL RULES:
 Control Parameters:
-	"begin_surplus_target_rule": determines WHEN the surplus target rule starts (-1 if inactive)
-	"begin_expenses_ceiling_rule": determines WHEN the expenses ceiling rule starts (-1 if inactive)
+	"begin_surplus_target_rule": 						determines WHEN the surplus target rule starts (-1 if inactive)
+	"begin_expenses_ceiling_rule": 						determines WHEN the expenses ceiling rule starts (-1 if inactive)
 	
-Other Relevant Parameters (to be subjected to sensitivity):
-"government_surplus_rate_target": initial government surplus target
-"government_surplus_target_adjustment": marginal increase in surplus target if it is adjusted based on debt-to-GDP (0, if not adjusted)
-"government_max_debt": maximum accepted debt-to-GDP if surplus target is adjusted
-"government_min_debt": minimum accepted debt-to-GDP if surplus target is adjusted
+Other Relevant Parameters:
+	"government_surplus_rate_target": 					initial government surplus target [Baseline==0]
+	"government_surplus_target_adjustment": 			marginal increase in surplus target if it is adjusted based on debt-to-GDP (0, if not adjusted) [Baseline==0.01]
+	"government_max_debt": 								maximum accepted debt-to-GDP if surplus target is adjusted [Baseline==1]
+	"government_min_debt": 								minimum accepted debt-to-GDP if surplus target is adjusted [Baseline==0]
 
-SOME CONFIGURATIONS:
-Sim1: 
-	"begin_surplus_target_rule"        = -1 
-	"begin_expenses_ceiling_rule"      = -1
-	"taxation_structure"               = 1
-	"switch_government_composition"    = 0
-Sim2: 
-	"begin_surplus_target_rule"        = -1 
-	"begin_expenses_ceiling_rule"      = -1
-	"taxation_structure"               = 1
-	"switch_government_composition"    = 1
-Sim3: 
-	"begin_surplus_target_rule"        = 100
-	"begin_expenses_ceiling_rule"      = -1
-	"taxation_structure"               = 1
-	"switch_government_composition"    = 1
-Sim4: 
-	"begin_surplus_target_rule"        = -1 
-	"begin_expenses_ceiling_rule"      = 100
-	"taxation_structure"               = 1
-	"switch_government_composition"    = 1
-Sim5: 
-	"begin_surplus_target_rule"        = 100
-	"begin_expenses_ceiling_rule"      = 100
-	"taxation_structure"               = 1
-	"switch_government_composition"    = 1
+FINANCIAL DECISIONS:
+Control Parameters:
+	"firm_debt_rate_adjustment": 						determines firm's desired debt rate adjustment, 0 if fixed. [Baseline==0]
+	"firm_liquidity_preference_adjustment":				determines firm's liquidity preference adjustment, 0 if fixed. [Baseline==0]
+	"extra_debt_payment_adjustment": 					determines firm's extra debt payment adjustment, 0 if fixed. [Baseline==0]
+	"class_debt_rate_adjustment": 						determines classes' desired debt rate adjustment, 0 if fixed. [Baseline==0]
+	"class_liquidity_preference_adjustment": 			determines classes' liquidity preference adjustment, 0 if fixed. [Baseline==0]
+
+Other Relevant Parameters:
+	"initial_firm_desired_debt_rate": 					initial value, more relevant if adjustment is fixed. [Baseline==0.5]
+	"initial_firm_liquidity_preference": 				initial value, more relevant if adjustment is fixed. [Baseline==0.05]
+	"initial_extra_debt_payment": 						initial value, more relevant if adjustment is fixed. [Baseline==0]
+	"initial_class_desired_debt_rate": 					initial value, more relevant if adjustment is fixed. [Baseline==0.5]
+	"initial_class_liquidity_preference": 				initial value, more relevant if adjustment is fixed. [Baseline==0.05]
+	
+FINANCIAL COSTS:
+Control Parameters:
+	"financial_cost_weight": 							weight given to financial costs when considered. [Baseline==0]
+	
+BANKS AND CREDIT STRUCTURE:
+Control Parameters:
+	"number_object_banks": 								number of bank objects in the model, fixed for the simulation run. [Baseline==5]
+	"amortization_period": 								number of period to amortize long-term loans (good practice to be equal to payback period). [Baseline==24]
+	"switch_interest_payment":                          determines if interest on loans are pre-fixed or post-fixed
+		0-->											fixed interest rates, determined at the period when the loans is taken [Baseline]
+		1--> 											variable interest rates, determined at each time period
+
+INTEREST RATE STRUCTURE:
+Control Parameters: 
+	"real_interest_rate":                               determines the initial (if any monetary policy is active, see MONETARY POLICY below) Central Bank Basic Interest Rate [Baseline==0.0025]
+	"deposits_spread": 									determines the interest rate on deposits, mark-down over the basic interest rate [Baseline==0.5]
+	"short_term_loans_spread": 							determines the interest rate on short term loans, markup over the basic interest rate. Initial value if "price_strategy_short_term" is not 0. [Baseline==1]
+	"long_term_loans_spread": 							determines the interest rate on long term loans, markup over the basic interest rate. Initial value if "price_strategy_long_term" is not 0. [Baseline==2]	
+	"price_strategy_short_term":						determines bank's short interest rate setting. 0 means setting at market average rate, 1 means setting at desired rate that evolves with market-share. [Baseline==0]
+	"price_strategy_long_term":							determines bank's long interest rate setting. 0 means setting at market average rate, 1 means setting at desired rate that evolves with market-share. [Baseline==0]
+	"risk_premium_adjustment":							determines the weight of individual debt-rate on individual interest rate setting. [Baseline==1]
+
+BANK COMPETITION:
+Control Parameters (elasticities):
+	"e_default":						       			determines the weight of default rate on bank competitiveness [Baseline==1]				
+	"e_rationing":						       			determines the weight of credit rationing on bank competitiveness [Baseline==1]	
+	"e_interest_short_term":						    determines the weight of short term interest on bank competitiveness (good practice, equal to "price_strategy_short_term") [Baseline==0]	
+	"e_interest_long_term":						        determines the weight of default rate on bank competitiveness (good practice, equal to "price_strategy_long_term") [Baseline==0]	
+
+BANK MAXIMUM LOANS AND CREDIT RATIONG:
+Control Parameters:
+	"switch_credit_rationing":                          determines how banks calculate maximum loans
+		0-->											no credit rationing
+		1--> 											bank's maximum loans determined by possible regulatory rule and sensitivities
+
+Other Relevant Parameters:
+	"minimum_capital_ratio":                            determines the regulatory rule, mininum capital requirement. If 0, no credit rationing. [Baseline==0.05]	
+	"fragility_sensitivity": 							determines the weight given to overall financial fragility to credit rationing [Baseline==1]
+	"default_sensitivity":                              determines the weight given to bank's default rate to credit rationing [Baseline==1]
+
+	
+
+
+
 
 
 ************
