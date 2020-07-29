@@ -127,7 +127,7 @@ Label Root
 			Param: debt_rate_target
 			Param: default_sensitivity
 			Param: deposits_spread
-			Param: e_interest
+			Param: e_interest_long_term
 			Param: financial_sector_accumulated_losses
 			Param: financial_sector_profits_distribution_rate
 			Param: fragility_sensitivity
@@ -176,6 +176,7 @@ Label Root
 			Param: e_rationing
 			Param: public_long_term_spread
 			Param: public_short_term_spread
+			Param: e_interest_short_term
 
 		}
 
@@ -834,7 +835,7 @@ Param: debt_rate_interest_sensitivity 0 n + n n	0
 Param: debt_rate_target 0 n + n n	0.2
 Param: default_sensitivity 0 n + n n	1
 Param: deposits_spread 0 n + n n	0.5
-Param: e_interest 0 n + n n	0
+Param: e_interest_long_term 0 n + n n	0
 Param: financial_sector_accumulated_losses 0 s + n n	0
 Param: financial_sector_profits_distribution_rate 0 n + n n	0.9
 Param: fragility_sensitivity 0 n + n n	1
@@ -870,19 +871,20 @@ Var: Financial_Sector_Stock_Loans_Long_Term 0 s + n n
 Var: Financial_Sector_Stock_Loans_Short_Term 0 s + n n
 Var: Financial_Sector_Total_Stock_Loans 1 s + n n	0
 Var: Financial_Sector_Turbulence 0 s + n n
-Var: Interest_Rate_Deposits 0 n + n n
+Var: Interest_Rate_Deposits 0 s + n n
 Var: Total_Stock_Loans_Growth 1 s + n n	0
 Var: Financial_Sector_Default_Rate 0 s + n n
 Var: Financial_Sector_Defaulted_Loans 0 s + n n
 Var: Financial_Sector_Accumulated_Rescue 0 s + n n
 Var: Financial_Sector_Rescue 0 s + n n
 Var: Avg_Interest_Rate_Short_Term 1 s + n n	0
-Param: price_strategy_long_term 0 n + n n	0.1
+Param: price_strategy_long_term 0 n + n n	0
 Param: price_strategy_short_term 0 n + n n	0
 Param: e_default 0 n + n n	1
 Param: e_rationing 0 n + n n	1
 Param: public_long_term_spread 0 n + n n	1
 Param: public_short_term_spread 0 n + n n	0.5
+Param: e_interest_short_term 0 n + n n	0
 
 Object: BANKS C	1
 Param: bank_defaulted_loans_temporary 0 s + n n	0
@@ -2372,7 +2374,7 @@ _INIT_
 All 1 instances equal to 0.5.
 END_DESCRIPTION
 
-Parameter_e_interest
+Parameter_e_interest_long_term
 (no description available)
 _INIT_
 All 1 instances equal to 0.1.
@@ -2674,6 +2676,12 @@ Parameter_public_short_term_spread
 (no description available)
 _INIT_
 All 1 instances equal to 0.5.
+END_DESCRIPTION
+
+Parameter_e_interest_short_term
+(no description available)
+_INIT_
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Object_BANKS

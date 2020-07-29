@@ -495,11 +495,12 @@ Current bank profits distributed
 */
 v[0]=V("Bank_Profits");
 v[1]=V("financial_sector_profits_distribution_rate");
-if(v[0]>0)
-	v[2]=v[0]*v[1];
+v[2]=V("id_public_bank");
+if(v[0]>0&&v[2]!=1)
+	v[3]=v[0]*v[1];
 else
-	v[2]=0;
-RESULT(v[2])
+	v[3]=0;
+RESULT(v[3])
 
 
 EQUATION("Bank_Accumulated_Profits")
