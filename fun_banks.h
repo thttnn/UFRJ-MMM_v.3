@@ -113,15 +113,17 @@ Bank competitiveness depends negativelly on the bank interest rate on loans and 
 	v[1]=VL("Bank_Default_Share",1);                                   //bank share of defaulted loans
 	v[2]=VL("Bank_Demand_Met",1);                                      //bank demand not met
 	v[3]=VL("Bank_Interest_Rate_Long_Term",1);                  	   //bank interest rate on loans in the last period
+	v[4]=VL("Bank_Interest_Rate_Short_Term",1);                  	   //bank interest rate on short term loans in the last period
 	
-	v[4]=V("e_default");
-	v[5]=V("e_rationing");  
-	v[6]=V("e_interest");	
-   	if(v[2]!=0&&v[3]!=0)                                      //if competitiveness' determinants are not zero
-     	v[7]=(pow((1-v[1]),v[4]))*(1/pow(v[2],v[5]))*(1/pow(v[3],v[6])); //bank's competitiveness will be given by the inverse of the interest rate, powered by its elasticicty, and the loans not met, powered by its elasticicty
+	v[5]=V("e_default");
+	v[6]=V("e_rationing");  
+	v[7]=V("e_interest_long_term");	
+	v[8]=V("e_interest_short_term");	
+   	if(v[2]!=0&&v[3]!=0)                                      			//if competitiveness' determinants are not zero
+     	v[9]=(pow((1-v[1]),v[5]))*(1/pow(v[2],v[6]))*(1/pow(v[3],v[7]))*(1/pow(v[4],v[8])); 
    	else                                                               //if either the interest rate or the loans not met was zero 
-     	v[7]=v[0];                                                     //bank's competitiveness will be the competitiveness in the last period
-RESULT(v[7])
+     	v[9]=v[0];                                                     //bank's competitiveness will be the competitiveness in the last period
+RESULT(v[9])
 
 
 EQUATION("Bank_Market_Share")
