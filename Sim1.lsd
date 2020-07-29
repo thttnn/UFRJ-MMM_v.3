@@ -473,6 +473,7 @@ Label Root
 		Param: std_dev_innovation
 		Param: strategic_price_weight
 		Param: survival_period
+		Param: switch_credit_rationing
 		Param: switch_government_composition
 		Param: switch_interest_payment
 		Param: switch_unemployment_benefits
@@ -699,6 +700,7 @@ Param: rnd_revenue_proportion 0 n + n n	0.01
 Param: std_dev_innovation 0 n + n n	0.005
 Param: strategic_price_weight 0 n + n n	0.5
 Param: survival_period 0 n + n n	7
+Param: switch_credit_rationing 0 n + n n	0
 Param: switch_government_composition 0 n + n n	0
 Param: switch_interest_payment 0 n + n n	0
 Param: switch_unemployment_benefits 0 n + n n	1
@@ -833,7 +835,7 @@ Param: credit_growth_interest_sensitivity 0 n + n n	0
 Param: credit_growth_target 0 n + n n	0.01
 Param: debt_rate_interest_sensitivity 0 n + n n	0
 Param: debt_rate_target 0 n + n n	0.2
-Param: default_sensitivity 0 n + n n	1
+Param: default_sensitivity 0 n + n n	0
 Param: deposits_spread 0 n + n n	0.5
 Param: e_default 0 n + n n	1
 Param: e_interest_long_term 0 n + n n	0
@@ -841,12 +843,12 @@ Param: e_interest_short_term 0 n + n n	0
 Param: e_rationing 0 n + n n	1
 Param: financial_sector_accumulated_losses 0 s + n n	0
 Param: financial_sector_profits_distribution_rate 0 n + n n	0.9
-Param: fragility_sensitivity 0 n + n n	1
+Param: fragility_sensitivity 0 n + n n	0
 Param: inflation_interest_sensitivity 0 n + n n	0
 Param: inflation_target 0 n + n n	0
 Param: interest_rate_adjustment 0 n + n n	0
 Param: long_term_loans_spread 0 n + n n	2
-Param: minimum_capital_ratio 0 n + n n	0
+Param: minimum_capital_ratio 0 n + n n	0.05
 Param: price_strategy_long_term 0 n + n n	0
 Param: price_strategy_short_term 0 n + n n	0
 Param: public_long_term_spread 0 n + n n	1
@@ -1555,6 +1557,12 @@ Parameter_survival_period
 (no description available)
 _INIT_
 All 1 instances equal to 12.
+END_DESCRIPTION
+
+Parameter_switch_credit_rationing
+(no description available)
+_INIT_
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_switch_government_composition
