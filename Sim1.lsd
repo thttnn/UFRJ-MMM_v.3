@@ -117,6 +117,10 @@ Label Root
 				Var: Bank_Stock_Loans_Long_Term
 				Var: Bank_Stock_Loans_Short_Term
 				Var: Bank_Total_Stock_Loans
+				Var: Bank_Effective_Profit_Rate_1
+				Var: Bank_Effective_Profit_Rate_2
+				Var: Bank_Expected_Profit_Rate
+				Var: Bank_Retained_Profits
 
 			}
 
@@ -422,6 +426,8 @@ Label Root
 			Var: Sector_Sum_Market_Share
 			Var: Sector_Turbulence
 			Var: Sector_Unemployment
+			Var: Sector_Credit_Grating
+			Var: Sector_Short_Term_Rate
 
 		}
 
@@ -709,7 +715,7 @@ Param: tech_opportunity 0 n + n n	0.002
 Var: Annual_Growth 1 s + n n	0
 Var: Annual_Inflation 1 s + n n	0
 Var: Annual_Real_Growth 1 s + n n	0
-Var: Avg_Debt_Rate_Class 0 s + n n
+Var: Avg_Debt_Rate_Class 1 s + n n	0
 Var: Avg_Debt_Rate_Firms 1 s + n n	0
 Var: Avg_HHI 0 s + n n
 Var: Avg_Hedge_Share 0 s + n n
@@ -835,7 +841,7 @@ Param: credit_growth_interest_sensitivity 0 n + n n	0
 Param: credit_growth_target 0 n + n n	0.01
 Param: debt_rate_interest_sensitivity 0 n + n n	0
 Param: debt_rate_target 0 n + n n	0.2
-Param: default_sensitivity 0 n + n n	0
+Param: default_sensitivity 0 n + n n	1
 Param: deposits_spread 0 n + n n	0.5
 Param: e_default 0 n + n n	1
 Param: e_interest_long_term 0 n + n n	0
@@ -843,7 +849,7 @@ Param: e_interest_short_term 0 n + n n	0
 Param: e_rationing 0 n + n n	1
 Param: financial_sector_accumulated_losses 0 s + n n	0
 Param: financial_sector_profits_distribution_rate 0 n + n n	0.9
-Param: fragility_sensitivity 0 n + n n	0
+Param: fragility_sensitivity 0 n + n n	0.1
 Param: inflation_interest_sensitivity 0 n + n n	0
 Param: inflation_target 0 n + n n	0
 Param: interest_rate_adjustment 0 n + n n	0
@@ -885,7 +891,7 @@ Var: Financial_Sector_Stock_Loans_Long_Term 0 s + n n
 Var: Financial_Sector_Stock_Loans_Short_Term 0 s + n n
 Var: Financial_Sector_Total_Stock_Loans 1 s + n n	0
 Var: Financial_Sector_Turbulence 0 s + n n
-Var: Interest_Rate_Deposits 0 s + n n
+Var: Interest_Rate_Deposits 1 s + n n	0
 Var: Total_Stock_Loans_Growth 1 s + n n	0
 
 Object: BANKS C	1
@@ -896,7 +902,7 @@ Var: Bank_Accumulated_Defaulted_Loans 1 s + n n	0
 Var: Bank_Accumulated_Profits 1 s + n n	0
 Var: Bank_Competitiveness 1 s + n n	0
 Var: Bank_Debt_Payment 0 n + n n
-Var: Bank_Default_Share 0 s + n n
+Var: Bank_Default_Share 1 s + n n	0
 Var: Bank_Defaulted_Loans 1 s + n n	0
 Var: Bank_Demand_Loans 0 s + n n
 Var: Bank_Demand_Met 1 s + n n	0
@@ -910,17 +916,21 @@ Var: Bank_Interest_Payment 0 n + n n
 Var: Bank_Interest_Rate_Long_Term 1 s + n n	0
 Var: Bank_Interest_Rate_Short_Term 1 n + n n	0
 Var: Bank_Interest_Receivment 0 n + n n
-Var: Bank_Leverage 0 s + n n
+Var: Bank_Leverage 1 s + n n	0
 Var: Bank_Market_Share 1 s + n n	0
 Var: Bank_Max_Total_Loans 0 s + n n
 Var: Bank_Number_Clients 0 s + n n
 Var: Bank_Profits 0 s + n n
 Var: Bank_Rescue 0 s + n n
-Var: Bank_Short_Term_Rate 0 s + n n
+Var: Bank_Short_Term_Rate 1 s + n n	0
 Var: Bank_Stock_Deposits 0 n + n n
 Var: Bank_Stock_Loans_Long_Term 1 n + n n	0
 Var: Bank_Stock_Loans_Short_Term 0 n + n n
 Var: Bank_Total_Stock_Loans 1 s + n n	0
+Var: Bank_Effective_Profit_Rate_1 0 s + n n
+Var: Bank_Effective_Profit_Rate_2 0 s + n n
+Var: Bank_Expected_Profit_Rate 0 s + n n
+Var: Bank_Retained_Profits 0 s + n n
 
 Object: GOVERNMENT C	1
 Param: government_benefit 0 n + n n	0.5
@@ -1022,6 +1032,8 @@ Var: Sector_Stock_Loans 0 s + n n
 Var: Sector_Sum_Market_Share 0 s + n n
 Var: Sector_Turbulence 0 s + n n
 Var: Sector_Unemployment 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Credit_Grating 0 s + n n
+Var: Sector_Short_Term_Rate 0 s + n n
 
 Object: FIRMS C	1	1	1
 Var: Firm_Available_Funds_After_Replacement 0 n + n n
@@ -1616,7 +1628,7 @@ END_DESCRIPTION
 Variable_Avg_Debt_Rate_Class
 Aggregated average class debt rate, wheighted by the income of each class
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Avg_Debt_Rate_Firms
@@ -2682,7 +2694,7 @@ END_DESCRIPTION
 Variable_Interest_Rate_Deposits
 Interest Rate on Bank deposits is a negative spreaded base interest rate
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Total_Stock_Loans_Growth
@@ -2743,7 +2755,7 @@ END_DESCRIPTION
 Variable_Bank_Default_Share
 Current bank defaulted loans 
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Bank_Defaulted_Loans
@@ -2831,7 +2843,7 @@ Variable_Bank_Leverage
 Total Stock of loans over total stock of deposits
 Total Stock of loans over total stock of deposits
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Bank_Market_Share
@@ -2869,7 +2881,7 @@ END_DESCRIPTION
 Variable_Bank_Short_Term_Rate
 Share of short term loans over total loans
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Bank_Stock_Deposits
@@ -2895,6 +2907,35 @@ Variable_Bank_Total_Stock_Loans
 Total Stock of loans
 _INIT_
 All 1 instances equal to 0.
+END_DESCRIPTION
+
+Variable_Bank_Effective_Profit_Rate_1
+Effective retained profit rate on total loans
+Effective retained profit rate on total loans
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Bank_Effective_Profit_Rate_2
+Effective retained profit rate on total loans
+Effective retained profit rate on total loans
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Bank_Expected_Profit_Rate
+Expected retained profit rate on total loans, based on last period
+Expected retained profit rate on total loans, based on last period
+Expected retained profit rate on total loans, based on last period
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Bank_Retained_Profits
+Current bank profits distributed 
+Current bank profits distributed 
+_INIT_
+
 END_DESCRIPTION
 
 Object_GOVERNMENT
@@ -3535,6 +3576,20 @@ Variable_Sector_Unemployment
 (no description available)
 _INIT_
 All 3 instances equal to 0.
+END_DESCRIPTION
+
+Variable_Sector_Credit_Grating
+Sector Variable for Analysis
+Sector Variable for Analysis
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Sector_Short_Term_Rate
+Sector Variable for Analysis
+Share of  credit grating that is short term
+_INIT_
+
 END_DESCRIPTION
 
 Object_FIRMS

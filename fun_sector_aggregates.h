@@ -162,6 +162,38 @@ Sector Variable for Analysis
 RESULT(v[2])
 
 
+EQUATION("Sector_Credit_Grating")
+/*
+Sector Variable for Analysis
+*/
+v[0]=SUM("Firm_Effective_Loans");
+RESULT(v[0])
+
+
+EQUATION("Sector_Short_Term_Rate")
+/*
+Sector Variable for Analysis
+Share of  credit grating that is short term
+*/
+v[0]=SUM("Firm_Effective_Loans");
+v[1]=0;
+CYCLE(cur, "FIRMS")
+{
+	v[2]=VS(cur, "Firm_Desired_Investment_Expenses");
+	v[3]=VS(cur, "Firm_Effective_Loans");
+	if(v[2]==0)
+		v[1]=v[1]+v[3];
+	else
+		v[1]=v[1];
+}
+if(v[0]!=0)
+	v[4]=v[1]/v[0];
+else
+	v[4]=v[0];
+RESULT(v[4])
+
+
+
 /*****SECTOR AGGREGATES*****/
 
 

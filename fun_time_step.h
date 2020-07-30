@@ -211,6 +211,12 @@ V("Financial_Sector_Short_Term_Rate");
 V("Financial_Sector_Stock_Deposits");
 V("Financial_Sector_Normalized_HHI");
 
+V("Bank_Expected_Profit_Rate");
+V("Bank_Effective_Profit_Rate_1");
+V("Bank_Effective_Profit_Rate_2");
+V("Sector_Credit_Grating");
+V("Sector_Short_Term_Rate");
+
 /*****MACRO RESULTS*****/
 V("Total_Inventories");                             	
 V("Gross_Value_Production");                            	

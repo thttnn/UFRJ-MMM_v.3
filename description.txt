@@ -108,7 +108,7 @@ Control Parameters:
 
 Other Relevant Parameters:
 	"minimum_capital_ratio":                            determines the regulatory rule, mininum capital requirement. If 0, no credit rationing. [Baseline==0.05]	
-	"fragility_sensitivity": 							determines the weight given to overall financial fragility to credit rationing [Baseline==1]
+	"fragility_sensitivity": 							determines the weight given to overall financial fragility to credit rationing [Baseline==0.1]
 	"default_sensitivity":                              determines the weight given to bank's default rate to credit rationing [Baseline==1]
 
 	

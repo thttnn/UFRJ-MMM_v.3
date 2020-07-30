@@ -15,22 +15,19 @@ Might impact effective loans
 	v[2]=V("fragility_sensitivity");
 	v[3]=VL("Avg_Debt_Rate_Firms",1);
 	v[4]=v[2]*v[3];
-	v[6]=VL("Bank_Accumulated_Defaulted_Loans",1);
+	v[6]=VL("Bank_Default_Share",1);
 	v[7]=VL("Bank_Stock_Loans_Long_Term",1);
 	if(v[7]!=0)
 		v[8]=v[6]/v[7];
 	else
 		v[8]=0;
 	v[9]=V("default_sensitivity");
-	v[10]=v[9]*v[8];
+	v[10]=v[9]*v[6];
 	v[11]=V("switch_credit_rationing");
-	if(v[11]!=0)//no regulatory rule 
-	{
-		v[5]=v[0]/(v[1]+v[4]+v[10]);
-		v[12]=max(0,v[5]);
-	}
-	else
-		v[12]=0;
+	
+	v[5]=v[0]/(v[1]*(1+v[4]+v[10]));
+	v[12]=max(0,v[5]);
+
 RESULT(v[12])
 
 
@@ -79,7 +76,7 @@ Effective Loans is the minimum between demanded loans and max loans.
 	v[4]=max(0,(v[1]-v[3]));
 	v[5]=V("id_public_bank");
 	v[6]=V("switch_credit_rationing");
-	if(v[6]==1&&t>100&&v[5]!=1)
+	if(v[6]==1&&v[5]!=1)
 		v[7]=min(v[0],v[4]);
 	else//no credit rationing, all demand met
 		v[7]=v[0];
@@ -504,6 +501,16 @@ else
 RESULT(v[3])
 
 
+EQUATION("Bank_Retained_Profits")
+/*
+Current bank profits distributed 
+*/
+v[0]=V("Bank_Profits");
+v[1]=V("Bank_Distributed_Profits");
+v[2]=v[0]-v[1];
+RESULT(v[2])
+
+
 EQUATION("Bank_Accumulated_Profits")
 /*
 Total Stock of deposits of the financial sector
@@ -511,7 +518,8 @@ Total Stock of deposits of the financial sector
 v[0]=VL("Bank_Accumulated_Profits",1);
 v[1]=V("Bank_Profits");
 v[2]=V("Bank_Distributed_Profits");
-v[4]=v[1]-v[2]+v[0];
+v[3]=V("Bank_Retained_Profits");
+v[4]=v[3]+v[0];
 
 if(v[4]<0)
 {
@@ -578,7 +586,7 @@ EQUATION("Bank_Default_Share");
 Current bank defaulted loans over stock of long term loans
 */
 v[0]=V("Bank_Defaulted_Loans");
-v[1]=V("Bank_Stock_Loans_Long_Term");
+v[1]=V("Bank_Total_Stock_Loans");
 if(v[1]!=0)
 	v[2]=v[0]/v[1];
 else
@@ -586,8 +594,59 @@ else
 RESULT(v[2])
 
 
+EQUATION("Bank_Expected_Profit_Rate");
+/*
+Expected profit rate on total loans, based on last period
+*/
+	v[0]=VL("Bank_Short_Term_Rate",1);
+	v[1]=VL("Bank_Interest_Rate_Short_Term",1);
+	v[2]=VL("Bank_Interest_Rate_Long_Term",1);
+	v[3]=VL("Interest_Rate_Deposits",1);
+	v[4]=VL("Bank_Leverage",1);
+	v[5]=V("financial_sector_profits_distribution_rate");
+	v[6]=VL("Bank_Default_Share",1);
+	v[7]=V("risk_premium_adjustment");
+	v[8]=VL("Avg_Debt_Rate_Firms",1);
+	v[9]=VL("Avg_Debt_Rate_Class",1);
+	if(v[4]!=0)
+		v[10]=v[0]*v[1]*(1+v[7]*v[9])+(1-v[0])*v[2]*(1+v[7]*v[8])-(v[3]/v[4])-v[6];
+	else
+		v[10]=0;
+RESULT(v[10])
+	
+
+EQUATION("Bank_Effective_Profit_Rate_1");
+/*
+Effective profit rate on total loans
+*/
+	v[0]=V("Bank_Short_Term_Rate");
+	v[1]=V("Bank_Interest_Rate_Short_Term");
+	v[2]=V("Bank_Interest_Rate_Long_Term");
+	v[3]=V("Interest_Rate_Deposits");
+	v[4]=V("Bank_Leverage");
+	v[5]=V("financial_sector_profits_distribution_rate");
+	v[6]=V("Bank_Default_Share");
+	v[7]=V("risk_premium_adjustment");
+	v[8]=V("Avg_Debt_Rate_Firms");
+	v[9]=V("Avg_Debt_Rate_Class");
+	if(v[4]!=0)
+		v[10]=v[0]*v[1]*(1+v[7]*v[9])+(1-v[0])*v[2]*(1+v[7]*v[8])-(v[3]/v[4])-v[6];
+	else
+		v[10]=0;
+RESULT(v[10])
 
 
+EQUATION("Bank_Effective_Profit_Rate_2");
+/*
+Effective profit rate on total loans
+*/
+	v[0]=V("Bank_Profits");
+	v[1]=V("Bank_Total_Stock_Loans");
+	if(v[1]!=0)
+		v[2]=v[0]/v[1];
+	else
+		v[2]=0;
+RESULT(v[2])
 
 
 
