@@ -4,10 +4,29 @@
 Interest Rates
 *******************************************************************************/
 
-
 EQUATION("Basic_Interest_Rate")
+	v[0]=V("real_interest_rate");
+RESULT(v[0])
+
+
+EQUATION("Basic_Interest_Rate_2")
 /*
 Nominal Interest rate is set by the central bank following a (possible) dual mandate Taylor Rule, considering the inflation and unemployment gaps.
+"switch_monetary_policy":
+0-->       no monetary policy rule
+1-->       single mandate (inflation) taylor rule
+2-->       dual mandate (inflation and unemploymeny) taylor rule
+3-->       triple mandate (inflation, unemployment and credit growth) taylor rule
+4-->       triple mandate (inflation, unemployment and debt rate) taylor rule
+5-->       smithing rule
+6-->       smoothed smithin rule
+7--> 	   pasinetti rule
+8-->       smoothed pasinetti rule
+9-->       kansas city rule
+
+
+"interest_rate_adjustment": absolute increase
+
 */
 	
 	v[0]=V("real_interest_rate");
@@ -19,35 +38,111 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	
 	v[5]=VL("Annual_Inflation",1);
 	v[6]=VL("Unemployment",1);
-	v[7]=VL("Total_Stock_Loans_Growth", 1);
-	v[8]=VL("Avg_Debt_Rate_Firms", 1);
+	v[7]=VL("Total_Stock_Loans_Growth",1);
+	v[8]=VL("Avg_Debt_Rate_Firms",1);
 	
-	v[9]=V("inflation_interest_sensitivity");
-	v[10]=V("unemployment_interest_sensitivity");
-	v[11]=V("credit_growth_interest_sensitivity");
-	v[12]=V("debt_rate_interest_sensitivity");
+	v[9]=VL("Avg_Productivity",1);                              //avg productivity lagged 1
+	v[10]=VL("Avg_Productivity",2);                         	//avg productivity lagged 2
+	if(v[10]!=0)                                                //if productivity is not zero
+		v[11]=(v[9]-v[10])/v[10];                               //calculate productivity growth
+	else                                                        //if productivity is zero
+		v[11]=0;												//use 1
+		
+	v[21]=VL("Price_Index",1);                             		//avg price lagged 1
+	v[22]=VL("Price_Index",2);                         			//avg price lagged 2
+	if(v[22]!=0)                                                //if price is not zero
+		v[23]=(v[21]-v[22])/v[22];                              //calculate price growth
+	else                                                        //if price is zero
+		v[23]=0;												//use 1
 	
-	v[13]=v[0]+v[5]+v[9]*(v[5]-v[1])-v[10]*(v[6]-v[2])+v[11]*(v[7]-v[3])+v[12]*(v[8]-v[4]);
-	v[14]=V("interest_rate_adjustment");
-	v[15]=VL("Basic_Interest_Rate", 1);
+	v[18]=V("interest_rate_adjustment");
+	v[19]=VL("Basic_Interest_Rate_2", 1);
 	
-	if(t>100)
+	v[12]=V("switch_monetary_policy");
+	
+	if(v[12]==0)      											//no monetary policy rule, fixed nominal interest rate set by "real_interest_rate" parameter
+		v[20]=v[0];
+	
+	if(v[12]==1||v[12]==2||v[12]==3||v[12]==4)					//taylor rule
+	{
+		if(v[12]==1)											//single mandate taylor rule
 		{
-		if(abs(v[13]-v[15])>v[14])
+		v[13]=V("inflation_interest_sensitivity");
+		v[14]=0;
+		v[15]=0;
+		v[16]=0;
+		}
+		if(v[12]==2)											//dual mandate taylor rule
+		{
+		v[13]=V("inflation_interest_sensitivity");
+		v[14]=V("unemployment_interest_sensitivity");
+		v[15]=0;
+		v[16]=0;
+		}
+		if(v[12]==3)											//triple mandate taylor rule with credit growth target
+		{
+		v[13]=V("inflation_interest_sensitivity");
+		v[14]=V("unemployment_interest_sensitivity");
+		v[15]=V("credit_growth_interest_sensitivity");
+		v[16]=0;
+		}
+		if(v[12]==4)											//triple mandate taylor rule with debt rate target
+		{
+		v[13]=V("inflation_interest_sensitivity");
+		v[14]=V("unemployment_interest_sensitivity");
+		v[15]=0;
+		v[16]=V("debt_rate_interest_sensitivity");
+		}
+	
+		v[17]=v[0]+v[23]+v[13]*(v[5]-v[1])-v[14]*(v[6]-v[2])+v[15]*(v[7]-v[3])+v[16]*(v[8]-v[4]);
+		if(abs(v[17]-v[19])>v[18])
 			{
-			if(v[13]>v[15])
-				v[16]=v[15]+v[14];
+			if(v[17]>v[19])
+				v[20]=v[19]+v[18];
 			else
-				v[16]=v[15]-v[14];
+				v[20]=v[19]-v[18];
 			}
 		else
-			v[16]=v[13];
-		}
-	else
-		v[16]=v[15];
-		
-	v[17]=max(0,v[16]);
-RESULT(v[17])
+			v[20]=v[17];
+
+	}
+	
+	if(v[12]==5)												//smithin rule
+		v[20]=v[23];	
+	if(v[12]==6)												//smithin rule smoothing
+	{
+		v[17]=v[23];
+		if(abs(v[17]-v[19])>v[18])
+			{
+			if(v[17]>v[19])
+				v[20]=v[19]+v[18];
+			else
+				v[20]=v[19]-v[18];
+			}
+		else
+			v[20]=v[17];
+	}
+	
+	if(v[12]==7)												//pasinetti rule
+		v[20]=v[23]+v[11];
+	if(v[12]==8)												//pasinetti rule smoothing
+	{
+		v[17]=v[23]+v[11];
+		if(abs(v[17]-v[19])>v[18])
+			{
+			if(v[17]>v[19])
+				v[20]=v[19]+v[18];
+			else
+				v[20]=v[19]-v[18];
+			}
+		else
+			v[20]=v[17];
+	}
+	
+	if(v[12]==9)												//kansas city rule.
+		v[20]=0;
+	
+RESULT(max(0,v[20]))
 
 
 EQUATION("Interest_Rate_Deposits")
