@@ -544,6 +544,7 @@ Label Root
 		Var: Total_Wages
 		Var: Unemployment
 		Var: Wage_Share
+		Param: switch_monetary_policy
 
 	}
 
@@ -706,7 +707,7 @@ Param: rnd_revenue_proportion 0 n + n n	0.01
 Param: std_dev_innovation 0 n + n n	0.005
 Param: strategic_price_weight 0 n + n n	0.5
 Param: survival_period 0 n + n n	7
-Param: switch_credit_rationing 0 n + n n	0
+Param: switch_credit_rationing 0 n + n n	1
 Param: switch_government_composition 0 n + n n	0
 Param: switch_interest_payment 0 n + n n	0
 Param: switch_unemployment_benefits 0 n + n n	1
@@ -771,13 +772,14 @@ Var: Total_Profits 0 s + n n
 Var: Total_Wages 0 n + n n
 Var: Unemployment 5 s + n n	0.18	0.18	0.18	0.18	0.18
 Var: Wage_Share 0 s + n n
+Param: switch_monetary_policy 0 n + n n	0
 
 Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
 Param: class_autonomous_consumption_adjustment_deposits 0 n + n n	0	0	0
 Param: class_desired_debt_rate 0 n + n n	0.5	0.5	0.5
 Param: class_direct_tax 0 n + n n	0.1	0.1	0.1
-Param: class_population_share 0 n + n n	0.05	0.3	0.65
+Param: class_population_share 0 n + n n	0.01	0.02	0.97
 Param: class_profit_share 0 n + n n	0.6	0.3	0.1
 Param: class_propensity_to_consume 0 n + n n	0.7	0.8	0.95
 Param: class_propensity_to_import 0 n + n n	0.15	0.1	0
@@ -837,10 +839,10 @@ Var: Trade_Balance 0 n + n n
 
 Object: FINANCIAL C	1
 Param: compulsory_reserves_rate 0 n + n n	0.1
-Param: credit_growth_interest_sensitivity 0 n + n n	0
-Param: credit_growth_target 0 n + n n	0.01
-Param: debt_rate_interest_sensitivity 0 n + n n	0
-Param: debt_rate_target 0 n + n n	0.2
+Param: credit_growth_interest_sensitivity 0 n + n n	1
+Param: credit_growth_target 0 n + n n	0.003
+Param: debt_rate_interest_sensitivity 0 n + n n	1
+Param: debt_rate_target 0 n + n n	0.3
 Param: default_sensitivity 0 n + n n	1
 Param: deposits_spread 0 n + n n	0.5
 Param: e_default 0 n + n n	1
@@ -850,9 +852,9 @@ Param: e_rationing 0 n + n n	1
 Param: financial_sector_accumulated_losses 0 s + n n	0
 Param: financial_sector_profits_distribution_rate 0 n + n n	0.9
 Param: fragility_sensitivity 0 n + n n	0.1
-Param: inflation_interest_sensitivity 0 n + n n	0
+Param: inflation_interest_sensitivity 0 n + n n	1
 Param: inflation_target 0 n + n n	0
-Param: interest_rate_adjustment 0 n + n n	0
+Param: interest_rate_adjustment 0 n + n n	0.0005
 Param: long_term_loans_spread 0 n + n n	2
 Param: minimum_capital_ratio 0 n + n n	0.05
 Param: price_strategy_long_term 0 n + n n	0
@@ -862,8 +864,8 @@ Param: public_short_term_spread 0 n + n n	0.5
 Param: real_interest_rate 0 n + n n	0.0025
 Param: risk_premium_adjustment 0 n + n n	1
 Param: short_term_loans_spread 0 n + n n	1
-Param: unemployment_interest_sensitivity 0 n + n n	0
-Param: unemployment_target 0 n + n n	0
+Param: unemployment_interest_sensitivity 0 n + n n	1
+Param: unemployment_target 0 n + n n	0.27
 Var: Avg_Competitiveness_Financial_Sector 1 s + n n	1
 Var: Avg_Interest_Rate_Long_Term 1 s + n n	0
 Var: Avg_Interest_Rate_Short_Term 1 s + n n	0
@@ -907,14 +909,14 @@ Var: Bank_Defaulted_Loans 1 s + n n	0
 Var: Bank_Demand_Loans 0 s + n n
 Var: Bank_Demand_Met 1 s + n n	0
 Var: Bank_Desired_Interest_Rate_Long_Term 1 s + n n	0
-Var: Bank_Desired_Interest_Rate_Short_Term 0 n + n n
+Var: Bank_Desired_Interest_Rate_Short_Term 0 s + n n
 Var: Bank_Desired_Long_Term_Spread 1 s + n n	0
-Var: Bank_Desired_Short_Term_Spread 0 n + n n
+Var: Bank_Desired_Short_Term_Spread 1 s + n n	0
 Var: Bank_Distributed_Profits 0 n + n n
 Var: Bank_Effective_Loans 0 s + n n
 Var: Bank_Interest_Payment 0 n + n n
 Var: Bank_Interest_Rate_Long_Term 1 s + n n	0
-Var: Bank_Interest_Rate_Short_Term 1 n + n n	0
+Var: Bank_Interest_Rate_Short_Term 1 s + n n	0
 Var: Bank_Interest_Receivment 0 n + n n
 Var: Bank_Leverage 1 s + n n	0
 Var: Bank_Market_Share 1 s + n n	0
@@ -948,12 +950,12 @@ Var: Government_Desired_Inputs 1 s + n n	0
 Var: Government_Desired_Investment 1 s + n n	0
 Var: Government_Desired_Unemployment_Benefits 0 s + n n
 Var: Government_Desired_Wages 1 s + n n	0
-Var: Government_Effective_Consumption 0 s + n p
-Var: Government_Effective_Expenses 1 s + n p	0
+Var: Government_Effective_Consumption 0 s + n n
+Var: Government_Effective_Expenses 1 s + n n	0
 Var: Government_Effective_Inputs 0 s + n n
-Var: Government_Effective_Investment 0 s + n p
-Var: Government_Effective_Unemployment_Benefits 0 s + n p
-Var: Government_Effective_Wages 0 s + n p
+Var: Government_Effective_Investment 0 s + n n
+Var: Government_Effective_Unemployment_Benefits 0 s + n n
+Var: Government_Effective_Wages 0 s + n n
 Var: Government_Interest_Payment 0 s + n n
 Var: Government_Max_Expenses 1 s + n n	0
 Var: Government_Nominal_Deficit 0 s + n n
@@ -1574,7 +1576,7 @@ END_DESCRIPTION
 Parameter_switch_credit_rationing
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_switch_government_composition
@@ -1964,6 +1966,12 @@ Variable_Wage_Share
 (no description available)
 _INIT_
 
+END_DESCRIPTION
+
+Parameter_switch_monetary_policy
+(no description available)
+_INIT_
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Object_CLASSES
@@ -2451,7 +2459,7 @@ END_DESCRIPTION
 Parameter_interest_rate_adjustment
 (no description available)
 _INIT_
-
+All 1 instances equal to 0.0005.
 END_DESCRIPTION
 
 Parameter_long_term_loans_spread
@@ -2799,7 +2807,7 @@ Variable_Bank_Desired_Short_Term_Spread
 Bank Variable
 Bank Variable
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Bank_Distributed_Profits

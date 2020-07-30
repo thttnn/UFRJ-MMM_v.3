@@ -22,9 +22,7 @@ Might impact effective loans
 	else
 		v[8]=0;
 	v[9]=V("default_sensitivity");
-	v[10]=v[9]*v[6];
-	v[11]=V("switch_credit_rationing");
-	
+	v[10]=v[9]*v[6];	
 	v[5]=v[0]/(v[1]*(1+v[4]+v[10]));
 	v[12]=max(0,v[5]);
 
@@ -75,8 +73,8 @@ Effective Loans is the minimum between demanded loans and max loans.
 	v[3]=VL("Bank_Total_Stock_Loans",1);
 	v[4]=max(0,(v[1]-v[3]));
 	v[5]=V("id_public_bank");
-	v[6]=V("switch_credit_rationing");
-	if(v[6]==1&&v[5]!=1)
+	v[6]=V("begin_credit_rationing");
+	if(t>v[6]&&v[5]!=1)
 		v[7]=min(v[0],v[4]);
 	else//no credit rationing, all demand met
 		v[7]=v[0];

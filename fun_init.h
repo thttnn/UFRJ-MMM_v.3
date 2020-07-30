@@ -383,7 +383,6 @@ CYCLE(cur, "FINANCIAL")
 	v[253]=VS(cur, "long_term_loans_spread");
 
 	WRITELLS(cur, "Basic_Interest_Rate", v[250], 0, 1);
-	WRITELLS(cur, "Basic_Interest_Rate_2", v[250], 0, 1);
 	WRITELLS(cur, "Avg_Competitiveness_Financial_Sector", 1, 0, 1);
 	WRITELLS(cur, "Avg_Interest_Rate_Long_Term", ((1+v[253])*v[250]), 0, 1);
 	WRITELLS(cur, "Avg_Interest_Rate_Short_Term", ((1+v[252])*v[250]), 0, 1);

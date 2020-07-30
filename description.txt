@@ -102,9 +102,7 @@ Control Parameters (elasticities):
 
 BANK MAXIMUM LOANS AND CREDIT RATIONG:
 Control Parameters:
-	"switch_credit_rationing":                          determines how banks calculate maximum loans
-		0-->											no credit rationing
-		1--> 											bank's maximum loans determined by possible regulatory rule and sensitivities
+	"begin_credit_rationing":                           determines WHEN banks start calculating maximum loans
 
 Other Relevant Parameters:
 	"minimum_capital_ratio":                            determines the regulatory rule, mininum capital requirement. If 0, no credit rationing. [Baseline==0.05]	

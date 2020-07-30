@@ -5,11 +5,6 @@ Interest Rates
 *******************************************************************************/
 
 EQUATION("Basic_Interest_Rate")
-	v[0]=V("real_interest_rate");
-RESULT(v[0])
-
-
-EQUATION("Basic_Interest_Rate_2")
 /*
 Nominal Interest rate is set by the central bank following a (possible) dual mandate Taylor Rule, considering the inflation and unemployment gaps.
 "switch_monetary_policy":
@@ -56,7 +51,7 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 		v[23]=0;												//use 1
 	
 	v[18]=V("interest_rate_adjustment");
-	v[19]=VL("Basic_Interest_Rate_2", 1);
+	v[19]=VL("Basic_Interest_Rate", 1);
 	
 	v[12]=V("switch_monetary_policy");
 	
