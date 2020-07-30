@@ -117,10 +117,10 @@ Bank competitiveness depends negativelly on the bank interest rate on loans and 
 	v[6]=V("e_rationing");  
 	v[7]=V("e_interest_long_term");	
 	v[8]=V("e_interest_short_term");	
-   	if(v[2]!=0&&v[3]!=0)                                      			//if competitiveness' determinants are not zero
+   	if(v[2]!=0&&v[3]!=0&&v[4]!=0)                                      							//if competitiveness' determinants are not zero
      	v[9]=(pow((1-v[1]),v[5]))*(1/pow(v[2],v[6]))*(1/pow(v[3],v[7]))*(1/pow(v[4],v[8])); 
-   	else                                                               //if either the interest rate or the loans not met was zero 
-     	v[9]=v[0];                                                     //bank's competitiveness will be the competitiveness in the last period
+   	else                                                               							//if either the interest rate or the loans not met was zero 
+     	v[9]=v[0];                                                     							//bank's competitiveness will be the competitiveness in the last period
 RESULT(v[9])
 
 
@@ -591,7 +591,7 @@ if(v[1]!=0)
 	v[2]=v[0]/v[1];
 else
 	v[2]=0;
-RESULT(v[2])
+RESULT(min(1,v[2]))
 
 
 EQUATION("Bank_Expected_Profit_Rate");

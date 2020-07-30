@@ -10,15 +10,15 @@
 #
 #******************************************************************
 
-folder    <- "./Res_Financial_Decisions"                  # data files folder
+folder    <- "./Res_Interest"                  # data files folder
 baseName  <- "Sim_"                     # data files base name (same as .lsd file)
-nExp      <- 8                          # number of experiments (sensitivity/different cases)
+nExp      <- 7                          # number of experiments (sensitivity/different cases)
 iniDrop   <- 0                          # initial time steps to drop from analysis (0=none)
 nKeep     <- -1                         # number of time steps to keep (-1=all)
 cores     <- 0                          # maximum number of cores to allocate (0=all)
 savDat    <- F                          # save processed data files and re-use if available?
 
-expVal <- c("1", "2","3","4","5","6", "7","8")                            # case parameter values
+expVal <- c("Baseline", "WeakShort", "StrongShort", "WeakLong", "StrongLong", "WeakBoth", "StrongBoth")                            # case parameter values
 
 # Aggregated variables to use
 logVars <- c( "Real_GDP",               # Real GDP
