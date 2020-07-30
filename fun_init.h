@@ -406,6 +406,7 @@ CYCLE(cur, "FINANCIAL")
 		//WRITELLS(cur1, "Bank_Accumulated_Profits", 0, 0, 1);
 		WRITELLS(cur1, "Bank_Demand_Met", 1, 0, 1);
 		WRITELLS(cur1, "Bank_Desired_Long_Term_Spread", v[253], 0, 1);
+		WRITELLS(cur1, "Bank_Desired_Short_Term_Spread", v[252], 0, 1);
 		WRITELLS(cur1, "Bank_Interest_Rate_Long_Term", ((1+v[253])*v[250]), 0, 1);
 		WRITELLS(cur1, "Bank_Interest_Rate_Short_Term", ((1+v[252])*v[250]), 0, 1);
 		}
