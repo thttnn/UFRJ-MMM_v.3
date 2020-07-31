@@ -479,7 +479,7 @@ Label Root
 		Param: std_dev_innovation
 		Param: strategic_price_weight
 		Param: survival_period
-		Param: switch_credit_rationing
+		Param: begin_credit_rationing
 		Param: switch_government_composition
 		Param: switch_interest_payment
 		Param: switch_unemployment_benefits
@@ -664,7 +664,7 @@ Param: annual_period 0 n + n n	4
 Param: antecipation 0 n + n n	0.5
 Param: bargain_power_adjustment 0 n + n n	0
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
-Param: begin_surplus_target_rule 0 n + n n	-1
+Param: begin_surplus_target_rule 0 n + n n	0
 Param: class_debt_rate_adjustment 0 n + n n	0
 Param: class_liquidity_preference_adjustment 0 n + n n	0
 Param: class_period 0 n + n n	4
@@ -707,7 +707,7 @@ Param: rnd_revenue_proportion 0 n + n n	0.01
 Param: std_dev_innovation 0 n + n n	0.005
 Param: strategic_price_weight 0 n + n n	0.5
 Param: survival_period 0 n + n n	7
-Param: switch_credit_rationing 0 n + n n	1
+Param: begin_credit_rationing 0 n + n n	0
 Param: switch_government_composition 0 n + n n	0
 Param: switch_interest_payment 0 n + n n	0
 Param: switch_unemployment_benefits 0 n + n n	1
@@ -848,7 +848,7 @@ Param: deposits_spread 0 n + n n	0.5
 Param: e_default 0 n + n n	1
 Param: e_interest_long_term 0 n + n n	0
 Param: e_interest_short_term 0 n + n n	0
-Param: e_rationing 0 n + n n	1
+Param: e_rationing 0 n + n n	0.25
 Param: financial_sector_accumulated_losses 0 s + n n	0
 Param: financial_sector_profits_distribution_rate 0 n + n n	0.9
 Param: fragility_sensitivity 0 n + n n	0.1
@@ -940,7 +940,7 @@ Param: government_demand_growth 0 n + n n	0.005
 Param: government_expectations 0 n + n n	0.3
 Param: government_max_debt 0 n + n n	1
 Param: government_min_debt 0 n + n n	0
-Param: government_productivity_passtrought 0 n + n n	0.5
+Param: government_productivity_passtrought 0 n + n n	1
 Param: government_surplus_rate_target 0 n + n n	0
 Param: government_surplus_target_adjustment 0 n + n n	0
 Var: Government_Debt 4 s + n n	0	0	0	0
@@ -959,7 +959,7 @@ Var: Government_Effective_Wages 0 s + n n
 Var: Government_Interest_Payment 0 s + n n
 Var: Government_Max_Expenses 1 s + n n	0
 Var: Government_Nominal_Deficit 0 s + n n
-Var: Government_Primary_Surplus 0 n + n n
+Var: Government_Primary_Surplus 0 s + n n
 Var: Government_Surplus_Rate_Target 1 s + n n	0
 Var: Total_Income_Taxes 0 n + n n
 Var: Total_Indirect_Taxes 0 n + n n
@@ -1540,7 +1540,7 @@ END_DESCRIPTION
 Parameter_number_object_banks
 (no description available)
 _INIT_
-All 1 instances equal to 10.
+All 1 instances equal to 5.
 END_DESCRIPTION
 
 Parameter_payback_period
@@ -1573,10 +1573,10 @@ _INIT_
 All 1 instances equal to 12.
 END_DESCRIPTION
 
-Parameter_switch_credit_rationing
+Parameter_begin_credit_rationing
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 100.
 END_DESCRIPTION
 
 Parameter_switch_government_composition
@@ -2423,7 +2423,7 @@ END_DESCRIPTION
 Parameter_e_rationing
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 0.25.
 END_DESCRIPTION
 
 Parameter_financial_sector_accumulated_losses
@@ -2471,7 +2471,7 @@ END_DESCRIPTION
 Parameter_minimum_capital_ratio
 (no description available)
 _INIT_
-All 1 instances equal to 0.06.
+All 1 instances equal to 0.05.
 END_DESCRIPTION
 
 Parameter_price_strategy_long_term

@@ -1,3 +1,0 @@
-
-cc1plus: out of memory allocating 16842751 bytes after a total of 1966080 bytes
-make: *** [makefile:58: fun_micro_macro_v.3.6.o] Error 1
