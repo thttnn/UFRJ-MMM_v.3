@@ -19,9 +19,9 @@ if( exists( "folder" ) )				        # check for previous run (interactive mode)
 # ====== User parameters ======
 
 # Database files
-folder   <- "Res_Kriging"                    # data files folder
+folder   <- "Res_Kriging_3"                    # data files folder
 baseName <- "Sim_1"                    # data files base name (same as .lsd file)
-varName <- "DEBT_RT_FI"                        # analysis variable name
+varName <- "PR"                        # analysis variable name
 iniDrop <- 100                        # initial time steps to drop from analysis (0=none)
 nKeep <- -1                           # number of time steps to keep (-1=all)
 cores <- 0                            # maximum number of cores to allocate (0=all)
@@ -139,9 +139,26 @@ if( ! exists( "plot_norm", mode = "function" ) )             # already loaded?
 # ==== Aggregated variables to use ====
 
 # Aggregated variables to use
-logVars <- c( "Real_GDP" )
-aggrVars <- append( logVars, c( "GDP_G", "FS_LEV", "DEBT_RT_CL", "DEBT_RT_FI" ))
-newVars <- c( "sdGDP" )
+logVars <- c( "Real_GDP", 
+              "I_r", 
+              "C_r", 
+              "FS_PR")
+aggrVars <- append( logVars, c( "GDP_G", 
+                                "FS_LEV", 
+                                "DEBT_RT_CL", 
+                                "DEBT_RT_FI", 
+                                "P_G", 
+                                "INV_G", 
+                                "CON_G", 
+                                "DEBT_FS_G", 
+                                "U",
+                                "FS_STR",
+                                "FS_DR",
+                                "PONZI",
+                                "PR"))
+newVars <- c( "sdGDP",
+              "sdP",
+              "sdU" )
 
 # ---- Make sure selected analysis variable is available ----
 
@@ -170,11 +187,11 @@ eval.vars <- function( data, vars ) {
       
       data[ , var ] <- sd( data[ , "Real_GDP" ], na.rm = TRUE )
       
-    } else if( var == "sdP" ) {   # add the GDP std. dev. variable to data set
+    } else if( var == "sdP" ) {   # add the Inflation std. dev. variable to data set
       
       data[ , var ] <- sd( data[ , "P_G" ], na.rm = TRUE )
       
-    } else if( var == "sdU" ) {   # add the GDP std. dev. variable to data set
+    } else if( var == "sdU" ) {   # add the Unemployment dev. variable to data set
       
       data[ , var ] <- sd( data[ , "U" ], na.rm = TRUE )
     }

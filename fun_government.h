@@ -283,7 +283,8 @@ WRITE("Government_Effective_Consumption", v[10]);
 WRITE("Government_Effective_Investment", v[11]);
 WRITE("Government_Effective_Inputs", v[12]);
 v[13]=v[8]+v[9]+v[10]+v[11]+v[12];
-RESULT(v[13])
+//RESULT(v[13])
+RESULT(v[0])
 
 EQUATION_DUMMY("Government_Effective_Wages","Government_Effective_Expenses")
 EQUATION_DUMMY("Government_Effective_Unemployment_Benefits","Government_Effective_Expenses")
