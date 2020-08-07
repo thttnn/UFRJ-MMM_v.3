@@ -19,9 +19,9 @@ if( exists( "folder" ) )				        # check for previous run (interactive mode)
 # ====== User parameters ======
 
 # Database files
-folder   <- "Res_Kriging_3"                    # data files folder
+folder   <- "Res_Final_Kriging"                    # data files folder
 baseName <- "Sim_1"                    # data files base name (same as .lsd file)
-varName <- "PR"                        # analysis variable name
+varName <- "P_G"                        # analysis variable name
 iniDrop <- 100                        # initial time steps to drop from analysis (0=none)
 nKeep <- -1                           # number of time steps to keep (-1=all)
 cores <- 0                            # maximum number of cores to allocate (0=all)
@@ -57,7 +57,7 @@ factor2 <- 0                          # second factor
 factor3 <- 0                          # third factor
 
 # Report output configuration
-raster <- FALSE  					            # raster or vector plots
+raster <- TRUE  					            # raster or vector plots
 res <- 600       					            # resolution of raster mode (in dpi)
 plotRows <- 1   					            # number of plots per row in a page
 plotCols <- 1  	 					            # number of plots per column in a page

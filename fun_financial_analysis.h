@@ -246,5 +246,23 @@ Interest Rate on Long Term Loans
 cur = SEARCHS(root, "FINANCIAL");
 v[0]=VS(cur, "Avg_Interest_Rate_Long_Term");
 RESULT(v[0])   
+
+
+EQUATION("BKR")
+/*
+Number of Bankrupt Events
+*/
+cur = SEARCHS(root, "MACRO");
+v[0]=VS(cur, "Exit_Bankruptcy_Events");
+RESULT(v[0]) 
+
+
+EQUATION("BKR_RT")
+/*
+Bankrupt Rate
+*/
+cur = SEARCHS(root, "MACRO");
+v[0]=VS(cur, "Exit_Bankruptcy_Share");
+RESULT(v[0]) 
  
                    

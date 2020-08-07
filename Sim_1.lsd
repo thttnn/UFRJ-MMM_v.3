@@ -643,6 +643,8 @@ Label Root
 		Var: PCU
 		Var: PR
 		Var: EMP_G
+		Var: BKR
+		Var: BKR_RT
 
 	}
 
@@ -1254,6 +1256,8 @@ Var: KL 0 s + n n
 Var: PCU 0 s + n n
 Var: PR 0 s + n n
 Var: EMP_G 0 s + n n
+Var: BKR 0 s + n n
+Var: BKR_RT 0 s + n n
 
 SIM_NUM 1
 SEED 1
@@ -4951,6 +4955,20 @@ Variable_EMP_G
 Quarterly Employment Growth rate
 Quarterly Employment Growth rate
 _INIT_
+
+END_DESCRIPTION
+
+Variable_BKR
+Number of Bankrupt Events
+Number of Bankrupt Events
+
+
+END_DESCRIPTION
+
+Variable_BKR_RT
+Bankrupt Rate
+Bankrupt Rate
+
 
 END_DESCRIPTION
 

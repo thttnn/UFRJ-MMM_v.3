@@ -341,16 +341,16 @@ This variable writes parameters for the current financial position of the firm.
 	v[3]=V("Firm_Deposits_Return");
 	v[4]=v[0]-v[1]*v[2];
 	
-	v[5]=V("Firm_Interest_Payment");
-	v[6]=V("Firm_Debt_Payment");
-	v[7]=V("Firm_Financial_Obligations");
+	v[5]=V("Firm_Financial_Obligations");
+	v[6]=V("Firm_Effective_Investment_Expenses");
+	v[7]=v[5]+v[6];
 	
 	if (v[4]>=v[7])
 	{
 		WRITE("firm_hedge",1);
 		WRITE("firm_speculative", 0);
 		WRITE("firm_ponzi",0);
-		v[9]=0;
+		v[8]=0;
 	}
 	
 	if (v[4]<v[7]&&v[4]>=v[5])
@@ -358,7 +358,7 @@ This variable writes parameters for the current financial position of the firm.
 		WRITE("firm_hedge",0);
 		WRITE("firm_speculative", 1);
 		WRITE("firm_ponzi",0);
-		v[9]=1;
+		v[8]=1;
 	}
 	
 	if (v[4]<v[7]&&v[4]<v[5])
@@ -366,14 +366,9 @@ This variable writes parameters for the current financial position of the firm.
 		WRITE("firm_hedge",0);
 		WRITE("firm_speculative", 0);
 		WRITE("firm_ponzi",1);
-		v[9]=2;
+		v[8]=2;
 	}
-	
-	if(v[7]!=0)
-		v[8]=v[4]/v[7];
-	else
-		v[8]=1;
-RESULT(v[9])
+RESULT(v[8])
 
 
 

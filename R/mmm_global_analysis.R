@@ -12,13 +12,13 @@
 
 folder    <- "./Res_Final_Financial_Decisions"                  # data files folder
 baseName  <- "Sim_"                     # data files base name (same as .lsd file)
-nExp      <- 8                          # number of experiments (sensitivity/different cases)
+nExp      <- 2                          # number of experiments (sensitivity/different cases)
 iniDrop   <- 0                          # initial time steps to drop from analysis (0=none)
 nKeep     <- -1                         # number of time steps to keep (-1=all)
 cores     <- 0                          # maximum number of cores to allocate (0=all)
 savDat    <- F                          # save processed data files and re-use if available?
 
-expVal <- c("Baseline", "T1", "T2", "T3", "T4", "T5", "T6", "T7")                   # case parameter values
+expVal <- c("Baseline", "T1")                   # case parameter values
 
 # Aggregated variables to use
 logVars <- c( "Real_GDP",               # Real GDP
@@ -36,7 +36,12 @@ logVars <- c( "Real_GDP",               # Real GDP
               "PROD",                   # Average Labor Productivity
               "MK",                     # Average Markup
               "EMP",                    # Employment in Hours of Labor
-              "KL"                      # Capital Labor Ratio
+              "KL",                     # Capital Labor Ratio
+              "DEBT_FS",
+              "DEBT_FS_ST",
+              "DEBT_FS_LT",
+              "DEP_FS",
+              "FS_PR"
               )
 
 aggrVars <- append( logVars, 
@@ -65,7 +70,32 @@ aggrVars <- append( logVars,
                         "GGDP",         # Government Expenses Share of GDP
                         "NXGDP",        # Net Exports Share of GDP
                         "INVGDP",       # Inventories Share of GDP
-                        "KGDP"          # Capital Stock Share of GDP (K/Y Ratio)
+                        "KGDP",          # Capital Stock Share of GDP (K/Y Ratio)
+                        "Financial_Sector_Demand_Met",
+                        "DEBT_FS_G",
+                        "DEBT_FS_ST_G",
+                        "DEBT_FS_LT_G",
+                        "DEP_FS_G",
+                        "DEBT_RT_C",
+                        "DEBT_RT_K",
+                        "DEBT_RT_I",
+                        "DEBT_RT_1",
+                        "DEBT_RT_2",
+                        "DEBT_RT_3",
+                        "DEBT_RT_FI",
+                        "DEBT_RT_CL",
+                        "FS_HHI",
+                        "FS_LEV",
+                        "FS_STR",
+                        "FS_DR",
+                        "FS_DEF",
+                        "PONZI",
+                        "SPEC",
+                        "HEDGE",
+                        "IR",
+                        "IR_DEP",
+                        "IR_ST",
+                        "IR_LT"
                         ) )
 
 # Variables to test for stationarity and ergodicity
@@ -93,7 +123,21 @@ aggrVars <- append( logVars,
                         "GGDP",         # Government Expenses Share of GDP
                         "NXGDP",        # Net Exports Share of GDP
                         "INVGDP",       # Inventories Share of GDP
-                        "KGDP"          # Capital Stock Share of GDP (K/Y Ratio)
+                        "KGDP",          # Capital Stock Share of GDP (K/Y Ratio)
+                        "DEBT_FS_G",
+                        "DEBT_FS_ST_G",
+                        "DEBT_FS_LT_G",
+                        "DEP_FS_G",
+                        "DEBT_RT_C",
+                        "DEBT_RT_K",
+                        "DEBT_RT_I",
+                        "DEBT_RT_1",
+                        "DEBT_RT_2",
+                        "DEBT_RT_3",
+                        "DEBT_RT_FI",
+                        "DEBT_RT_CL",
+                        "FS_LEV",
+                        "FS_STR"
                     )
 
 # Temporary data file suffix
@@ -420,10 +464,12 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
   time_plots( mcData, Adata, mdata, Mdata, Sdata, nExp, nSize, nTsteps, TmaskPlot,
               CI, legends, colors, lTypes, transMk, smoothing )
   
-  
+  if(nExp>1)
+  {
   box_plots( mcData, nExp, nSize, TmaxStat, TmaskStat, warmUpStat,
                          nTstat, legends, legendList, sDigits, bPlotCoef,
                          bPlotNotc, folder, outDir, repName )
+  }
   
   #
   # ====== STATISTICS GENERATION ======
@@ -457,6 +503,26 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
   nxgdp_rt  <-
   invgdp_rt <-
   kgdp_rt   <-
+  debtfs_gr <-
+  debtfsst_gr <-
+  debtfslt_gr <-
+  depfslt_gr <-
+  depfs_gr<-
+  debtc_rt <-
+  debtk_rt <-
+  debti_rt <-
+  debt1_rt<-
+  debt2_rt <-
+  debt3_rt <-
+  debt_fi_rt <-
+  debt_cl_rt<-
+  fs_hhi <-
+  fs_lev <-
+  fs_str <-
+  fs_dr <-
+  ponzi<-
+  spec <-
+  hedge <-
   vector( mode = "numeric", length = nSize )
   
   gdp_r_sd  <-
@@ -487,6 +553,27 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
   nxgdp_sd  <-
   invgdp_sd <-
   kgdp_sd   <-
+    debtfs_sd<-
+    debtfs_st_sd<-
+    debtfs_lt_sd<-
+    depfs_sd<-
+    drtc_sd<-
+    drtk_sd<-
+    drti_sd<-
+    drt1_sd<-
+    drt2_sd<-
+    drt3_sd<-
+    drt_fi_sd<-
+    drt_cl_sd<-
+    fshhi_sd<-
+    fslev_sd<-
+    fsstr_sd<-
+    fsdr_sd<-
+    fspr_sd<-
+    fsdef_sd<-
+    ponzi_sd<-
+    spec_sd<-
+    hedge_sd<-
   vector( mode = 'numeric', length = nSize )
   
   gdp_gdp    <-
@@ -517,6 +604,20 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
   nxgdp_gdp  <-
   invgdp_gdp <-
   kgdp_gdp   <-
+    debtfs_gdp<-
+    debtfs_st_gdp<-
+    debtfs_lt_gdp<-
+    depfs_gdp<-
+    drt_fi_gdp<-
+    drt_cl_gdp<-
+    fshhi_gdp<-
+    fslev_gdp<-
+    fsstr_gdp<-
+    fspr_gdp<-
+    fsdr_gdp<-
+    ponzi_gdp<-
+    spec_gdp<-
+    hedge_gdp<-
   list( )
   
   gdp_gdp_pval       <- 
@@ -542,12 +643,26 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
   wg_sh_gdp_pval     <- 
   pcu_gdp_pval       <- 
   pr_gdp_pval        <- 
-  cgdp_gdp_pval          <- 
+  cgdp_gdp_pval      <- 
   igdp_gdp_pval      <- 
   ggdp_gdp_pval      <- 
   nxgdp_gdp_pval     <- 
   invgdp_gdp_pval    <- 
   kgdp_gdp_pval      <- 
+    debtfs_gdp_pval<-
+    debtfs_st_gdp_pval<-
+    debtfs_lt_gdp_pval<-
+    depfs_gdp_pval<-
+    drt_fi_gdp_pval<-
+    drt_cl_gdp_pval<-
+    fshhi_gdp_pval<-
+    fslev_gdp_pval<-
+    fsstr_gdp_pval<-
+    fspr_gdp_pval<-
+    fsdr_gdp_pval<-
+    ponzi_gdp_pval<-
+    spec_gdp_pval<-
+    hedge_gdp_pval<-
   vector( mode = "numeric", length = nExp )
   
   adf_gdp_r      <-
@@ -578,6 +693,25 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
   adf_nxgdp      <-
   adf_invgdp     <-
   adf_kgdp       <- 
+    adf_drtc<-
+    adf_drtk<- 
+    adf_drti<-
+    adf_drt1<-
+    adf_drt2<-
+    adf_drt3<-
+    adf_drt_fi<-
+    adf_drt_cl<-
+    adf_fshhi<-
+    adf_fslev<-
+    adf_fsstr<-
+    adf_fsdr<-
+    adf_ponzi<-
+    adf_spec<-
+    adf_hedge<-
+    adf_dst_g<-
+    adf_dlt_g<-
+    adf_d_g<-
+    adf_dep_g<-
   list( )
   
   for(k in 1 : nExp){ # Experiment k
@@ -631,6 +765,25 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       nxgdp_rt [ j ]    <- mcData[[ k ]][ nTstat, "NXGDP", j ]           # Net exports Share of GDP
       invgdp_rt [ j ]   <- mcData[[ k ]][ nTstat, "INVGDP", j ]          # Inventories share of GDP
       kgdp_rt [ j ]     <- mcData[[ k ]][ nTstat, "KGDP", j ]            # Capital share of GDP
+      debtfs_gr [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_FS_G", j ]
+      debtfsst_gr [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_FS_ST_G", j ]
+      depfslt_gr [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_FS_LT_G", j ]
+      depfs_gr [ j ]      <- mcData[[ k ]][ nTstat, "DEP_FS_G", j ]
+      debtc_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_C", j ]
+      debtk_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_K", j ]
+      debti_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_I", j ]
+      debt1_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_1", j ]
+      debt2_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_2", j ]
+      debt3_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_3", j ]
+      debt_fi_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_FI", j ]
+      debt_cl_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_CL", j ]
+      fs_hhi [ j ]      <- mcData[[ k ]][ nTstat, "FS_HHI", j ]
+      fs_lev [ j ]      <- mcData[[ k ]][ nTstat, "FS_LEV", j ]
+      fs_str [ j ]      <- mcData[[ k ]][ nTstat, "FS_STR", j ]
+      fs_dr [ j ]      <- mcData[[ k ]][ nTstat, "FS_DR", j ]
+      ponzi [ j ]      <- mcData[[ k ]][ nTstat, "PONZI", j ]
+      spec [ j ]      <- mcData[[ k ]][ nTstat, "SPEC", j ]
+      hedge [ j ]      <- mcData[[ k ]][ nTstat, "HEDGE", j ]
       
       # Apply Baxter-King filter to the series
       gdp_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "Real_GDP", j ] ), pl = lowP, pu = highP, nfix = bpfK )
@@ -661,6 +814,27 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       nxgdp_bpf   <- bkfilter( mcData[[ k ]][ TmaskStat, "NXGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
       invgdp_bpf  <- bkfilter( mcData[[ k ]][ TmaskStat, "INVGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
       kgdp_bpf    <- bkfilter( mcData[[ k ]][ TmaskStat, "KGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      debtfs_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEBT_FS", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      debtfs_st_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEBT_FS_ST", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      debtfs_lt_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEBT_FS_LT", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      depfs_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEP_FS", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      drtc_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_C", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drtk_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_K", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drti_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_I", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drt1_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_1", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drt2_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_2", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drt3_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_3", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drt_fi_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_FI", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drt_cl_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_CL", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      fshhi_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "FS_HHI", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      fslev_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "FS_LEV", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      fsstr_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "FS_STR", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      fsdr_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "FS_DR", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      fspr_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "FS_PR", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      fsdef_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "FS_DEF", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      ponzi_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "PONZI", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      spec_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "SPEC", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      hedge_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "HEDGE", j ] , pl = lowP, pu = highP, nfix = bpfK )
       
       # Augmented Dickey-Fuller tests for unit roots
       adf_gdp_r[[ j ]]    <- adf.test( log0( mcData[[ k ]][ TmaskStat, "Real_GDP", j ] ) )
@@ -691,6 +865,25 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       adf_nxgdp[[ j ]]    <- adf.test( mcData[[ k ]][ TmaskStat, "NXGDP", j ]  )
       adf_invgdp[[ j ]]   <- adf.test( mcData[[ k ]][ TmaskStat, "INVGDP", j ]  )
       adf_kgdp[[ j ]]     <- adf.test( mcData[[ k ]][ TmaskStat, "KGDP", j ]  )
+      adf_drtc[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_C", j ] ) 
+      adf_drtk[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_K", j ] ) 
+      adf_drti[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_I", j ] ) 
+      adf_drt1[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_1", j ] ) 
+      adf_drt2[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_2", j ] ) 
+      adf_drt3[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_3", j ] ) 
+      adf_drt_fi[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_FI", j ] ) 
+      adf_drt_cl[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_CL", j ] ) 
+      adf_fshhi[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "FS_HHI", j ] ) 
+      adf_fslev[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "FS_LEV", j ] ) 
+      adf_fsstr[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "FS_STR", j ] )
+      adf_fsdr[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "FS_DR", j ] )
+      adf_ponzi[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "PONZI", j ] )
+      adf_spec[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "SPEC", j ] )
+      adf_hedge[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "HEDGE", j ] )
+      adf_dst_g[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_FS_ST_G", j ] )
+      adf_dlt_g[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_FS_LT_G", j ] )
+      adf_d_g[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_FS_G", j ] )
+      adf_dep_g[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEP_FS_G", j ] )
       
       # Standard deviations of filtered series
       gdp_r_sd[ j ]       <- sd( gdp_bpf$cycle[ TmaskBpf, 1 ] )
@@ -719,6 +912,27 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       nxgdp_sd[ j ]       <- sd( nxgdp_bpf$cycle[ TmaskBpf, 1 ] )
       invgdp_sd[ j ]      <- sd( invgdp_bpf$cycle[ TmaskBpf, 1 ] )
       kgdp_sd[ j ]        <- sd( kgdp_bpf$cycle[ TmaskBpf, 1 ] )
+      debtfs_sd[ j ]           <- sd( debtfs_bpf$cycle[ TmaskBpf, 1 ] )
+      debtfs_st_sd[ j ]           <- sd( debtfs_st_bpf$cycle[ TmaskBpf, 1 ] )
+      debtfs_lt_sd[ j ]           <- sd( debtfs_lt_bpf$cycle[ TmaskBpf, 1 ] )
+      depfs_sd[ j ]           <- sd( depfs_bpf$cycle[ TmaskBpf, 1 ] )
+      drtc_sd[ j ]           <- sd( drtc_bpf$cycle[ TmaskBpf, 1 ] )
+      drtk_sd[ j ]           <- sd( drtk_bpf$cycle[ TmaskBpf, 1 ] )
+      drti_sd[ j ]           <- sd( drti_bpf$cycle[ TmaskBpf, 1 ] )
+      drt1_sd[ j ]           <- sd( drt1_bpf$cycle[ TmaskBpf, 1 ] )
+      drt2_sd[ j ]           <- sd( drt2_bpf$cycle[ TmaskBpf, 1 ] )
+      drt3_sd[ j ]           <- sd( drt3_bpf$cycle[ TmaskBpf, 1 ] )
+      drt_fi_sd[ j ]           <- sd( drt_fi_bpf$cycle[ TmaskBpf, 1 ] )
+      drt_cl_sd[ j ]           <- sd( drt_cl_bpf$cycle[ TmaskBpf, 1 ] )
+      fshhi_sd[ j ]           <- sd( fshhi_bpf$cycle[ TmaskBpf, 1 ] )
+      fslev_sd[ j ]           <- sd( fslev_bpf$cycle[ TmaskBpf, 1 ] )
+      fsstr_sd[ j ]           <- sd( fsstr_bpf$cycle[ TmaskBpf, 1 ] )
+      fsdr_sd[ j ]           <- sd( fsdr_bpf$cycle[ TmaskBpf, 1 ] )
+      fspr_sd[ j ]           <- sd( fspr_bpf$cycle[ TmaskBpf, 1 ] )
+      fsdef_sd[ j ]           <- sd( fsdef_bpf$cycle[ TmaskBpf, 1 ] )
+      ponzi_sd[ j ]           <- sd( ponzi_bpf$cycle[ TmaskBpf, 1 ] )
+      spec_sd[ j ]           <- sd( spec_bpf$cycle[ TmaskBpf, 1 ] )
+      hedge_sd[ j ]           <- sd( hedge_bpf$cycle[ TmaskBpf, 1 ] )
       
       # Build the correlation structures
       gdp_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
@@ -805,6 +1019,48 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       kgdp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
                              kgdp_bpf$cycle[ TmaskBpf, 1 ],
                              lag.max = lags, plot = FALSE, na.action = na.pass )
+      debtfs_gdp[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ],
+                                 gdp_bpf$cycle[ TmaskBpf, 1 ],
+                                 lag.max = lags, plot = FALSE, na.action = na.pass )
+      debtfs_st_gdp[[ j ]]  <- ccf( debtfs_st_bpf$cycle[ TmaskBpf, 1 ],
+                                    gdp_bpf$cycle[ TmaskBpf, 1 ],
+                                    lag.max = lags, plot = FALSE, na.action = na.pass )
+      debtfs_lt_gdp[[ j ]]  <- ccf( debtfs_lt_bpf$cycle[ TmaskBpf, 1 ],
+                                    gdp_bpf$cycle[ TmaskBpf, 1 ],
+                                    lag.max = lags, plot = FALSE, na.action = na.pass )
+      depfs_gdp[[ j ]]  <- ccf( depfs_bpf$cycle[ TmaskBpf, 1 ],
+                                gdp_bpf$cycle[ TmaskBpf, 1 ],
+                                lag.max = lags, plot = FALSE, na.action = na.pass )
+      drt_fi_gdp[[ j ]]  <- ccf( drt_fi_bpf$cycle[ TmaskBpf, 1 ],
+                                 gdp_bpf$cycle[ TmaskBpf, 1 ],
+                                 lag.max = lags, plot = FALSE, na.action = na.pass )
+      drt_cl_gdp[[ j ]]  <- ccf( drt_cl_bpf$cycle[ TmaskBpf, 1 ],
+                                 gdp_bpf$cycle[ TmaskBpf, 1 ],
+                                 lag.max = lags, plot = FALSE, na.action = na.pass )
+      fshhi_gdp[[ j ]]  <- ccf( fshhi_bpf$cycle[ TmaskBpf, 1 ],
+                                gdp_bpf$cycle[ TmaskBpf, 1 ],
+                                lag.max = lags, plot = FALSE, na.action = na.pass )
+      fslev_gdp[[ j ]]  <- ccf( fslev_bpf$cycle[ TmaskBpf, 1 ],
+                                gdp_bpf$cycle[ TmaskBpf, 1 ],
+                                lag.max = lags, plot = FALSE, na.action = na.pass )
+      fsstr_gdp[[ j ]]  <- ccf( fsstr_bpf$cycle[ TmaskBpf, 1 ],
+                                gdp_bpf$cycle[ TmaskBpf, 1 ],
+                                lag.max = lags, plot = FALSE, na.action = na.pass )
+      fspr_gdp[[ j ]]  <- ccf( fspr_bpf$cycle[ TmaskBpf, 1 ],
+                               gdp_bpf$cycle[ TmaskBpf, 1 ],
+                               lag.max = lags, plot = FALSE, na.action = na.pass )
+      fsdr_gdp[[ j ]]  <- ccf( fsdr_bpf$cycle[ TmaskBpf, 1 ],
+                               gdp_bpf$cycle[ TmaskBpf, 1 ],
+                               lag.max = lags, plot = FALSE, na.action = na.pass )
+      ponzi_gdp[[ j ]]  <- ccf( ponzi_bpf$cycle[ TmaskBpf, 1 ],
+                                gdp_bpf$cycle[ TmaskBpf, 1 ],
+                                lag.max = lags, plot = FALSE, na.action = na.pass )
+      spec_gdp[[ j ]]  <- ccf( spec_bpf$cycle[ TmaskBpf, 1 ],
+                               gdp_bpf$cycle[ TmaskBpf, 1 ],
+                               lag.max = lags, plot = FALSE, na.action = na.pass )
+      hedge_gdp[[ j ]]  <- ccf( hedge_bpf$cycle[ TmaskBpf, 1 ],
+                                gdp_bpf$cycle[ TmaskBpf, 1 ],
+                                lag.max = lags, plot = FALSE, na.action = na.pass )
       
     }
     
@@ -840,13 +1096,27 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       nxgdp_gdp_pval[ i ]<- t.test0( abs( unname( sapply( nxgdp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       invgdp_gdp_pval[ i ]<- t.test0( abs( unname( sapply( invgdp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       kgdp_gdp_pval[ i ]<- t.test0( abs( unname( sapply( kgdp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      debtfs_gdp_pval[ i ]  <- t.test0( abs( unname( sapply( debtfs_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      debtfs_st_gdp_pval[ i ]  <- t.test0( abs( unname( sapply(  debtfs_st_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      debtfs_lt_gdp_pval[ i ] <- t.test0( abs( unname( sapply( debtfs_lt_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      depfs_gdp_pval[ i ] <- t.test0( abs( unname( sapply( depfs_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      drt_fi_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( drt_fi_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      drt_cl_gdp_pval[ i ]  <- t.test0( abs( unname( sapply( drt_cl_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      fshhi_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( fshhi_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      fslev_gdp_pval[ i ]<- t.test0( abs( unname( sapply( fslev_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      fsstr_gdp_pval[ i ]<- t.test0( abs( unname( sapply( fsstr_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      fspr_gdp_pval[ i ]<- t.test0( abs( unname( sapply( fspr_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      fsdr_gdp_pval[ i ]<- t.test0( abs( unname( sapply( fsdr_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      ponzi_gdp_pval[ i ]<- t.test0( abs( unname( sapply( ponzi_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      spec_gdp_pval[ i ]<- t.test0( abs( unname( sapply( spec_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      hedge_gdp_pval[ i ]<- t.test0( abs( unname( sapply( hedge_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
     }
     
     #
     # ---- Summary statistics table (averages, standard errors and p-values) ----
     #
     
-    key.stats.1 <- matrix(
+    key.stats <- matrix(
       c(
         ## avg. growth rate
         mean( gdp_gr ), 
@@ -855,7 +1125,27 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         mean( gr_gr ), 
         mean( mr_gr ),
         mean( x_gr ), 
-        mean( nx_gr ), 
+        mean( nx_gr ),
+        mean( infla ), 
+        mean( profits_gr ), 
+        mean( wage_gr ),
+        mean( pr_sh ), 
+        mean( wg_sh ), 
+        mean( mk_gr ), 
+        mean( pr_rt ),
+        mean( prod_gr ),
+        mean( pcu_rt ),
+        mean( inve_gr ), 
+        mean( k_gr ),
+        mean( u_rt ), 
+        mean( emp_gr ),
+        mean( kl_rt ),
+        mean( cgdp_rt ),
+        mean( igdp_rt ),
+        mean( ggdp_rt ), 
+        mean( nxgdp_rt ),
+        mean( invgdp_rt ), 
+        mean( kgdp_rt ),
         
         ## (s.e.)
         sd( gdp_gr ) / sqrt( nSize ), 
@@ -865,6 +1155,26 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         sd( mr_gr ) / sqrt( nSize ),
         sd( x_gr ) / sqrt( nSize ),
         sd( nx_gr ) / sqrt( nSize ),
+        sd( infla ) / sqrt( nSize ), 
+        sd( profits_gr ) / sqrt( nSize ), 
+        sd( wage_gr ) / sqrt( nSize ),
+        sd( pr_sh ) / sqrt( nSize ),
+        sd( wg_sh ) / sqrt( nSize ),
+        sd( mk_gr ) / sqrt( nSize ), 
+        sd( pr_rt ) / sqrt( nSize ),
+        sd( prod_gr ) / sqrt( nSize ),
+        sd( pcu_rt ) / sqrt( nSize ),
+        sd( inve_gr ) / sqrt( nSize ),
+        sd( k_gr ) / sqrt( nSize ),
+        sd( u_rt ) / sqrt( nSize ),
+        sd( emp_gr ) / sqrt( nSize ),
+        sd( kl_rt ) / sqrt( nSize ),
+        sd( cgdp_rt ) / sqrt( nSize ),
+        sd( igdp_rt ) / sqrt( nSize ),
+        sd( ggdp_rt ) / sqrt( nSize ),
+        sd( nxgdp_rt ) / sqrt( nSize ),
+        sd( invgdp_rt ) / sqrt( nSize ),
+        sd( kgdp_rt ) / sqrt( nSize ),
       
         ## ADF test (logs)
         mean( unname( sapply( adf_gdp_r, `[[`, "statistic" ) ) ),
@@ -874,6 +1184,26 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         mean( unname( sapply( adf_imp_r, `[[`, "statistic" ) ) ),
         mean( unname( sapply( adf_x, `[[`, "statistic" ) ) ),
         mean( unname( sapply( adf_nx, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_p, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_profits, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_wage, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_pr_sh, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_wg_sh, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_mk, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_pr, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_prod, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_pcu, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_inve, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_k, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_u, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_emp, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_kl, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_cgdp, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_igdp, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_ggdp, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_nxgdp, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_invgdp, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_kgdp, `[[`, "statistic" ) ) ),
         
         ## ADF test (logs) s.e.
         sd( unname( sapply( adf_gdp_r, `[[`, "statistic" ) ) ) / sqrt( nSize ),
@@ -883,6 +1213,26 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         sd( unname( sapply( adf_imp_r, `[[`, "statistic" ) ) ) / sqrt( nSize ),
         sd( unname( sapply( adf_x, `[[`, "statistic" ) ) ) / sqrt( nSize ),
         sd( unname( sapply( adf_nx, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_p, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_profits, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_wage, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_pr_sh, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_wg_sh, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_mk, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_pr, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_prod, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_pcu, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_inve, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_k, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_u, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_emp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_kl, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_cgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_igdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_ggdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_nxgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_invgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_kgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
         
         ## ADF test (logs) p.value
         mean( unname( sapply( adf_gdp_r, `[[`, "p.value" ) ) ),
@@ -892,114 +1242,6 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         mean( unname( sapply( adf_imp_r, `[[`, "p.value" ) ) ),
         mean( unname( sapply( adf_x, `[[`, "p.value" ) ) ),
         mean( unname( sapply( adf_nx, `[[`, "p.value" ) ) ),
-        
-        ## ADF test (logs) p.value s.e.
-        sd( unname( sapply( adf_gdp_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_con_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_inv_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_gov_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_imp_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_x, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_nx, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        
-        ## S.d. of bpf series
-        mean( gdp_r_sd ), 
-        mean( con_r_sd ), 
-        mean( inv_r_sd ),
-        mean( gov_r_sd ), 
-        mean( imp_r_sd ), 
-        mean( x_r_sd ), 
-        mean( nx_r_sd ), 
-        
-        ## S.e. of bpf series s.d.
-        se( gdp_r_sd ) / sqrt( nSize ), 
-        se( con_r_sd ) / sqrt( nSize ), 
-        se( inv_r_sd ) / sqrt( nSize ), 
-        se( gov_r_sd ) / sqrt( nSize ), 
-        se( imp_r_sd ) / sqrt( nSize ), 
-        se( x_r_sd ) / sqrt( nSize ), 
-        se( nx_r_sd ) / sqrt( nSize ), 
-        
-        ## relative s.d. (to GDP)
-        1, 
-        mean( con_r_sd ) / mean( gdp_r_sd ), 
-        mean( inv_r_sd ) / mean( gdp_r_sd ),
-        mean( gov_r_sd ) / mean( gdp_r_sd ), 
-        mean( imp_r_sd ) / mean( gdp_r_sd ),
-        mean( x_r_sd ) / mean( gdp_r_sd ),
-        mean( nx_r_sd ) / mean( gdp_r_sd )
-        
-      ),
-      ncol = 7, byrow = T)
-    
-    colnames( key.stats.1 ) <- c( "GDP (output)", 
-                                  "Consumption", 
-                                  "Investment", 
-                                  "Gov. Expend.",
-                                  "Imports",
-                                  "Exports",
-                                  "Net Exports"
-                                  )
-    rownames( key.stats.1 ) <- c( "avg. growth rate", 
-                                  " (s.e.)",
-                                  "ADF test (logs)",
-                                  " (s.e.)", 
-                                  " (p-val.)", 
-                                  " (s.e.)",
-                                  " s.d. (bpf)", 
-                                  " (s.e.)",
-                                  " relative s.d. (GDP)" )
-    
-    textplot( formatC( key.stats.1, digits = sDigits, format = "g" ), cmar = 2 )
-    title <- paste( "Key statistics and unit roots tests for cycles (", legends[ k ], ")" )
-    subTitle <- paste( eval( bquote(paste0( "( bpf: Baxter-King bandpass-filtered series, low = ", .( lowP ),
-                                            "Q / high = ", .( highP ), "Q / order = ", .( bpfK ),
-                                            " / MC runs = ", .( nSize ), " / period = ",
-                                            .( warmUpStat + 1 ), " - ", .( nTstat ), " )" ) ) ),
-                       eval( bquote( paste0( "( ADF test H0: there are unit roots / non-stationary at ",
-                                             .( (1 - CI ) * 100), "% level", " )" ) ) ), sep ="\n" )
-    title( main = title, sub = subTitle )
-    
-    
-    key.stats.2 <- matrix(
-      c(
-        ## avg. growth rate
-        mean( infla ), 
-        mean( profits_gr ), 
-        mean( wage_gr ),
-        mean( pr_sh ), 
-        mean( wg_sh ), 
-        mean( mk_gr ), 
-        mean( pr_rt ), 
-        
-        ## (s.e.)
-        sd( infla ) / sqrt( nSize ), 
-        sd( profits_gr ) / sqrt( nSize ), 
-        sd( wage_gr ) / sqrt( nSize ),
-        sd( pr_sh ) / sqrt( nSize ),
-        sd( wg_sh ) / sqrt( nSize ),
-        sd( mk_gr ) / sqrt( nSize ), 
-        sd( pr_rt ) / sqrt( nSize ),
-        
-        ## ADF test (logs)
-        mean( unname( sapply( adf_p, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_profits, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_wage, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_pr_sh, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_wg_sh, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_mk, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_pr, `[[`, "statistic" ) ) ),
-        
-        ## ADF test (logs) s.e.
-        sd( unname( sapply( adf_p, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_profits, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_wage, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_pr_sh, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_wg_sh, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_mk, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_pr, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        
-        ## ADF test (logs) p.value
         mean( unname( sapply( adf_p, `[[`, "p.value" ) ) ),
         mean( unname( sapply( adf_profits, `[[`, "p.value" ) ) ),
         mean( unname( sapply( adf_wage, `[[`, "p.value" ) ) ),
@@ -1007,114 +1249,6 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         mean( unname( sapply( adf_wg_sh, `[[`, "p.value" ) ) ),
         mean( unname( sapply( adf_mk, `[[`, "p.value" ) ) ),
         mean( unname( sapply( adf_pr, `[[`, "p.value" ) ) ),
-        
-        ## ADF test (logs) p.value s.e.
-        sd( unname( sapply( adf_p, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_profits, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_wage, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_pr_sh, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_wg_sh, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_mk, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_pr, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-      
-        ## S.d. of bpf series
-        mean( p_sd ),
-        mean( profits_sd ), 
-        mean( wage_sd ),
-        mean( pr_sh_sd ),
-        mean( wg_sh_sd ),
-        mean( mk_sd ),
-        mean( pr_sd ), 
-        
-        ## S.e. of bpf series s.d.
-        se( p_sd ) / sqrt( nSize ),
-        se( profits_sd ) / sqrt( nSize ), 
-        se( wage_sd ) / sqrt( nSize ),
-        se( pr_sh_sd ) / sqrt( nSize ),
-        se( wg_sh_sd ) / sqrt( nSize ),
-        se( mk_sd ) / sqrt( nSize ), 
-        se( pr_sd ) / sqrt( nSize ), 
-        
-        ## relative s.d. (to GDP)
-        mean( p_sd ) / mean( gdp_r_sd ), 
-        mean( profits_sd ) / mean( gdp_r_sd ),
-        mean( wage_sd ) / mean( gdp_r_sd ), 
-        mean( pr_sh_sd ) / mean( gdp_r_sd ),
-        mean( wg_sh_sd ) / mean( gdp_r_sd ),
-        mean( mk_sd ) / mean(gdp_r_sd ),
-        mean( pr_sd ) / mean( gdp_r_sd )
-        
-      ),
-      ncol = 7, byrow = T)
-    
-    colnames( key.stats.2 ) <- c( "Inflation", 
-                                  "Profit", 
-                                  "Wages",
-                                  "Profit Share",
-                                  "Wage Share",
-                                  "Markup", 
-                                  "Profit Rate"
-                                 )
-    rownames( key.stats.2 ) <- c( "avg. growth rate", 
-                                  " (s.e.)",
-                                  "ADF test (logs)",
-                                  " (s.e.)", 
-                                  " (p-val.)", 
-                                  " (s.e.)",
-                                  " s.d. (bpf)", 
-                                  " (s.e.)",
-                                  " relative s.d. (GDP)" )
-    
-    textplot( formatC( key.stats.2, digits = sDigits, format = "g" ), cmar = 2 )
-    title <- paste( "Key statistics and unit roots tests for cycles (", legends[ k ], ")" )
-    subTitle <- paste( eval( bquote(paste0( "( bpf: Baxter-King bandpass-filtered series, low = ", .( lowP ),
-                                            "Q / high = ", .( highP ), "Q / order = ", .( bpfK ),
-                                            " / MC runs = ", .( nSize ), " / period = ",
-                                            .( warmUpStat + 1 ), " - ", .( nTstat ), " )" ) ) ),
-                       eval( bquote( paste0( "( ADF test H0: there are unit roots / non-stationary at ",
-                                             .( (1 - CI ) * 100), "% level", " )" ) ) ), sep ="\n" )
-    title( main = title, sub = subTitle )
-    
-    
-    key.stats.3 <- matrix(
-      c(
-        ## avg. growth rate
-        mean( prod_gr ),
-        mean( pcu_rt ),
-        mean( inve_gr ), 
-        mean( k_gr ),
-        mean( u_rt ), 
-        mean( emp_gr ),
-        mean( kl_rt ),
-      
-        ## (s.e.)
-        sd( prod_gr ) / sqrt( nSize ),
-        sd( pcu_rt ) / sqrt( nSize ),
-        sd( inve_gr ) / sqrt( nSize ),
-        sd( k_gr ) / sqrt( nSize ),
-        sd( u_rt ) / sqrt( nSize ),
-        sd( emp_gr ) / sqrt( nSize ),
-        sd( kl_rt ) / sqrt( nSize ),
-        
-        ## ADF test (logs)
-        mean( unname( sapply( adf_prod, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_pcu, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_inve, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_k, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_u, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_emp, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_kl, `[[`, "statistic" ) ) ),
-        
-        ## ADF test (logs) s.e.
-        sd( unname( sapply( adf_prod, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_pcu, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_inve, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_k, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_u, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_emp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_kl, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        
-        ## ADF test (logs) p.value
         mean( unname( sapply( adf_prod, `[[`, "p.value" ) ) ),
         mean( unname( sapply( adf_pcu, `[[`, "p.value" ) ) ),
         mean( unname( sapply( adf_inve, `[[`, "p.value" ) ) ),
@@ -1124,6 +1258,20 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         mean( unname( sapply( adf_kl, `[[`, "p.value" ) ) ),
         
         ## ADF test (logs) p.value s.e.
+        sd( unname( sapply( adf_gdp_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_con_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_inv_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_gov_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_imp_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_x, `[[`, "p.value" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_nx, `[[`, "p.value" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_p, `[[`, "p.value" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_profits, `[[`, "p.value" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_wage, `[[`, "p.value" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_pr_sh, `[[`, "p.value" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_wg_sh, `[[`, "p.value" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_mk, `[[`, "p.value" ) ) ) / sqrt( nSize ),
+        sd( unname( sapply( adf_pr, `[[`, "p.value" ) ) ) / sqrt( nSize ),
         sd( unname( sapply( adf_prod, `[[`, "p.value" ) ) ) / sqrt( nSize ),
         sd( unname( sapply( adf_pcu, `[[`, "p.value" ) ) ) / sqrt( nSize ),
         sd( unname( sapply( adf_inve, `[[`, "p.value" ) ) ) / sqrt( nSize ),
@@ -1131,91 +1279,6 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         sd( unname( sapply( adf_u, `[[`, "p.value" ) ) ) / sqrt( nSize ),
         sd( unname( sapply( adf_emp, `[[`, "p.value" ) ) ) / sqrt( nSize ),
         sd( unname( sapply( adf_kl, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        
-        ## S.d. of bpf series
-        mean( prod_sd ),
-        mean( pcu_sd ),
-        mean( inve_sd ),
-        mean( k_sd ),
-        mean( u_sd ),
-        mean( emp_sd ),
-        mean( kl_sd ),
-        
-        ## S.e. of bpf series s.d.
-        se( prod_sd ) / sqrt( nSize ),
-        se( pcu_sd ) / sqrt( nSize ),
-        se( inve_sd ) / sqrt( nSize ),
-        se( k_sd ) / sqrt( nSize ),
-        se( u_sd ) / sqrt( nSize ),
-        se( emp_sd ) / sqrt( nSize ),
-        se( kl_sd ) / sqrt( nSize ),
-        
-        ## relative s.d. (to GDP)
-        mean( prod_sd ) / mean(gdp_r_sd ),
-        mean( pcu_sd ) / mean(gdp_r_sd ),
-        mean( inve_sd ) / mean(gdp_r_sd ),
-        mean( k_sd ) / mean(gdp_r_sd ),
-        mean( u_sd ) / mean(gdp_r_sd ),
-        mean( emp_sd ) / mean(gdp_r_sd ),
-        mean( kl_sd ) / mean(gdp_r_sd )
-      ),
-      ncol = 7, byrow = T)
-    
-    colnames( key.stats.3 ) <- c( "Productivity",
-                                  "Capacity Utilization",
-                                  "Inventories",
-                                  "Capital Stock",
-                                  "Unemployment",
-                                  "Employment",
-                                  "Capital-Labor Ratio"
-    )
-    rownames( key.stats.3 ) <- c( "avg. growth rate", 
-                                  " (s.e.)",
-                                  "ADF test (logs)",
-                                  " (s.e.)", 
-                                  " (p-val.)", 
-                                  " (s.e.)",
-                                  " s.d. (bpf)", 
-                                  " (s.e.)",
-                                  " relative s.d. (GDP)" )
-    
-    textplot( formatC( key.stats.3, digits = sDigits, format = "g" ), cmar = 2 )
-    title <- paste( "Key statistics and unit roots tests for cycles (", legends[ k ], ")" )
-    subTitle <- paste( eval( bquote(paste0( "( bpf: Baxter-King bandpass-filtered series, low = ", .( lowP ),
-                                            "Q / high = ", .( highP ), "Q / order = ", .( bpfK ),
-                                            " / MC runs = ", .( nSize ), " / period = ",
-                                            .( warmUpStat + 1 ), " - ", .( nTstat ), " )" ) ) ),
-                       eval( bquote( paste0( "( ADF test H0: there are unit roots / non-stationary at ",
-                                             .( (1 - CI ) * 100), "% level", " )" ) ) ), sep ="\n" )
-    title( main = title, sub = subTitle )
-    
-    key.stats.4 <- matrix(
-      c(
-        ## avg. growth rate
-        mean( cgdp_rt ),
-        mean( igdp_rt ),
-        mean( ggdp_rt ), 
-        mean( nxgdp_rt ),
-        mean( invgdp_rt ), 
-        mean( kgdp_rt ),
-        
-        ## (s.e.)
-        sd( cgdp_rt ) / sqrt( nSize ),
-        sd( igdp_rt ) / sqrt( nSize ),
-        sd( ggdp_rt ) / sqrt( nSize ),
-        sd( nxgdp_rt ) / sqrt( nSize ),
-        sd( invgdp_rt ) / sqrt( nSize ),
-        sd( kgdp_rt ) / sqrt( nSize ),
-        
-        ## ADF test (logs)
-        mean( unname( sapply( adf_cgdp, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_igdp, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_ggdp, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_nxgdp, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_invgdp, `[[`, "statistic" ) ) ),
-        mean( unname( sapply( adf_kgdp, `[[`, "statistic" ) ) ),
-        
-        ## ADF test (logs) s.e.
         sd( unname( sapply( adf_cgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
         sd( unname( sapply( adf_igdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
         sd( unname( sapply( adf_ggdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
@@ -1223,23 +1286,28 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         sd( unname( sapply( adf_invgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
         sd( unname( sapply( adf_kgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
         
-        ## ADF test (logs) p.value
-        mean( unname( sapply( adf_cgdp, `[[`, "p.value" ) ) ),
-        mean( unname( sapply( adf_igdp, `[[`, "p.value" ) ) ),
-        mean( unname( sapply( adf_ggdp, `[[`, "p.value" ) ) ),
-        mean( unname( sapply( adf_nxgdp, `[[`, "p.value" ) ) ),
-        mean( unname( sapply( adf_invgdp, `[[`, "p.value" ) ) ),
-        mean( unname( sapply( adf_kgdp, `[[`, "p.value" ) ) ),
-        
-        ## ADF test (logs) p.value s.e.
-        sd( unname( sapply( adf_cgdp, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_igdp, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_ggdp, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_nxgdp, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_invgdp, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_kgdp, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        
         ## S.d. of bpf series
+        mean( gdp_r_sd ), 
+        mean( con_r_sd ), 
+        mean( inv_r_sd ),
+        mean( gov_r_sd ), 
+        mean( imp_r_sd ), 
+        mean( x_r_sd ), 
+        mean( nx_r_sd ), 
+        mean( p_sd ),
+        mean( profits_sd ), 
+        mean( wage_sd ),
+        mean( pr_sh_sd ),
+        mean( wg_sh_sd ),
+        mean( mk_sd ),
+        mean( pr_sd ), 
+        mean( prod_sd ),
+        mean( pcu_sd ),
+        mean( inve_sd ),
+        mean( k_sd ),
+        mean( u_sd ),
+        mean( emp_sd ),
+        mean( kl_sd ),
         mean( cgdp_sd ),
         mean( igdp_sd ),
         mean( ggdp_sd ),
@@ -1248,6 +1316,27 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         mean( kgdp_sd ),
         
         ## S.e. of bpf series s.d.
+        se( gdp_r_sd ) / sqrt( nSize ), 
+        se( con_r_sd ) / sqrt( nSize ), 
+        se( inv_r_sd ) / sqrt( nSize ), 
+        se( gov_r_sd ) / sqrt( nSize ), 
+        se( imp_r_sd ) / sqrt( nSize ), 
+        se( x_r_sd ) / sqrt( nSize ), 
+        se( nx_r_sd ) / sqrt( nSize ), 
+        se( p_sd ) / sqrt( nSize ),
+        se( profits_sd ) / sqrt( nSize ), 
+        se( wage_sd ) / sqrt( nSize ),
+        se( pr_sh_sd ) / sqrt( nSize ),
+        se( wg_sh_sd ) / sqrt( nSize ),
+        se( mk_sd ) / sqrt( nSize ), 
+        se( pr_sd ) / sqrt( nSize ),
+        se( prod_sd ) / sqrt( nSize ),
+        se( pcu_sd ) / sqrt( nSize ),
+        se( inve_sd ) / sqrt( nSize ),
+        se( k_sd ) / sqrt( nSize ),
+        se( u_sd ) / sqrt( nSize ),
+        se( emp_sd ) / sqrt( nSize ),
+        se( kl_sd ) / sqrt( nSize ),
         se( cgdp_sd ) / sqrt( nSize ),
         se( igdp_sd ) / sqrt( nSize ),
         se( ggdp_sd ) / sqrt( nSize ),
@@ -1256,23 +1345,67 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         se( kgdp_sd ) / sqrt( nSize ),
         
         ## relative s.d. (to GDP)
+        1, 
+        mean( con_r_sd ) / mean( gdp_r_sd ), 
+        mean( inv_r_sd ) / mean( gdp_r_sd ),
+        mean( gov_r_sd ) / mean( gdp_r_sd ), 
+        mean( imp_r_sd ) / mean( gdp_r_sd ),
+        mean( x_r_sd ) / mean( gdp_r_sd ),
+        mean( nx_r_sd ) / mean( gdp_r_sd ),
+        mean( p_sd ) / mean( gdp_r_sd ), 
+        mean( profits_sd ) / mean( gdp_r_sd ),
+        mean( wage_sd ) / mean( gdp_r_sd ), 
+        mean( pr_sh_sd ) / mean( gdp_r_sd ),
+        mean( wg_sh_sd ) / mean( gdp_r_sd ),
+        mean( mk_sd ) / mean(gdp_r_sd ),
+        mean( pr_sd ) / mean( gdp_r_sd ),
+        mean( prod_sd ) / mean(gdp_r_sd ),
+        mean( pcu_sd ) / mean(gdp_r_sd ),
+        mean( inve_sd ) / mean(gdp_r_sd ),
+        mean( k_sd ) / mean(gdp_r_sd ),
+        mean( u_sd ) / mean(gdp_r_sd ),
+        mean( emp_sd ) / mean(gdp_r_sd ),
+        mean( kl_sd ) / mean(gdp_r_sd ),
         mean( cgdp_sd ) / mean(gdp_r_sd ),
         mean( igdp_sd ) / mean(gdp_r_sd ),
         mean( ggdp_sd ) / mean(gdp_r_sd ),
         mean( nxgdp_sd ) / mean(gdp_r_sd ),
         mean( invgdp_sd ) / mean(gdp_r_sd ),
         mean( kgdp_sd ) / mean(gdp_r_sd )
+        
       ),
-      ncol = 6, byrow = T)
+      ncol = 27, byrow = T)
     
-    colnames( key.stats.4 ) <- c( "Consumption (Share of GDP)",
+    colnames( key.stats ) <- c( "GDP (output)", 
+                                  "Consumption", 
+                                  "Investment", 
+                                  "Gov. Expend.",
+                                  "Imports",
+                                  "Exports",
+                                  "Net Exports",
+                                  "Inflation", 
+                                  "Profit", 
+                                  "Wages",
+                                  "Profit Share",
+                                  "Wage Share",
+                                  "Markup", 
+                                  "Profit Rate",
+                                  "Productivity",
+                                  "Capacity Utilization",
+                                  "Inventories",
+                                  "Capital Stock",
+                                  "Unemployment",
+                                  "Employment",
+                                  "Capital-Labor Ratio",
+                                  "Consumption (Share of GDP)",
                                   "Investment (Share of GDP)",
                                   "Government Expenses (Share of GDP)",
                                   "Net Exports (Share of GDP)",
                                   "Inventories (Share of GDP)",
                                   "Capital Stock (Share of GDP)"
-    )
-    rownames( key.stats.4 ) <- c( "avg. growth rate", 
+                                  )
+    
+    rownames( key.stats ) <- c( "avg. growth rate", 
                                   " (s.e.)",
                                   "ADF test (logs)",
                                   " (s.e.)", 
@@ -1282,7 +1415,7 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
                                   " (s.e.)",
                                   " relative s.d. (GDP)" )
     
-    textplot( formatC( key.stats.4, digits = sDigits, format = "g" ), cmar = 2 )
+    textplot( formatC( key.stats, digits = sDigits, format = "g" ), cmar = 2 )
     title <- paste( "Key statistics and unit roots tests for cycles (", legends[ k ], ")" )
     subTitle <- paste( eval( bquote(paste0( "( bpf: Baxter-King bandpass-filtered series, low = ", .( lowP ),
                                             "Q / high = ", .( highP ), "Q / order = ", .( bpfK ),
@@ -1291,6 +1424,13 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
                        eval( bquote( paste0( "( ADF test H0: there are unit roots / non-stationary at ",
                                              .( (1 - CI ) * 100), "% level", " )" ) ) ), sep ="\n" )
     title( main = title, sub = subTitle )
+    
+    # Write tables to the disk as CSV files for Excel
+    write.csv( cbind( key.stats.1, key.stats.2, key.stats.3, key.stats.4) , quote = FALSE,
+               paste0( folder, "/", outDir, "/", repName, k, "_key_stats.csv" ) )
+    
+  
+   
     
     #
     # ---- Correlation structure tables (lags, standard errors and p-values) ----
@@ -1483,9 +1623,7 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
     textplot( formatC( corr.struct.4, digits = sDigits, format = "g" ), cmar = 1 )
     title( main = title, sub = subTitle )
     
-    # Write tables to the disk as CSV files for Excel
-    write.csv( cbind( key.stats.1, key.stats.2, key.stats.3, key.stats.4) , quote = FALSE,
-               paste0( folder, "/", outDir, "/", repName, k, "_key_stats.csv" ) )
+    
     write.csv( rbind( corr.struct.1, corr.struct.2, corr.struct.3, corr.struct.4), quote = FALSE,
                paste0( folder, "/", outDir, "/", repName, k, "_corr_struct.csv" ) )
 
