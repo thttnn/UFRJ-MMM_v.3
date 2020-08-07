@@ -767,7 +767,7 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       kgdp_rt [ j ]<- mcData[[ k ]][ nTstat, "KGDP", j ]         
       debtfs_gr [ j ]<- mcData[[ k ]][ nTstat, "DEBT_FS_G", j ]
       debtfsst_gr [ j ]<- mcData[[ k ]][ nTstat, "DEBT_FS_ST_G", j ]
-      depfslt_gr [ j ]<- mcData[[ k ]][ nTstat, "DEBT_FS_LT_G", j ]
+      debtfslt_gr [ j ]<- mcData[[ k ]][ nTstat, "DEBT_FS_LT_G", j ]
       depfs_gr [ j ]<- mcData[[ k ]][ nTstat, "DEP_FS_G", j ]
       debtc_rt [ j ]<- mcData[[ k ]][ nTstat, "DEBT_RT_C", j ]
       debtk_rt [ j ]<- mcData[[ k ]][ nTstat, "DEBT_RT_K", j ]
