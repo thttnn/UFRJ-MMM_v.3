@@ -10,7 +10,7 @@
 #
 #******************************************************************
 
-folder    <- "./Res_Final_Financial_Decisions"                  # data files folder
+folder    <- "./Res_Finance_Baseline"                  # data files folder
 baseName  <- "Sim_"                     # data files base name (same as .lsd file)
 nExp      <- 2                          # number of experiments (sensitivity/different cases)
 iniDrop   <- 0                          # initial time steps to drop from analysis (0=none)
@@ -18,7 +18,7 @@ nKeep     <- -1                         # number of time steps to keep (-1=all)
 cores     <- 0                          # maximum number of cores to allocate (0=all)
 savDat    <- F                          # save processed data files and re-use if available?
 
-expVal <- c("Baseline", "T1")                   # case parameter values
+expVal <- c("Baseline", "0.9")                   # case parameter values
 
 # Aggregated variables to use
 logVars <- c( "Real_GDP",               # Real GDP
@@ -392,8 +392,8 @@ pTypes <- c( 4, 4, 4, 4, 4, 4, 4, 4, 4 )
 
 library("LSDsensitivity")
 source( "support-functions.R" )
-source( "time-plots-2.R" )
-source( "box-plots-2.R" )
+source( "time-plots-global.R" )
+source( "box-plots-global.R" )
 
 # ==== Support stuff ====
 
@@ -476,242 +476,242 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
   #
   
   # Create vectors and lists to hold the Monte Carlo results
-  gdp_gr    <-
-  infla     <-
-  cr_gr     <-
-  ir_gr     <-
-  gr_gr     <-
-  mr_gr     <-
-  x_gr      <-
-  nx_gr     <-
-  inve_gr   <-
-  k_gr      <-
-  prod_gr   <-
+  gdp_gr<-
+  infla<-
+  cr_gr<-
+  ir_gr<-
+  gr_gr<-
+  mr_gr<-
+  x_gr<-
+  nx_gr<-
+  inve_gr<-
+  k_gr<-
+  prod_gr<-
   profits_gr<-
-  wage_gr   <-
-  mk_gr     <-
-  emp_gr    <-
-  kl_rt     <-
-  pr_sh     <-
-  wg_sh     <-  
-  pr_rt     <-
-  u_rt      <-
-  pcu_rt    <-
-  cgdp_rt   <-
-  igdp_rt   <-
-  ggdp_rt   <-
-  nxgdp_rt  <-
-  invgdp_rt <-
-  kgdp_rt   <-
-  debtfs_gr <-
-  debtfsst_gr <-
-  debtfslt_gr <-
-  depfslt_gr <-
+  wage_gr<-
+  mk_gr<-
+  emp_gr<-
+  kl_rt<-
+  pr_sh<-
+  wg_sh<-  
+  pr_rt<-
+  u_rt<-
+  pcu_rt<-
+  cgdp_rt<-
+  igdp_rt<-
+  ggdp_rt<-
+  nxgdp_rt<-
+  invgdp_rt<-
+  kgdp_rt<-
+  debtfs_gr<-
+  debtfsst_gr<-
+  debtfslt_gr<-
+  depfslt_gr<-
   depfs_gr<-
-  debtc_rt <-
-  debtk_rt <-
-  debti_rt <-
+  debtc_rt<-
+  debtk_rt<-
+  debti_rt<-
   debt1_rt<-
-  debt2_rt <-
-  debt3_rt <-
-  debt_fi_rt <-
+  debt2_rt<-
+  debt3_rt<-
+  debt_fi_rt<-
   debt_cl_rt<-
-  fs_hhi <-
-  fs_lev <-
-  fs_str <-
-  fs_dr <-
+  fs_hhi<-
+  fs_lev<-
+  fs_str<-
+  fs_dr<-
   ponzi<-
-  spec <-
-  hedge <-
+  spec<-
+  hedge<-
   vector( mode = "numeric", length = nSize )
   
-  gdp_r_sd  <-
-  con_r_sd  <-
-  inv_r_sd  <-
-  gov_r_sd  <-
-  imp_r_sd  <-
-  x_r_sd    <-
-  nx_r_sd   <-
-  p_sd      <-
-  k_sd      <-
-  inve_sd   <-
-  emp_sd    <-
+  gdp_r_sd<-
+  con_r_sd<-
+  inv_r_sd<-
+  gov_r_sd<-
+  imp_r_sd<-
+  x_r_sd<-
+  nx_r_sd<-
+  p_sd<-
+  k_sd<-
+  inve_sd<-
+  emp_sd<-
   profits_sd<-
-  wage_sd   <-
-  pr_sh_sd  <-
-  wg_sh_sd  <-
-  prod_sd   <-
-  mk_sd     <-
-  kl_sd     <-
-  infla_sd  <-
-  u_sd      <-
-  pcu_sd    <-
-  pr_sd     <-
-  cgdp_sd   <-
-  igdp_sd   <-
-  ggdp_sd   <-
-  nxgdp_sd  <-
-  invgdp_sd <-
-  kgdp_sd   <-
-    debtfs_sd<-
-    debtfs_st_sd<-
-    debtfs_lt_sd<-
-    depfs_sd<-
-    drtc_sd<-
-    drtk_sd<-
-    drti_sd<-
-    drt1_sd<-
-    drt2_sd<-
-    drt3_sd<-
-    drt_fi_sd<-
-    drt_cl_sd<-
-    fshhi_sd<-
-    fslev_sd<-
-    fsstr_sd<-
-    fsdr_sd<-
-    fspr_sd<-
-    fsdef_sd<-
-    ponzi_sd<-
-    spec_sd<-
-    hedge_sd<-
+  wage_sd <-
+  pr_sh_sd<-
+  wg_sh_sd<-
+  prod_sd<-
+  mk_sd<-
+  kl_sd<-
+  infla_sd<-
+  u_sd<-
+  pcu_sd<-
+  pr_sd<-
+  cgdp_sd<-
+  igdp_sd<-
+  ggdp_sd<-
+  nxgdp_sd<-
+  invgdp_sd<-
+  kgdp_sd<-
+  debtfs_sd<-
+  debtfs_st_sd<-
+  debtfs_lt_sd<-
+  depfs_sd<-
+  drtc_sd<-
+  drtk_sd<-
+  drti_sd<-
+  drt1_sd<-
+  drt2_sd<-
+  drt3_sd<-
+  drt_fi_sd<-
+  drt_cl_sd<-
+  fshhi_sd<-
+  fslev_sd<-
+  fsstr_sd<-
+  fsdr_sd<-
+  fspr_sd<-
+  fsdef_sd<-
+  ponzi_sd<-
+  spec_sd<-
+  hedge_sd<-
   vector( mode = 'numeric', length = nSize )
   
-  gdp_gdp    <-
-  cr_gdp     <-
-  ir_gdp     <-
-  gov_gdp    <-
-  imp_gdp    <-
-  x_gdp      <-
-  nx_gdp     <-
-  p_gdp      <-
-  k_gdp      <-
-  inve_gdp   <-
-  emp_gdp    <-
+  gdp_gdp<-
+  cr_gdp<-
+  ir_gdp<-
+  gov_gdp<-
+  imp_gdp<-
+  x_gdp<-
+  nx_gdp<-
+  p_gdp<-
+  k_gdp<-
+  inve_gdp<-
+  emp_gdp<-
   profits_gdp<-
-  wage_gdp   <-
-  prod_gdp   <-
-  mk_gdp     <-
-  kl_gdp     <-
-  infla_gdp  <-
-  u_gdp      <-
-  pr_sh_gdp  <-
-  wg_sh_gdp  <-
-  pcu_gdp    <-
-  pr_gdp     <-
-  cgdp_gdp   <-
-  igdp_gdp   <-
-  ggdp_gdp   <-
-  nxgdp_gdp  <-
-  invgdp_gdp <-
-  kgdp_gdp   <-
-    debtfs_gdp<-
-    debtfs_st_gdp<-
-    debtfs_lt_gdp<-
-    depfs_gdp<-
-    drt_fi_gdp<-
-    drt_cl_gdp<-
-    fshhi_gdp<-
-    fslev_gdp<-
-    fsstr_gdp<-
-    fspr_gdp<-
-    fsdr_gdp<-
-    ponzi_gdp<-
-    spec_gdp<-
-    hedge_gdp<-
+  wage_gdp<-
+  prod_gdp<-
+  mk_gdp<-
+  kl_gdp<-
+  infla_gdp<-
+  u_gdp<-
+  pr_sh_gdp<-
+  wg_sh_gdp<-
+  pcu_gdp<-
+  pr_gdp<-
+  cgdp_gdp<-
+  igdp_gdp<-
+  ggdp_gdp<-
+  nxgdp_gdp<-
+  invgdp_gdp<-
+  kgdp_gdp<-
+  debtfs_gdp<-
+  debtfs_st_gdp<-
+  debtfs_lt_gdp<-
+  depfs_gdp<-
+  drt_fi_gdp<-
+  drt_cl_gdp<-
+  fshhi_gdp<-
+  fslev_gdp<-
+  fsstr_gdp<-
+  fspr_gdp<-
+  fsdr_gdp<-
+  ponzi_gdp<-
+  spec_gdp<-
+  hedge_gdp<-
   list( )
   
-  gdp_gdp_pval       <- 
-  cr_gdp_pval        <- 
-  ir_gdp_pval        <- 
-  gov_gdp_pval       <- 
-  imp_gdp_pval       <- 
-  x_gdp_pval         <- 
-  nx_gdp_pval        <- 
-  p_gdp_pval         <- 
-  k_gdp_pval         <- 
-  inve_gdp_pval      <- 
-  emp_gdp_pval       <- 
-  wage_gdp_pval      <- 
-  profits_gdp_pval   <- 
-  wage_gdp_pval      <- 
-  prod_gdp_pval      <- 
-  mk_gdp_pval        <- 
-  kl_gdp_pval        <- 
-  infla_gdp_pval     <- 
-  u_gdp_pval         <- 
-  pr_sh_gdp_pval     <- 
-  wg_sh_gdp_pval     <- 
-  pcu_gdp_pval       <- 
-  pr_gdp_pval        <- 
-  cgdp_gdp_pval      <- 
-  igdp_gdp_pval      <- 
-  ggdp_gdp_pval      <- 
-  nxgdp_gdp_pval     <- 
-  invgdp_gdp_pval    <- 
-  kgdp_gdp_pval      <- 
-    debtfs_gdp_pval<-
-    debtfs_st_gdp_pval<-
-    debtfs_lt_gdp_pval<-
-    depfs_gdp_pval<-
-    drt_fi_gdp_pval<-
-    drt_cl_gdp_pval<-
-    fshhi_gdp_pval<-
-    fslev_gdp_pval<-
-    fsstr_gdp_pval<-
-    fspr_gdp_pval<-
-    fsdr_gdp_pval<-
-    ponzi_gdp_pval<-
-    spec_gdp_pval<-
-    hedge_gdp_pval<-
+  gdp_gdp_pval<- 
+  cr_gdp_pval<- 
+  ir_gdp_pval<- 
+  gov_gdp_pval<- 
+  imp_gdp_pval<- 
+  x_gdp_pval<- 
+  nx_gdp_pval<- 
+  p_gdp_pval<- 
+  k_gdp_pval<- 
+  inve_gdp_pval<- 
+  emp_gdp_pval<- 
+  wage_gdp_pval<- 
+  profits_gdp_pval<- 
+  wage_gdp_pval<- 
+  prod_gdp_pval<- 
+  mk_gdp_pval<- 
+  kl_gdp_pval<- 
+  infla_gdp_pval<- 
+  u_gdp_pval<- 
+  pr_sh_gdp_pval<- 
+  wg_sh_gdp_pval<- 
+  pcu_gdp_pval<- 
+  pr_gdp_pval<- 
+  cgdp_gdp_pval<- 
+  igdp_gdp_pval<- 
+  ggdp_gdp_pval<- 
+  nxgdp_gdp_pval<- 
+  invgdp_gdp_pval<- 
+  kgdp_gdp_pval<- 
+  debtfs_gdp_pval<-
+  debtfs_st_gdp_pval<-
+  debtfs_lt_gdp_pval<-
+  depfs_gdp_pval<-
+  drt_fi_gdp_pval<-
+  drt_cl_gdp_pval<-
+  fshhi_gdp_pval<-
+  fslev_gdp_pval<-
+  fsstr_gdp_pval<-
+  fspr_gdp_pval<-
+  fsdr_gdp_pval<-
+  ponzi_gdp_pval<-
+  spec_gdp_pval<-
+  hedge_gdp_pval<-
   vector( mode = "numeric", length = nExp )
   
-  adf_gdp_r      <-
-  adf_con_r      <-
-  adf_inv_r      <-
-  adf_gov_r      <-
-  adf_imp_r      <-
-  adf_x          <-
-  adf_nx         <-
-  adf_p          <-
-  adf_k          <-
-  adf_inve       <-
-  adf_emp        <-
-  adf_profits    <-
-  adf_wage       <-
-  adf_prod       <-
-  adf_mk         <-
-  adf_kl         <-
-  adf_u          <-
-  adf_pr_sh      <-
-  adf_wg_sh      <-
-  adf_infla      <-
-  adf_pcu        <-
-  adf_pr         <-
-  adf_cgdp       <-
-  adf_igdp       <-
-  adf_ggdp       <-
-  adf_nxgdp      <-
-  adf_invgdp     <-
-  adf_kgdp       <- 
-    adf_drtc<-
-    adf_drtk<- 
-    adf_drti<-
-    adf_drt1<-
-    adf_drt2<-
-    adf_drt3<-
-    adf_drt_fi<-
-    adf_drt_cl<-
-    adf_fshhi<-
-    adf_fslev<-
-    adf_fsstr<-
-    adf_fsdr<-
-    adf_ponzi<-
-    adf_spec<-
-    adf_hedge<-
-    adf_dst_g<-
-    adf_dlt_g<-
-    adf_d_g<-
-    adf_dep_g<-
+  adf_gdp_r<-
+  adf_con_r<-
+  adf_inv_r<-
+  adf_gov_r<-
+  adf_imp_r<-
+  adf_x<-
+  adf_nx<-
+  adf_p<-
+  adf_k<-
+  adf_inve<-
+  adf_emp<-
+  adf_profits<-
+  adf_wage<-
+  adf_prod<-
+  adf_mk<-
+  adf_kl<-
+  adf_u<-
+  adf_pr_sh<-
+  adf_wg_sh<-
+  adf_infla<-
+  adf_pcu<-
+  adf_pr<-
+  adf_cgdp<-
+  adf_igdp<-
+  adf_ggdp<-
+  adf_nxgdp<-
+  adf_invgdp<-
+  adf_kgdp<- 
+  adf_drtc<-
+  adf_drtk<- 
+  adf_drti<-
+  adf_drt1<-
+  adf_drt2<-
+  adf_drt3<-
+  adf_drt_fi<-
+  adf_drt_cl<-
+  adf_fshhi<-
+  adf_fslev<-
+  adf_fsstr<-
+  adf_fsdr<-
+  adf_ponzi<-
+  adf_spec<-
+  adf_hedge<-
+  adf_dst_g<-
+  adf_dlt_g<-
+  adf_d_g<-
+  adf_dep_g<-
   list( )
   
   for(k in 1 : nExp){ # Experiment k
@@ -738,201 +738,201 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
     for( j in 1 : nSize ){  # Execute for every Monte Carlo run
       
       # Monte carlo average growth rates and shares
-      gdp_gr[ j ]       <- mcData[[ k ]][ nTstat, "GDP_G", j ]           # Real GDP Growth
-      infla [ j ]       <- mcData[[ k ]][ nTstat, "P_G", j ]             # Price Growth, Inflation
-      cr_gr[ j ]        <- mcData[[ k ]][ nTstat, "CON_G", j ]           # Real Consumption Growth
-      ir_gr[ j ]        <- mcData[[ k ]][ nTstat, "INV_G", j ]           # Real Investment Growth
-      gr_gr[ j ]        <- mcData[[ k ]][ nTstat, "GOV_G", j ]           # Real Government Expenses Growth
-      mr_gr[ j ]        <- mcData[[ k ]][ nTstat, "M_G", j ]             # Real Imports Growth
-      x_gr [ j ]        <- mcData[[ k ]][ nTstat, "X_G", j ]             # Real Exports Growth
-      nx_gr [ j ]       <- mcData[[ k ]][ nTstat, "NX_G", j ]            # Real Net Exports Growth
-      inve_gr [ j ]     <- mcData[[ k ]][ nTstat, "INVE_G", j ]          # Real Stock of Inventories Growth
-      k_gr [ j ]        <- mcData[[ k ]][ nTstat, "K_G", j ]             # Real Stock of Capital Growth
-      prod_gr [ j ]     <- mcData[[ k ]][ nTstat, "PROD_G", j ]          # Productivity Growth
-      profits_gr[ j ]   <- mcData[[ k ]][ nTstat, "PROFITS_G", j ]       # Real Profits Growth
-      wage_gr[ j ]      <- mcData[[ k ]][ nTstat, "WAGE_G", j ]          # Real Wages Growth
-      mk_gr [ j ]       <- mcData[[ k ]][ nTstat, "MK_G", j ]            # Markup Growth
-      emp_gr [ j ]      <- mcData[[ k ]][ nTstat, "EMP_G", j ]           # Employment Growth
-      kl_rt [ j ]       <- mcData[[ k ]][ nTstat, "KL", j ]              # Capital Labor Ratio
-      pr_sh [ j ]       <- mcData[[ k ]][ nTstat, "Profit_Share", j ]    # Profit Share
-      wg_sh [ j ]       <- mcData[[ k ]][ nTstat, "Wage_Share", j ]      # Wage Share  
-      pr_rt [ j ]       <- mcData[[ k ]][ nTstat, "PR", j ]              # Profit Rate  
-      u_rt [ j ]        <- mcData[[ k ]][ nTstat, "U", j ]               # Unemployment Rate
-      pcu_rt [ j ]      <- mcData[[ k ]][ nTstat, "PCU", j ]             # Capacity Utilization Rate
-      cgdp_rt [ j ]     <- mcData[[ k ]][ nTstat, "CGDP", j ]            # Consumption Share of GDP
-      igdp_rt [ j ]     <- mcData[[ k ]][ nTstat, "IGDP", j ]            # Investment Share of GDP
-      ggdp_rt [ j ]     <- mcData[[ k ]][ nTstat, "GGDP", j ]            # Government Expenses Share of GDP
-      nxgdp_rt [ j ]    <- mcData[[ k ]][ nTstat, "NXGDP", j ]           # Net exports Share of GDP
-      invgdp_rt [ j ]   <- mcData[[ k ]][ nTstat, "INVGDP", j ]          # Inventories share of GDP
-      kgdp_rt [ j ]     <- mcData[[ k ]][ nTstat, "KGDP", j ]            # Capital share of GDP
-      debtfs_gr [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_FS_G", j ]
-      debtfsst_gr [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_FS_ST_G", j ]
-      depfslt_gr [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_FS_LT_G", j ]
-      depfs_gr [ j ]      <- mcData[[ k ]][ nTstat, "DEP_FS_G", j ]
-      debtc_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_C", j ]
-      debtk_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_K", j ]
-      debti_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_I", j ]
-      debt1_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_1", j ]
-      debt2_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_2", j ]
-      debt3_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_3", j ]
-      debt_fi_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_FI", j ]
-      debt_cl_rt [ j ]      <- mcData[[ k ]][ nTstat, "DEBT_RT_CL", j ]
-      fs_hhi [ j ]      <- mcData[[ k ]][ nTstat, "FS_HHI", j ]
-      fs_lev [ j ]      <- mcData[[ k ]][ nTstat, "FS_LEV", j ]
-      fs_str [ j ]      <- mcData[[ k ]][ nTstat, "FS_STR", j ]
-      fs_dr [ j ]      <- mcData[[ k ]][ nTstat, "FS_DR", j ]
-      ponzi [ j ]      <- mcData[[ k ]][ nTstat, "PONZI", j ]
-      spec [ j ]      <- mcData[[ k ]][ nTstat, "SPEC", j ]
-      hedge [ j ]      <- mcData[[ k ]][ nTstat, "HEDGE", j ]
+      gdp_gr[ j ]<- mcData[[ k ]][ nTstat, "GDP_G", j ]           
+      infla [ j ]<- mcData[[ k ]][ nTstat, "P_G", j ]      
+      cr_gr[ j ]<- mcData[[ k ]][ nTstat, "CON_G", j ]    
+      ir_gr[ j ]<- mcData[[ k ]][ nTstat, "INV_G", j ]   
+      gr_gr[ j ]<- mcData[[ k ]][ nTstat, "GOV_G", j ]   
+      mr_gr[ j ]<- mcData[[ k ]][ nTstat, "M_G", j ]     
+      x_gr [ j ]<- mcData[[ k ]][ nTstat, "X_G", j ]     
+      nx_gr [ j ]<- mcData[[ k ]][ nTstat, "NX_G", j ]        
+      inve_gr [ j ]<- mcData[[ k ]][ nTstat, "INVE_G", j ]     
+      k_gr [ j ]<- mcData[[ k ]][ nTstat, "K_G", j ]        
+      prod_gr [ j ]<- mcData[[ k ]][ nTstat, "PROD_G", j ]      
+      profits_gr[ j ]<- mcData[[ k ]][ nTstat, "PROFITS_G", j ]     
+      wage_gr[ j ]<- mcData[[ k ]][ nTstat, "WAGE_G", j ]    
+      mk_gr [ j ]<- mcData[[ k ]][ nTstat, "MK_G", j ]       
+      emp_gr [ j ]<- mcData[[ k ]][ nTstat, "EMP_G", j ]     
+      kl_rt [ j ]<- mcData[[ k ]][ nTstat, "KL", j ]         
+      pr_sh [ j ]<- mcData[[ k ]][ nTstat, "Profit_Share", j ]  
+      wg_sh [ j ]<- mcData[[ k ]][ nTstat, "Wage_Share", j ]   
+      pr_rt [ j ]<- mcData[[ k ]][ nTstat, "PR", j ]             
+      u_rt [ j ]<- mcData[[ k ]][ nTstat, "U", j ]               
+      pcu_rt [ j ]<- mcData[[ k ]][ nTstat, "PCU", j ]             
+      cgdp_rt [ j ]<- mcData[[ k ]][ nTstat, "CGDP", j ]           
+      igdp_rt [ j ]<- mcData[[ k ]][ nTstat, "IGDP", j ]           
+      ggdp_rt [ j ]<- mcData[[ k ]][ nTstat, "GGDP", j ]           
+      nxgdp_rt [ j ]<- mcData[[ k ]][ nTstat, "NXGDP", j ]        
+      invgdp_rt [ j ]<- mcData[[ k ]][ nTstat, "INVGDP", j ]       
+      kgdp_rt [ j ]<- mcData[[ k ]][ nTstat, "KGDP", j ]         
+      debtfs_gr [ j ]<- mcData[[ k ]][ nTstat, "DEBT_FS_G", j ]
+      debtfsst_gr [ j ]<- mcData[[ k ]][ nTstat, "DEBT_FS_ST_G", j ]
+      depfslt_gr [ j ]<- mcData[[ k ]][ nTstat, "DEBT_FS_LT_G", j ]
+      depfs_gr [ j ]<- mcData[[ k ]][ nTstat, "DEP_FS_G", j ]
+      debtc_rt [ j ]<- mcData[[ k ]][ nTstat, "DEBT_RT_C", j ]
+      debtk_rt [ j ]<- mcData[[ k ]][ nTstat, "DEBT_RT_K", j ]
+      debti_rt [ j ]<- mcData[[ k ]][ nTstat, "DEBT_RT_I", j ]
+      debt1_rt [ j ]<- mcData[[ k ]][ nTstat, "DEBT_RT_1", j ]
+      debt2_rt [ j ]<- mcData[[ k ]][ nTstat, "DEBT_RT_2", j ]
+      debt3_rt [ j ]<- mcData[[ k ]][ nTstat, "DEBT_RT_3", j ]
+      debt_fi_rt [ j ]<- mcData[[ k ]][ nTstat, "DEBT_RT_FI", j ]
+      debt_cl_rt [ j ]<- mcData[[ k ]][ nTstat, "DEBT_RT_CL", j ]
+      fs_hhi [ j ]<- mcData[[ k ]][ nTstat, "FS_HHI", j ]
+      fs_lev [ j ]<- mcData[[ k ]][ nTstat, "FS_LEV", j ]
+      fs_str [ j ]<- mcData[[ k ]][ nTstat, "FS_STR", j ]
+      fs_dr [ j ]<- mcData[[ k ]][ nTstat, "FS_DR", j ]
+      ponzi [ j ]<- mcData[[ k ]][ nTstat, "PONZI", j ]
+      spec [ j ]<- mcData[[ k ]][ nTstat, "SPEC", j ]
+      hedge [ j ]<- mcData[[ k ]][ nTstat, "HEDGE", j ]
       
       # Apply Baxter-King filter to the series
-      gdp_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "Real_GDP", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      con_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "C_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      inv_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "I_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      gov_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "G_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      imp_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "M_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      x_bpf       <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "X_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      nx_bpf      <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "NX_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      p_bpf       <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "P", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      k_bpf       <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "K_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      inve_bpf    <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "INVE_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      emp_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "EMP", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      profits_bpf <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "PROFITS", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      wage_bpf    <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "WAGE", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      prod_bpf    <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "PROD", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      mk_bpf      <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "MK", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      kl_bpf      <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "KL", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      infla_bpf   <- bkfilter( mcData[[ k ]][ TmaskStat, "P_G", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      pr_sh_bpf   <- bkfilter( mcData[[ k ]][ TmaskStat, "Profit_Share", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      wg_sh_bpf   <- bkfilter( mcData[[ k ]][ TmaskStat, "Wage_Share", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      u_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "U", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      pcu_bpf     <- bkfilter( mcData[[ k ]][ TmaskStat, "PCU", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      pr_bpf      <- bkfilter( mcData[[ k ]][ TmaskStat, "PR", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      cgdp_bpf    <- bkfilter( mcData[[ k ]][ TmaskStat, "CGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      igdp_bpf    <- bkfilter( mcData[[ k ]][ TmaskStat, "IGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      ggdp_bpf    <- bkfilter( mcData[[ k ]][ TmaskStat, "GGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      nxgdp_bpf   <- bkfilter( mcData[[ k ]][ TmaskStat, "NXGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      invgdp_bpf  <- bkfilter( mcData[[ k ]][ TmaskStat, "INVGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      kgdp_bpf    <- bkfilter( mcData[[ k ]][ TmaskStat, "KGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      debtfs_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEBT_FS", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      debtfs_st_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEBT_FS_ST", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      debtfs_lt_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEBT_FS_LT", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      depfs_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEP_FS", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      drtc_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_C", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      drtk_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_K", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      drti_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_I", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      drt1_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_1", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      drt2_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_2", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      drt3_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_3", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      drt_fi_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_FI", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      drt_cl_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_CL", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      fshhi_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "FS_HHI", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      fslev_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "FS_LEV", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      fsstr_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "FS_STR", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      fsdr_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "FS_DR", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      fspr_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "FS_PR", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      fsdef_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "FS_DEF", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      ponzi_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "PONZI", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      spec_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "SPEC", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      hedge_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "HEDGE", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      gdp_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "Real_GDP", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      con_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "C_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      inv_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "I_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      gov_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "G_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      imp_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "M_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      x_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "X_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      nx_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "NX_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      p_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "P", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      k_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "K_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      inve_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "INVE_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      emp_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "EMP", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      profits_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "PROFITS", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      wage_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "WAGE", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      prod_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "PROD", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      mk_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "MK", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      kl_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "KL", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      infla_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "P_G", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      pr_sh_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "Profit_Share", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      wg_sh_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "Wage_Share", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      u_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "U", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      pcu_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "PCU", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      pr_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "PR", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      cgdp_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "CGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      igdp_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "IGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      ggdp_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "GGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      nxgdp_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "NXGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      invgdp_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "INVGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      kgdp_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "KGDP", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      debtfs_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEBT_FS", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      debtfs_st_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEBT_FS_ST", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      debtfs_lt_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEBT_FS_LT", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      depfs_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEP_FS", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      drtc_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_C", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drtk_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_K", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drti_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_I", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drt1_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_1", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drt2_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_2", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drt3_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_3", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drt_fi_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_FI", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      drt_cl_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "DEBT_RT_CL", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      fshhi_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "FS_HHI", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      fslev_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "FS_LEV", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      fsstr_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "FS_STR", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      fsdr_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "FS_DR", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      fspr_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "FS_PR", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      fsdef_bpf<- bkfilter( log0( mcData[[ k ]][ TmaskStat, "FS_DEF", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      ponzi_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "PONZI", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      spec_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "SPEC", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      hedge_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "HEDGE", j ] , pl = lowP, pu = highP, nfix = bpfK )
       
       # Augmented Dickey-Fuller tests for unit roots
-      adf_gdp_r[[ j ]]    <- adf.test( log0( mcData[[ k ]][ TmaskStat, "Real_GDP", j ] ) )
-      adf_con_r[[ j ]]    <- adf.test( log0( mcData[[ k ]][ TmaskStat, "C_r", j ] ) )
-      adf_inv_r[[ j ]]    <- adf.test( log0( mcData[[ k ]][ TmaskStat, "I_r", j ] ) )
-      adf_gov_r[[ j ]]    <- adf.test( log0( mcData[[ k ]][ TmaskStat, "G_r", j ] ) )
-      adf_imp_r[[ j ]]    <- adf.test( log0( mcData[[ k ]][ TmaskStat, "M_r", j ] ) )
-      adf_x[[ j ]]        <- adf.test( log0( mcData[[ k ]][ TmaskStat, "X_r", j ] ) )
-      adf_nx[[ j ]]       <- adf.test( log0( mcData[[ k ]][ TmaskStat, "NX_r", j ] ) )
-      adf_p[[ j ]]        <- adf.test( log0( mcData[[ k ]][ TmaskStat, "P", j ] ) )
-      adf_k[[ j ]]        <- adf.test( log0( mcData[[ k ]][ TmaskStat, "K_r", j ] ) )
-      adf_inve[[ j ]]     <- adf.test( log0( mcData[[ k ]][ TmaskStat, "INVE_r", j ] ) )
-      adf_emp[[ j ]]      <- adf.test( log0( mcData[[ k ]][ TmaskStat, "EMP", j ] ) )
-      adf_profits[[ j ]]  <- adf.test( log0( mcData[[ k ]][ TmaskStat, "PROFITS", j ] ) )
-      adf_wage[[ j ]]     <- adf.test( log0( mcData[[ k ]][ TmaskStat, "WAGE", j ] ) )
-      adf_prod[[ j ]]     <- adf.test( log0( mcData[[ k ]][ TmaskStat, "PROD", j ] ) )
-      adf_mk[[ j ]]       <- adf.test( log0( mcData[[ k ]][ TmaskStat, "MK", j ] ) )
-      adf_kl[[ j ]]       <- adf.test( log0( mcData[[ k ]][ TmaskStat, "KL", j ] ) )
-      adf_u[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "U", j ] ) 
-      adf_pr_sh[[ j ]]    <- adf.test( mcData[[ k ]][ TmaskStat, "Profit_Share", j ]  )
-      adf_wg_sh[[ j ]]    <- adf.test( mcData[[ k ]][ TmaskStat, "Wage_Share", j ]  )
-      adf_infla[[ j ]]    <- adf.test( mcData[[ k ]][ TmaskStat, "P_G", j ]  )
-      adf_pcu[[ j ]]      <- adf.test( mcData[[ k ]][ TmaskStat, "PCU", j ]  )
-      adf_pr[[ j ]]       <- adf.test( mcData[[ k ]][ TmaskStat, "PR", j ]  )
-      adf_cgdp[[ j ]]     <- adf.test( mcData[[ k ]][ TmaskStat, "CGDP", j ]  )
-      adf_igdp[[ j ]]     <- adf.test( mcData[[ k ]][ TmaskStat, "IGDP", j ]  )
-      adf_ggdp[[ j ]]     <- adf.test( mcData[[ k ]][ TmaskStat, "GGDP", j ]  )
-      adf_nxgdp[[ j ]]    <- adf.test( mcData[[ k ]][ TmaskStat, "NXGDP", j ]  )
-      adf_invgdp[[ j ]]   <- adf.test( mcData[[ k ]][ TmaskStat, "INVGDP", j ]  )
-      adf_kgdp[[ j ]]     <- adf.test( mcData[[ k ]][ TmaskStat, "KGDP", j ]  )
-      adf_drtc[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_C", j ] ) 
-      adf_drtk[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_K", j ] ) 
-      adf_drti[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_I", j ] ) 
-      adf_drt1[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_1", j ] ) 
-      adf_drt2[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_2", j ] ) 
-      adf_drt3[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_3", j ] ) 
-      adf_drt_fi[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_FI", j ] ) 
-      adf_drt_cl[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_CL", j ] ) 
-      adf_fshhi[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "FS_HHI", j ] ) 
-      adf_fslev[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "FS_LEV", j ] ) 
-      adf_fsstr[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "FS_STR", j ] )
-      adf_fsdr[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "FS_DR", j ] )
-      adf_ponzi[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "PONZI", j ] )
-      adf_spec[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "SPEC", j ] )
-      adf_hedge[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "HEDGE", j ] )
-      adf_dst_g[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_FS_ST_G", j ] )
-      adf_dlt_g[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_FS_LT_G", j ] )
-      adf_d_g[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_FS_G", j ] )
-      adf_dep_g[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "DEP_FS_G", j ] )
+      adf_gdp_r[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "Real_GDP", j ] ) )
+      adf_con_r[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "C_r", j ] ) )
+      adf_inv_r[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "I_r", j ] ) )
+      adf_gov_r[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "G_r", j ] ) )
+      adf_imp_r[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "M_r", j ] ) )
+      adf_x[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "X_r", j ] ) )
+      adf_nx[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "NX_r", j ] ) )
+      adf_p[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "P", j ] ) )
+      adf_k[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "K_r", j ] ) )
+      adf_inve[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "INVE_r", j ] ) )
+      adf_emp[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "EMP", j ] ) )
+      adf_profits[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "PROFITS", j ] ) )
+      adf_wage[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "WAGE", j ] ) )
+      adf_prod[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "PROD", j ] ) )
+      adf_mk[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "MK", j ] ) )
+      adf_kl[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "KL", j ] ) )
+      adf_u[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "U", j ] ) 
+      adf_pr_sh[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "Profit_Share", j ]  )
+      adf_wg_sh[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "Wage_Share", j ]  )
+      adf_infla[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "P_G", j ]  )
+      adf_pcu[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "PCU", j ]  )
+      adf_pr[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "PR", j ]  )
+      adf_cgdp[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "CGDP", j ]  )
+      adf_igdp[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "IGDP", j ]  )
+      adf_ggdp[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "GGDP", j ]  )
+      adf_nxgdp[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "NXGDP", j ]  )
+      adf_invgdp[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "INVGDP", j ]  )
+      adf_kgdp[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "KGDP", j ]  )
+      adf_drtc[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_C", j ] ) 
+      adf_drtk[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_K", j ] ) 
+      adf_drti[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_I", j ] ) 
+      adf_drt1[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_1", j ] ) 
+      adf_drt2[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_2", j ] ) 
+      adf_drt3[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_3", j ] ) 
+      adf_drt_fi[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_FI", j ] ) 
+      adf_drt_cl[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_RT_CL", j ] ) 
+      adf_fshhi[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "FS_HHI", j ] ) 
+      adf_fslev[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "FS_LEV", j ] ) 
+      adf_fsstr[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "FS_STR", j ] )
+      adf_fsdr[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "FS_DR", j ] )
+      adf_ponzi[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "PONZI", j ] )
+      adf_spec[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "SPEC", j ] )
+      adf_hedge[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "HEDGE", j ] )
+      adf_dst_g[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_FS_ST_G", j ] )
+      adf_dlt_g[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_FS_LT_G", j ] )
+      adf_d_g[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "DEBT_FS_G", j ] )
+      adf_dep_g[[ j ]]<- adf.test( mcData[[ k ]][ TmaskStat, "DEP_FS_G", j ] )
       
       # Standard deviations of filtered series
-      gdp_r_sd[ j ]       <- sd( gdp_bpf$cycle[ TmaskBpf, 1 ] )
-      con_r_sd[ j ]       <- sd( con_bpf$cycle[ TmaskBpf, 1 ] )
-      inv_r_sd[ j ]       <- sd( inv_bpf$cycle[ TmaskBpf, 1 ] )
-      gov_r_sd[ j ]       <- sd( gov_bpf$cycle[ TmaskBpf, 1 ] )
-      imp_r_sd[ j ]       <- sd( imp_bpf$cycle[ TmaskBpf, 1 ] )
-      x_r_sd[ j ]         <- sd( x_bpf$cycle[ TmaskBpf, 1 ] )
-      nx_r_sd[ j ]        <- sd( nx_bpf$cycle[ TmaskBpf, 1 ] )
-      p_sd[ j ]           <- sd( p_bpf$cycle[ TmaskBpf, 1 ] )
-      k_sd[ j ]           <- sd( k_bpf$cycle[ TmaskBpf, 1 ] )
-      inve_sd[ j ]        <- sd( inve_bpf$cycle[ TmaskBpf, 1 ] )
-      emp_sd[ j ]         <- sd( emp_bpf$cycle[ TmaskBpf, 1 ] )
-      profits_sd[ j ]     <- sd( profits_bpf$cycle[ TmaskBpf, 1 ] )
-      wage_sd[ j ]        <- sd( wage_bpf$cycle[ TmaskBpf, 1 ] )
-      prod_sd[ j ]        <- sd( prod_bpf$cycle[ TmaskBpf, 1 ] )
-      mk_sd[ j ]          <- sd( mk_bpf$cycle[ TmaskBpf, 1 ] )
-      kl_sd[ j ]          <- sd( kl_bpf$cycle[ TmaskBpf, 1 ] )
-      infla_sd[ j ]       <- sd( infla_bpf$cycle[ TmaskBpf, 1 ] )
-      u_sd[ j ]           <- sd( u_bpf$cycle[ TmaskBpf, 1 ] )
-      pcu_sd[ j ]         <- sd( pcu_bpf$cycle[ TmaskBpf, 1 ] )
-      pr_sd[ j ]          <- sd( pr_bpf$cycle[ TmaskBpf, 1 ] )
-      cgdp_sd[ j ]        <- sd( cgdp_bpf$cycle[ TmaskBpf, 1 ] )
-      igdp_sd[ j ]        <- sd( igdp_bpf$cycle[ TmaskBpf, 1 ] )
-      ggdp_sd[ j ]        <- sd( ggdp_bpf$cycle[ TmaskBpf, 1 ] )
-      nxgdp_sd[ j ]       <- sd( nxgdp_bpf$cycle[ TmaskBpf, 1 ] )
-      invgdp_sd[ j ]      <- sd( invgdp_bpf$cycle[ TmaskBpf, 1 ] )
-      kgdp_sd[ j ]        <- sd( kgdp_bpf$cycle[ TmaskBpf, 1 ] )
-      debtfs_sd[ j ]           <- sd( debtfs_bpf$cycle[ TmaskBpf, 1 ] )
-      debtfs_st_sd[ j ]           <- sd( debtfs_st_bpf$cycle[ TmaskBpf, 1 ] )
-      debtfs_lt_sd[ j ]           <- sd( debtfs_lt_bpf$cycle[ TmaskBpf, 1 ] )
-      depfs_sd[ j ]           <- sd( depfs_bpf$cycle[ TmaskBpf, 1 ] )
-      drtc_sd[ j ]           <- sd( drtc_bpf$cycle[ TmaskBpf, 1 ] )
-      drtk_sd[ j ]           <- sd( drtk_bpf$cycle[ TmaskBpf, 1 ] )
-      drti_sd[ j ]           <- sd( drti_bpf$cycle[ TmaskBpf, 1 ] )
-      drt1_sd[ j ]           <- sd( drt1_bpf$cycle[ TmaskBpf, 1 ] )
-      drt2_sd[ j ]           <- sd( drt2_bpf$cycle[ TmaskBpf, 1 ] )
-      drt3_sd[ j ]           <- sd( drt3_bpf$cycle[ TmaskBpf, 1 ] )
-      drt_fi_sd[ j ]           <- sd( drt_fi_bpf$cycle[ TmaskBpf, 1 ] )
-      drt_cl_sd[ j ]           <- sd( drt_cl_bpf$cycle[ TmaskBpf, 1 ] )
-      fshhi_sd[ j ]           <- sd( fshhi_bpf$cycle[ TmaskBpf, 1 ] )
-      fslev_sd[ j ]           <- sd( fslev_bpf$cycle[ TmaskBpf, 1 ] )
-      fsstr_sd[ j ]           <- sd( fsstr_bpf$cycle[ TmaskBpf, 1 ] )
-      fsdr_sd[ j ]           <- sd( fsdr_bpf$cycle[ TmaskBpf, 1 ] )
-      fspr_sd[ j ]           <- sd( fspr_bpf$cycle[ TmaskBpf, 1 ] )
-      fsdef_sd[ j ]           <- sd( fsdef_bpf$cycle[ TmaskBpf, 1 ] )
-      ponzi_sd[ j ]           <- sd( ponzi_bpf$cycle[ TmaskBpf, 1 ] )
-      spec_sd[ j ]           <- sd( spec_bpf$cycle[ TmaskBpf, 1 ] )
-      hedge_sd[ j ]           <- sd( hedge_bpf$cycle[ TmaskBpf, 1 ] )
+      gdp_r_sd[ j ]<- sd( gdp_bpf$cycle[ TmaskBpf, 1 ] )
+      con_r_sd[ j ]<- sd( con_bpf$cycle[ TmaskBpf, 1 ] )
+      inv_r_sd[ j ]<- sd( inv_bpf$cycle[ TmaskBpf, 1 ] )
+      gov_r_sd[ j ]<- sd( gov_bpf$cycle[ TmaskBpf, 1 ] )
+      imp_r_sd[ j ]<- sd( imp_bpf$cycle[ TmaskBpf, 1 ] )
+      x_r_sd[ j ]<- sd( x_bpf$cycle[ TmaskBpf, 1 ] )
+      nx_r_sd[ j ]<- sd( nx_bpf$cycle[ TmaskBpf, 1 ] )
+      p_sd[ j ]<- sd( p_bpf$cycle[ TmaskBpf, 1 ] )
+      k_sd[ j ]<- sd( k_bpf$cycle[ TmaskBpf, 1 ] )
+      inve_sd[ j ]<- sd( inve_bpf$cycle[ TmaskBpf, 1 ] )
+      emp_sd[ j ]<- sd( emp_bpf$cycle[ TmaskBpf, 1 ] )
+      profits_sd[ j ]<- sd( profits_bpf$cycle[ TmaskBpf, 1 ] )
+      wage_sd[ j ]<- sd( wage_bpf$cycle[ TmaskBpf, 1 ] )
+      prod_sd[ j ]<- sd( prod_bpf$cycle[ TmaskBpf, 1 ] )
+      mk_sd[ j ]<- sd( mk_bpf$cycle[ TmaskBpf, 1 ] )
+      kl_sd[ j ]<- sd( kl_bpf$cycle[ TmaskBpf, 1 ] )
+      infla_sd[ j ]<- sd( infla_bpf$cycle[ TmaskBpf, 1 ] )
+      u_sd[ j ]<- sd( u_bpf$cycle[ TmaskBpf, 1 ] )
+      pcu_sd[ j ]<- sd( pcu_bpf$cycle[ TmaskBpf, 1 ] )
+      pr_sd[ j ]<- sd( pr_bpf$cycle[ TmaskBpf, 1 ] )
+      cgdp_sd[ j ]<- sd( cgdp_bpf$cycle[ TmaskBpf, 1 ] )
+      igdp_sd[ j ]<- sd( igdp_bpf$cycle[ TmaskBpf, 1 ] )
+      ggdp_sd[ j ]<- sd( ggdp_bpf$cycle[ TmaskBpf, 1 ] )
+      nxgdp_sd[ j ]<- sd( nxgdp_bpf$cycle[ TmaskBpf, 1 ] )
+      invgdp_sd[ j ]<- sd( invgdp_bpf$cycle[ TmaskBpf, 1 ] )
+      kgdp_sd[ j ]<- sd( kgdp_bpf$cycle[ TmaskBpf, 1 ] )
+      debtfs_sd[ j ]<- sd( debtfs_bpf$cycle[ TmaskBpf, 1 ] )
+      debtfs_st_sd[ j ]<- sd( debtfs_st_bpf$cycle[ TmaskBpf, 1 ] )
+      debtfs_lt_sd[ j ]<- sd( debtfs_lt_bpf$cycle[ TmaskBpf, 1 ] )
+      depfs_sd[ j ]<- sd( depfs_bpf$cycle[ TmaskBpf, 1 ] )
+      drtc_sd[ j ]<- sd( drtc_bpf$cycle[ TmaskBpf, 1 ] )
+      drtk_sd[ j ]<- sd( drtk_bpf$cycle[ TmaskBpf, 1 ] )
+      drti_sd[ j ]<- sd( drti_bpf$cycle[ TmaskBpf, 1 ] )
+      drt1_sd[ j ]<- sd( drt1_bpf$cycle[ TmaskBpf, 1 ] )
+      drt2_sd[ j ]<- sd( drt2_bpf$cycle[ TmaskBpf, 1 ] )
+      drt3_sd[ j ]<- sd( drt3_bpf$cycle[ TmaskBpf, 1 ] )
+      drt_fi_sd[ j ]<- sd( drt_fi_bpf$cycle[ TmaskBpf, 1 ] )
+      drt_cl_sd[ j ]<- sd( drt_cl_bpf$cycle[ TmaskBpf, 1 ] )
+      fshhi_sd[ j ]<- sd( fshhi_bpf$cycle[ TmaskBpf, 1 ] )
+      fslev_sd[ j ]<- sd( fslev_bpf$cycle[ TmaskBpf, 1 ] )
+      fsstr_sd[ j ]<- sd( fsstr_bpf$cycle[ TmaskBpf, 1 ] )
+      fsdr_sd[ j ]<- sd( fsdr_bpf$cycle[ TmaskBpf, 1 ] )
+      fspr_sd[ j ]<- sd( fspr_bpf$cycle[ TmaskBpf, 1 ] )
+      fsdef_sd[ j ]<- sd( fsdef_bpf$cycle[ TmaskBpf, 1 ] )
+      ponzi_sd[ j ]<- sd( ponzi_bpf$cycle[ TmaskBpf, 1 ] )
+      spec_sd[ j ]<- sd( spec_bpf$cycle[ TmaskBpf, 1 ] )
+      hedge_sd[ j ]<- sd( hedge_bpf$cycle[ TmaskBpf, 1 ] )
       
       # Build the correlation structures
       gdp_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
@@ -1061,34 +1061,33 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       hedge_gdp[[ j ]]  <- ccf( hedge_bpf$cycle[ TmaskBpf, 1 ],
                                 gdp_bpf$cycle[ TmaskBpf, 1 ],
                                 lag.max = lags, plot = FALSE, na.action = na.pass )
-      
     }
     
     # Applies t test to the mean lag results to test their significance (H0: lag < critCorr)
     for(i in 1 : (2 * lags + 1) ){ #do for all lags
       if(i != lags + 1)  # don't try to compute autocorrelation at lag 0
-      gdp_gdp_pval[ i ] <- t.test0( abs( unname( sapply( gdp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      cr_gdp_pval[ i ]  <- t.test0( abs( unname( sapply( cr_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      ir_gdp_pval[ i ]  <- t.test0( abs( unname( sapply( ir_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      gov_gdp_pval[ i ] <- t.test0( abs( unname( sapply( gov_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      imp_gdp_pval[ i ] <- t.test0( abs( unname( sapply( imp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      x_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( x_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      nx_gdp_pval[ i ]  <- t.test0( abs( unname( sapply( nx_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      p_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( p_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      k_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( k_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      inve_gdp_pval[ i ] <- t.test0( abs( unname( sapply( inve_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      emp_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( emp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      gdp_gdp_pval[ i ]<- t.test0( abs( unname( sapply( gdp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      cr_gdp_pval[ i ]<- t.test0( abs( unname( sapply( cr_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      ir_gdp_pval[ i ]<- t.test0( abs( unname( sapply( ir_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      gov_gdp_pval[ i ]<- t.test0( abs( unname( sapply( gov_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      imp_gdp_pval[ i ]<- t.test0( abs( unname( sapply( imp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      x_gdp_pval[ i ]<- t.test0( abs( unname( sapply( x_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      nx_gdp_pval[ i ]<- t.test0( abs( unname( sapply( nx_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      p_gdp_pval[ i ]<- t.test0( abs( unname( sapply( p_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      k_gdp_pval[ i ]<- t.test0( abs( unname( sapply( k_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      inve_gdp_pval[ i ]<- t.test0( abs( unname( sapply( inve_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      emp_gdp_pval[ i ]<- t.test0( abs( unname( sapply( emp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       wage_gdp_pval[ i ]<- t.test0( abs( unname( sapply( wage_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      profits_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( profits_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      wage_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( wage_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      profits_gdp_pval[ i ]<- t.test0( abs( unname( sapply( profits_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      wage_gdp_pval[ i ]<- t.test0( abs( unname( sapply( wage_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       prod_gdp_pval[ i ]<- t.test0( abs( unname( sapply( prod_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      mk_gdp_pval[ i ] <- t.test0( abs( unname( sapply( mk_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      kl_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( kl_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      infla_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( infla_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      u_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( u_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      mk_gdp_pval[ i ]<- t.test0( abs( unname( sapply( mk_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      kl_gdp_pval[ i ]<- t.test0( abs( unname( sapply( kl_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      infla_gdp_pval[ i ]<- t.test0( abs( unname( sapply( infla_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      u_gdp_pval[ i ]<- t.test0( abs( unname( sapply( u_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       pr_sh_gdp_pval[ i ]<- t.test0( abs( unname( sapply( pr_sh_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       wg_sh_gdp_pval[ i ]<- t.test0( abs( unname( sapply( wg_sh_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      pcu_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( pcu_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      pcu_gdp_pval[ i ]<- t.test0( abs( unname( sapply( pcu_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       pr_gdp_pval[ i ]<- t.test0( abs( unname( sapply( pr_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       cgdp_gdp_pval[ i ]<- t.test0( abs( unname( sapply( cgdp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       igdp_gdp_pval[ i ]<- t.test0( abs( unname( sapply( igdp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
@@ -1096,13 +1095,13 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       nxgdp_gdp_pval[ i ]<- t.test0( abs( unname( sapply( nxgdp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       invgdp_gdp_pval[ i ]<- t.test0( abs( unname( sapply( invgdp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       kgdp_gdp_pval[ i ]<- t.test0( abs( unname( sapply( kgdp_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      debtfs_gdp_pval[ i ]  <- t.test0( abs( unname( sapply( debtfs_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      debtfs_st_gdp_pval[ i ]  <- t.test0( abs( unname( sapply(  debtfs_st_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      debtfs_lt_gdp_pval[ i ] <- t.test0( abs( unname( sapply( debtfs_lt_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      depfs_gdp_pval[ i ] <- t.test0( abs( unname( sapply( depfs_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      drt_fi_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( drt_fi_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      drt_cl_gdp_pval[ i ]  <- t.test0( abs( unname( sapply( drt_cl_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
-      fshhi_gdp_pval[ i ]   <- t.test0( abs( unname( sapply( fshhi_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      debtfs_gdp_pval[ i ]<- t.test0( abs( unname( sapply( debtfs_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      debtfs_st_gdp_pval[ i ]<- t.test0( abs( unname( sapply(  debtfs_st_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      debtfs_lt_gdp_pval[ i ]<- t.test0( abs( unname( sapply( debtfs_lt_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      depfs_gdp_pval[ i ]<- t.test0( abs( unname( sapply( depfs_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      drt_fi_gdp_pval[ i ]<- t.test0( abs( unname( sapply( drt_fi_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      drt_cl_gdp_pval[ i ]<- t.test0( abs( unname( sapply( drt_cl_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
+      fshhi_gdp_pval[ i ]<- t.test0( abs( unname( sapply( fshhi_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       fslev_gdp_pval[ i ]<- t.test0( abs( unname( sapply( fslev_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       fsstr_gdp_pval[ i ]<- t.test0( abs( unname( sapply( fsstr_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
       fspr_gdp_pval[ i ]<- t.test0( abs( unname( sapply( fspr_gdp, `[[`, "acf" ) )[ i, ] ), critCorr, CI )
@@ -1146,36 +1145,74 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         mean( nxgdp_rt ),
         mean( invgdp_rt ), 
         mean( kgdp_rt ),
+        mean( debtfsst_gr ), 
+        mean( debtfslt_gr ), 
+        mean( debtfs_gr ), 
+        mean( depfs_gr ),
+        mean( fs_hhi  ), 
+        mean( fs_lev  ), 
+        mean( fs_str  ),
+        mean( fs_dr  ), 
+        mean( ponzi  ), 
+        mean( spec  ), 
+        mean( hedge  ),
+        mean( debtc_rt ),
+        mean( debtk_rt ),
+        mean( debti_rt ), 
+        mean( debt1_rt ),
+        mean( debt2_rt ), 
+        mean( debt3_rt ),
+        mean( debt_fi_rt ),
+        mean( debt_cl_rt ),
         
-        ## (s.e.)
-        sd( gdp_gr ) / sqrt( nSize ), 
-        sd( cr_gr ) / sqrt( nSize ),
-        sd( ir_gr ) / sqrt( nSize ), 
-        sd( gr_gr ) / sqrt( nSize ),
-        sd( mr_gr ) / sqrt( nSize ),
-        sd( x_gr ) / sqrt( nSize ),
-        sd( nx_gr ) / sqrt( nSize ),
-        sd( infla ) / sqrt( nSize ), 
-        sd( profits_gr ) / sqrt( nSize ), 
-        sd( wage_gr ) / sqrt( nSize ),
-        sd( pr_sh ) / sqrt( nSize ),
-        sd( wg_sh ) / sqrt( nSize ),
-        sd( mk_gr ) / sqrt( nSize ), 
-        sd( pr_rt ) / sqrt( nSize ),
-        sd( prod_gr ) / sqrt( nSize ),
-        sd( pcu_rt ) / sqrt( nSize ),
-        sd( inve_gr ) / sqrt( nSize ),
-        sd( k_gr ) / sqrt( nSize ),
-        sd( u_rt ) / sqrt( nSize ),
-        sd( emp_gr ) / sqrt( nSize ),
-        sd( kl_rt ) / sqrt( nSize ),
-        sd( cgdp_rt ) / sqrt( nSize ),
-        sd( igdp_rt ) / sqrt( nSize ),
-        sd( ggdp_rt ) / sqrt( nSize ),
-        sd( nxgdp_rt ) / sqrt( nSize ),
-        sd( invgdp_rt ) / sqrt( nSize ),
-        sd( kgdp_rt ) / sqrt( nSize ),
-      
+        ## (Std. Dev.)
+        sd( gdp_gr ),
+        sd( cr_gr ),
+        sd( ir_gr ),
+        sd( gr_gr ),
+        sd( mr_gr ),
+        sd( x_gr ),
+        sd( nx_gr ),
+        sd( infla ),
+        sd( profits_gr ),
+        sd( wage_gr ),
+        sd( pr_sh ),
+        sd( wg_sh ),
+        sd( mk_gr ), 
+        sd( pr_rt ),
+        sd( prod_gr ),
+        sd( pcu_rt ),
+        sd( inve_gr ),
+        sd( k_gr ),
+        sd( u_rt ),
+        sd( emp_gr ),
+        sd( kl_rt ),
+        sd( cgdp_rt ),
+        sd( igdp_rt ),
+        sd( ggdp_rt ),
+        sd( nxgdp_rt ),
+        sd( invgdp_rt ),
+        sd( kgdp_rt ),
+        sd( debtfsst_gr ), 
+        sd( debtfslt_gr ),
+        sd( debtfs_gr ), 
+        sd( depfs_gr ),
+        sd( fs_hhi  ), 
+        sd( fs_lev  ), 
+        sd( fs_str  ),
+        sd( fs_dr  ),
+        sd( ponzi ),
+        sd( spec ), 
+        sd( hedge ),
+        sd( debtc_rt ),
+        sd( debtk_rt ),
+        sd( debti_rt ),
+        sd( debt1_rt ),
+        sd( debt2_rt ),
+        sd( debt3_rt ),
+        sd( debt_fi_rt ),
+        sd( debt_cl_rt ),
+        
         ## ADF test (logs)
         mean( unname( sapply( adf_gdp_r, `[[`, "statistic" ) ) ),
         mean( unname( sapply( adf_con_r, `[[`, "statistic" ) ) ),
@@ -1204,35 +1241,25 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         mean( unname( sapply( adf_nxgdp, `[[`, "statistic" ) ) ),
         mean( unname( sapply( adf_invgdp, `[[`, "statistic" ) ) ),
         mean( unname( sapply( adf_kgdp, `[[`, "statistic" ) ) ),
-        
-        ## ADF test (logs) s.e.
-        sd( unname( sapply( adf_gdp_r, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_con_r, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_inv_r, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_gov_r, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_imp_r, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_x, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_nx, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_p, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_profits, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_wage, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_pr_sh, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_wg_sh, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_mk, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_pr, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_prod, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_pcu, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_inve, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_k, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_u, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_emp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_kl, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_cgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_igdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_ggdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_nxgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_invgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_kgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        mean( unname( sapply( adf_dst_g, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_dlt_g, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_d_g, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_dep_g, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_fshhi, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_fslev, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_fsstr, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_fsdr, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_ponzi, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_spec, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_hedge, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_drtc, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_drtk, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_drti, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_drt1, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_drt2, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_drt3, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_drt_fi, `[[`, "statistic" ) ) ),
+        mean( unname( sapply( adf_drt_cl, `[[`, "statistic" ) ) ),
         
         ## ADF test (logs) p.value
         mean( unname( sapply( adf_gdp_r, `[[`, "p.value" ) ) ),
@@ -1256,35 +1283,31 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         mean( unname( sapply( adf_u, `[[`, "p.value" ) ) ),
         mean( unname( sapply( adf_emp, `[[`, "p.value" ) ) ),
         mean( unname( sapply( adf_kl, `[[`, "p.value" ) ) ),
-        
-        ## ADF test (logs) p.value s.e.
-        sd( unname( sapply( adf_gdp_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_con_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_inv_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_gov_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_imp_r, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_x, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_nx, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_p, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_profits, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_wage, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_pr_sh, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_wg_sh, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_mk, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_pr, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_prod, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_pcu, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_inve, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_k, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_u, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_emp, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_kl, `[[`, "p.value" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_cgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_igdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_ggdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_nxgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_invgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
-        sd( unname( sapply( adf_kgdp, `[[`, "statistic" ) ) ) / sqrt( nSize ),
+        mean( unname( sapply( adf_cgdp, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_igdp, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_ggdp, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_nxgdp, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_invgdp, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_kgdp, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_dst_g, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_dlt_g, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_d_g, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_dep_g, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_fshhi, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_fslev, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_fsstr, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_fsdr, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_ponzi, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_spec, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_hedge, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_drtc, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_drtk, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_drti, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_drt1, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_drt2, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_drt3, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_drt_fi, `[[`, "p.value" ) ) ),
+        mean( unname( sapply( adf_drt_cl, `[[`, "p.value" ) ) ),
         
         ## S.d. of bpf series
         mean( gdp_r_sd ), 
@@ -1314,35 +1337,25 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         mean( nxgdp_sd ),
         mean( invgdp_sd ),
         mean( kgdp_sd ),
-        
-        ## S.e. of bpf series s.d.
-        se( gdp_r_sd ) / sqrt( nSize ), 
-        se( con_r_sd ) / sqrt( nSize ), 
-        se( inv_r_sd ) / sqrt( nSize ), 
-        se( gov_r_sd ) / sqrt( nSize ), 
-        se( imp_r_sd ) / sqrt( nSize ), 
-        se( x_r_sd ) / sqrt( nSize ), 
-        se( nx_r_sd ) / sqrt( nSize ), 
-        se( p_sd ) / sqrt( nSize ),
-        se( profits_sd ) / sqrt( nSize ), 
-        se( wage_sd ) / sqrt( nSize ),
-        se( pr_sh_sd ) / sqrt( nSize ),
-        se( wg_sh_sd ) / sqrt( nSize ),
-        se( mk_sd ) / sqrt( nSize ), 
-        se( pr_sd ) / sqrt( nSize ),
-        se( prod_sd ) / sqrt( nSize ),
-        se( pcu_sd ) / sqrt( nSize ),
-        se( inve_sd ) / sqrt( nSize ),
-        se( k_sd ) / sqrt( nSize ),
-        se( u_sd ) / sqrt( nSize ),
-        se( emp_sd ) / sqrt( nSize ),
-        se( kl_sd ) / sqrt( nSize ),
-        se( cgdp_sd ) / sqrt( nSize ),
-        se( igdp_sd ) / sqrt( nSize ),
-        se( ggdp_sd ) / sqrt( nSize ),
-        se( nxgdp_sd ) / sqrt( nSize ),
-        se( invgdp_sd ) / sqrt( nSize ),
-        se( kgdp_sd ) / sqrt( nSize ),
+        mean( debtfs_st_sd ), 
+        mean( debtfs_lt_sd ), 
+        mean( debtfs_sd ),
+        mean( depfs_sd ),
+        mean( fshhi_sd ),
+        mean( fslev_sd ), 
+        mean( fsstr_sd ),
+        mean( fsdr_sd ),
+        mean( ponzi_sd ),
+        mean( spec_sd ),
+        mean( hedge_sd ),
+        mean( drtc_sd ),
+        mean( drtk_sd ),
+        mean( drti_sd ),
+        mean( drt1_sd ),
+        mean( drt2_sd ),
+        mean( drt3_sd ),
+        mean( drt_fi_sd ),
+        mean( drt_cl_sd ),
         
         ## relative s.d. (to GDP)
         1, 
@@ -1371,12 +1384,31 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
         mean( ggdp_sd ) / mean(gdp_r_sd ),
         mean( nxgdp_sd ) / mean(gdp_r_sd ),
         mean( invgdp_sd ) / mean(gdp_r_sd ),
-        mean( kgdp_sd ) / mean(gdp_r_sd )
+        mean( kgdp_sd ) / mean(gdp_r_sd ),
+        mean( debtfs_st_sd ) / mean( gdp_r_sd ), 
+        mean( debtfs_lt_sd ) / mean( gdp_r_sd ), 
+        mean( debtfs_sd ) / mean( gdp_r_sd ),
+        mean( depfs_sd ) / mean( gdp_r_sd ),
+        mean( fshhi_sd ) / mean( gdp_r_sd ), 
+        mean( fslev_sd ) / mean( gdp_r_sd ),
+        mean( fsstr_sd ) / mean( gdp_r_sd ), 
+        mean( fsdr_sd ) / mean( gdp_r_sd ),
+        mean( ponzi_sd ) / mean( gdp_r_sd ),
+        mean( spec_sd ) / mean(gdp_r_sd ),
+        mean( hedge_sd ) / mean( gdp_r_sd ),
+        mean( drtc_sd ) / mean(gdp_r_sd ),
+        mean( drtk_sd ) / mean(gdp_r_sd ),
+        mean( drti_sd ) / mean(gdp_r_sd ),
+        mean( drt1_sd ) / mean(gdp_r_sd ),
+        mean( drt2_sd ) / mean(gdp_r_sd ),
+        mean( drt3_sd ) / mean(gdp_r_sd ),
+        mean( drt_fi_sd ) / mean(gdp_r_sd ),
+        mean( drt_cl_sd ) / mean(gdp_r_sd )
         
       ),
-      ncol = 27, byrow = T)
+      ncol = 6, byrow = F)
     
-    colnames( key.stats ) <- c( "GDP (output)", 
+    rownames( key.stats ) <- c( "GDP (output)", 
                                   "Consumption", 
                                   "Investment", 
                                   "Gov. Expend.",
@@ -1402,18 +1434,34 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
                                   "Government Expenses (Share of GDP)",
                                   "Net Exports (Share of GDP)",
                                   "Inventories (Share of GDP)",
-                                  "Capital Stock (Share of GDP)"
+                                  "Capital Stock (Share of GDP)",
+                                  "Short Term Loans", 
+                                  "Long Term Loans", 
+                                  "Total Loans", 
+                                  "Total Deposits",
+                                  "Financial Sector I.HHI", 
+                                  "Financial Sector Leverage", 
+                                  "Financial Sector Short Term Rate",
+                                  "Financial Sector Default Rate",
+                                  "Share of Ponzi Firms",
+                                  "Share of Speculative Firms", 
+                                  "Share of Hedge Firms",
+                                  "C. Sector Debt Rate",
+                                  "K. Sector Debt Rate",
+                                  "I. Sector Debt Rate",
+                                  "Class A Debt Rate",
+                                  "Class B Debt Rate",
+                                  "Class C Debt Rate",
+                                  "Avg. Firms Debt Rate",
+                                  "Avg. Class Debt Rate"
                                   )
     
-    rownames( key.stats ) <- c( "avg. growth rate", 
-                                  " (s.e.)",
+    colnames( key.stats ) <- c(   "Avg. (Growth) Rate",
+                                  "Std. Dev.",
                                   "ADF test (logs)",
-                                  " (s.e.)", 
-                                  " (p-val.)", 
-                                  " (s.e.)",
+                                  "ADF p-val", 
                                   " s.d. (bpf)", 
-                                  " (s.e.)",
-                                  " relative s.d. (GDP)" )
+                                  " s.d. relative to GDP" )
     
     textplot( formatC( key.stats, digits = sDigits, format = "g" ), cmar = 2 )
     title <- paste( "Key statistics and unit roots tests for cycles (", legends[ k ], ")" )
@@ -1426,7 +1474,7 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
     title( main = title, sub = subTitle )
     
     # Write tables to the disk as CSV files for Excel
-    write.csv( cbind( key.stats.1, key.stats.2, key.stats.3, key.stats.4) , quote = FALSE,
+    write.csv( key.stats , quote = FALSE,
                paste0( folder, "/", outDir, "/", repName, k, "_key_stats.csv" ) )
     
   
@@ -1435,196 +1483,95 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
     #
     # ---- Correlation structure tables (lags, standard errors and p-values) ----
     #
-    corr.struct.1 <- matrix(c(colMeans(t( unname( sapply(gdp_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(gdp_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              gdp_gdp_pval,
-                              
+    corr.struct <- matrix(c(  colMeans(t( unname( sapply(gdp_gdp, `[[`, "acf" ) ) ), na.rm = T),
                               colMeans(t( unname( sapply(cr_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(cr_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              cr_gdp_pval,
-                              
                               colMeans(t( unname( sapply(ir_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(ir_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              ir_gdp_pval,
-                              
                               colMeans(t( unname( sapply(gov_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(gov_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              gov_gdp_pval,
-                              
                               colMeans(t( unname( sapply(imp_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(imp_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              imp_gdp_pval,
-                              
                               colMeans(t( unname( sapply(x_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(x_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              x_gdp_pval,
-                              
                               colMeans(t( unname( sapply(nx_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(nx_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              nx_gdp_pval
-    ),
-    
-    ncol = 2 * lags + 1, byrow = T)
-    colnames( corr.struct.1 ) <- gdp_gdp[[1]]$lag
-    rownames( corr.struct.1 ) <- c( "GDP (output)", " (s.e.)", " (p-val.)",
-                                    "Consumption", " (s.e.)", " (p-val.)",
-                                    "Investment", " (s.e.)", " (p-val.)",
-                                    "Gov. Expenditure", " (s.e.)", " (p-val.)",
-                                    "Imports", " (s.e.)", " (p-val.)",
-                                    "Exports", " (s.e.)", " (p-val.)",
-                                    "Net Exports", " (s.e.)", " (p-val.)"
-    )
-    
-    corr.struct.2 <- matrix(c(colMeans(t( unname( sapply(p_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(p_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              p_gdp_pval,
-                              
+                              colMeans(t( unname( sapply(p_gdp, `[[`, "acf" ) ) ), na.rm = T),
                               colMeans(t( unname( sapply(profits_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(profits_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              profits_gdp_pval,
-                              
                               colMeans(t( unname( sapply(wage_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(wage_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              wage_gdp_pval,
-                              
                               colMeans(t( unname( sapply(pr_sh_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(pr_sh_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              pr_sh_gdp_pval,
-                              
                               colMeans(t( unname( sapply(wg_sh_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(wg_sh_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              wg_sh_gdp_pval,
-                              
                               colMeans(t( unname( sapply(mk_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(mk_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              mk_gdp_pval,
-                              
                               colMeans(t( unname( sapply(pr_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(pr_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              pr_gdp_pval
-                            
-    ),
-    
-    ncol = 2 * lags + 1, byrow = T)
-    colnames( corr.struct.2 ) <- gdp_gdp[[1]]$lag
-    rownames( corr.struct.2 ) <- c( "Price", " (s.e.)", " (p-val.)",
-                                    "Profits", " (s.e.)", " (p-val.)",
-                                    "Wages", " (s.e.)", " (p-val.)",
-                                    "Profit Share", " (s.e.)", " (p-val.)",
-                                    "Wage Share", " (s.e.)", " (p-val.)",
-                                    "Markup", " (s.e.)", " (p-val.)",
-                                    "Profit Rate", " (s.e.)", " (p-val.)"
-                                  )
-    
-    title <- paste( "Correlation structure for GDP (", legends[ k ], ")" )
-    subTitle <- paste( eval( bquote( paste0( "( non-rate/ratio series are Baxter-King bandpass-filtered, low = ",
-                                             .( lowP ), "Q / high = ", .( highP ), "Q / order = ", .( bpfK ),
-                                             " / MC runs = ", .( nSize ), " / period = ",
-                                             .( warmUpStat + 1 ), " - ", .( nTstat ), " )" ) ) ),
-                       eval( bquote ( paste0( "( test H0: lag coefficient is not significant at ",
-                                              .( ( 1 - CI ) * 100), "% level", " )" ) ) ), sep ="\n" )
-    
-    
-    corr.struct.3 <- matrix(c(colMeans(t( unname( sapply(prod_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(prod_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              prod_gdp_pval,
-                              
+                              colMeans(t( unname( sapply(prod_gdp, `[[`, "acf" ) ) ), na.rm = T),
                               colMeans(t( unname( sapply(pcu_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(pcu_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              pcu_gdp_pval,
-                              
                               colMeans(t( unname( sapply(inve_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(inve_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              inve_gdp_pval,
-                              
                               colMeans(t( unname( sapply(k_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(k_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              k_gdp_pval,
-                              
                               colMeans(t( unname( sapply(u_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(u_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              u_gdp_pval,
-                              
                               colMeans(t( unname( sapply(emp_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(emp_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              emp_gdp_pval,
-                              
                               colMeans(t( unname( sapply(kl_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(kl_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              kl_gdp_pval
-    ),
-    
-    ncol = 2 * lags + 1, byrow = T)
-    colnames( corr.struct.3 ) <- gdp_gdp[[1]]$lag
-    rownames( corr.struct.3 ) <- c( "Productivity", " (s.e.)", " (p-val.)",
-                                    "Capacity Utilization", " (s.e.)", " (p-val.)",
-                                    "Inventories", " (s.e.)", " (p-val.)",
-                                    "Capital Stock", " (s.e.)", " (p-val.)",
-                                    "Unemployment", " (s.e.)", " (p-val.)",
-                                    "Employment", " (s.e.)", " (p-val.)",
-                                    "Capital-Labor", " (s.e.)", " (p-val.)"
-    )
-    
-    title <- paste( "Correlation structure for GDP (", legends[ k ], ")" )
-    subTitle <- paste( eval( bquote( paste0( "( non-rate/ratio series are Baxter-King bandpass-filtered, low = ",
-                                             .( lowP ), "Q / high = ", .( highP ), "Q / order = ", .( bpfK ),
-                                             " / MC runs = ", .( nSize ), " / period = ",
-                                             .( warmUpStat + 1 ), " - ", .( nTstat ), " )" ) ) ),
-                       eval( bquote ( paste0( "( test H0: lag coefficient is not significant at ",
-                                              .( ( 1 - CI ) * 100), "% level", " )" ) ) ), sep ="\n" )
-    
-    
-    corr.struct.4 <- matrix(c(colMeans(t( unname( sapply(infla_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(infla_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              infla_gdp_pval,
-                              
+                              colMeans(t( unname( sapply(infla_gdp, `[[`, "acf" ) ) ), na.rm = T),
                               colMeans(t( unname( sapply(cgdp_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(cgdp_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              cgdp_gdp_pval,
-                              
                               colMeans(t( unname( sapply(igdp_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(igdp_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              igdp_gdp_pval,
-                              
                               colMeans(t( unname( sapply(ggdp_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(ggdp_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              ggdp_gdp_pval,
-                              
                               colMeans(t( unname( sapply(nxgdp_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(nxgdp_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              nxgdp_gdp_pval,
-                              
                               colMeans(t( unname( sapply(invgdp_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(invgdp_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              invgdp_gdp_pval,
-                              
                               colMeans(t( unname( sapply(kgdp_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colSds(t( unname( sapply(kgdp_gdp, `[[`, "acf" ) ) ), na.rm = T) / sqrt( nSize ),
-                              kgdp_gdp_pval
-    ),
+                              colMeans(t( unname( sapply(debtfs_gdp, `[[`, "acf" ) ) ), na.rm = T),
+                              colMeans(t( unname( sapply(debtfs_st_gdp, `[[`, "acf" ) ) ), na.rm = T),
+                              colMeans(t( unname( sapply(debtfs_lt_gdp, `[[`, "acf" ) ) ), na.rm = T),
+                              colMeans(t( unname( sapply(depfs_gdp, `[[`, "acf" ) ) ), na.rm = T),
+                              colMeans(t( unname( sapply(drt_fi_gdp, `[[`, "acf" ) ) ), na.rm = T),
+                              colMeans(t( unname( sapply(drt_cl_gdp, `[[`, "acf" ) ) ), na.rm = T),
+                              colMeans(t( unname( sapply(fslev_gdp, `[[`, "acf" ) ) ), na.rm = T),
+                              colMeans(t( unname( sapply(fspr_gdp, `[[`, "acf" ) ) ), na.rm = T),
+                              colMeans(t( unname( sapply(fsdr_gdp, `[[`, "acf" ) ) ), na.rm = T),
+                              colMeans(t( unname( sapply(ponzi_gdp, `[[`, "acf" ) ) ), na.rm = T),
+                              colMeans(t( unname( sapply(spec_gdp, `[[`, "acf" ) ) ), na.rm = T),
+                              colMeans(t( unname( sapply(hedge_gdp, `[[`, "acf" ) ) ), na.rm = T)
+                            ),
     
     ncol = 2 * lags + 1, byrow = T)
-    colnames( corr.struct.4 ) <- gdp_gdp[[1]]$lag
-    rownames( corr.struct.4 ) <- c( "Inflation", " (s.e.)", " (p-val.)",
-                                    "Consumption (Share of GDP)", " (s.e.)", " (p-val.)",
-                                    "Investment (Share of GDP)", " (s.e.)", " (p-val.)",
-                                    "Gov. Expenditure (Share of GDP)", " (s.e.)", " (p-val.)",
-                                    "Net Exports (Share of GDP)", " (s.e.)", " (p-val.)",
-                                    "Inventories (Share of GDP)", " (s.e.)", " (p-val.)",
-                                    "Capital Stock (Share of GDP)", " (s.e.)", " (p-val.)"
+    colnames( corr.struct ) <- gdp_gdp[[1]]$lag
+    rownames( corr.struct ) <- c(   "GDP (output)",
+                                    "Consumption", 
+                                    "Investment",
+                                    "Gov. Expenditure",
+                                    "Imports",
+                                    "Exports", 
+                                    "Net Exports", 
+                                    "Price",
+                                    "Profits", 
+                                    "Wages", 
+                                    "Profit Share", 
+                                    "Wage Share", 
+                                    "Markup",
+                                    "Profit Rate", 
+                                    "Productivity", 
+                                    "Capacity Utilization", 
+                                    "Inventories", 
+                                    "Capital Stock", 
+                                    "Unemployment", 
+                                    "Employment", 
+                                    "Capital-Labor", 
+                                    "Inflation",
+                                    "Consumption (Share of GDP)", 
+                                    "Investment (Share of GDP)", 
+                                    "Gov. Expenditure (Share of GDP)",
+                                    "Net Exports (Share of GDP)", 
+                                    "Inventories (Share of GDP)", 
+                                    "Capital Stock (Share of GDP)",
+                                    "Total Debt",
+                                    "Short Term Loans", 
+                                    "Long Term Loans", 
+                                    "Total Deposits", 
+                                    "Firms Debt Rate", 
+                                    "Class Debt Rate", 
+                                    "Financial Sector Leverage",
+                                    "Financial Sector Profits", 
+                                    "Financial Sector Default Rate",
+                                    "Share of Ponzi Firms", 
+                                    "Share of Speculative Firms", 
+                                    "Share of Hedge Firms"
     )
     
-    textplot( formatC( corr.struct.1, digits = sDigits, format = "g" ), cmar = 1 )
+    textplot( formatC( corr.struct, digits = sDigits, format = "g" ), cmar = 1 )
     title( main = title, sub = subTitle )
-    textplot( formatC( corr.struct.2, digits = sDigits, format = "g" ), cmar = 1 )
-    title( main = title, sub = subTitle )
-    textplot( formatC( corr.struct.3, digits = sDigits, format = "g" ), cmar = 1 )
-    title( main = title, sub = subTitle )
-    textplot( formatC( corr.struct.4, digits = sDigits, format = "g" ), cmar = 1 )
-    title( main = title, sub = subTitle )
-    
-    
-    write.csv( rbind( corr.struct.1, corr.struct.2, corr.struct.3, corr.struct.4), quote = FALSE,
+    write.csv( corr.struct, quote = FALSE,
                paste0( folder, "/", outDir, "/", repName, k, "_corr_struct.csv" ) )
 
   }
