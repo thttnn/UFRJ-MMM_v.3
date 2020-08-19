@@ -19,9 +19,9 @@ if( exists( "folder" ) )				        # check for previous run (interactive mode)
 # ====== User parameters ======
 
 # Database files
-folder   <- "Res_Final_Kriging"                    # data files folder
+folder   <- "Res_Kriging_Short"                    # data files folder
 baseName <- "Sim_1"                    # data files base name (same as .lsd file)
-varName <- "P_G"                        # analysis variable name
+varName <- "FS_PR"                        # analysis variable name
 iniDrop <- 100                        # initial time steps to drop from analysis (0=none)
 nKeep <- -1                           # number of time steps to keep (-1=all)
 cores <- 0                            # maximum number of cores to allocate (0=all)

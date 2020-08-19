@@ -19,7 +19,6 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 8-->       smoothed pasinetti rule
 9-->       kansas city rule
 
-
 "interest_rate_adjustment": absolute increase
 
 */
@@ -137,7 +136,15 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	if(v[12]==9)												//kansas city rule.
 		v[20]=0;
 	
-RESULT(max(0,v[20]))
+	v[30]=V("begin_interest_shock");          //defines when the shock happens
+	v[31]=V("duration_interest_shock");       //defines how long the shock lasts
+	v[32]=V("size_interest_shock");           //defines the size, in percentage, of the shock
+	if(t>=v[30]&&t<v[30]+v[31])
+		v[33]=v[20]*(1+v[32]);
+	else
+		v[33]=v[20];
+	
+RESULT(max(0,v[33]))
 
 
 EQUATION("Interest_Rate_Deposits")
@@ -166,7 +173,7 @@ RESULT(v[0])
 
 EQUATION("Avg_Interest_Rate_Long_Term")
 /*
-Average weighted by firm's market share
+Average weighted by banks's market share
 */
 v[0]=WHTAVE("Bank_Interest_Rate_Long_Term", "Bank_Market_Share");
 RESULT(v[0])

@@ -181,6 +181,9 @@ Label Root
 			Var: Financial_Sector_Turbulence
 			Var: Interest_Rate_Deposits
 			Var: Total_Stock_Loans_Growth
+			Param: begin_interest_shock
+			Param: duration_interest_shock
+			Param: size_interest_shock
 
 		}
 
@@ -428,6 +431,7 @@ Label Root
 			Var: Sector_Unemployment
 			Var: Sector_Credit_Grating
 			Var: Sector_Short_Term_Rate
+			Param: strategic_price_weight
 
 		}
 
@@ -477,7 +481,6 @@ Label Root
 		Param: payback_period
 		Param: rnd_revenue_proportion
 		Param: std_dev_innovation
-		Param: strategic_price_weight
 		Param: survival_period
 		Param: begin_credit_rationing
 		Param: switch_government_composition
@@ -707,7 +710,6 @@ Param: number_object_banks 0 n + n n	5
 Param: payback_period 0 n + n n	24
 Param: rnd_revenue_proportion 0 n + n n	0.01
 Param: std_dev_innovation 0 n + n n	0.005
-Param: strategic_price_weight 0 n + n n	0.5
 Param: survival_period 0 n + n n	7
 Param: begin_credit_rationing 0 n + n n	-1
 Param: switch_government_composition 0 n + n n	0
@@ -859,8 +861,8 @@ Param: inflation_target 0 n + n n	0
 Param: interest_rate_adjustment 0 n + n n	0.0005
 Param: long_term_loans_spread 0 n + n n	2
 Param: minimum_capital_ratio 0 n + n n	0.05
-Param: price_strategy_long_term 0 n + n n	0
-Param: price_strategy_short_term 0 n + n n	0
+Param: price_strategy_long_term 0 n + n n	0.3
+Param: price_strategy_short_term 0 n + n n	0.2
 Param: public_long_term_spread 0 n + n n	1
 Param: public_short_term_spread 0 n + n n	0.5
 Param: real_interest_rate 0 n + n n	0.0025
@@ -897,6 +899,9 @@ Var: Financial_Sector_Total_Stock_Loans 1 s + n n	0
 Var: Financial_Sector_Turbulence 0 s + n n
 Var: Interest_Rate_Deposits 1 s + n n	0
 Var: Total_Stock_Loans_Growth 1 s + n n	0
+Param: begin_interest_shock 0 n + n n	300
+Param: duration_interest_shock 0 n + n n	500
+Param: size_interest_shock 0 n + n n	0
 
 Object: BANKS C	1
 Param: bank_defaulted_loans_temporary 0 s + n n	0
@@ -981,7 +986,7 @@ Param: profits_distribution_rate 0 n + n n	0.95	0.95	0.95
 Param: sector_exports_coefficient 0 n + n n	0	0	0
 Param: sector_initial_demand 0 n + n n	0	0	0
 Param: sector_initial_price 0 n + n n	0	0	0
-Param: sector_passthrough_inflation 0 n + n n	0.9	0.9	0.9
+Param: sector_passthrough_inflation 0 n + n n	1	1	1
 Param: sector_passthrough_productivity 0 s + n n	1	1	1
 Var: Domestic_Capital_Demand 0 n + n n
 Var: Domestic_Consumption_Demand 0 n + n n
@@ -1038,6 +1043,7 @@ Var: Sector_Turbulence 0 s + n n
 Var: Sector_Unemployment 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Sector_Credit_Grating 0 s + n n
 Var: Sector_Short_Term_Rate 0 s + n n
+Param: strategic_price_weight 0 n + n n	0.5	0.5	0
 
 Object: FIRMS C	1	1	1
 Var: Firm_Available_Funds_After_Replacement 0 n + n n
@@ -1565,12 +1571,6 @@ _INIT_
 All 1 instances equal to 0.005.
 END_DESCRIPTION
 
-Parameter_strategic_price_weight
-(no description available)
-_INIT_
-All 50 instances equal to 0.5.
-END_DESCRIPTION
-
 Parameter_survival_period
 (no description available)
 _INIT_
@@ -1592,7 +1592,7 @@ END_DESCRIPTION
 Parameter_switch_interest_payment
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_switch_unemployment_benefits
@@ -2716,6 +2716,24 @@ _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
+Parameter_begin_interest_shock
+(no description available)
+_INIT_
+All 1 instances equal to 300.
+END_DESCRIPTION
+
+Parameter_duration_interest_shock
+(no description available)
+_INIT_
+All 1 instances equal to 500.
+END_DESCRIPTION
+
+Parameter_size_interest_shock
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
 Object_BANKS
 (no description available)
 _INIT_
@@ -3248,7 +3266,7 @@ END_DESCRIPTION
 Parameter_sector_passthrough_inflation
 (no description available)
 _INIT_
-All 3 instances equal to 0.9.
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_sector_passthrough_productivity
@@ -3602,6 +3620,12 @@ Sector Variable for Analysis
 Share of  credit grating that is short term
 _INIT_
 
+END_DESCRIPTION
+
+Parameter_strategic_price_weight
+(no description available)
+_INIT_
+All 50 instances equal to 0.5.
 END_DESCRIPTION
 
 Object_FIRMS
@@ -4961,14 +4985,14 @@ END_DESCRIPTION
 Variable_BKR
 Number of Bankrupt Events
 Number of Bankrupt Events
-
+_INIT_
 
 END_DESCRIPTION
 
 Variable_BKR_RT
 Bankrupt Rate
 Bankrupt Rate
-
+_INIT_
 
 END_DESCRIPTION
 

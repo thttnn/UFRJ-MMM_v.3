@@ -10,15 +10,15 @@
 #
 #******************************************************************
 
-folder    <- "./Res_Finance_Baseline"                  # data files folder
+folder    <- "./Res_Basic_Interest_2"                  # data files folder
 baseName  <- "Sim_"                     # data files base name (same as .lsd file)
-nExp      <- 2                          # number of experiments (sensitivity/different cases)
+nExp      <- 7                          # number of experiments (sensitivity/different cases)
 iniDrop   <- 0                          # initial time steps to drop from analysis (0=none)
 nKeep     <- -1                         # number of time steps to keep (-1=all)
 cores     <- 0                          # maximum number of cores to allocate (0=all)
 savDat    <- F                          # save processed data files and re-use if available?
 
-expVal <- c("Baseline", "0.9")                   # case parameter values
+expVal <- c("Baseline", "T1", "T2", "T3", "T4", "T5", "T6")                   # case parameter values
 
 # Aggregated variables to use
 logVars <- c( "Real_GDP",               # Real GDP
@@ -72,6 +72,7 @@ aggrVars <- append( logVars,
                         "INVGDP",       # Inventories Share of GDP
                         "KGDP",          # Capital Stock Share of GDP (K/Y Ratio)
                         "Financial_Sector_Demand_Met",
+                        "Financial_Sector_Rescue",
                         "DEBT_FS_G",
                         "DEBT_FS_ST_G",
                         "DEBT_FS_LT_G",
@@ -95,7 +96,10 @@ aggrVars <- append( logVars,
                         "IR",
                         "IR_DEP",
                         "IR_ST",
-                        "IR_LT"
+                        "IR_LT",
+                        "Cri",
+                        "BKR",
+                        "BKR_RT"
                         ) )
 
 # Variables to test for stationarity and ergodicity
@@ -115,7 +119,7 @@ aggrVars <- append( logVars,
                         "EMP_G",        # Employment Growth
                         "U",            # Unemployment Rate
                         "Profit_Share", # Profit Share 
-                        "Wage_Share",    # Wage Share
+                        "Wage_Share",   # Wage Share
                         "PCU",          # Productive Capacity Utilization
                         "PR",           # Profit Rate
                         "CGDP",         # Consumption Share of GDP
@@ -123,7 +127,7 @@ aggrVars <- append( logVars,
                         "GGDP",         # Government Expenses Share of GDP
                         "NXGDP",        # Net Exports Share of GDP
                         "INVGDP",       # Inventories Share of GDP
-                        "KGDP",          # Capital Stock Share of GDP (K/Y Ratio)
+                        "KGDP",         # Capital Stock Share of GDP (K/Y Ratio)
                         "DEBT_FS_G",
                         "DEBT_FS_ST_G",
                         "DEBT_FS_LT_G",
@@ -358,7 +362,7 @@ bPlotNotc <- FALSE  # use boxplot notches
 lowP      <- 6      # bandpass filter minimum period
 highP     <- 32     # bandpass filter maximum period
 bpfK      <- 12     # bandpass filter order
-lags      <- 4      # lags to analyze
+lags      <- 6      # lags to analyze
 smoothing <- 1600   # HP filter smoothing factor (lambda)
 crisisTh  <- 0.00   # crisis growth threshold
 crisisLen <- 3      # crisis minimum duration (periods)
@@ -377,15 +381,15 @@ raster    <- TRUE  # raster or vector plots
 res       <- 600    # resolution of raster mode (in dpi)
 
 # Colors assigned to each experiment's lines in graphics
-colors <- c( "black", "blue", "red", "orange", "green", "brown", "yellow", "purple", "gray" )
+colors <- c( "black", "blue", "red", "orange", "green", "brown", "yellow", "purple", "gray", "blueviolet" )
 #colors <- rep( "black", 6 )
 
 # Line types assigned to each experiment
-lTypes <- c( "solid", "solid", "solid", "solid", "solid", "solid", "solid", "solid", "solid")
+lTypes <- c( "solid", "solid", "solid", "solid", "solid", "solid", "solid", "solid", "solid", "solid")
 #lTypes <- c( "solid", "dashed", "dotted", "dotdash", "longdash", "twodash" )
 
 # Point types assigned to each experiment
-pTypes <- c( 4, 4, 4, 4, 4, 4, 4, 4, 4 )
+pTypes <- c( 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 )
 #pTypes <- c( 4, 0, 1, 2, 3, 5 )
 
 # ====== External support functions & definitions ======
@@ -615,9 +619,35 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
   fsstr_gdp<-
   fspr_gdp<-
   fsdr_gdp<-
+  fsdef_gdp<-
   ponzi_gdp<-
   spec_gdp<-
   hedge_gdp<-
+  rescue_gdp<-
+    drt_fi_debt<-
+    drt_cl_debt<-
+    fshhi_debt<-
+    fslev_debt<-
+    fsstr_debt<-
+    fspr_debt<-
+    fsdr_debt<-
+    fsdef_debt<-
+    ponzi_debt<-
+    spec_debt<-
+    hedge_debt<-
+    rescue_debt<-
+    drt_fi_inv<-
+    drt_cl_inv<-
+    fshhi_inv<-
+    fslev_inv<-
+    fsstr_inv<-
+    fspr_inv<-
+    fsdr_inv<-
+    fsdef_inv<-
+    ponzi_inv<-
+    spec_inv<-
+    hedge_inv<-
+    rescue_inv<-
   list( )
   
   gdp_gdp_pval<- 
@@ -835,6 +865,7 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       ponzi_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "PONZI", j ] , pl = lowP, pu = highP, nfix = bpfK )
       spec_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "SPEC", j ] , pl = lowP, pu = highP, nfix = bpfK )
       hedge_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "HEDGE", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      rescue_bpf<- bkfilter( mcData[[ k ]][ TmaskStat, "Financial_Sector_Rescue", j ] , pl = lowP, pu = highP, nfix = bpfK )
       
       # Augmented Dickey-Fuller tests for unit roots
       adf_gdp_r[[ j ]]<- adf.test( log0( mcData[[ k ]][ TmaskStat, "Real_GDP", j ] ) )
@@ -935,132 +966,76 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       hedge_sd[ j ]<- sd( hedge_bpf$cycle[ TmaskBpf, 1 ] )
       
       # Build the correlation structures
-      gdp_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
-                              gdp_bpf$cycle[ TmaskBpf, 1 ],
-                              lag.max = lags, plot = FALSE, na.action = na.pass )
-      cr_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
-                            con_bpf$cycle[ TmaskBpf, 1 ],
-                            lag.max = lags, plot = FALSE, na.action = na.pass )
-      ir_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
-                            inv_bpf$cycle[ TmaskBpf, 1 ],
-                            lag.max = lags, plot = FALSE, na.action = na.pass )
-      gov_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                            gov_bpf$cycle[ TmaskBpf, 1 ],
-                            lag.max = lags, plot = FALSE, na.action = na.pass )
-      imp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                            imp_bpf$cycle[ TmaskBpf, 1 ],
-                            lag.max = lags, plot = FALSE, na.action = na.pass )
-      x_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                            x_bpf$cycle[ TmaskBpf, 1 ],
-                            lag.max = lags, plot = FALSE, na.action = na.pass )
-      nx_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                          nx_bpf$cycle[ TmaskBpf, 1 ],
-                          lag.max = lags, plot = FALSE, na.action = na.pass )
-      p_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
-                           p_bpf$cycle[ TmaskBpf, 1 ],
-                           lag.max = lags, plot = FALSE, na.action = na.pass )
-      k_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
-                           k_bpf$cycle[ TmaskBpf, 1 ],
-                           lag.max = lags, plot = FALSE, na.action = na.pass )
-      inve_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
-                              inve_bpf$cycle[ TmaskBpf, 1 ],
-                              lag.max = lags, plot = FALSE, na.action = na.pass )
-      emp_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
-                             emp_bpf$cycle[ TmaskBpf, 1 ],
-                             lag.max = lags, plot = FALSE, na.action = na.pass )
-      profits_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                                profits_bpf$cycle[ TmaskBpf, 1 ],
-                                lag.max = lags, plot = FALSE, na.action = na.pass )
-      wage_gdp[[ j ]]    <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                                wage_bpf$cycle[ TmaskBpf, 1 ],
-                                lag.max = lags, plot = FALSE, na.action = na.pass )
-      prod_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
-                              prod_bpf$cycle[ TmaskBpf, 1 ],
-                              lag.max = lags, plot = FALSE, na.action = na.pass )
-      mk_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
-                            mk_bpf$cycle[ TmaskBpf, 1 ],
-                            lag.max = lags, plot = FALSE, na.action = na.pass )
-      kl_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
-                            kl_bpf$cycle[ TmaskBpf, 1 ],
-                            lag.max = lags, plot = FALSE, na.action = na.pass )
-      infla_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
-                            infla_bpf$cycle[ TmaskBpf, 1 ],
-                            lag.max = lags, plot = FALSE, na.action = na.pass )
-      u_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],
-                           u_bpf$cycle[ TmaskBpf, 1 ],
-                           lag.max = lags, plot = FALSE, na.action = na.pass )
-      pr_sh_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                              pr_sh_bpf$cycle[ TmaskBpf, 1 ],
-                              lag.max = lags, plot = FALSE, na.action = na.pass )
-      wg_sh_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                              wg_sh_bpf$cycle[ TmaskBpf, 1 ],
-                              lag.max = lags, plot = FALSE, na.action = na.pass )
-      pcu_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                              pcu_bpf$cycle[ TmaskBpf, 1 ],
-                              lag.max = lags, plot = FALSE, na.action = na.pass )
-      pr_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                              pr_bpf$cycle[ TmaskBpf, 1 ],
-                              lag.max = lags, plot = FALSE, na.action = na.pass )
-      cgdp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                              cgdp_bpf$cycle[ TmaskBpf, 1 ],
-                              lag.max = lags, plot = FALSE, na.action = na.pass )
-      igdp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                              igdp_bpf$cycle[ TmaskBpf, 1 ],
-                              lag.max = lags, plot = FALSE, na.action = na.pass )
-      ggdp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                             ggdp_bpf$cycle[ TmaskBpf, 1 ],
-                             lag.max = lags, plot = FALSE, na.action = na.pass )
-      nxgdp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                             nxgdp_bpf$cycle[ TmaskBpf, 1 ],
-                             lag.max = lags, plot = FALSE, na.action = na.pass )
-      invgdp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                             invgdp_bpf$cycle[ TmaskBpf, 1 ],
-                             lag.max = lags, plot = FALSE, na.action = na.pass )
-      kgdp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],
-                             kgdp_bpf$cycle[ TmaskBpf, 1 ],
-                             lag.max = lags, plot = FALSE, na.action = na.pass )
-      debtfs_gdp[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ],
-                                 gdp_bpf$cycle[ TmaskBpf, 1 ],
-                                 lag.max = lags, plot = FALSE, na.action = na.pass )
-      debtfs_st_gdp[[ j ]]  <- ccf( debtfs_st_bpf$cycle[ TmaskBpf, 1 ],
-                                    gdp_bpf$cycle[ TmaskBpf, 1 ],
-                                    lag.max = lags, plot = FALSE, na.action = na.pass )
-      debtfs_lt_gdp[[ j ]]  <- ccf( debtfs_lt_bpf$cycle[ TmaskBpf, 1 ],
-                                    gdp_bpf$cycle[ TmaskBpf, 1 ],
-                                    lag.max = lags, plot = FALSE, na.action = na.pass )
-      depfs_gdp[[ j ]]  <- ccf( depfs_bpf$cycle[ TmaskBpf, 1 ],
-                                gdp_bpf$cycle[ TmaskBpf, 1 ],
-                                lag.max = lags, plot = FALSE, na.action = na.pass )
-      drt_fi_gdp[[ j ]]  <- ccf( drt_fi_bpf$cycle[ TmaskBpf, 1 ],
-                                 gdp_bpf$cycle[ TmaskBpf, 1 ],
-                                 lag.max = lags, plot = FALSE, na.action = na.pass )
-      drt_cl_gdp[[ j ]]  <- ccf( drt_cl_bpf$cycle[ TmaskBpf, 1 ],
-                                 gdp_bpf$cycle[ TmaskBpf, 1 ],
-                                 lag.max = lags, plot = FALSE, na.action = na.pass )
-      fshhi_gdp[[ j ]]  <- ccf( fshhi_bpf$cycle[ TmaskBpf, 1 ],
-                                gdp_bpf$cycle[ TmaskBpf, 1 ],
-                                lag.max = lags, plot = FALSE, na.action = na.pass )
-      fslev_gdp[[ j ]]  <- ccf( fslev_bpf$cycle[ TmaskBpf, 1 ],
-                                gdp_bpf$cycle[ TmaskBpf, 1 ],
-                                lag.max = lags, plot = FALSE, na.action = na.pass )
-      fsstr_gdp[[ j ]]  <- ccf( fsstr_bpf$cycle[ TmaskBpf, 1 ],
-                                gdp_bpf$cycle[ TmaskBpf, 1 ],
-                                lag.max = lags, plot = FALSE, na.action = na.pass )
-      fspr_gdp[[ j ]]  <- ccf( fspr_bpf$cycle[ TmaskBpf, 1 ],
-                               gdp_bpf$cycle[ TmaskBpf, 1 ],
-                               lag.max = lags, plot = FALSE, na.action = na.pass )
-      fsdr_gdp[[ j ]]  <- ccf( fsdr_bpf$cycle[ TmaskBpf, 1 ],
-                               gdp_bpf$cycle[ TmaskBpf, 1 ],
-                               lag.max = lags, plot = FALSE, na.action = na.pass )
-      ponzi_gdp[[ j ]]  <- ccf( ponzi_bpf$cycle[ TmaskBpf, 1 ],
-                                gdp_bpf$cycle[ TmaskBpf, 1 ],
-                                lag.max = lags, plot = FALSE, na.action = na.pass )
-      spec_gdp[[ j ]]  <- ccf( spec_bpf$cycle[ TmaskBpf, 1 ],
-                               gdp_bpf$cycle[ TmaskBpf, 1 ],
-                               lag.max = lags, plot = FALSE, na.action = na.pass )
-      hedge_gdp[[ j ]]  <- ccf( hedge_bpf$cycle[ TmaskBpf, 1 ],
-                                gdp_bpf$cycle[ TmaskBpf, 1 ],
-                                lag.max = lags, plot = FALSE, na.action = na.pass )
+      gdp_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ],gdp_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      cr_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], con_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      ir_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], inv_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      gov_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], gov_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      imp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], imp_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      x_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], x_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      nx_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], nx_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      p_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], p_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      k_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], k_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      inve_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], inve_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      emp_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], emp_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      profits_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], profits_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      wage_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ],wage_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      prod_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], prod_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      mk_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], mk_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      kl_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], kl_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      infla_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], infla_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      u_gdp[[ j ]] <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], u_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      pr_sh_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], pr_sh_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      wg_sh_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], wg_sh_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      pcu_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], pcu_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      pr_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], pr_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      cgdp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], cgdp_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      igdp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], igdp_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      ggdp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], ggdp_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      nxgdp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], nxgdp_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      invgdp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], invgdp_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      kgdp_gdp[[ j ]] <- ccf(gdp_bpf$cycle[ TmaskBpf, 1 ], kgdp_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      debtfs_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], debtfs_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      debtfs_st_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], debtfs_st_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      debtfs_lt_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], debtfs_lt_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      depfs_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], depfs_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      drt_fi_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], drt_fi_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      drt_cl_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], drt_cl_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fshhi_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], fshhi_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fslev_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], fslev_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fsstr_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], fsstr_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fspr_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], fspr_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fsdr_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], fsdr_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fsdef_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], fsdef_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      ponzi_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], ponzi_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      spec_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], spec_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      hedge_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], hedge_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      rescue_gdp[[ j ]]  <- ccf( gdp_bpf$cycle[ TmaskBpf, 1 ], rescue_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      
+      drt_fi_debt[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ], drt_fi_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      drt_cl_debt[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ], drt_cl_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fshhi_debt[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ], fshhi_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fslev_debt[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ], fslev_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fsstr_debt[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ], fsstr_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fspr_debt[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ], fspr_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fsdr_debt[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ], fsdr_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fsdef_debt[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ], fsdef_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      ponzi_debt[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ], ponzi_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      spec_debt[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ], spec_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      hedge_debt[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ], hedge_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      rescue_debt[[ j ]]  <- ccf( debtfs_bpf$cycle[ TmaskBpf, 1 ], rescue_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      
+      drt_fi_inv[[ j ]]  <- ccf( inv_bpf$cycle[ TmaskBpf, 1 ], drt_fi_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      drt_cl_inv[[ j ]]  <- ccf( inv_bpf$cycle[ TmaskBpf, 1 ], drt_cl_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fshhi_inv[[ j ]]  <- ccf( inv_bpf$cycle[ TmaskBpf, 1 ], fshhi_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fslev_inv[[ j ]]  <- ccf( inv_bpf$cycle[ TmaskBpf, 1 ], fslev_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fsstr_inv[[ j ]]  <- ccf( inv_bpf$cycle[ TmaskBpf, 1 ], fsstr_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fspr_inv[[ j ]]  <- ccf( inv_bpf$cycle[ TmaskBpf, 1 ], fspr_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fsdr_inv[[ j ]]  <- ccf( inv_bpf$cycle[ TmaskBpf, 1 ], fsdr_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      fsdef_inv[[ j ]]  <- ccf( inv_bpf$cycle[ TmaskBpf, 1 ], fsdef_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      ponzi_inv[[ j ]]  <- ccf( inv_bpf$cycle[ TmaskBpf, 1 ], ponzi_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
+      spec_inv[[ j ]]  <- ccf( inv_bpf$cycle[ TmaskBpf, 1 ], spec_bpf$cycle[ TmaskBpf, 1 ],  lag.max = lags, plot = FALSE, na.action = na.pass )
+      hedge_inv[[ j ]]  <- ccf( inv_bpf$cycle[ TmaskBpf, 1 ], hedge_bpf$cycle[ TmaskBpf, 1 ],lag.max = lags, plot = FALSE, na.action = na.pass )
+      rescue_inv[[ j ]]  <- ccf( inv_bpf$cycle[ TmaskBpf, 1 ], rescue_bpf$cycle[ TmaskBpf, 1 ], lag.max = lags, plot = FALSE, na.action = na.pass )
     }
     
     # Applies t test to the mean lag results to test their significance (H0: lag < critCorr)
@@ -1520,9 +1495,11 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
                               colMeans(t( unname( sapply(fslev_gdp, `[[`, "acf" ) ) ), na.rm = T),
                               colMeans(t( unname( sapply(fspr_gdp, `[[`, "acf" ) ) ), na.rm = T),
                               colMeans(t( unname( sapply(fsdr_gdp, `[[`, "acf" ) ) ), na.rm = T),
+                              colMeans(t( unname( sapply(fsdef_gdp, `[[`, "acf" ) ) ), na.rm = T),
                               colMeans(t( unname( sapply(ponzi_gdp, `[[`, "acf" ) ) ), na.rm = T),
                               colMeans(t( unname( sapply(spec_gdp, `[[`, "acf" ) ) ), na.rm = T),
-                              colMeans(t( unname( sapply(hedge_gdp, `[[`, "acf" ) ) ), na.rm = T)
+                              colMeans(t( unname( sapply(hedge_gdp, `[[`, "acf" ) ) ), na.rm = T),
+                              colMeans(t( unname( sapply(rescue_gdp, `[[`, "acf" ) ) ), na.rm = T)
                             ),
     
     ncol = 2 * lags + 1, byrow = T)
@@ -1564,16 +1541,122 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
                                     "Financial Sector Leverage",
                                     "Financial Sector Profits", 
                                     "Financial Sector Default Rate",
+                                    "Defaulted Loans",
                                     "Share of Ponzi Firms", 
                                     "Share of Speculative Firms", 
-                                    "Share of Hedge Firms"
+                                    "Share of Hedge Firms",
+                                    "Bank Rescue"
     )
     
     textplot( formatC( corr.struct, digits = sDigits, format = "g" ), cmar = 1 )
+    title <- paste( "Correlation structure for GDP (", legends[ k ], ")" )
+    subTitle <- paste( eval( bquote( paste0( "( non-rate/ratio series are Baxter-King bandpass-filtered, low = ",
+                                             .( lowP ), "Q / high = ", .( highP ), "Q / order = ", .( bpfK ),
+                                             " / MC runs = ", .( nSize ), " / period = ",
+                                             .( warmUpStat + 1 ), " - ", .( nTstat ), " )" ) ) ),
+                       eval( bquote ( paste0( "( test H0: lag coefficient is not significant at ",
+                                              .( ( 1 - CI ) * 100), "% level", " )" ) ) ), sep ="\n" )
     title( main = title, sub = subTitle )
     write.csv( corr.struct, quote = FALSE,
                paste0( folder, "/", outDir, "/", repName, k, "_corr_struct.csv" ) )
+    
+    corr.struct.2 <- matrix(c( colMeans(t( unname( sapply(drt_fi_debt, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(drt_cl_debt, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(fslev_debt, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(fspr_debt, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(fsdr_debt, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(fsdef_debt, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(ponzi_debt, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(spec_debt, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(hedge_debt, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(rescue_debt, `[[`, "acf" ) ) ), na.rm = T)
+    ),
+    
+    ncol = 2 * lags + 1, byrow = T)
+    colnames( corr.struct.2 ) <- gdp_gdp[[1]]$lag
+    rownames( corr.struct.2 ) <- c( "Firms Debt Rate", 
+                                    "Class Debt Rate", 
+                                    "Financial Sector Leverage",
+                                    "Financial Sector Profits", 
+                                    "Financial Sector Default Rate",
+                                    "Defaulted Loans",
+                                    "Share of Ponzi Firms", 
+                                    "Share of Speculative Firms", 
+                                    "Share of Hedge Firms",
+                                    "Bank Rescue"
+    )
+    
+    textplot( formatC( corr.struct.2, digits = sDigits, format = "g" ), cmar = 1 )
+    title <- paste( "Correlation structure for Stock of Credit (", legends[ k ], ")" )
+    subTitle <- paste( eval( bquote( paste0( "( non-rate/ratio series are Baxter-King bandpass-filtered, low = ",
+                                             .( lowP ), "Q / high = ", .( highP ), "Q / order = ", .( bpfK ),
+                                             " / MC runs = ", .( nSize ), " / period = ",
+                                             .( warmUpStat + 1 ), " - ", .( nTstat ), " )" ) ) ),
+                       eval( bquote ( paste0( "( test H0: lag coefficient is not significant at ",
+                                              .( ( 1 - CI ) * 100), "% level", " )" ) ) ), sep ="\n" )
+    title( main = title, sub = subTitle )
+    write.csv( corr.struct.2, quote = FALSE,
+               paste0( folder, "/", outDir, "/", repName, k, "_corr_struct.2.csv" ) )
+    
+    
+    corr.struct.3 <- matrix(c( colMeans(t( unname( sapply(drt_fi_inv, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(drt_cl_inv, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(fslev_inv, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(fspr_inv, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(fsdr_inv, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(fsdef_inv, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(ponzi_inv, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(spec_inv, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(hedge_inv, `[[`, "acf" ) ) ), na.rm = T),
+                               colMeans(t( unname( sapply(rescue_inv, `[[`, "acf" ) ) ), na.rm = T)
+    ),
+    
+    ncol = 2 * lags + 1, byrow = T)
+    colnames( corr.struct.3 ) <- gdp_gdp[[1]]$lag
+    rownames( corr.struct.3 ) <- c( "Firms Debt Rate", 
+                                    "Class Debt Rate", 
+                                    "Financial Sector Leverage",
+                                    "Financial Sector Profits", 
+                                    "Financial Sector Default Rate",
+                                    "Defaulted_Loans",
+                                    "Share of Ponzi Firms", 
+                                    "Share of Speculative Firms", 
+                                    "Share of Hedge Firms",
+                                    "Bank Rescue"
+    )
+    
+    textplot( formatC( corr.struct.3, digits = sDigits, format = "g" ), cmar = 1 )
+    title <- paste( "Correlation structure for Inverstment (", legends[ k ], ")" )
+    subTitle <- paste( eval( bquote( paste0( "( non-rate/ratio series are Baxter-King bandpass-filtered, low = ",
+                                             .( lowP ), "Q / high = ", .( highP ), "Q / order = ", .( bpfK ),
+                                             " / MC runs = ", .( nSize ), " / period = ",
+                                             .( warmUpStat + 1 ), " - ", .( nTstat ), " )" ) ) ),
+                       eval( bquote ( paste0( "( test H0: lag coefficient is not significant at ",
+                                              .( ( 1 - CI ) * 100), "% level", " )" ) ) ), sep ="\n" )
+    title( main = title, sub = subTitle )
+    write.csv( corr.struct.3, quote = FALSE,
+               paste0( folder, "/", outDir, "/", repName, k, "_corr_struct.3.csv" ) )
 
+    #
+    # ---- Aggregated variables stationarity and ergodicity tests ----
+    #
+    
+    # select data to plot
+    if( k == bCase ){
+      
+      statErgo <- ergod.test.lsd( mcData[[ k ]][ TmaskStat, , ], signif = 1 - CI,
+                                  vars = statErgo.vars )
+      mcData[[k]]
+      # plot table
+      textplot( statErgo, cmar = 2, rmar = 0.5 )
+      title( main = paste( "Stationarity, i.i.d. and ergodicity tests (", legends[ k ], ")" ),
+             sub = paste( "( average p-values for testing H0 and rate of rejection of H0 / MC runs =", nSize, "/ period =", warmUpStat + 1, "-", nTstat, ")\n ( ADF/PP H0: non-stationary, KPSS H0: stationary, BDS H0: i.i.d., KS/AD/WW H0: ergodic )\n( significance =",
+                          1 - CI, ")" ) )
+      # write to disk
+      write.csv( statErgo, quote = FALSE,
+                 paste0( folder, "/", outDir, "/", repName, k, "_ergod_tests.csv" ) )
+    }  
+    
   }
   cat( "\nDone...\n" )
   

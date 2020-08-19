@@ -748,5 +748,49 @@ time_plots <- function( mcData, Adata, mdata, Mdata, Sdata, nExp, nSize, nTsteps
               tit = "Long Term Interest Rate",
               subtit = paste( "MC runs =", nSize ) )
   
+  # ------ Bankrupt Rate ------
+  
+  exps <- min <- max <- lo <- hi <- list( )
+  # select data to plot
+  for( k in 1 : nExp ){
+    # MC averages
+    exps[[ k ]] <- list( Adata[[ k ]]$BKR_RT[ TmaskPlot ] )
+    # minimum and maximum MC runs
+    min[[ k ]] <- list( mdata[[ k ]]$BKR_RT[ TmaskPlot ]  )
+    max[[ k ]] <- list( Mdata[[ k ]]$BKR_RT[ TmaskPlot ] )
+    # MC confidence interval
+    lo[[ k ]] <- list( Adata[[ k ]]$BKR_RT[ TmaskPlot ] -
+                         qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$BKR_RT[ TmaskPlot ] / sqrt( nSize  ) )
+    hi[[ k ]] <- list( Adata[[ k ]]$BKR_RT[ TmaskPlot ] +
+                         qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$BKR_RT / sqrt( nSize  ) )
+  }
+  
+  plot_lists( exps, min, max, lo, hi, leg = legends, mrk = transMk, col = colors,
+              lty = lTypes, xlab = "Time", ylab = "Rate",
+              tit = "Bankrupt Rate",
+              subtit = paste( "MC runs =", nSize ) )
+  
+  # ------ Banking Crisis ------
+  
+  exps <- min <- max <- lo <- hi <- list( )
+  # select data to plot
+  for( k in 1 : nExp ){
+    # MC averages
+    exps[[ k ]] <- list( log0( Adata[[ k ]]$Financial_Sector_Rescue[ TmaskPlot ] ))
+    # minimum and maximum MC runs
+    min[[ k ]] <- list( log0( mdata[[ k ]]$Financial_Sector_Rescue[ TmaskPlot ] ))
+    max[[ k ]] <- list( log0( Mdata[[ k ]]$Financial_Sector_Rescue[ TmaskPlot ] ))
+    # MC confidence interval
+    lo[[ k ]] <- list( log0( Adata[[ k ]]$Financial_Sector_Rescue[ TmaskPlot ] -
+                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$Financial_Sector_Rescue[ TmaskPlot ] / sqrt( nSize ) ))
+    hi[[ k ]] <- list( log0( Adata[[ k ]]$Financial_Sector_Rescue[ TmaskPlot ] +
+                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$Financial_Sector_Rescue[ TmaskPlot ] / sqrt( nSize ) ))
+  }
+  
+  plot_lists( exps, min, max, lo, hi, leg = legends, mrk = transMk, col = colors,
+              lty = lTypes, xlab = "Time", ylab = "Log",
+              tit = "Banking Crisis",
+              subtit = paste( "MC runs =", nSize ) )
+  
 
 }

@@ -224,6 +224,45 @@ box_plots <- function( mcData, nExp, nSize, TmaxStat, TmaskStat, warmUpStat,
     out[[ stat, k ]] <- bPlotStats$out
     
     stat <- stat + 1
+    names[[ stat ]] <- "Likelihood of Crisis"
+    units[[ stat ]] <- "Likelihood of Crisis"
+    temp <- mcData[[ k ]][ TmaskStat, "Cri", ]
+    temp[is.infinite(temp)] <- sign(temp[is.infinite(temp)] ) 
+    x <- colMeans( temp, na.rm = TRUE )
+    bPlotStats <- boxplot.stats( x, coef = bPlotCoef )
+    statsTb[ stat, , k ] <- c( mean( x ), sd( x ), min( x ), max( x ) )
+    statsBp[ stat, , k ] <- bPlotStats$stats
+    n[ stat, k ] <- bPlotStats$n
+    conf[ stat, , k ] <- bPlotStats$conf
+    out[[ stat, k ]] <- bPlotStats$out
+    
+    stat <- stat + 1
+    names[[ stat ]] <- "Likelihood of Bankrupts"
+    units[[ stat ]] <- "Likelihood of Bankrupts"
+    temp <- mcData[[ k ]][ TmaskStat, "BKR", ]
+    temp[is.infinite(temp)] <- sign(temp[is.infinite(temp)] ) 
+    x <- colMeans( temp, na.rm = TRUE )
+    bPlotStats <- boxplot.stats( x, coef = bPlotCoef )
+    statsTb[ stat, , k ] <- c( mean( x ), sd( x ), min( x ), max( x ) )
+    statsBp[ stat, , k ] <- bPlotStats$stats
+    n[ stat, k ] <- bPlotStats$n
+    conf[ stat, , k ] <- bPlotStats$conf
+    out[[ stat, k ]] <- bPlotStats$out
+    
+    stat <- stat + 1
+    names[[ stat ]] <- "Bankrupt Rate"
+    units[[ stat ]] <- "Bankrupt Rate"
+    temp <- mcData[[ k ]][ TmaskStat, "BKR_RT", ]
+    temp[is.infinite(temp)] <- sign(temp[is.infinite(temp)] ) 
+    x <- colMeans( temp, na.rm = TRUE )
+    bPlotStats <- boxplot.stats( x, coef = bPlotCoef )
+    statsTb[ stat, , k ] <- c( mean( x ), sd( x ), min( x ), max( x ) )
+    statsBp[ stat, , k ] <- bPlotStats$stats
+    n[ stat, k ] <- bPlotStats$n
+    conf[ stat, , k ] <- bPlotStats$conf
+    out[[ stat, k ]] <- bPlotStats$out
+    
+    stat <- stat + 1
     names[[ stat ]] <- "Total Debt Growth"
     units[[ stat ]] <- "Average growth rate"
     temp <- mcData[[ k ]][ TmaskStat, "DEBT_FS_G", ]
@@ -547,6 +586,8 @@ box_plots <- function( mcData, nExp, nSize, TmaxStat, TmaskStat, warmUpStat,
     n[ stat, k ] <- bPlotStats$n
     conf[ stat, , k ] <- bPlotStats$conf
     out[[ stat, k ]] <- bPlotStats$out
+    
+
 
   }
 
