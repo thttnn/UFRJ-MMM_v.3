@@ -1,4 +1,4 @@
-LSDROOT=C:/Lsd-7.2-stable
+LSDROOT=C:/Lsd
 SRC=src
 EXT=.exe
 

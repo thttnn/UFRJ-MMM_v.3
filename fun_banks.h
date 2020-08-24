@@ -169,7 +169,11 @@ Bank's effective interest rate on loans is a average between the desired interes
 	v[1]=V("Bank_Desired_Interest_Rate_Long_Term");                            //bank's desired interest rate on loans
 	v[2]=V("price_strategy_long_term");                                        //weight parameter for long term interest rates
 	v[3]=VL("Avg_Interest_Rate_Long_Term", 1);                                 //sector average interest rate on loans in the last period
-	v[4]=v[2]*(v[1])+(1-v[2])*(v[3]);                                          //firm's price is a average between the desired price and the sector average price
+	if(v[2]==0)
+		v[4]=(1+V("long_term_loans_spread"))*V("Basic_Interest_Rate");
+	else	
+		v[4]=v[2]*(v[1])+(1-v[2])*(v[3]);                                      //firm's price is a average between the desired price and the sector average price
+	
 	if(v[1]>0)                                                                 //if desired interest rate is positive
 		v[5]=max(0,v[4]);                                                      //bank's interest rate can never be negative
 	else                                                                       //if desired interest rate is not positive
@@ -220,7 +224,11 @@ Bank's effective interest rate on loans is a average between the desired interes
 	v[1]=V("Bank_Desired_Interest_Rate_Short_Term");                           //bank's desired interest rate on loans
 	v[2]=V("price_strategy_short_term");                                       //weight parameter for short tem interest rates
 	v[3]=VL("Avg_Interest_Rate_Short_Term", 1);                                //sector average interest rate on loans in the last period
-	v[4]=v[2]*(v[1])+(1-v[2])*(v[3]);                                          //firm's price is a average between the desired price and the sector average price
+	if(v[2]==0)
+		v[4]=(1+V("short_term_loans_spread"))*V("Basic_Interest_Rate");
+	else	
+		v[4]=v[2]*(v[1])+(1-v[2])*(v[3]);                                          //firm's price is a average between the desired price and the sector average price
+	
 	if(v[1]>0)                                                                 //if desired interest rate is positive
 		v[5]=max(0,v[4]);                                                      //bank's interest rate can never be negative
 	else                                                                       //if desired interest rate is not positive

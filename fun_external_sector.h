@@ -14,10 +14,18 @@ Nominal value of external income.
 		v[4]=norm(v[3], abs(v[3]));								//random draw from a normal distribution with average equals to past growth and standard deviation equals to past growth in absolute value
 		v[5]=V("external_income_growth");						//exogenous parameter that amplifies external growth
 		v[6]=(1+v[5]*v[4])*v[0];							  	//current external nominal income will be past income plus random growth
+		
+		v[7]=V("begin_external_shock");          				//defines when the shock happens
+		v[8]=V("duration_external_shock");       				//defines how long the shock lasts
+		v[9]=V("size_external_shock");           				//defines the size, in percentage, of the shock
+		if(t>=v[7]&&t<v[7]+v[8])
+			v[10]=v[6]*(1-v[9]);
+		else
+			v[10]=v[6];
 		}
 	else														//if it is not annual period
-		v[6]=v[0];												//use last period income
-RESULT(max(0,v[6]))
+		v[10]=v[0];												//use last period income
+RESULT(max(0,v[10]))
 
 
 EQUATION("Trade_Balance")

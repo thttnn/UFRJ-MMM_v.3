@@ -10,15 +10,15 @@
 #
 #******************************************************************
 
-folder    <- "./Res_Basic_Interest_2"                  # data files folder
+folder    <- "./Res_Shock"                  # data files folder
 baseName  <- "Sim_"                     # data files base name (same as .lsd file)
-nExp      <- 7                          # number of experiments (sensitivity/different cases)
+nExp      <- 3                          # number of experiments (sensitivity/different cases)
 iniDrop   <- 0                          # initial time steps to drop from analysis (0=none)
 nKeep     <- -1                         # number of time steps to keep (-1=all)
 cores     <- 0                          # maximum number of cores to allocate (0=all)
 savDat    <- F                          # save processed data files and re-use if available?
 
-expVal <- c("Baseline", "T1", "T2", "T3", "T4", "T5", "T6")                   # case parameter values
+expVal <- c("Baseline", "Small", "Big")                   # case parameter values
 
 # Aggregated variables to use
 logVars <- c( "Real_GDP",               # Real GDP
@@ -355,7 +355,7 @@ bCase     <- 1      # experiment to be used as base case
 CI        <- 0.95   # desired confidence interval
 warmUpPlot<- 100    # number of "warm-up" runs for plots
 nTplot    <- 500     # last period to consider for plots (-1=all)
-warmUpStat<- 100    # warm-up runs to evaluate all statistics
+warmUpStat<- 300    # warm-up runs to evaluate all statistics
 nTstat    <- 500     # last period to consider for statistics (-1=all)
 bPlotCoef <- 1.5    # boxplot whiskers extension from the box (0=extremes)
 bPlotNotc <- FALSE  # use boxplot notches
