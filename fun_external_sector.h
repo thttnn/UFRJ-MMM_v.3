@@ -12,8 +12,9 @@ Nominal value of external income.
 		{
 		v[3]=VL("Annual_Growth", 1);							//nominal growth in the last year
 		v[4]=norm(v[3], abs(v[3]));								//random draw from a normal distribution with average equals to past growth and standard deviation equals to past growth in absolute value
-		v[5]=V("external_income_growth");						//exogenous parameter that amplifies external growth
-		v[6]=(1+v[5]*v[4])*v[0];							  	//current external nominal income will be past income plus random growth
+		v[5]=V("external_income_growth");						//fixed external income growth
+		v[11]=V("external_income_adjustmnent");                 //exogenous parameter that amplifies external growth based on domestic growth
+		v[6]=(1+v[11]*v[4]+v[5])*v[0];							  	//current external nominal income will be past income plus random growth
 		
 		v[7]=V("begin_external_shock");          				//defines when the shock happens
 		v[8]=V("duration_external_shock");       				//defines how long the shock lasts

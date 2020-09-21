@@ -258,7 +258,7 @@ Sum up firm's employment, given by firm's effective production over firm's avg p
 	CYCLE(cur, "FIRMS")                            		//CYCLE trought the firms
 	{
 		v[1]=VS(cur, "Firm_Effective_Production");      //firm's effective production
-		v[2]=VLS(cur, "Firm_Avg_Productivity", 1);   	//firm's productivity in the last period
+		v[2]=VS(cur, "Firm_Avg_Productivity");   	//firm's productivity in the last period
 		v[0]=v[0]+(v[1]/v[2]);                       	//sums up the ratio between effective production and productivity
 	}
 RESULT(v[0])
@@ -268,24 +268,32 @@ EQUATION("Sector_Potential_Employment")
 /*
 Sum up firm's potential employment, gigvn by firm's productive capacity over firm's avg productivity
 */
-	v[0]=0;                                        					//initializes the CYCLE
+v[0]=0;                                        					//initializes the CYCLE
 	CYCLE(cur, "FIRMS")                            					//CYCLE trought the firms
 	{
-		v[1]=0;
-		CYCLES(cur, cur1, "CAPITALS")
-		{
-		v[2]=VS(cur1, "capital_good_productive_capacity");         	//firm's productive capacity
-		v[3]=VS(cur1, "Capital_Good_Productivity"); 			   	//firm's productivity in the last period
-		if(v[3]!=0)
-			v[1]=v[1]+(v[2]/v[3]);                   				//sums up the ratio between effective production and productivity
-		else
-			v[1]=v[1];
-		}
-		v[0]=v[0]+v[1];
+		v[1]=VS(cur, "Firm_Productive_Capacity");      //firm's effective production
+		v[2]=VS(cur, "Firm_Avg_Productivity");   	//firm's productivity in the last period
+		v[0]=v[0]+(v[1]/v[2]);
 	}
 	v[4]=V("desired_degree_capacity_utilization");
 	v[5]=v[4]*v[0];
-RESULT(v[5])
+RESULT(v[0])
+
+
+EQUATION("Sector_Potential_Employment_2")
+/*
+Sum up firm's potential employment, gigvn by firm's productive capacity over firm's avg productivity
+*/
+	v[0]=0;                                        					//initializes the CYCLE
+	CYCLE(cur, "FIRMS")                            					//CYCLE trought the firms
+	{
+		v[1]=VS(cur, "Firm_Productive_Capacity");      //firm's effective production
+		v[2]=VS(cur, "Firm_Avg_Productivity");   	//firm's productivity in the last period
+		v[0]=v[0]+(v[1]/v[2]);
+	}
+	v[4]=V("desired_degree_capacity_utilization");
+	v[5]=v[4]*v[0];
+RESULT(v[0])
 
 
 EQUATION("Sector_Unemployment")
@@ -363,7 +371,7 @@ Sum of the stock of deposits of each firm in the sector
 RESULT(v[0])
 	
 
-/*****SECTOR AVERAGES AND MAX*****/
+/*****SECTOR AVERAGES, SD AND MAX*****/
 
 
 EQUATION("Sector_Avg_Price")
@@ -471,26 +479,27 @@ RESULT(v[0])
 
 
 EQUATION("Sector_Avg_Quality")
-/*
-Average of the firm's quality weighted by their market share
-*/
 	v[0]=WHTAVE("Firm_Quality", "Firm_Market_Share");
 RESULT(v[0])
 
 
 EQUATION("Sector_Avg_Financial_Position")
-/*
-Average of the firm's quality weighted by their market share
-*/
 	v[0]=WHTAVE("Firm_Financial_Position", "Firm_Market_Share");
 RESULT(v[0])
 
 
 EQUATION("Sector_Avg_Modernization_Rate")
-/*
-Sector average debt rate will be the average of firms productivity weighted by their market shares
-*/
 	v[0]=WHTAVE("Firm_Modernization_Rate", "Firm_Market_Share");
+RESULT(v[0])
+
+
+EQUATION("Sector_Avg_Investment_Rate")
+	v[0]=WHTAVE("Firm_Investment_Rate", "Firm_Market_Share");
+RESULT(v[0])
+
+
+EQUATION("Sector_SD_Investment_Rate")
+	v[0]=SD("Firm_Investment_Rate");
 RESULT(v[0])
 
 

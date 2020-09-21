@@ -24,6 +24,23 @@ Sum up the firm's productive capacity that was depreciated in each time step, no
 RESULT(v[0])
 
 
+EQUATION("Firm_Depreciation_Expenses")
+	v[0]=V("Price_Capital_Goods");																				//initializes the CYCLE on Capital. Will count the productiv capacity to depreciate
+	v[1]=V("Firm_Productive_Capacity_Depreciation");    
+	v[2]=V("capital_output_ratio");   
+	v[3]=v[0]*v[1]*v[2];                                    
+RESULT(v[3])
+
+
+EQUATION("Firm_Depreciation_Expenses_2")
+	v[0]=VL("Firm_Productive_Capacity",1);               //firm's productive capacity in the last period
+	v[1]=V("depreciation_rate");                         //depereciation rate of capital goods
+	v[2]=V("Price_Capital_Goods");                       //price of capital goods
+	v[3]=V("capital_output_ratio");                 //capital outpur ratio            
+	v[4]=v[0]*(v[1]/6)*v[3]*v[2];                        //depeciation expenses is the total productive capacity times 1 sixth of the depreciation rate multiplied by the price and by the capital outrput ratio
+RESULT(v[4])
+
+
 EQUATION("Firm_Effective_Productive_Capacity_Variation")
 /*
 Depends on the demand for productive capacity in the last investment period. This will be added to the firm's productive capacity. Can be restricted by the demand not met of the domestic sector and international reserves

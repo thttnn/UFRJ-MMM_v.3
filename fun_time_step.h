@@ -6,6 +6,7 @@ Determines the order in which the variables will be calculated in each time step
 */
 
 /*****INTEREST RATES*****/
+V("Policy_Targets");
 V("Basic_Interest_Rate");  
 V("Interest_Rate_Deposits");
 V("Bank_Competitiveness");
@@ -245,10 +246,6 @@ V("Unemployment");
 /*****ANALYSIS*****/
 V("Class_Income_Share");
 V("Class_Wealth_Share");
-V("Gini_Income_Class");
-V("Gini_Wealth_Class");
-V("Gini_Income_Population");
-V("Gini_Wealth_Population");
 V("P");                                                
 V("U");                                               
 V("G_n");                                              

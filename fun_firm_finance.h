@@ -161,13 +161,12 @@ Firm demand for loans is the amount that internal funds can not pay
 	v[0]=V("Firm_Desired_Investment_Expenses");
 	v[1]=V("Firm_Internal_Funds");
 	v[2]=V("Firm_Available_Loans");
-	if(v[2]>0)															//if there is available debt 
-		{
-		v[3]=v[0]-v[1];													//will demand loans for the amount of desired expenses that internal funds can not pay for
-		v[4]=min(v[3],v[2]);											//demand will be the minimum between amount needed and amount available
-		}
-	else																//if there is no available debt
-		v[4]=0;															//no demand for debt
+	v[3]=v[0]-v[1];													//will demand loans for the amount of desired expenses that internal funds can not pay for
+
+		if(v[2]>0)															//if there is available debt 
+			v[4]=min(v[3],v[2]);											//demand will be the minimum between amount needed and amount available
+		else																//if there is no available debt
+			v[4]=0;															//no demand for debt
 	v[5]=max(0,v[4]);													//demand for new loans can not be negative
 RESULT(v[5])
 
@@ -200,6 +199,7 @@ This variable also creates the object LOAN.
 		WRITES(cur, "id_firm_loan_short_term", 1);
 		WRITES(cur, "firm_loan_interest_rate", v[3]);
 	}
+	WRITE("firm_effective_loans", -1);
 RESULT(v[8])
 
 
@@ -215,7 +215,6 @@ if(v[1]!=0)
 else	
 	v[2]=0;
 RESULT(v[2])
-
 
 
 EQUATION("Firm_Total_Funds")

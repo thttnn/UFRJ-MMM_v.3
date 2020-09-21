@@ -348,13 +348,13 @@ Class demand for loans is the amount that internal funds (already discounted req
 	v[0]=V("Class_Desired_Expenses");
 	v[1]=V("Class_Internal_Funds");
 	v[2]=V("Class_Max_Loans");
-	if(v[2]>0)															//if there is available debt 
-		{
-		v[3]=v[0]-v[1];													//will demand loans for the amount of desired expenses that internal funds can not pay for
-		v[4]=min(v[3],v[2]);											//demand will be the minimum between amount needed and amount available
-		}
-	else																//if there is no available debt
-		v[4]=0;															//no demand for debt
+	v[3]=v[0]-v[1];													//will demand loans for the amount of desired expenses that internal funds can not pay for
+
+		if(v[2]>0)															//if there is available debt 
+			v[4]=min(v[3],v[2]);											//demand will be the minimum between amount needed and amount available
+		else																//if there is no available debt
+			v[4]=0;															//no demand for debt
+
 	v[5]=max(0,v[4]);													//demand for new loans can not be negative
 RESULT(v[5])
 
@@ -615,3 +615,5 @@ Class share of nominal income
 	else
 		v[2]=0;
 RESULT(v[2])
+
+

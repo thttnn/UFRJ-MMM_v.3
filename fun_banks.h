@@ -14,19 +14,14 @@ Might impact effective loans
 	v[1]=V("minimum_capital_ratio");
 	v[2]=V("fragility_sensitivity");
 	v[3]=VL("Avg_Debt_Rate_Firms",1);
-	v[4]=v[2]*v[3];
-	v[6]=VL("Bank_Default_Share",1);
-	v[7]=VL("Bank_Stock_Loans_Long_Term",1);
-	if(v[7]!=0)
-		v[8]=v[6]/v[7];
+	v[4]=VL("Bank_Default_Share",1);
+	v[5]=V("default_sensitivity");	
+	if(v[1]!=0)
+		v[6]=v[0]/(v[1]*(1+v[2]*v[3]+v[5]*v[4]));
 	else
-		v[8]=0;
-	v[9]=V("default_sensitivity");
-	v[10]=v[9]*v[6];	
-	v[5]=v[0]/(v[1]*(1+v[4]+v[10]));
-	v[12]=max(0,v[5]);
-
-RESULT(v[12])
+		v[6]=-1;
+	v[8]=max(0,v[6]);
+RESULT(v[8])
 
 
 EQUATION("Bank_Demand_Loans")
@@ -74,7 +69,7 @@ Effective Loans is the minimum between demanded loans and max loans.
 	v[4]=max(0,(v[1]-v[3]));
 	v[5]=V("id_public_bank");
 	v[6]=V("begin_credit_rationing");
-	if(t>v[6]&&v[6]!=-1&&v[5]!=1)
+	if(t>v[6]&&v[6]!=-1&&v[5]!=1&&v[1]!=-1)
 		v[7]=min(v[0],v[4]);
 	else//no credit rationing, all demand met
 		v[7]=v[0];
@@ -174,8 +169,9 @@ Bank's effective interest rate on loans is a average between the desired interes
 	else	
 		v[4]=v[2]*(v[1])+(1-v[2])*(v[3]);                                      //firm's price is a average between the desired price and the sector average price
 	
+	v[10]=V("minimum_long_term_interest_rate");
 	if(v[1]>0)                                                                 //if desired interest rate is positive
-		v[5]=max(0,v[4]);                                                      //bank's interest rate can never be negative
+		v[5]=max(v[10],v[4]);                                                  //bank's interest rate can never be less than a minimum, even if the basic rate is zero
 	else                                                                       //if desired interest rate is not positive
 		v[5]=v[0];                                                             //bank's interest rate will be the last period's
 	
@@ -229,8 +225,9 @@ Bank's effective interest rate on loans is a average between the desired interes
 	else	
 		v[4]=v[2]*(v[1])+(1-v[2])*(v[3]);                                          //firm's price is a average between the desired price and the sector average price
 	
+	v[10]=V("minimum_short_term_interest_rate");
 	if(v[1]>0)                                                                 //if desired interest rate is positive
-		v[5]=max(0,v[4]);                                                      //bank's interest rate can never be negative
+		v[5]=max(v[10],v[4]);                                                  //bank's interest rate can never be less than a minimum, even if the basic rate is zero
 	else                                                                       //if desired interest rate is not positive
 		v[5]=v[0];                                                             //bank's interest rate will be the last period's
 	
@@ -484,7 +481,7 @@ RESULT(v[2])
 
 EQUATION("Bank_Profits")
 /*
-Current bank profits is the difference between Interest Return and Interest Payment
+Current bank profits is the difference between Interest Return and Interest Payment, minus defaulted loans. can be negative
 */
 v[0]=V("Bank_Interest_Receivment");
 v[1]=V("Bank_Interest_Payment");
@@ -498,22 +495,38 @@ EQUATION("Bank_Distributed_Profits")
 Current bank profits distributed 
 */
 v[0]=V("Bank_Profits");
-v[1]=V("financial_sector_profits_distribution_rate");
-v[2]=V("id_public_bank");
-if(v[0]>0&&v[2]!=1)
-	v[3]=v[0]*v[1];
+v[1]=V("bank_profit_distribution");
+if(v[0]>0)
+	v[2]=v[0]*v[1];
 else
-	v[3]=0;
-RESULT(v[3])
+	v[2]=0;
+RESULT(v[2])
 
 
 EQUATION("Bank_Retained_Profits")
 /*
-Current bank profits distributed 
+Current bank profits retained
 */
 v[0]=V("Bank_Profits");
 v[1]=V("Bank_Distributed_Profits");
 v[2]=v[0]-v[1];
+/*
+v[1]=V("Bank_Total_Stock_Loans");
+v[2]=V("minimum_capital_ratio");
+v[3]=V("fragility_sensitivity");
+v[4]=VL("Avg_Debt_Rate_Firms",1);
+v[5]=v[3]*v[4];
+v[6]=VL("Bank_Default_Share",1);
+v[7]=V("default_sensitivity");
+v[8]=v[7]*v[6];	
+v[9]=(v[2]*(1+v[5]+v[8]))*v[1];           //needed net worth for current stock os loans
+//v[9]=v[2]*v[1];           //needed net worth for current stock os loans
+
+v[10]=VL("Bank_Accumulated_Profits",1);    //current net worth
+v[11]=v[9]-v[10];						   //needed retained profits
+v[12]=max(0,v[11]);
+v[13]=min(v[0],v[12]);
+*/
 RESULT(v[2])
 
 
@@ -522,24 +535,12 @@ EQUATION("Bank_Accumulated_Profits")
 Total Stock of deposits of the financial sector
 */
 v[0]=VL("Bank_Accumulated_Profits",1);
-v[1]=V("Bank_Profits");
-v[2]=V("Bank_Distributed_Profits");
 v[3]=V("Bank_Retained_Profits");
 v[4]=v[3]+v[0];
 
 if(v[4]<0)
 {
 	v[5]=V("minimum_capital_ratio");
-	v[6]=V("fragility_sensitivity");
-	v[7]=VL("Avg_Debt_Rate_Firms",1);
-	v[8]=v[2]*v[3];
-	v[9]=V("default_sensitivity");
-	v[10]=VL("Bank_Accumulated_Defaulted_Loans",1);
-	v[11]=VL("Bank_Stock_Loans_Long_Term",1);
-	if(v[11]!=0)
-		v[12]=v[10]/v[11];
-	else
-		v[12]=0;
 	v[13]=VL("Bank_Total_Stock_Loans",1);
 	v[14]=v[13]*v[5];							//minimal capital required to current stock of loans
 	v[15]=-v[4]+v[14];							//central bank loans (rescue)

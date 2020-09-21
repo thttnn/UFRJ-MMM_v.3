@@ -307,6 +307,20 @@ else
 RESULT(v[2])
 
 
+EQUATION("Firm_Investment_Rate")
+/*
+Percentage of productive capacity that is replaced for modernization at each time period.
+*/
+v[0]=V("Firm_Demand_Productive_Capacity_Replacement");
+v[1]=V("Firm_Demand_Productive_Capacity_Expansion");
+v[2]=V("Firm_Productive_Capacity");
+if(v[2]!=0)
+	v[3]=(v[0]+v[1])/v[2];
+else
+	v[3]=0;
+RESULT(v[3])
+
+
 EQUATION("Firm_Capital_Demand_Price")
 /*
 Demand price of a single capital good of the firm. Equivalent to the internal rate of return

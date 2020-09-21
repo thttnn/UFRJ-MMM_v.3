@@ -130,6 +130,7 @@ Firm profit, including
 	v[2]=V("Firm_Variable_Cost");                                     //firm's variable cost	
 	v[3]=V("Firm_Financial_Obligations");							  //firm's financial obligations
 	v[4]=V("Firm_Deposits_Return");
+	
 	v[5]=v[0]-(v[2]*v[1])-v[3]+v[4];										  //firm's operational profits
 RESULT(v[5])
 

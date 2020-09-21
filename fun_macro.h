@@ -4,6 +4,12 @@
 EQUATION("Loans_Distribution_Firms");
 /*
 Distributed effective loans to firms if there is credit rationing
+This variable is very important
+It is located in the macro level
+There are some underlying hypothesis:
+1-Income classes are never credit rationed and receive loans first.
+2-A bank has a total amount of loans it can provide. After discounting the amount for the income classes, it distribute proportionally to each sector
+3-Within each sector, it provides in a order of debt rate. High indebtedness firms migh not receive loans.
 */
 
 v[0]=SUM("Firm_Demand_Loans");						//total demand of firm loans
@@ -25,68 +31,41 @@ CYCLE(cur, "BANKS")
 			v[4]=0;
 		
 		v[5]=max(0,(v[1]-v[14])*v[4]);
-		
-		v[9]=0;
-		SORTS(root, "FIRMS", "Firm_Avg_Debt_Rate", "UP");
-		CYCLES(cur1, cur2, "FIRMS")
-		{
-			v[6]=VS(cur2, "id_firm_bank");
-				if (v[6]==v[2])
-				{
-					v[7]=VS(cur2, "Firm_Demand_Loans");
-					if (v[5]>=v[7])
-						{
-						v[8]=v[7];
-						WRITES(cur2, "firm_credit_rationing", 0);
-						}
+		v[11]=V("switch_creditworthness");
+				
+			v[9]=0;
+			if(v[11]==1)
+				SORTS(root, "FIRMS", "Firm_Avg_Debt_Rate", "UP");
+			if(v[11]==2)
+				SORTS(root, "FIRMS", "firm_date_birth", "UP");
+			if(v[11]==3)
+				SORTS(root, "FIRMS", "firm_date_birth", "DOWN");
+			CYCLES(cur1, cur2, "FIRMS")
+			{
+				v[6]=VS(cur2, "id_firm_bank");
+					if (v[6]==v[2])
+					{
+						v[7]=VS(cur2, "Firm_Demand_Loans");
+						if (v[5]>=v[7])
+							v[8]=v[7];
+						else
+							v[8]=max(0, v[5]);
+						v[5]=v[5]-v[8];
+						WRITES(cur2, "firm_effective_loans", v[8]);
+						v[9]=v[9]+1;
+					}
 					else
-						{
-						v[8]=max(0, v[5]);
-						WRITES(cur2, "firm_credit_rationing", (v[7]-v[8]));
-						}
-					v[5]=v[5]-v[8];
-					WRITES(cur2, "firm_effective_loans", v[8]);
-					v[9]=v[9]+1;
-				}
-				else
-				{
-					v[5]=v[5];
-					v[9]=v[9];
-				}		
-		}
+					{
+						v[5]=v[5];
+						v[9]=v[9];
+					}		
+			}
+
 	v[10]=v[10]+v[9];
 	}
 WRITES(cur, "Bank_Number_Clients", v[10]);
 }	
 RESULT(0)
-
-/*
-v[0]=V("Financial_Sector_Effective_Loans"); 		//maximum loans of the financial sector
-v[1]=SUM("Class_Demand_Loans");						//class loans, not constrained
-v[2]=SUM("Firm_Demand_Loans");						//total demand of firm loans
-CYCLE(cur, "SECTORS")								//cycle trough sector
-{
-	v[3]=SUMS(cur, "Firm_Demand_Loans");			//sector demand of loans
-	if(v[2]!=0)
-		v[4]=v[3]/v[2];								//sector share of demand
-	else
-		v[4]=0;
-	
-	v[5]=v[4]*(v[0]-v[1]);							//share of effective loans to the sector, already discounting class loans
-	SORTS(cur, "FIRMS", "Firm_Avg_Debt_Rate", "UP");
-	CYCLES(cur, cur1, "FIRMS")
-	{
-		v[6]=VS(cur1, "Firm_Demand_Loans");			//firm demand loans
-		if(v[5]>=v[6])								//if effective available loans to the sector is greater than firm demand for loans
-			v[7]=v[6];								//firm effective loans equals firm demand
-		else										//if effective loans available to the sector is lower than firm's demand
-			v[7]=max(0, v[5]);						//firm receive what is available, can not be negative
-		v[5]=v[5]-v[7];								//reduce the total amount of effective loans available to the sector
-		WRITES(cur1, "firm_effective_loans",v[7]);	//writes firm effective loans
-	}
-}
-RESULT(0)
-*/
 
 	
 EQUATION("Total_Domestic_Intermediate_Demand")
@@ -953,11 +932,10 @@ v[7]=v[4]*v[1]+v[5]*v[2]+v[6]*v[3]+2*v[5]*v[1]+2*v[6]*v[2]+2*v[6]*v[1];
 v[8]=0.5-(v[7]/2);
 RESULT(v[8])
 
+/*
 
 EQUATION("Gini_Income_Population")
-/*
-Gini Index for income classes. Based on Population share
-*/
+
 v[1]=MIN("Class_Income_Share");      //lowest income share
 v[2]=MED("Class_Income_Share");      //median income share
 v[3]=MAX("Class_Income_Share");      //high income share
@@ -976,9 +954,7 @@ RESULT(v[8])
 
 
 EQUATION("Gini_Wealth_Population")
-/*
-Gini Index for wealth. Fixed rate.
-*/
+
 v[1]=MIN("Class_Wealth_Share");      //lowest income share
 v[2]=MED("Class_Wealth_Share");      //median income share
 v[3]=MAX("Class_Wealth_Share");      //high income share
@@ -995,4 +971,5 @@ v[7]=v[4]*v[1]+v[5]*v[2]+v[6]*v[3]+2*v[5]*v[1]+2*v[6]*v[2]+2*v[6]*v[1];
 v[8]=0.5-(v[7]/2);
 RESULT(v[8])
 
+*/
 
