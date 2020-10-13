@@ -370,6 +370,8 @@ Label Root
 			}
 
 			Param: capital_output_ratio
+			Param: desired_degree_capacity_utilization
+			Param: desired_inventories_proportion
 			Param: id_capital_goods_sector
 			Param: id_consumption_goods_sector
 			Param: id_intermediate_goods_sector
@@ -384,6 +386,7 @@ Label Root
 			Param: sector_initial_price
 			Param: sector_passthrough_inflation
 			Param: sector_passthrough_productivity
+			Param: strategic_price_weight
 			Var: Domestic_Capital_Demand
 			Var: Domestic_Consumption_Demand
 			Var: Domestic_Intermediate_Demand
@@ -396,6 +399,7 @@ Label Root
 			Var: Sector_Avg_Financial_Position
 			Var: Sector_Avg_Interest_Rate_Long_Term
 			Var: Sector_Avg_Interest_Rate_Short_Term
+			Var: Sector_Avg_Investment_Rate
 			Var: Sector_Avg_Markup
 			Var: Sector_Avg_Modernization_Rate
 			Var: Sector_Avg_Price
@@ -403,6 +407,7 @@ Label Root
 			Var: Sector_Avg_Quality
 			Var: Sector_Avg_Wage
 			Var: Sector_Bargain_Power
+			Var: Sector_Credit_Grating
 			Var: Sector_Demand_Met
 			Var: Sector_Demand_Met_By_Imports
 			Var: Sector_Effective_Orders
@@ -429,7 +434,9 @@ Label Root
 			Var: Sector_Productive_Capacity_Entry
 			Var: Sector_Productive_Capacity_Exit
 			Var: Sector_Profit_Rate
+			Var: Sector_SD_Investment_Rate
 			Var: Sector_Sales
+			Var: Sector_Short_Term_Rate
 			Var: Sector_Speculative_Normalized_Share
 			Var: Sector_Speculative_Share
 			Var: Sector_Stock_Deposits
@@ -437,13 +444,6 @@ Label Root
 			Var: Sector_Sum_Market_Share
 			Var: Sector_Turbulence
 			Var: Sector_Unemployment
-			Var: Sector_Credit_Grating
-			Var: Sector_Short_Term_Rate
-			Param: strategic_price_weight
-			Param: desired_degree_capacity_utilization
-			Param: desired_inventories_proportion
-			Var: Sector_Avg_Investment_Rate
-			Var: Sector_SD_Investment_Rate
 
 		}
 
@@ -451,7 +451,9 @@ Label Root
 		Param: annual_period
 		Param: antecipation
 		Param: bargain_power_adjustment
+		Param: begin_credit_rationing
 		Param: begin_expenses_ceiling_rule
+		Param: begin_monetary_policy
 		Param: begin_surplus_target_rule
 		Param: class_debt_rate_adjustment
 		Param: class_liquidity_preference_adjustment
@@ -492,9 +494,11 @@ Label Root
 		Param: rnd_revenue_proportion
 		Param: std_dev_innovation
 		Param: survival_period
-		Param: begin_credit_rationing
+		Param: switch_creditworthness
 		Param: switch_government_composition
 		Param: switch_interest_payment
+		Param: switch_monetary_policy
+		Param: switch_moving_targets
 		Param: switch_unemployment_benefits
 		Param: taxation_structure
 		Param: tech_opportunity
@@ -555,10 +559,6 @@ Label Root
 		Var: Total_Wages
 		Var: Unemployment
 		Var: Wage_Share
-		Param: switch_monetary_policy
-		Param: begin_monetary_policy
-		Param: switch_moving_targets
-		Param: switch_creditworthness
 
 	}
 
@@ -679,7 +679,9 @@ Param: amortization_period 0 n + n n	60
 Param: annual_period 0 n + n n	4
 Param: antecipation 0 n + n n	0.5
 Param: bargain_power_adjustment 0 n + n n	0
+Param: begin_credit_rationing 0 n + n n	0
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
+Param: begin_monetary_policy 0 n + n n	100
 Param: begin_surplus_target_rule 0 n + n n	0
 Param: class_debt_rate_adjustment 0 n + n n	0
 Param: class_liquidity_preference_adjustment 0 n + n n	0
@@ -720,9 +722,11 @@ Param: payback_period 0 n + n n	60
 Param: rnd_revenue_proportion 0 n + n n	0.01
 Param: std_dev_innovation 0 n + n n	0.005
 Param: survival_period 0 n + n n	7
-Param: begin_credit_rationing 0 n + n n	100
+Param: switch_creditworthness 0 n + n n	0
 Param: switch_government_composition 0 n + n n	0
 Param: switch_interest_payment 0 n + n n	0
+Param: switch_monetary_policy 0 n + n n	0
+Param: switch_moving_targets 0 n + n n	0
 Param: switch_unemployment_benefits 0 n + n n	1
 Param: taxation_structure 0 n + n n	1
 Param: tech_opportunity 0 n + n n	0.005
@@ -783,10 +787,6 @@ Var: Total_Profits 0 s + n n
 Var: Total_Wages 0 n + n n
 Var: Unemployment 5 s + n n	0.18	0.18	0.18	0.18	0.18
 Var: Wage_Share 0 s + n n
-Param: switch_monetary_policy 0 n + n n	0
-Param: begin_monetary_policy 0 n + n n	100
-Param: switch_moving_targets 0 n + n n	0
-Param: switch_creditworthness 0 n + n n	0
 
 Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
@@ -992,11 +992,13 @@ Var: Total_Taxes 1 s + n n	0
 
 Object: SECTORS C	3
 Param: capital_output_ratio 0 n + n n	2	1	1
+Param: desired_degree_capacity_utilization 0 n + n n	0.85	0.85	0.85
+Param: desired_inventories_proportion 0 n + n n	0.1	0.3	0.1
 Param: id_capital_goods_sector 0 n + n n	0	1	0
 Param: id_consumption_goods_sector 0 n + n n	1	0	0
 Param: id_intermediate_goods_sector 0 n + n n	0	0	1
-Param: initial_productivity 0 n + n n	1	0.5	1
-Param: initial_wage 0 n + n n	1	1	1
+Param: initial_productivity 0 n + n n	1	1	1
+Param: initial_wage 0 n + n n	1	2	1
 Param: input_tech_coefficient 0 n + n n	0.5	0.5	0.5
 Param: markup_apropriation 0 n + n n	0.5	0.5	0.5
 Param: number_object_firms 0 n + n n	50	10	40
@@ -1006,6 +1008,7 @@ Param: sector_initial_demand 0 n + n n	0	0	0
 Param: sector_initial_price 0 n + n n	0	0	0
 Param: sector_passthrough_inflation 0 n + n n	0.9	0.9	0.9
 Param: sector_passthrough_productivity 0 s + n n	1	1	1
+Param: strategic_price_weight 0 n + n n	0.5	0.5	0.5
 Var: Domestic_Capital_Demand 0 n + n n
 Var: Domestic_Consumption_Demand 0 n + n n
 Var: Domestic_Intermediate_Demand 0 n + n n
@@ -1018,6 +1021,7 @@ Var: Sector_Avg_Desired_Debt_Rate 0 s + n n
 Var: Sector_Avg_Financial_Position 0 s + n n
 Var: Sector_Avg_Interest_Rate_Long_Term 0 s + n n
 Var: Sector_Avg_Interest_Rate_Short_Term 0 s + n n
+Var: Sector_Avg_Investment_Rate 0 s + n n
 Var: Sector_Avg_Markup 0 n + n n
 Var: Sector_Avg_Modernization_Rate 0 s + n n
 Var: Sector_Avg_Price 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
@@ -1025,6 +1029,7 @@ Var: Sector_Avg_Productivity 1 s + n n	0	0	0
 Var: Sector_Avg_Quality 5 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
 Var: Sector_Avg_Wage 0 s + n n
 Var: Sector_Bargain_Power 0 n + n n
+Var: Sector_Credit_Grating 0 s + n n
 Var: Sector_Demand_Met 6 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
 Var: Sector_Demand_Met_By_Imports 6 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
 Var: Sector_Effective_Orders 8 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
@@ -1051,7 +1056,9 @@ Var: Sector_Productive_Capacity_Available 1 n + n n	0	0	0
 Var: Sector_Productive_Capacity_Entry 0 n + n n
 Var: Sector_Productive_Capacity_Exit 0 n + n n
 Var: Sector_Profit_Rate 0 s + n n
+Var: Sector_SD_Investment_Rate 0 s + n n
 Var: Sector_Sales 0 n + n n
+Var: Sector_Short_Term_Rate 0 s + n n
 Var: Sector_Speculative_Normalized_Share 0 s + n n
 Var: Sector_Speculative_Share 0 s + n n
 Var: Sector_Stock_Deposits 0 s + n n
@@ -1059,13 +1066,6 @@ Var: Sector_Stock_Loans 0 s + n n
 Var: Sector_Sum_Market_Share 0 s + n n
 Var: Sector_Turbulence 0 s + n n
 Var: Sector_Unemployment 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Sector_Credit_Grating 0 s + n n
-Var: Sector_Short_Term_Rate 0 s + n n
-Param: strategic_price_weight 0 n + n n	0.5	0.5	0.5
-Param: desired_degree_capacity_utilization 0 n + n n	0.85	0.85	0.85
-Param: desired_inventories_proportion 0 n + n n	0.1	0.3	0.1
-Var: Sector_Avg_Investment_Rate 0 s + n n
-Var: Sector_SD_Investment_Rate 0 s + n n
 
 Object: FIRMS C	1	1	1
 Var: Firm_Available_Funds_After_Replacement 0 n + n n
@@ -1341,10 +1341,22 @@ _INIT_
 All 4 instances equal to 0.01.
 END_DESCRIPTION
 
+Parameter_begin_credit_rationing
+(no description available)
+_INIT_
+All 1 instances equal to 100.
+END_DESCRIPTION
+
 Parameter_begin_expenses_ceiling_rule
 (no description available)
 _INIT_
 All 1 instances equal to -1.
+END_DESCRIPTION
+
+Parameter_begin_monetary_policy
+(no description available)
+_INIT_
+All 1 instances equal to 100.
 END_DESCRIPTION
 
 Parameter_begin_surplus_target_rule
@@ -1587,10 +1599,10 @@ _INIT_
 All 1 instances equal to 12.
 END_DESCRIPTION
 
-Parameter_begin_credit_rationing
+Parameter_switch_creditworthness
 (no description available)
 _INIT_
-All 1 instances equal to 100.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_switch_government_composition
@@ -1600,6 +1612,18 @@ All 1 instances equal to 2.
 END_DESCRIPTION
 
 Parameter_switch_interest_payment
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_switch_monetary_policy
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_switch_moving_targets
 (no description available)
 _INIT_
 All 1 instances equal to 0.
@@ -1966,30 +1990,6 @@ Variable_Wage_Share
 (no description available)
 _INIT_
 
-END_DESCRIPTION
-
-Parameter_switch_monetary_policy
-(no description available)
-_INIT_
-All 1 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_begin_monetary_policy
-(no description available)
-_INIT_
-All 1 instances equal to 100.
-END_DESCRIPTION
-
-Parameter_switch_moving_targets
-(no description available)
-_INIT_
-All 1 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_switch_creditworthness
-(no description available)
-_INIT_
-All 1 instances equal to 0.
 END_DESCRIPTION
 
 Object_CLASSES
@@ -3253,6 +3253,18 @@ _INIT_
 
 END_DESCRIPTION
 
+Parameter_desired_degree_capacity_utilization
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_desired_inventories_proportion
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
 Parameter_id_capital_goods_sector
 (no description available)
 _INIT_
@@ -3337,6 +3349,12 @@ _INIT_
 All 3 instances equal to 1.
 END_DESCRIPTION
 
+Parameter_strategic_price_weight
+(no description available)
+_INIT_
+All 3 instances equal to 0.5.
+END_DESCRIPTION
+
 Variable_Domestic_Capital_Demand
 (no description available)
 _INIT_
@@ -3413,6 +3431,12 @@ _INIT_
 
 END_DESCRIPTION
 
+Variable_Sector_Avg_Investment_Rate
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
 Variable_Sector_Avg_Markup
 (no description available)
 _INIT_
@@ -3452,6 +3476,13 @@ END_DESCRIPTION
 
 Variable_Sector_Bargain_Power
 (no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Sector_Credit_Grating
+Sector Variable for Analysis
+Sector Variable for Analysis
 _INIT_
 
 END_DESCRIPTION
@@ -3618,8 +3649,21 @@ _INIT_
 
 END_DESCRIPTION
 
+Variable_Sector_SD_Investment_Rate
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
 Variable_Sector_Sales
 (no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Sector_Short_Term_Rate
+Sector Variable for Analysis
+Share of  credit grating that is short term
 _INIT_
 
 END_DESCRIPTION
@@ -3668,50 +3712,6 @@ Variable_Sector_Unemployment
 (no description available)
 _INIT_
 All 3 instances equal to 0.
-END_DESCRIPTION
-
-Variable_Sector_Credit_Grating
-Sector Variable for Analysis
-Sector Variable for Analysis
-_INIT_
-
-END_DESCRIPTION
-
-Variable_Sector_Short_Term_Rate
-Sector Variable for Analysis
-Share of  credit grating that is short term
-_INIT_
-
-END_DESCRIPTION
-
-Parameter_strategic_price_weight
-(no description available)
-_INIT_
-All 3 instances equal to 0.5.
-END_DESCRIPTION
-
-Parameter_desired_degree_capacity_utilization
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Parameter_desired_inventories_proportion
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_Sector_Avg_Investment_Rate
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_Sector_SD_Investment_Rate
-(no description available)
-_INIT_
-
 END_DESCRIPTION
 
 Object_FIRMS

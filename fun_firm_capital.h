@@ -19,7 +19,15 @@ Sum up the firm's productive capacity that was depreciated in each time step, no
 			v[4]=v[4]-1;
 			}
 		else																			//if the current time step is not higher than the date of birth of the capital good plus the depreciation period, this capital good must remain
-			v[0]=v[0];																	//do not sum the capital good productive capacity to the total to be depreiated
+			{
+			if((double)t>=v[5]&&v[4]<=1)
+				{
+				WRITES(cur1, "capital_good_productive_capacity", 0);
+				WRITES(cur1, "Capital_Good_Productivity", 0);
+				}
+			else
+				v[0]=v[0];																	//do not sum the capital good productive capacity to the total to be depreiated
+			}																	//do not sum the capital good productive capacity to the total to be depreiated
 	}                                                                          
 RESULT(v[0])
 
@@ -50,20 +58,33 @@ Depends on the demand for productive capacity in the last investment period. Thi
 		{
 		v[1]=V("investment_period");													//investment period
 		cur=SEARCH_CNDS(root, "id_capital_goods_sector", 1);							//search the capital goods sector
-		v[2]=0;
-		for (v[3]=0; v[3]<=(v[1]-1); v[3]=v[3]+1)										//for the current production period until the last investment period -1
+		v[2]=v[11]=v[12]=0;
+		for (v[3]=1; v[3]<=(v[1]); v[3]=v[3]+1)										//for the current production period until the last investment period -1
 			{
 			v[4]=VLS(cur, "Sector_Demand_Met", v[3]);									//computates the demand met by the sector in the current lag
 			v[5]=VLS(cur, "Sector_Demand_Met_By_Imports", v[3]);						//computates the demand met by imports in the current lag
-			v[6]=VL("Firm_Demand_Capital_Goods", v[3]);
-			v[7]=v[6]*(v[4]+(1-v[4])*v[5]);
-			v[2]=v[2]+v[7];
+			v[6]=VL("Firm_Demand_Capital_Goods_Expansion", v[3]);
+			v[7]=VL("Firm_Demand_Capital_Goods_Replacement", v[3]);
+			v[8]=(v[6]+v[7])*(v[4]+(1-v[4])*v[5]);
+			v[9]=v[6]*(v[4]+(1-v[4])*v[5]);
+			v[10]=v[7]*(v[4]+(1-v[4])*v[5]);
+			v[2]=v[2]+v[8];
+			v[11]=v[11]+v[9];
+			v[12]=v[12]+v[10];
 			}	
 		}
 	else
+		{
 		v[2]=0;
+		v[11]=0;
+		v[12]=0;
+		}
+	WRITE("Firm_Effective_Capital_Goods_Expansion", v[11]);
+	WRITE("Firm_Effective_Capital_Goods_Replacement", v[12]);
 RESULT(v[2])
 
+EQUATION_DUMMY("Firm_Effective_Capital_Goods_Expansion", "Firm_Effective_Productive_Capacity_Variation")
+EQUATION_DUMMY("Firm_Effective_Capital_Goods_Replacement", "Firm_Effective_Productive_Capacity_Variation")
 
 EQUATION("Firm_Productive_Capacity")
 /*

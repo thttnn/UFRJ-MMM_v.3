@@ -366,10 +366,6 @@ Label Root
 				Var: Firm_Imitation_Quality
 				Var: Firm_Innovation_Quality
 				Var: Firm_Investment_Rate
-				Var: Firm_Demand_Capital_Goods_Expansion
-				Var: Firm_Demand_Capital_Goods_Replacement
-				Var: Firm_Effective_Capital_Goods_Expansion
-				Var: Firm_Effective_Capital_Goods_Replacement
 
 			}
 
@@ -792,60 +788,60 @@ Var: Total_Wages 0 n + n n
 Var: Unemployment 5 s + n n	0.18	0.18	0.18	0.18	0.18
 Var: Wage_Share 0 s + n n
 
-Object: CLASSES C	3
-Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
-Param: class_autonomous_consumption_adjustment_deposits 0 n + n n	0	0	0
-Param: class_desired_debt_rate 0 n + n n	0	0	0
-Param: class_direct_tax 0 n + n n	0.1	0.1	0.1
-Param: class_population_share 0 n + n n	0.01	0.02	0.97
-Param: class_profit_share 0 n + n n	0.6	0.3	0.1
-Param: class_propensity_to_consume 0 n + n n	0.7	0.8	0.95
-Param: class_propensity_to_import 0 n + n n	0.15	0.1	0
-Param: class_wage_share 0 n + n n	0.5	0.3	0.2
-Param: class_wealth_tax 0 n + n n	0	0	0
-Param: id_class 0 n + n n	1	2	3
+Object: CLASSES C	1
+Param: class_autonomous_consumption_adjustment 0 n + n n	1
+Param: class_autonomous_consumption_adjustment_deposits 0 n + n n	0
+Param: class_desired_debt_rate 0 n + n n	0
+Param: class_direct_tax 0 n + n n	0.1
+Param: class_population_share 0 n + n n	0.01
+Param: class_profit_share 0 n + n n	0.6
+Param: class_propensity_to_consume 0 n + n n	0.7
+Param: class_propensity_to_import 0 n + n n	0.15
+Param: class_wage_share 0 n + n n	0.5
+Param: class_wealth_tax 0 n + n n	0
+Param: id_class 0 n + n n	1
 Var: Class_Available_Deposits 0 s + n n
 Var: Class_Avg_Debt_Rate 0 n + n n
-Var: Class_Avg_Nominal_Income 1 n + n n	0	0	0
-Var: Class_Avg_Real_Income 1 n + n n	0	0	0
+Var: Class_Avg_Nominal_Income 1 n + n n	0
+Var: Class_Avg_Real_Income 1 n + n n	0
 Var: Class_Debt_Payment 0 s + n n
-Var: Class_Debt_Rate 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Class_Debt_Rate 4 s + n n	0	0	0	0
 Var: Class_Demand_Loans 0 n + n n
 Var: Class_Deposits_Return 0 s + n n
-Var: Class_Desired_Debt_Rate 1 s + n n	0	0	0
+Var: Class_Desired_Debt_Rate 1 s + n n	0
 Var: Class_Desired_Expenses 0 s + n n
 Var: Class_Effective_Consumption 0 n + n n
 Var: Class_Effective_Expenses 0 s + n n
 Var: Class_Effective_Imports 0 n + n n
 Var: Class_Effective_Loans 0 n + n n
-Var: Class_Financial_Obligations 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Class_Financial_Obligations 4 s + n n	0	0	0	0
 Var: Class_Funds 0 n + n n
 Var: Class_Gross_Nominal_Income 0 s + n n
 Var: Class_Income_Share 0 s + n n
-Var: Class_Interest_Payment 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Class_Interest_Payment 4 s + n n	0	0	0	0
 Var: Class_Interest_Rate 0 n + n n
 Var: Class_Internal_Funds 0 s + n n
-Var: Class_Liquidity_Preference 1 s + n n	0	0	0
+Var: Class_Liquidity_Preference 1 s + n n	0
 Var: Class_Max_Loans 0 n + n n
 Var: Class_Maximum_Expenses 0 n + n n
-Var: Class_Nominal_Income 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Class_Real_Autonomous_Consumption 1 s + n n	0	0	0
+Var: Class_Nominal_Income 4 s + n n	0	0	0	0
+Var: Class_Real_Autonomous_Consumption 1 s + n n	0
 Var: Class_Real_Consumption_Demand 0 n + n n
 Var: Class_Real_Desired_Consumption 0 s + n n
 Var: Class_Real_Desired_Imports 0 s + n n
 Var: Class_Real_Imports_Demand 0 n + n n
-Var: Class_Real_Income 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Class_Real_Income 4 s + n n	0	0	0	0
 Var: Class_Retained_Deposits 0 s + n n
-Var: Class_Stock_Deposits 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Class_Stock_Deposits 5 s + n n	0	0	0	0	0
 Var: Class_Stock_Loans 0 s + n n
 Var: Class_Taxation 0 s + n n
 Var: Class_Wealth_Share 0 s + n n
 
-Object: CLASS_LOANS C	1	1	1
-Param: class_loan_fixed_amortization 0 n + n n	0	0	0
-Param: class_loan_fixed_object 0 n + n n	1	1	1
-Param: class_loan_interest_rate 0 n + n n	0	0	0
-Param: class_loan_total_amount 0 n + n n	0	0	0
+Object: CLASS_LOANS C	1
+Param: class_loan_fixed_amortization 0 n + n n	0
+Param: class_loan_fixed_object 0 n + n n	1
+Param: class_loan_interest_rate 0 n + n n	0
+Param: class_loan_total_amount 0 n + n n	0
 
 Object: EXTERNAL_SECTOR C	1
 Param: International_Reserves 1 n + n n	10000
@@ -1034,7 +1030,7 @@ Var: Sector_Avg_Quality 5 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
 Var: Sector_Avg_Wage 0 s + n n
 Var: Sector_Bargain_Power 0 n + n n
 Var: Sector_Credit_Grating 0 s + n n
-Var: Sector_Demand_Met 6 s + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Var: Sector_Demand_Met 6 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
 Var: Sector_Demand_Met_By_Imports 6 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
 Var: Sector_Effective_Orders 8 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Sector_Effective_Production 0 s + n n
@@ -1174,10 +1170,6 @@ Var: Firm_Financial_Cost_Passtrough 0 n + n n
 Var: Firm_Imitation_Quality 0 n + n n
 Var: Firm_Innovation_Quality 0 n + n n
 Var: Firm_Investment_Rate 0 n + n n
-Var: Firm_Demand_Capital_Goods_Expansion 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Demand_Capital_Goods_Replacement 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Effective_Capital_Goods_Expansion 0 n + n n
-Var: Firm_Effective_Capital_Goods_Replacement 0 n + n n
 
 Object: CAPITALS C	1	1	1
 Param: capital_good_date_birth 0 n + n n	-59	-59	-59
@@ -4372,30 +4364,6 @@ END_DESCRIPTION
 Variable_Firm_Investment_Rate
 Percentage of productive capacity that is replaced for modernization at each time period.
 Percentage of productive capacity that is replaced for modernization at each time period.
-_INIT_
-
-END_DESCRIPTION
-
-Variable_Firm_Demand_Capital_Goods_Expansion
-Number of capital goods demanded to expand productive capacity 
-_INIT_
-All 3 instances equal to 0.
-END_DESCRIPTION
-
-Variable_Firm_Demand_Capital_Goods_Replacement
-Number of capital goods demanded to modernie productive capacity 
-_INIT_
-All 3 instances equal to 0.
-END_DESCRIPTION
-
-Variable_Firm_Effective_Capital_Goods_Expansion
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_Firm_Effective_Capital_Goods_Replacement
-(no description available)
 _INIT_
 
 END_DESCRIPTION
