@@ -27,8 +27,7 @@ V("Class_Avg_Debt_Rate");
 V("Class_Interest_Rate");   
 V("Bank_Max_Total_Loans"); 
 
-/*****EXPORTS (AUTONOMOUS) AND PRICE SETTING*****/
-V("Sector_Bargain_Power");                                  
+/*****EXPORTS (AUTONOMOUS) AND PRICE SETTING*****/                                 
 V("Firm_Wage");                                      	   	
 V("External_Income");                                  		
 V("Sector_External_Price");                                 
@@ -40,12 +39,12 @@ V("Firm_Desired_Markup");
 V("Firm_Desired_Price");                                    
 V("Firm_Price");                                            
 V("Sector_Avg_Price");                                     
-V("Sector_Exports");                                   		
+V("Sector_Exports");   
+V("Price_Capital_Goods");                                 		
 
 /*****CAPITAL GOODS DEMAND*****/
 V("Firm_Demand_Capital_Goods");                             
-V("Domestic_Capital_Demand");                          		
-V("Effective_Orders_Capital_Firm");                    		
+V("Sector_Capital_Demand");                          		                  		
 V("Firm_Effective_Orders_Capital_Goods");              		
 
 /*****PLANNED PRODUCTION*****/
@@ -60,9 +59,7 @@ V("Firm_Market_Share");
 
 V("Firm_Required_Inputs");                                  
 V("Firm_Input_Demand_Next_Period");                         
-V("Domestic_Intermediate_Demand");                     		
-V("Intermediate_Production");                          		
-V("Firm_Intermediate_Production");                     		
+V("Sector_Intermediate_Demand");                     		                        		                    		
 V("Firm_Effective_Production");                             
 V("Firm_Capacity_Utilization");								
 
@@ -87,28 +84,25 @@ V("Class_Funds");
 V("Class_Maximum_Expenses");
 V("Class_Real_Consumption_Demand");
 V("Class_Real_Imports_Demand");
-V("Domestic_Consumption_Demand"); 
+V("Sector_Consumption_Demand"); 
 
 /*****EFFECTIVE ORDERS, SALES AND PROFITS*****/
 V("Sector_Effective_Orders");                          		
-V("Effective_Orders_Consumption_Firm"); 
 V("Firm_Effective_Orders");                                 
 V("Firm_Sales");                                           
 V("Firm_Delivery_Delay");                                  
 V("Sector_Sales");                                     		
 V("Firm_Stock_Inventories");                               
 V("Firm_Effective_Market_Share");                           
-V("Firm_Revenue");                                          
-V("Firm_Indirect_Tax");                                     
-V("Firm_Net_Revenue");									   	
-V("Firm_RND_Expenses");									   	
-V("Price_Capital_Goods");                              		           		
+V("Firm_Revenue");  
+V("Firm_Net_Revenue");                                        
+V("Firm_Indirect_Tax");                                     							   										   	                             		           		
 V("Firm_Interest_Payment");
-V("Firm_Extra_Debt_Payment");
 V("Firm_Debt_Payment");
 V("Firm_Financial_Obligations");
 V("Firm_Deposits_Return");
-V("Firm_Net_Profits");                                      
+V("Firm_Net_Profits");
+V("Firm_RND_Expenses");                                      
 V("Firm_Retained_Profits");                                 
 V("Firm_Distributed_Profits");                             
 V("Firm_Profit_Rate");	
@@ -127,7 +121,9 @@ V("Firm_Quality");
 /*****CAPITAL AND INVESTMENT DECISIONS*****/
 V("Firm_Investment_Period");						   		
 V("Firm_Productive_Capacity_Depreciation");                 
-V("Firm_Effective_Productive_Capacity_Variation");          
+V("Firm_Effective_Productive_Capacity_Variation"); 
+V("Firm_Effective_Capital_Goods_Expansion");
+V("Firm_Effective_Capital_Goods_Replacement");         
 V("Firm_Productive_Capacity");   
 V("Firm_Capital");                          
 V("Firm_Max_Productivity");                   				
@@ -212,10 +208,8 @@ V("Financial_Sector_Short_Term_Rate");
 V("Financial_Sector_Stock_Deposits");
 V("Financial_Sector_Normalized_HHI");
 
-V("Bank_Expected_Profit_Rate");
-V("Bank_Effective_Profit_Rate_1");
-V("Bank_Effective_Profit_Rate_2");
-V("Sector_Credit_Grating");
+V("Bank_Effective_Profit_Rate");
+V("Sector_Effective_Loans");
 V("Sector_Short_Term_Rate");
 
 /*****MACRO RESULTS*****/

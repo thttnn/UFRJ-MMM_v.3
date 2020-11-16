@@ -23,29 +23,8 @@ cur = SEARCH_CNDS(root, "id_intermediate_goods_sector", 1);
 v[0]=VS(cur, "Sector_Avg_Debt_Rate");
 RESULT(v[0])
 
-EQUATION("DEBT_RT_1")
-/*
-Average Debt Rate of Income Class 1
-*/
-cur = SEARCH_CNDS(root, "id_class", 1);
-v[0]=VS(cur, "Class_Avg_Debt_Rate");
-RESULT(v[0])
 
-EQUATION("DEBT_RT_2")
-/*
-Average Debt Rate of Income Class 2
-*/
-cur = SEARCH_CNDS(root, "id_class", 2);
-v[0]=VS(cur, "Class_Avg_Debt_Rate");
-RESULT(v[0])
 
-EQUATION("DEBT_RT_3")
-/*
-Average Debt Rate of Income Class 3
-*/
-cur = SEARCH_CNDS(root, "id_class", 3);
-v[0]=VS(cur, "Class_Avg_Debt_Rate");
-RESULT(v[0])
 
 EQUATION("DEBT_RT_FI")
 /*

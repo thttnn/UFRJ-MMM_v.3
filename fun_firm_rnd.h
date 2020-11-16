@@ -51,8 +51,8 @@ Innovation process. The sucess depends on the amount ou recources alocated to in
 	if(RND<v[3])                                	//draws a random nuumber. if it is lower then innovation probability 
 		{
 		v[4]=V("std_dev_innovation");           	//innovation standard deviation
-		v[5]=V("initial_productivity");				//initial frontier productivity
-		v[7]=V("tech_opportunity");          //technological opportunity 
+		v[5]=V("sector_initial_productivity");				//initial frontier productivity
+		v[7]=V("tech_opportunity_productivity");    //sector technological opportunity for process innovation
 		v[8]=log(v[5])+(double)t*(v[7]);        	//the average of the innovation distribution will be the initial frontier productivity plus the opportunity parameter times the time period
 		v[10]=exp(norm(v[8],v[4]));             	//the innovation productivity will be a draw from a normal distribution with average depending of the tech regime and std. dev fixed
 		}
@@ -90,11 +90,11 @@ Innovation process. The sucess depends on the amount ou recources alocated to in
 		{
 		v[4]=V("std_dev_innovation");           	//innovation standard deviation
 		v[6]=V("initial_quality");					//initial quality
-		v[7]=V("tech_opportunity");          //technological opportunity parameter
+		v[7]=V("tech_opportunity_quality");         //sector technological opportunity for product innovation
 		v[9]=log(v[6])+(double)t*(v[7]);        	//the average of the innovation distribution will be the initial quality plus the opportunity parameter times the time period
 		v[10]=exp(norm(v[9],v[4]));					//the innovation quality will be a draw from a normal distribution with average depending of the tech regime and std. dev fixed
 		}
-	else                                        	//if the random number is not lower then  the innovation probability
+	else                                        	//if the random number is not lower then the innovation probability
 		v[10]=0;									//innovation failed and the quality is zero
 RESULT(v[10])
 

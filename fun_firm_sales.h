@@ -33,26 +33,6 @@ Firm's inventories variation in current nominal values
 RESULT(v[3])
 
 
-EQUATION("Firm_Effective_Orders")
-/*
-Firm Variable
-*/
-	v[0]=V("id_intermediate_goods_sector");
-	v[1]=V("id_consumption_goods_sector");
-	v[2]=V("id_capital_goods_sector");
-
-	if (v[0]==1);
-		v[3]=V("intermediate_effective_orders_firm_temporary");
-	if (v[1]==1)
-		v[3]=V("consumption_effective_orders_firm_temporary");
-	if (v[2]==1)
-		v[3]=V("Firm_Effective_Orders_Capital_Goods");
-
-	WRITE("intermediate_effective_orders_firm_temporary", 0);
-	WRITE("consumption_effective_orders_firm_temporary", 0);
-RESULT(v[3])
-
-
 EQUATION("Firm_Market_Share")
 /*
 Firm Variable
@@ -88,17 +68,13 @@ EQUATION("Firm_Competitiveness")
 Competitiveness depends on the quality of the product, the price and the delivery delay of the firm
 */
 	v[0]=VL("Firm_Price",1);                                           //firm's price in the last period
-	v[8]=VL("Sector_Avg_Price",1);
-	v[9]=VL("Sector_Avg_Quality",1);
-	v[10]=v[0]/v[8];
-	v[11]=v[2]/v[9];
-	v[1]=V("elasticity_price");                                        //price elasticity
+	v[1]=V("sector_elasticity_price");                                 //price elasticity
 	v[2]=VL("Firm_Quality",1);                                         //product quaility
-	v[3]=V("elasticity_quality");                                      //quality elasticity
+	v[3]=V("sector_elasticity_quality");                               //quality elasticity
 	v[4]=VL("Firm_Competitiveness",1);                                 //firm's competitiveness in the last period
 	v[5]=VL("Firm_Delivery_Delay",1);                                  //firm's delivery delay in the last period
-	v[6]=V("elascitity_delay");                                        //delay elasticity	
-   	if(v[0]!=0&&v[2]!=0&&v[5]!=0)                                               //if the price was not zero neither the quality
+	v[6]=V("sector_elascitity_delay");                                 //delay elasticity	
+   	if(v[0]!=0&&v[2]!=0&&v[5]!=0)                                      //if the price was not zero neither the quality
      	v[7]=(pow(v[2],v[3]))*(1/pow(v[0],v[1]))*(1/pow(v[5],v[6]));   //firm's competitiveness will be given by the quality powered by its elasticity over the price, powered by its elasticicty, and the delivery delay, powered by its elasticicty
    	else                                                               //if either the price or the quality was zero 
      	v[7]=v[4];                                                     //firm's competitiveness will be the competitiveness in the last period

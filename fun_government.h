@@ -24,11 +24,12 @@ if(v[1]==0)                                                    //if the rest of 
 	else                                                       //if consumer price index is zero
 		v[8]=0;												   //use 1
 	v[9]=V("government_productivity_passtrought");             //productivity passtrough parameter
-	v[10]=v[2]*(1+v[9]*v[5]+v[8]);                             //desired adjusted government wages with no restriction
+	v[10]=V("government_inflation_passtrought");			   //inflation passtrough to public wages
+	v[11]=v[2]*(1+v[9]*v[5]+v[10]*v[8]);                       //desired adjusted government wages with no restriction
 }
 else                                                           //if it is not adjustment period
-	v[10]=v[2];                                                //use last period's
-RESULT(v[10])
+	v[11]=v[2];                                                //use last period's
+RESULT(v[11])
 
 
 EQUATION("Government_Desired_Unemployment_Benefits")
@@ -90,6 +91,30 @@ Adjusted by a desired real growth rate and inflation
 v[0]=V("government_period");
 v[1]= fmod((double) t,v[0]);                                   //divides the time period by government adjustment period (adjust annualy)
 v[2]=VL("Government_Desired_Consumption",1);
+if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
+{
+	v[3]=V("government_demand_growth");
+	v[5]=VL("Consumer_Price_Index",1);                         //consumer price index lagged 1
+	v[6]=VL("Consumer_Price_Index", v[0]);                     //consumer price index lagged government period (4)
+	if(v[6]!=0)                                                //if consumer price index is not zero
+		v[7]=(v[5]-v[6])/v[6];                                 //calculate inflation
+	else                                                       //if consumer price index is zero
+		v[7]=0;												   //use 1
+	v[8]=v[2]*(1+v[3]+v[7]);
+}
+else
+	v[8]=v[2];
+RESULT(v[8])
+
+
+EQUATION("Government_Desired_Inputs")
+/*
+Desired Intermediate Expenses
+Adjusted by a desired real growth rate and inflation
+*/
+v[0]=V("government_period");
+v[1]= fmod((double) t,v[0]);                                   //divides the time period by government adjustment period (adjust annualy)
+v[2]=VL("Government_Desired_Inputs",1);
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
 {
 	v[3]=V("government_demand_growth");
@@ -210,7 +235,14 @@ If there are no maximum expenses, it is adjusted by average productivity growth 
 switch_government_composition: Determines the composition and priority of government expenses, and initial distribution
 0--> Government Wages(100%) [Only Public Workers]
 1--> Government Wages(100%) + Unemployment Benefits(0%) [Public Workers and Unemployment Benefits]
-2--> Government Wages(70%) + Unemployment Benefits(0%) + Government Consumption, Investment and Intermediate Demand(10% each) [Public Workers, Unemployment Benefits, and Demand to Sectors]
+2--> Government Wages(1-(c+k+i)%) + Unemployment Benefits(0%) + Government Consumption (c%), Investment(k%) and Intermediate Demand(i%) [Public Workers, Unemployment Benefits, and Demand to Sectors]
+
+government_initial_consumption_share
+government_initial_capital_share
+government_initial_input_share
+government_initial_benefits_share (zero by hypothesis)
+those parameters can be used to exclude one or more types of goods, for instance.
+
 */
 
 v[0]=V("Government_Max_Expenses");
@@ -219,6 +251,11 @@ v[2]=V("Government_Desired_Unemployment_Benefits");
 v[3]=V("Government_Desired_Consumption");
 v[4]=V("Government_Desired_Investment");
 v[5]=V("Government_Desired_Inputs");
+
+v[14]=V("government_initial_consumption_share");
+v[15]=V("government_initial_capital_share");
+v[16]=V("government_initial_input_share");
+v[17]=v[14]+v[15]+v[16];
 
 v[7]=V("switch_government_composition");
 
@@ -271,9 +308,9 @@ else
 	{
 		v[8]=min(v[0],v[1]);								   //government wages is desired limited by maximum expenses
 		v[9]=min(v[2],(v[0]-v[8]));    						   //government unemployment benefits is desired limited by maximum expenses minus wages
-		v[10]=min(v[3],(v[0]-v[8]-v[9])/3);                    //government consumption is desired limited by maximum expenses minus wages and benefits
-		v[11]=min(v[4],(v[0]-v[8]-v[9])/3);                    //government investment is desired limited by maximum expenses minus wages and benefits
-		v[12]=min(v[5],(v[0]-v[8]-v[9])/3);                    //government intermediate is desired limited by maximum expenses minus wages and benefits
+		v[10]=min(v[3],(v[0]-v[8]-v[9])*(v[14]/v[17]));        //government consumption is desired limited by maximum expenses minus wages and benefits
+		v[11]=min(v[4],(v[0]-v[8]-v[9])*(v[15]/v[17]));        //government investment is desired limited by maximum expenses minus wages and benefits
+		v[12]=min(v[5],(v[0]-v[8]-v[9])*(v[16]/v[17]));        //government intermediate is desired limited by maximum expenses minus wages and benefits
 	}
 	
 }
@@ -283,8 +320,7 @@ WRITE("Government_Effective_Consumption", v[10]);
 WRITE("Government_Effective_Investment", v[11]);
 WRITE("Government_Effective_Inputs", v[12]);
 v[13]=v[8]+v[9]+v[10]+v[11]+v[12];
-//RESULT(v[13])
-RESULT(v[0])
+RESULT(v[13])
 
 EQUATION_DUMMY("Government_Effective_Wages","Government_Effective_Expenses")
 EQUATION_DUMMY("Government_Effective_Unemployment_Benefits","Government_Effective_Expenses")
@@ -294,19 +330,11 @@ EQUATION_DUMMY("Government_Effective_Inputs","Government_Effective_Expenses")
 
 
 EQUATION("Total_Income_Taxes")
-/*
-Stores the value of the function
-*/
-	v[0]=SUM("Class_Taxation");
-RESULT(v[0])
+RESULT(SUM("Class_Taxation"))
 
 
 EQUATION("Total_Indirect_Taxes")
-/*
-Stores the value of the function
-*/
-	v[0]=SUM("Sector_Indirect_Tax");
-RESULT(v[0])
+RESULT(SUM("Sector_Taxation"))
 
 
 EQUATION("Total_Taxes")
@@ -333,7 +361,7 @@ EQUATION("Government_Interest_Payment")
 /*
 Defined as the government stock of public debt in the last period multiplyed by the interest rate
 */
-	v[0]=VL("Government_Debt",1);
+	v[0]=max(0,VL("Government_Debt",1));
 	v[1]=V("Basic_Interest_Rate");
 	v[2]=v[0]*v[1];
 RESULT(v[2])
@@ -355,8 +383,8 @@ EQUATION("Government_Debt")
 Defined as the stock of debt in the last period plus current government deficit
 */
 	v[0]=VL("Government_Debt",1);
-	v[1]=V("Government_Nominal_Deficit");
-	v[2]=max(0,v[0]+v[1]);
+	v[1]=V("Government_Primary_Surplus");
+	v[2]=v[0]-v[1];
 RESULT(v[2])
 
 

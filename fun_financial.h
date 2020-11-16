@@ -24,10 +24,10 @@ if(t>v[2]&&v[1]==1&&v[13]==0)
 	v[10]=v[6]/(10*v[0]);
 	v[11]=v[7]/(10*v[0]);
 	v[12]=v[8]/(10*v[0]);
-	WRITE("inflation_target",v[9]);
-	WRITE("unemployment_target",v[10]);
-	WRITE("credit_growth_target",v[11]);
-	WRITE("debt_rate_target",v[12]);
+	WRITE("target_inflation",v[9]);
+	WRITE("target_unemployment",v[10]);
+	WRITE("target_credit_growth",v[11]);
+	WRITE("target_debt_rate",v[12]);
 	}
 RESULT(0)
 
@@ -53,10 +53,10 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	v[0]=V("real_interest_rate");
 	v[24]=V("begin_monetary_policy");	
 	
-	v[1]=V("inflation_target");
-	v[2]=V("unemployment_target");
-	v[3]=V("credit_growth_target");
-	v[4]=V("debt_rate_target");
+	v[1]=V("target_inflation");
+	v[2]=V("target_unemployment");
+	v[3]=V("target_credit_growth");
+	v[4]=V("target_debt_rate");
 	
 	v[5]=VL("Annual_Inflation",1);
 	v[6]=VL("Unemployment",1);
@@ -89,34 +89,34 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	{
 		if(v[12]==1)											//single mandate taylor rule
 		{
-		v[13]=V("inflation_interest_sensitivity");
+		v[13]=V("sensitivity_inflation");
 		v[14]=0;
 		v[15]=0;
 		v[16]=0;
 		}
 		if(v[12]==2)											//dual mandate taylor rule
 		{
-		v[13]=V("inflation_interest_sensitivity");
-		v[14]=V("unemployment_interest_sensitivity");
+		v[13]=V("sensitivity_inflation");
+		v[14]=V("sensitivity_unemployment");
 		v[15]=0;
 		v[16]=0;
 		}
 		if(v[12]==3)											//triple mandate taylor rule with credit growth target
 		{
-		v[13]=V("inflation_interest_sensitivity");
-		v[14]=V("unemployment_interest_sensitivity");
-		v[15]=V("credit_growth_interest_sensitivity");
+		v[13]=V("sensitivity_inflation");
+		v[14]=V("sensitivity_unemployment");
+		v[15]=V("sensitivity_credit_growth");
 		v[16]=0;
 		}
 		if(v[12]==4)											//triple mandate taylor rule with debt rate target
 		{
-		v[13]=V("inflation_interest_sensitivity");
-		v[14]=V("unemployment_interest_sensitivity");
+		v[13]=V("sensitivity_inflation");
+		v[14]=V("sensitivity_unemployment");
 		v[15]=0;
-		v[16]=V("debt_rate_interest_sensitivity");
+		v[16]=V("sensitivity_debt_rate");
 		}
 	
-		v[17]=v[0]+v[13]*(v[5]-v[1])-v[14]*(v[6]-v[2])+v[15]*(v[7]-v[3])+v[16]*(v[8]-v[4]);
+		v[17]=v[0]+v[13]*(v[5]-v[1])+v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4])));
 		if(abs(v[17]-v[19])>v[18])
 			{
 			if(v[17]>v[19])
@@ -170,9 +170,9 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	else
 		v[25]=v[0];
 	
-	v[30]=V("begin_interest_shock");          //defines when the shock happens
-	v[31]=V("duration_interest_shock");       //defines how long the shock lasts
-	v[32]=V("size_interest_shock");           //defines the size, in percentage, of the shock
+	v[30]=V("interest_shock_begin");          //defines when the shock happens
+	v[31]=V("interest_shock_duration");       //defines how long the shock lasts
+	v[32]=V("interest_shock_size");           //defines the size, in percentage, of the shock
 	if(t>=v[30]&&t<v[30]+v[31])
 		v[33]=v[25]*(1+v[32]);
 	else
@@ -186,10 +186,14 @@ EQUATION("Interest_Rate_Deposits")
 Interest Rate on Bank deposits is a negative spreaded base interest rate
 */
 v[0]=V("Basic_Interest_Rate");
-v[1]=V("deposits_spread");
-v[2]=(1-v[1])*v[0];
+v[1]=V("spread_deposits");
+v[2]=max(0,(v[0]-v[1]));
 RESULT(v[2])
 
+
+/*******************************************************************************
+Financial Sector Aggregates and Averages
+*******************************************************************************/
 
 EQUATION("Avg_Competitiveness_Financial_Sector")
 /*
@@ -204,155 +208,62 @@ Average competitiveness, weighted by firm's market share
 	}
 RESULT(v[0])
 
-
 EQUATION("Avg_Interest_Rate_Long_Term")
-/*
-Average weighted by banks's market share
-*/
-v[0]=WHTAVE("Bank_Interest_Rate_Long_Term", "Bank_Market_Share");
-RESULT(v[0])
-
+RESULT(WHTAVE("Bank_Interest_Rate_Long_Term", "Bank_Market_Share"))
 
 EQUATION("Avg_Interest_Rate_Short_Term")
-/*
-Average weighted by firm's market share
-*/
-v[0]=WHTAVE("Bank_Interest_Rate_Short_Term", "Bank_Market_Share");
-RESULT(v[0])
-
-
-/*******************************************************************************
-Financial Sector Aggregates
-*******************************************************************************/
-
+RESULT(WHTAVE("Bank_Interest_Rate_Short_Term", "Bank_Market_Share"))
 
 EQUATION("Financial_Sector_Stock_Loans_Short_Term")
-/*
-Total Stock of short term loans, firms and classes
-*/
-v[0]=SUM("Bank_Stock_Loans_Short_Term");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Stock_Loans_Short_Term"))
 
 EQUATION("Financial_Sector_Stock_Loans_Long_Term")
-/*
-Total Stock of long term loans, firms loans for investment
-*/
-v[0]=SUM("Bank_Stock_Loans_Long_Term");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Stock_Loans_Long_Term"))
 
 EQUATION("Financial_Sector_Total_Stock_Loans")
-/*
-Total Stock of loans
-*/
-v[0]=SUM("Bank_Total_Stock_Loans");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Total_Stock_Loans"))
 
 EQUATION("Financial_Sector_Defaulted_Loans")
-/*
-Total defaulted of loans
-*/
-v[0]=SUM("Bank_Defaulted_Loans");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Defaulted_Loans"))
 
 EQUATION("Financial_Sector_Stock_Deposits")
-/*
-Total Stock of deposits, firms and classes
-*/
-v[0]=SUM("Bank_Stock_Deposits");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Stock_Deposits"))
 
 EQUATION("Financial_Sector_Max_Total_Loans");
-/*
-Maximum new loans. Follows basileia or similar rule
-Might impact effective loans
-*/
-v[0]=SUM("Bank_Max_Total_Loans");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Max_Total_Loans"))
 
 EQUATION("Financial_Sector_Demand_Loans")
-/*
-Total demand for loans, firms and classes
-*/
-v[0]=SUM("Bank_Demand_Loans");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Demand_Loans"))
 
 EQUATION("Financial_Sector_Effective_Loans")
-/*
-Effectrive Loans is the minimum between demanded loans and max loans.
-*/
-v[0]=SUM("Bank_Effective_Loans");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Effective_Loans"))
 
 EQUATION("Financial_Sector_Interest_Payment")
-/*
-Total interest payment on deposits, 
-*/
-v[0]=SUM("Bank_Interest_Payment");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Interest_Payment"))
 
 EQUATION("Financial_Sector_Interest_Receivment")
-/*
-Total interest payment from firms and classes
-*/
-v[0]=SUM("Bank_Interest_Receivment");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Interest_Receivment"))
 
 EQUATION("Financial_Sector_Debt_Payment")
-/*
-Total debt repayment from firms and classes
-*/
-v[0]=SUM("Bank_Debt_Payment");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Debt_Payment"))
 
 EQUATION("Financial_Sector_Profits")
-/*
-Total current profits of the financial sector
-*/
-v[0]=SUM("Bank_Profits");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Profits"))
 
 EQUATION("Financial_Sector_Distributed_Profits")
-/*
-Total distributed profits of the financial sector
-*/
-v[0]=SUM("Bank_Distributed_Profits");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Distributed_Profits"))
 
 EQUATION("Financial_Sector_Accumulated_Profits")
-/*
-Total accumulated profits of the financial sector
-*/
-v[0]=SUM("Bank_Accumulated_Profits");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Accumulated_Profits"))
 
 EQUATION("Financial_Sector_Rescue")
-/*
-Total rescue of the financial sector
-*/
-v[0]=SUM("Bank_Rescue");
-RESULT(v[0])
-
+RESULT(SUM("Bank_Rescue"))
 
 EQUATION("Financial_Sector_Accumulated_Rescue")
-/*
-Total accumulated rescue of the financial sector
-*/
-v[0]= CURRENT + V("Financial_Sector_Rescue");
-RESULT(v[0])
+RESULT(CURRENT + V("Financial_Sector_Rescue"))
+
+EQUATION("Financial_Sector_Accumulated_Defaulted_Loans")
+RESULT(CURRENT + V("Financial_Sector_Defaulted_Loans"))
 
 
 /*******************************************************************************
@@ -379,7 +290,7 @@ EQUATION("Financial_Sector_Default_Rate")
 Total Defaluted Loans over total stock of loans
 Analysis Variable
 */
-v[0]=V("Financial_Sector_Defaulted_Loans");
+v[0]=V("Financial_Sector_Accumulated_Defaulted_Loans");
 v[1]=V("Financial_Sector_Stock_Loans_Long_Term");
 if(v[1]!=0)
 	v[2]=v[0]/v[1];
@@ -409,6 +320,20 @@ Analysis Variable
 */
 v[0]=V("Financial_Sector_Total_Stock_Loans");
 v[1]=V("Financial_Sector_Stock_Deposits");
+if(v[1]!=0)
+	v[2]=v[0]/v[1];
+else
+	v[2]=0;
+RESULT(v[2])
+
+
+EQUATION("Financial_Sector_Effective_Capital_Ratio")
+/*
+Accumulated profits over total loans
+Analysis Variable
+*/
+v[0]=V("Financial_Sector_Accumulated_Profits");
+v[1]=V("Financial_Sector_Total_Stock_Loans");
 if(v[1]!=0)
 	v[2]=v[0]/v[1];
 else
@@ -462,14 +387,7 @@ else
 RESULT(v[2])
 
 
-EQUATION("Financial_Sector_Compulsory_Reserves");
-/*
-Total Compulsory reserves given policy rate
-*/
-v[0]=V("Financial_Sector_Total_Stock_Loans");
-v[1]=V("compulsory_reserves_rate");
-v[2]=v[0]*v[1];
-RESULT(v[2])
+
 
 
 

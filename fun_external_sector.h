@@ -16,11 +16,11 @@ Nominal value of external income.
 		v[11]=V("external_income_adjustmnent");                 //exogenous parameter that amplifies external growth based on domestic growth
 		v[6]=(1+v[11]*v[4]+v[5])*v[0];							  	//current external nominal income will be past income plus random growth
 		
-		v[7]=V("begin_external_shock");          				//defines when the shock happens
-		v[8]=V("duration_external_shock");       				//defines how long the shock lasts
-		v[9]=V("size_external_shock");           				//defines the size, in percentage, of the shock
+		v[7]=V("external_shock_begin");          				//defines when the shock happens
+		v[8]=V("external_shock_duration");       				//defines how long the shock lasts
+		v[9]=V("external_shock_size");           				//defines the size, in percentage, of the shock
 		if(t>=v[7]&&t<v[7]+v[8])
-			v[10]=v[6]*(1-v[9]);
+			v[10]=v[6]*(1+v[9]);
 		else
 			v[10]=v[6];
 		}
@@ -54,12 +54,22 @@ EQUATION("Exchange_Rate")
 Nominal exchange rate.
 */
 	v[0]=VL("Exchange_Rate",1);
+	v[1]=VL("Trade_Balance",1);
 	v[2]=VL("International_Reserves",1);
-	if(v[2]<0)
-		{
-		v[3]=V("exchange_rate_growth");
-		v[4]=(1+v[3])*v[0];
-		}
+	v[3]=V("exchange_rate_adjustment");
+	if(v[1]<0)
+		v[4]=v[0]+v[3];
+	if(v[1]>0)
+		v[4]=v[0]-v[3];
 	else
 		v[4]=v[0];
+	
+	v[5]=V("external_interest_rate");
+	
+	
+	
+	
+	
+	
+	
 RESULT(v[4])

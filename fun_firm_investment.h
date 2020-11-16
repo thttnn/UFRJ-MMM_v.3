@@ -35,7 +35,7 @@ The sectors update their productive capacity from year to year, time it takes fo
 		}
 	v[8]=v[5]/v[0];											//average firm's effective orders of the investment period prior to the last
 		
-	v[9]=V("expectations");                            		//firm expectations
+	v[9]=V("sector_expectations");                          //firm expectations
 	if (v[8]!=0)                                    		//if the average effective orders of the six periods prior to the last six is not zero
 		{
 		v[10]=v[4]*(1+2*v[9]*((v[4]-v[8])/v[8]));     		//expected orders for the next six periods will be the average effective orders of the last six periods multiplied by the growth rate between the averages and the double of the expectation parameter
@@ -60,12 +60,13 @@ Nominal value of desired new capital goods.
 		v[10]=0;													//initializes the cycle
 		v[11]=V("depreciation_period");								//depreciation period
 		v[12]=V("investment_period");								//investment period
+		
 		CYCLE(cur, "CAPITALS")										//cycle trough all capital goods
 		{
 			v[15]=VS(cur, "capital_good_depreciation_period");
 			v[13]=VS(cur, "capital_good_date_birth");				//current capital good date of birth
 			v[14]=VS(cur, "capital_good_productive_capacity");		//current capital good productive capacity
-			if((double)t!=v[13] && ((double)t+v[12]) > v[15])	//if current capital good will depreciate in the next investment period (before new capital goods arrive)
+			if((double)t!=v[13] && ((double)t+v[12]) > v[15])		//if current capital good will depreciate in the next investment period (before new capital goods arrive)
 				v[10]=v[10]+v[14];									//sum up productive capacity to depreciate in the next investment period
 			else													//if current capital good wilnot depreciate in the next investment period
 				v[10]=v[10];										//do not sum up productive capacity
@@ -73,13 +74,20 @@ Nominal value of desired new capital goods.
 		
    		v[2]=V("desired_inventories_proportion");																										
    		v[3]=V("desired_degree_capacity_utilization");
-		v[4]=((v[0]*(1+v[2]))/v[3]) - v[1] + v[10];							//desired productive capacity will be the amount needed based on expected sales minus existing plus what will depreciate in the next investment period
-   		v[5]=max(0,v[4]);											//cannot be negative
+		v[4]=((v[0]*(1+v[2]))/v[3]) - (v[1] - v[10]);				//desired productive capacity will be the amount needed based on expected sales minus existing plus what will depreciate in the next investment period
+   													//cannot be negative
    		
+		v[15]=V("switch_expansion_investment");
+		v[16]=V("Firm_Depreciated_Productive_Capacity");
+		if(v[15]==1);
+			v[5]=max(0,v[4]);
+		if(v[15]==0)
+			v[5]=v[16]+v[10];
+		
 		v[6]=V("Price_Capital_Goods");								//price of capital goods
 		v[7]=V("capital_output_ratio");								//capital output ratio
    		v[8]=v[5]*v[6]*v[7];										//desired expansion expenses is the nominal value of the capital goods to meet desired productive capacity
-   		}
+		}
    	else
    		v[8]=0;
 RESULT(v[8])
@@ -102,6 +110,14 @@ Nominal value of derired new capital goods for modernization replacement
  v[11]=V("Price_Capital_Goods");
  v[12]=V("capital_output_ratio");
  v[13]=V("payback_period");
+ 
+ v[30]=V("switch_interest_investment");
+	if(v[30]==0)//no interest
+	v[31]=0;
+	if(v[30]==1)//use basic interest
+	v[31]=V("Basic_Interest_Rate");
+	if(v[30]==2)//use firm interest
+	v[31]=V("Firm_Interest_Rate_Long_Term");
   				
   if(v[3]==1)																																											// if it is investment period for the firm
   {
@@ -114,7 +130,7 @@ Nominal value of derired new capital goods for modernization replacement
      {
      v[17]=VS(cur, "Capital_Good_Productivity");																									// current capital good productivivty
      v[18]=VS(cur, "capital_good_productive_capacity");   																				// current capital good productive capacity  
-     v[23]=v[11]/(v[10]*((1/(v[17]))-(1/(v[8]))));																								// calculates the payback           
+     v[23]=(v[11]*(1+v[31]))/(v[10]*((1/(v[17]))-(1/(v[8]))));																								// calculates the payback           
          if(v[8]>v[17] && v[23]<=v[13])																														// if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
         	v[16]=v[16]+v[18];         																															// sum up the productive capacity to replace
          else																																											// else
@@ -128,7 +144,13 @@ Nominal value of derired new capital goods for modernization replacement
   v[16]=0;																																												// productive capacity to replace is zero
   
   v[17]=v[16]*v[11]*v[12];																																				// nominal desired expenses
-RESULT(v[17])
+	v[30]=V("switch_replacement_investment");
+	if(v[30]==0)
+		v[31]=0;
+	else
+		v[31]=v[17];
+
+RESULT(v[31])
 
 
 EQUATION("Firm_Desired_Investment_Expenses")
@@ -197,8 +219,16 @@ New productive capacity in aquisition of new equipment to replace obsolete ones.
 	v[11]=V("Price_Capital_Goods");
 	v[12]=V("capital_output_ratio");
 	v[13]=V("payback_period");
+	v[29]=V("switch_replacement_investment");
+	v[30]=V("switch_interest_investment");
+	if(v[30]==0)//no interest
+	v[31]=0;
+	if(v[30]==1)//use basic interest
+	v[31]=V("Basic_Interest_Rate");
+	if(v[30]==2)//use firm interest
+	v[31]=V("Firm_Interest_Rate_Long_Term");
   				
-	if(v[3]==1)														// if it is investment period for the firm
+	if(v[3]==1&&v[29]!=0)														// if it is investment period for the firm
 	{
 		v[14]=0;													// initializes the CYCLE for expenses 
 		v[15]=v[0];													// count available funds
@@ -213,7 +243,7 @@ New productive capacity in aquisition of new equipment to replace obsolete ones.
 				v[18]=VS(cur, "capital_good_productive_capacity");  // current capital good productive capacity  
 				v[20]=v[18]*v[12]*v[11];							// current nominal cost of new capital goods to replace that amount of productive capacity
 				v[15]=v[0]-v[14];									// subtract the replacement cost from the available funds to replacement. At the end this will be available funds after replacemenr
-				v[23]=v[11]/(v[10]*((1/(v[17]))-(1/(v[8]))));		// calculates the payback
+				v[23]=(v[11]*(1+v[31]))/(v[10]*((1/(v[17]))-(1/(v[8]))));		// calculates the payback
                  
 				if(v[8]>v[17] && v[20]<=v[15] && v[23]<=v[13])		// if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
 					{
@@ -341,26 +371,55 @@ else
 RESULT(v[3])
 
 
-EQUATION("Firm_Capital_Demand_Price")
+EQUATION("Firm_Investment_Constraint_Rate")
+/*
+Percentage of productive capacity that is replaced for modernization at each time period.
+*/
+v[0]=V("Firm_Effective_Investment_Expenses");
+v[1]=V("Firm_Desired_Investment_Expenses");
+if(v[1]!=0)
+	v[2]=v[0]/v[1];
+else
+	v[2]=0;
+RESULT(v[2])
+
+
+EQUATION("Firm_Capital_Demand_Price_Internal")
 /*
 Demand price of a single capital good of the firm. Equivalent to the internal rate of return
 Sum of profit rate over interest rate on deposits.
 Formulation proposed by Moreira (2010)
-Not considering taker's risk.
+Taker's risk is already included in the firm specific interest rate.
 */
 	v[0]=V("depreciation_period");
 	v[1]=V("Firm_Profit_Rate");
-	v[2]=V("Interest_Rate_Deposits");
+	v[2]=V("Firm_Interest_Rate_Long_Term");
+	v[3]=V("Basic_Interest_Rate");
+	v[4]=V("Interest_Rate_Deposits");
+	v[5]=V("switch_discount_rate");
+	v[6]=V("Price_Capital_Goods");
+	v[7]=V("depreciation_period");
+	v[8]=v[2]*v[6] + v[6]/v[7];
 	
-	v[3]=v[0]*v[1];
-	v[4]=pow((1+v[2]),v[0]);
-	
-	if(v[4]!=0)
-		v[5]=v[3]/v[4];
-	else
-		v[5]=0;
-	
-RESULT(v[5])
+	if(v[5]==1)//use firm specific rate
+	{
+		v[9]=(v[1]*v[0])/(1+v[2]);
+		v[10]=(v[1]*v[0]-v[8])/(1+v[2]);
+	}
+	if(v[5]==2)//use basic rate
+	{
+		v[9]=(v[1]*v[0])/(1+v[3]);
+		v[10]=(v[1]*v[0]-v[8])/(1+v[3]);
+	}
+	if(v[5]==3)//use deposits rate
+	{
+		v[9]=(v[1]*v[0])/(1+v[4]);
+		v[10]=(v[1]*v[0]-v[8])/(1+v[4]);
+	}
+WRITE("Firm_Capital_Demand_Price_External", v[10]);
+RESULT(v[9])
+
+EQUATION_DUMMY("Firm_Capital_Demand_Price_External", "Firm_Capital_Demand_Price_Internal")
 
 
 

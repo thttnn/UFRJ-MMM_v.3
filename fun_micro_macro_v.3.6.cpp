@@ -2,7 +2,7 @@
 //#define NO_POINTER_INIT	// uncomment to disable pointer checking
 
 #include "fun_head_fast.h"
-
+#define FAST_FULL
 // do not add Equations in this area
 
 MODELBEGIN

@@ -38,7 +38,7 @@ The intermediate goods sectors demand exactly the amount they will need to produ
 	
 	v[5]=VL("Firm_Effective_Orders", 1);                   	//firm's effective orders lagged 1 
 	v[6]=VL("Firm_Effective_Orders", 2);                   	//firm's effective orders lagged 1
-	v[7]=V("expectations");                            		//firm's expectation parameter
+	v[7]=V("sector_expectations");                            		//firm's expectation parameter
 	if(v[6]!=0)                                       		//if effective orders is not 0
 		v[8]=1+(v[7]*((v[5]-v[6])/v[6]));               	//gives an expected growth rate, based on the effective orders
 	else                                              		//if effective orders is 0
@@ -56,7 +56,6 @@ The intermediate goods sectors demand exactly the amount they will need to produ
 	
 	v[15]=max(v[14],0);                               		//the demand of imputs for the next period can never be negative
 RESULT(v[15])
-
 
 
 EQUATION("Firm_Stock_Inputs")

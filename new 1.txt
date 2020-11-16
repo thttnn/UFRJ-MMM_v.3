@@ -1,0 +1,102 @@
+EQUATION("Sector_Productive_Capacity_Entry")
+/*
+Sector Variable
+In this variable a new firm enters if there is market space available and the entry condiion is met
+*/
+
+   v[0]=V("Sector_Entry_Condition");									//value of entry conditions										//sum of firm's market share 
+      if(v[0]>0)														//if entry conditions are met and there are market space 
+      {
+	  v[1]=AVE("Firm_Effective_Market_Share");
+	  v[2]=1;
+	  v[3]=0;														//initializes the cycle
+     	CYCLE(cur, "FIRMS")											//CYCLE trough all firms to firm the average firm 
+     	{
+     	v[4]=VS(cur, "Firm_Market_Share");							//current firm's market share
+        v[5]=abs(v[4]-v[1]);										//absolute difference between current firm's market share and sector's avg
+        v[2]=min(v[5],v[2]);										//min between 1 and the current difference
+            if(v[5]==v[2])											//if the current difference is the lowest one
+               v[3]=v[4];											//use current firm's market share
+            else													//if current difference is not the lowest one
+               v[3]=v[3];											//use the current value, until find the lowest difference
+     	}
+		cur=SEARCH_CND("Firm_Market_Share", v[3]);
+		v[6]=VS(cur, "Firm_Market_Share");							//market share of the firm to copy
+		v[7]=VS(cur, "Firm_Productive_Capacity");					//productive capacity of the firm to copy
+		v[9]=VS(cur, "Firm_Capital");								//total entry cost
+		
+		v[9]=VL("Sector_Productive_Capacity_Available",1);			//productive capacity available in the last period
+		v[10]=V("Sector_Productive_Capacity_Exit");					//new productive capacity available in this period
+		v[11]=v[10]+v[9];											//total productive capacity available in the sector
+		
+		v[12]=V("entry_debt_share");								//parameter that defines the share of debt
+		v[13]=V("Price_Capital_Goods");								//current price of capital goods
+		
+		if(v[7]=<v[11])        										//new productive capacity will bre free, from available capacity
+			[
+			v[14]=v[7];
+			v[17]=0;
+			v[18]=0;
+			}
+		else														//more capacity is needed
+			{
+			v[14]=v[11];											//initial capacity will be all that is available
+			v[15]=v[7]-v[11];										//still needed capacity
+			v[16]=SUMLS(root, "Class_Stock_Deposits", 1);			//check current stock of deposits of all classes
+			if((1-v[12])*v[15]*v[13]=<v[16])						//if the cost of still needed capacity is lower that available deposits
+				v[17]=(1-v[12])*v[15]*v[13];						//reduce the cost of still needed capacity from the stock of deposits
+			else													//if deposits is not enough
+				v[17]=v[16];										//reduce what is available
+			v[18]=v[15]*v[13]-v[17];								//value still to be financed
+			}
+			
+		cur1=RNDDRAWS(root, "BANKS", "Bank_Market_Share");		//choose a random bank
+		v[19]=VS(cur1, "id_bank");								//identify the chosen bank
+		v[20]=VS(cur1, "Bank_Interest_Rate_Long_Term");
+		
+		v[21]=V("capital_output_ratio");
+		v[22]=V("depreciation_period");
+		v[23]=V("Sector_Avg_Productivity");
+		
+		cur2=ADDOBJ_EX("FIRMS",cur);							//create new firm
+		WRITES(cur2, "firm_date_birth", t);
+		WRITES(cur2, "id_firm_number",t);	
+		WRITES(cur2, "id_firm_bank", v[19]);
+		WRITELS(cur2, "Firm_Stock_Deposits",0,t);
+		WRITELS(cur2, "Firm_Stock_Loans",v[18],t);
+		WRITELS(cur2, "Firm_Demand_Capital_Goods", v[15]*v[21], t);
+		
+		USE_ZERO_INSTANCE
+		CYCLE_SAFES(cur2, cur4, "CAPITALS")
+			DELETE(cur4);
+			
+		for(i=1; i<=v[14]*v[21]; i++)
+		{
+		cur3=ADDOBJS(cur2, "CAPITALS");
+		WRITES(cur3, "capital_good_productive_capacity",(1/v[21]));
+		WRITES(cur3, "capital_good_date_birth",t);					//write the new date of birth
+		WRITES(cur3, "capital_good_depreciation_period",(t+v[22])); //write the new date of birth
+		WRITES(cur3, "capital_good_to_replace",0);					//write current capital goods as not to replace
+		WRITES(cur3, "capital_good_to_depreciate",0);
+		WRITES(cur3, "capital_good_productivity_initial",v[23]);	//write current capital initial productivity
+		WRITELS(cur3, "Capital_Good_Acumulated_Production",0,t);	//write current capital acumulated production as zero
+		}
+	
+		CYCLE_SAFES(cur2, cur4, "FIRM_LOANS")
+		{
+			if (VS(cur4, "firm_loan_fixed_object")!=1)
+			DELETE(cur4);
+		}
+		
+		cur5 = ADDOBJS(cur2, "FIRM_LOANS");
+		WRITES(cur5, "firm_loan_total_amount", v[18]);
+		WRITES(cur5, "firm_loan_fixed_object", 0);
+		WRITES(cur5, "firm_loan_fixed_amortization", v[18]/v[22]);
+		WRITES(cur5, "id_firm_loan_long_term", 1);
+		WRITES(cur5, "firm_loan_interest_rate", v[20]);
+		
+		WRITE("Sector_Entry_Deposits_Needed", v[17] );	   
+	  }
+       else
+       v[4]=0;
+RESULT(v[14])

@@ -21,10 +21,18 @@ Firm Variable
 			v[10]=v[0]+v[4]*(v[2]*(1+v[9])-v[0]);                              		//the firm adjusts the strategic markup. 
 		else                                                                   		//if the adjusted average potential markup is not higher than desired nor the firm's average market-share is not higher than desired
 			v[10]=v[0];                                                        		//strategic markup will be the last period's                                            
+		
+		v[12]=VL("Firm_Quality",1);
+		v[13]=VL("Sector_Avg_Quality",1);
+		if(v[13]!=0)
+			v[14]=(v[12]-v[13])/v[13];
+		else
+			v[14]=0;
+		v[15]=v[0]*(1+max(0,v[4]*v[14]));		
 		}
 	else                                                                     		//if the rest of the above division is not zero, do not adjust strategic markup
-		v[10]=v[0];                                                            		//strategic markup will be the last period's			
-RESULT(v[10]) 
+		v[15]=v[0];                                                            		//strategic markup will be the last period's			
+RESULT(v[15]) 
 
 
 EQUATION("Firm_Wage")
@@ -42,9 +50,16 @@ Nominal Wage of the firm. It increases year by year depending on inflation and f
 		v[5]=V("sector_passthrough_productivity");                                       //pass through of productivity to wages
 		v[6]=VLS(GRANDPARENT, "Consumer_Price_Index", 1);                                //price index in the last period
 		v[7]=VLS(GRANDPARENT, "Consumer_Price_Index", (v[11]+1));                        //price index five periods before
-		v[8]=(v[6]-v[7])/v[7];                                                           //annual growth of price index (annual inflation)
+		v[8]=max(0,((v[6]-v[7])/v[7]));                                                  //annual growth of price index (annual inflation)
 		v[9]=V("sector_passthrough_inflation");                                          //pass through of inflation to wages   	
-		v[10]=v[0]*(1+v[5]*v[4]+v[9]*v[8]);                                              //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
+		v[12]=VL("Sector_Employment", 1);                                				 //sector employment in the last period
+		v[13]=VL("Sector_Employment", (v[11]+1));                        				 //sector employment five periods before
+		if(v[13]!=0)
+			v[14]=(v[12]-v[13])/v[13];                                                   //annual growth of sector employment
+		else
+			v[14]=0;
+		v[15]=V("sector_passthrough_employment");
+		v[10]=v[0]*(1+v[5]*v[4]+v[9]*v[8]+v[15]*v[14]);                                  //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
 		}
 	else                                                                             	 //if the rest of the division is not zero, do not adjust wages
 		v[10]=v[0];                                                                      //current wages will be the last period's
@@ -112,7 +127,7 @@ Firm's desired price is a desired markup over variable costs.
 	v[1]=V("Firm_Variable_Cost");                          						//firm's variable cost 
 	v[3]=V("Firm_Unit_Financial_Cost");
 	v[4]=V("Firm_Financial_Cost_Passtrough");
-	v[2]=v[0]*(v[1]+v[3]*v[4]);                                  							//firm's desired price will be the desired markup applied to labor cost plus inputs cost, labor cost defined as wages over productivity
+	v[2]=v[0]*(v[1]+v[3]*v[4]);                                  				//firm's desired price will be the desired markup applied to labor cost plus inputs cost, labor cost defined as wages over productivity
 RESULT(v[2])
 
 
@@ -138,7 +153,10 @@ Effective Markup is the Effective Price over the Variable Cost
 */
 	v[0]=V("Firm_Price");
 	v[1]=V("Firm_Variable_Cost");
-	v[2]=v[0]/v[1];
+	if(v[1]!=0)
+		v[2]=v[0]/v[1];
+	else
+		v[2]=0;
 RESULT(v[2])
 
 

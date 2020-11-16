@@ -128,20 +128,14 @@ Must be called by the sectors.
 		v[2]=0;                                               	//initializes the second CYCLE
 		CYCLES(cur, cur1, "FIRMS")                            	//CYCLE trought the firms
 		{
-			v[3]=VS(cur1, "Firm_Demand_Capital_Goods");         //gives the demand for capital goods of each firm
-			v[2]=v[2]+v[3];                                     //sums up all capital goods demand
+			v[10]=VLS(cur1, "Firm_Demand_Capital_Goods_Expansion", 1);
+			v[11]=VLS(cur1, "Firm_Demand_Capital_Goods_Replacement", 1);
+			v[2]=v[2]+v[10]+v[11];                                     //sums up all capital goods demand
 		}
 		v[1]=v[1]+v[2];                                       	//sums up all firm's capital goods demand
 	}
-	cur = SEARCH_CND("id_capital_goods_sector", 1);
-	v[4]=VLS(cur, "Sector_Avg_Price", 1);
-	v[5]=V("Government_Effective_Investment");
-	if(v[4]!=1)
-		v[6]=v[5]/v[4];
-	else
-		v[6]=0;
-	v[7]=v[1]+v[6];
-RESULT(v[7])
+	
+RESULT(v[1])
 
 
 EQUATION("Price_Capital_Goods")
@@ -208,7 +202,11 @@ The total wage is calculated by the sum of the wages paid by the sectors with go
 			v[3]=VS(cur1, "Firm_Effective_Production");             //firm's effective production
 			v[4]=VLS(cur1, "Firm_Avg_Productivity", 1);            	//firm's productivity in the last period
 			v[5]=VS(cur1, "Firm_RND_Expenses");                     //firm's rnd expeses, returned as salary to researchers
-			v[1]=v[1]+v[3]*(v[2]/v[4])+v[5];                       	//sums up all firms' wage, determined by a unitary wage (sectorial wage divided by firm's productivity) multiplied by firm's effective production plus RND expenses
+			v[8]=VS(cur1, "Firm_Overhead_Costs");				
+			if(v[4]!=0)
+				v[1]=v[1]+v[3]*(v[2]/v[4])+v[5]+v[8];                       	//sums up all firms' wage, determined by a unitary wage (sectorial wage divided by firm's productivity) multiplied by firm's effective production plus RND expenses
+			else
+				v[1]=v[1];
 		}
 		v[0]=v[0]+v[1];                                          	//sums up all wages of all sectors
 	}
@@ -700,7 +698,9 @@ Total imports in nominal value are obtained from the sum of imports of all secto
 	v[0]=WHTAVE("Sector_Extra_Imports", "Sector_External_Price");
 	v[1]=SUM("Class_Effective_Imports");
 	v[2]=V("Exchange_Rate");
-	v[3]=(v[0]+v[1])*v[2];
+	cur = SEARCH_CND("id_consumption_goods_sector", 1);
+	v[4]=VLS(cur, "Sector_External_Price", 1);
+	v[3]=(v[0]+v[1]*v[4])*v[2];
 RESULT(v[3])
 
 
