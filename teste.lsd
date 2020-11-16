@@ -141,11 +141,11 @@ Label Root
 				Param: sensitivity_credit_growth
 				Param: sensitivity_debt_rate
 				Param: sensitivity_inflation
-				Param: sensitivity_unemployment
+				Param: sensitivity_capacity
 				Param: target_credit_growth
 				Param: target_debt_rate
 				Param: target_inflation
-				Param: target_unemployment
+				Param: target_capacity
 				Param: begin_monetary_policy
 				Param: switch_monetary_policy
 				Param: switch_moving_targets
@@ -433,7 +433,6 @@ Label Root
 			Param: profits_distribution_rate
 			Param: rnd_revenue_proportion
 			Param: sector_exports_coefficient
-			Param: sector_initial_demand
 			Param: sector_initial_price
 			Param: sector_initial_productivity
 			Param: sector_passthrough_employment
@@ -484,7 +483,6 @@ Label Root
 			Var: Sector_Participation
 			Var: Sector_Ponzi_Normalized_Share
 			Var: Sector_Ponzi_Share
-			Var: Sector_Potential_Employment
 			Var: Sector_Productive_Capacity
 			Var: Sector_Productive_Capacity_Available
 			Var: Sector_Productive_Capacity_Entry
@@ -499,9 +497,12 @@ Label Root
 			Var: Sector_Stock_Loans
 			Var: Sector_Taxation
 			Var: Sector_Turbulence
-			Var: Sector_Unemployment
+			Var: Sector_Idle_Capacity
 			Var: Sector_Avg_External_Finance_Rate
 			Var: Sector_Avg_Internal_Finance_Rate
+			Var: Sector_Capacity_Utilization
+			Param: sector_passthrough_capacity
+			Var: Sector_Exports_Share
 
 		}
 
@@ -586,7 +587,7 @@ Label Root
 		Var: Total_Productive_Capacity_Replacement
 		Var: Total_Profits
 		Var: Total_Wages
-		Var: Unemployment
+		Var: Avg_Idle_Capacity
 		Var: Wage_Share
 
 	}
@@ -707,7 +708,7 @@ Param: crisis_threshold 0 n + n n	0
 Param: depreciation_period 0 n + n n	40
 Param: entry_debt_share 0 n + n n	1
 Param: government_period 0 n + n n	4
-Param: initial_class_desired_debt_rate 0 n + n n	1
+Param: initial_class_desired_debt_rate 0 n + n n	0.5
 Param: initial_class_liquidity_preference 0 n + n n	0
 Param: initial_firm_desired_debt_rate 0 n + n n	0.5
 Param: initial_firm_liquidity_preference 0 n + n n	0
@@ -782,7 +783,7 @@ Var: Total_Productive_Capacity_Expansion 0 s + n n
 Var: Total_Productive_Capacity_Replacement 0 s + n n
 Var: Total_Profits 0 s + n n
 Var: Total_Wages 0 n + n n
-Var: Unemployment 5 s + n n	0.18	0.18	0.18	0.18	0.18
+Var: Avg_Idle_Capacity 5 s + n n	0.18	0.18	0.18	0.18	0.18
 Var: Wage_Share 0 s + n n
 
 Object: CLASSES C	2
@@ -959,11 +960,11 @@ Param: interest_rate_adjustment 0 n + n n	0.0005
 Param: sensitivity_credit_growth 0 n + n n	1
 Param: sensitivity_debt_rate 0 n + n n	1
 Param: sensitivity_inflation 0 n + n n	1
-Param: sensitivity_unemployment 0 n + n n	1
+Param: sensitivity_capacity 0 n + n n	1
 Param: target_credit_growth 0 s + n n	0.003
 Param: target_debt_rate 0 s + n n	0.3
 Param: target_inflation 0 s + n n	0
-Param: target_unemployment 0 s + n n	0.1
+Param: target_capacity 0 s + n n	0.1
 Param: begin_monetary_policy 0 n + n n	100
 Param: switch_monetary_policy 0 n + n n	0
 Param: switch_moving_targets 0 n + n n	0
@@ -1036,13 +1037,12 @@ Param: investment_period 0 n + n n	4	4	4
 Param: learning_adjustment 0 n + n n	0	0	0
 Param: market_share_expansion 0 n + n n	1	1	1
 Param: markup_apropriation 0 n + n n	0	0	0
-Param: number_object_firms 0 n + n n	20	20	20
+Param: number_object_firms 0 n + n n	40	20	20
 Param: payback_period 0 n + n n	20	20	20
 Param: productive_capacity_cost 0 n + n n	0	0	0
 Param: profits_distribution_rate 0 n + n n	0.95	0.95	0.95
 Param: rnd_revenue_proportion 0 n + n n	0.05	0.05	0.05
-Param: sector_exports_coefficient 0 n + n n	0	0	0
-Param: sector_initial_demand 0 n + n n	0	0	0
+Param: sector_exports_coefficient 0 s + n n	0	0	0
 Param: sector_initial_price 0 n + n n	0	0	0
 Param: sector_initial_productivity 0 n + n n	1	1	1
 Param: sector_passthrough_employment 0 n + n n	0.1	0.1	0.1
@@ -1093,7 +1093,6 @@ Var: Sector_Number_Firms 1 s + n n	20	20	20
 Var: Sector_Participation 0 s + n n
 Var: Sector_Ponzi_Normalized_Share 0 s + n n
 Var: Sector_Ponzi_Share 0 s + n n
-Var: Sector_Potential_Employment 1 s + n n	0	0	0
 Var: Sector_Productive_Capacity 1 s + n n	0	0	0
 Var: Sector_Productive_Capacity_Available 1 n + n n	0	0	0
 Var: Sector_Productive_Capacity_Entry 0 n + n n
@@ -1108,9 +1107,12 @@ Var: Sector_Stock_Deposits 0 s + n n
 Var: Sector_Stock_Loans 0 s + n n
 Var: Sector_Taxation 0 n + n n
 Var: Sector_Turbulence 0 s + n n
-Var: Sector_Unemployment 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Idle_Capacity 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Sector_Avg_External_Finance_Rate 0 s + n n
 Var: Sector_Avg_Internal_Finance_Rate 0 s + n n
+Var: Sector_Capacity_Utilization 0 s + n n
+Param: sector_passthrough_capacity 0 n + n n	0	0	0
+Var: Sector_Exports_Share 0 s + n n
 
 Object: FIRMS C	1	1	1
 Var: Firm_Available_Funds_After_Replacement 0 n + n n
@@ -1404,7 +1406,7 @@ END_DESCRIPTION
 Parameter_initial_class_desired_debt_rate
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Parameter_initial_class_liquidity_preference
@@ -1854,7 +1856,7 @@ _INIT_
 
 END_DESCRIPTION
 
-Variable_Unemployment
+Variable_Avg_Idle_Capacity
 (no description available)
 _INIT_
 
@@ -1929,7 +1931,7 @@ END_DESCRIPTION
 Parameter_class_propensity_to_import
 (no description available)
 _INIT_
-All 2 instances equal to 0.
+All 2 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_class_wage_share
@@ -2920,7 +2922,7 @@ _INIT_
 All 1 instances equal to 1.
 END_DESCRIPTION
 
-Parameter_sensitivity_unemployment
+Parameter_sensitivity_capacity
 (no description available)
 _INIT_
 All 1 instances equal to 1.
@@ -2944,7 +2946,7 @@ _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_target_unemployment
+Parameter_target_capacity
 (no description available)
 _INIT_
 All 1 instances equal to 0.1.
@@ -3437,12 +3439,6 @@ _INIT_
 All 3 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_sector_initial_demand
-(no description available)
-_INIT_
-All 3 instances equal to 0.
-END_DESCRIPTION
-
 Parameter_sector_initial_price
 (no description available)
 _INIT_
@@ -3754,12 +3750,6 @@ _INIT_
 
 END_DESCRIPTION
 
-Variable_Sector_Potential_Employment
-(no description available)
-_INIT_
-All 3 instances equal to 0.
-END_DESCRIPTION
-
 Variable_Sector_Productive_Capacity
 (no description available)
 _INIT_
@@ -3851,7 +3841,7 @@ _INIT_
 
 END_DESCRIPTION
 
-Variable_Sector_Unemployment
+Variable_Sector_Idle_Capacity
 (no description available)
 _INIT_
 All 3 instances equal to 0.
@@ -3864,6 +3854,24 @@ _INIT_
 END_DESCRIPTION
 
 Variable_Sector_Avg_Internal_Finance_Rate
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Sector_Capacity_Utilization
+****SECTOR AVERAGES, SD AND MAX********SECTOR AVERAGES, SD AND MAX****
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_sector_passthrough_capacity
+(no description available)
+_INIT_
+All 3 instances equal to 0.
+END_DESCRIPTION
+
+Variable_Sector_Exports_Share
 (no description available)
 _INIT_
 

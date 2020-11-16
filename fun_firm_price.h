@@ -59,7 +59,11 @@ Nominal Wage of the firm. It increases year by year depending on inflation and f
 		else
 			v[14]=0;
 		v[15]=V("sector_passthrough_employment");
-		v[10]=v[0]*(1+v[5]*v[4]+v[9]*v[8]+v[15]*v[14]);                                  //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
+		v[16]=VL("Sector_Capacity_Utilization", 1);
+		v[17]=V("desired_degree_capacity_utilization");
+		v[18]=v[16]-v[17];
+		v[19]=V("sector_passthrough_capacity");
+		v[10]=v[0]*(1+v[5]*v[4]+v[9]*v[8]+v[15]*v[14]+v[18]*v[19]);                                  //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
 		}
 	else                                                                             	 //if the rest of the division is not zero, do not adjust wages
 		v[10]=v[0];                                                                      //current wages will be the last period's

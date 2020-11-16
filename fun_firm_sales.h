@@ -1,3 +1,12 @@
+EQUATION("Firm_Effective_Orders")
+/*
+Firm Variable
+*/
+	v[0]=V("Firm_Market_Share"); 
+	v[1]=V("Sector_Effective_Orders");
+	v[2]=v[0]*v[1];
+RESULT(v[2])
+
 
 EQUATION("Firm_Sales")
 /*

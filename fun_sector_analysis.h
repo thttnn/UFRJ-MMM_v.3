@@ -103,7 +103,7 @@ EQUATION("U_C")
 Unemployment Rate of Consumption good sector
 */
 cur = SEARCH_CNDS(root, "id_consumption_goods_sector", 1);
-v[0]=VS(cur, "Sector_Unemployment");
+v[0]=VS(cur, "Sector_Idle_Capacity");
 RESULT(v[0])
 
 EQUATION("U_K")
@@ -111,7 +111,7 @@ EQUATION("U_K")
 Unemployment Rate of Capital good sector
 */
 cur = SEARCH_CNDS(root, "id_capital_goods_sector", 1);
-v[0]=VS(cur, "Sector_Unemployment");
+v[0]=VS(cur, "Sector_Idle_Capacity");
 RESULT(v[0])
 
 EQUATION("U_I")
@@ -119,7 +119,7 @@ EQUATION("U_I")
 Unemployment Rate of Intermediate good sector
 */
 cur = SEARCH_CNDS(root, "id_intermediate_goods_sector", 1);
-v[0]=VS(cur, "Sector_Unemployment");
+v[0]=VS(cur, "Sector_Idle_Capacity");
 RESULT(v[0])
 
 

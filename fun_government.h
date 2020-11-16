@@ -50,9 +50,8 @@ if(v[1]==0)                                                    //if the rest of 
 		v[4]=0;
 	
 	v[5]=V("government_benefit");
-	v[6]=SUMLS(root, "Sector_Potential_Employment",1);
-	v[7]=SUMLS(root, "Sector_Employment",1);
-	v[8]=v[4]*v[5]*(v[6]-v[7]);
+	v[6]=SUMLS(root, "Sector_Idle_Capacity",1);
+	v[8]=v[4]*v[5]*v[7];
 }
 else
 	v[8]=CURRENT;

@@ -23,7 +23,7 @@ EQUATION("U")
 Unemployment
 */
 cur = SEARCHS(root, "MACRO");
-v[0]=VS(cur, "Unemployment");
+v[0]=VS(cur, "Avg_Idle_Capacity");
 RESULT(v[0])
 
 

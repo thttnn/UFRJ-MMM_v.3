@@ -47,7 +47,14 @@ Effective orders are determined from total demand for the products in the sector
 	v[3]=v[0]+v[1]+v[2];                                                                         //sums up the domestic demands. For each sector, only the relevant demand will have a value and the others will be zero.
 	v[4]=V("Sector_Exports");                                                                    //external demand, exports of the sector (zero for the non-agricultural sector)
 	v[5]=v[3]+v[4];                                                                              //sums up domestic and external demand
+	if(v[5]!=0)
+		v[6]=v[4]/v[5];
+	else
+		v[6]=0;
+	WRITE("Sector_Exports_Share", v[6]);
 RESULT(max(0,v[5]))
+
+EQUATION_DUMMY("Sector_Exports_Share", "Sector_Effective_Orders")
 
 
 EQUATION("Firm_Effective_Orders_Capital_Goods")
@@ -68,14 +75,6 @@ It is settled in a way that there will be no excess demand while there is still 
 RESULT(v[4])
 
 
-EQUATION("Firm_Effective_Orders")
-/*
-Firm Variable
-*/
-	v[0]=V("Firm_Market_Share"); 
-	v[1]=V("Sector_Effective_Orders");
-	v[2]=v[0]*v[1];
-RESULT(v[2])
 
 
 

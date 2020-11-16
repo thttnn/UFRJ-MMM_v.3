@@ -1,6 +1,4 @@
 
-
-
 EQUATION("Firm_Expected_Sales")
 /*
 Firm's expected sales are calculated from an average of effective sales from the two previous periods, applying a expected growth rate. This expected growth rate is obtained from comparing the average of the two previous periods with the average of the two before that, adjusted by an expectation parameter.

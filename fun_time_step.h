@@ -232,10 +232,9 @@ V("Consumer_Price_Index");
 V("Real_GDP");                                          	
 V("Annual_Real_Growth");                                	
 V("Likelihood_Crisis");                                 	
-V("Sector_Employment");                                 	
-V("Sector_Potential_Employment");					    	
-V("Sector_Unemployment");									
-V("Unemployment");                                      	
+V("Sector_Employment");                                 						    	
+V("Sector_Idle_Capacity");									
+V("Avg_Idle_Capacity");                                      	
 
 /*****ANALYSIS*****/
 V("Class_Income_Share");

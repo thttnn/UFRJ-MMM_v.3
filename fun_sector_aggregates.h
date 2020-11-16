@@ -213,7 +213,6 @@ RESULT(SUM("Firm_Stock_Deposits"))
 EQUATION("Sector_Effective_Loans")
 RESULT(SUM("Firm_Effective_Loans"))
 
-
 EQUATION("Sector_Demand_Met")
 /*
 Percentage of demand fulfilled by each sector
@@ -237,43 +236,34 @@ Sum up firm's employment, given by firm's effective production over firm's avg p
 		v[1]=VS(cur, "Firm_Effective_Production");      //firm's effective production
 		v[2]=VS(cur, "Firm_Avg_Productivity");   		//firm's productivity in the last period
 		if(v[2]!=0)
-			v[0]=v[0]+v[1];                       	//sums up the ratio between effective production and productivity
+			v[0]=v[0]+v[1]/v[2];                       	//sums up the ratio between effective production and productivity
 		else
 			v[0]=v[0];
 	}
 RESULT(v[0])
 
 
-EQUATION("Sector_Potential_Employment")
-/*
-Sum up firm's potential employment, gigvn by firm's productive capacity over firm's avg productivity
-*/
-v[0]=0;                                        					//initializes the CYCLE
-	CYCLE(cur, "FIRMS")                            					//CYCLE trought the firms
-	{
-		v[1]=VS(cur, "Firm_Productive_Capacity");      //firm's effective production
-		v[2]=VS(cur, "Firm_Avg_Productivity");   	//firm's productivity in the last period
-		if(v[2]!=0)
-			v[0]=v[0]+v[1];
-		else
-			v[0]=v[0];
-	}
-	v[4]=V("desired_degree_capacity_utilization");
-	v[5]=v[4]*v[0];
-RESULT(v[0])
-
-
-EQUATION("Sector_Unemployment")
+EQUATION("Sector_Idle_Capacity")
 /*
 Unemployment, calculated as the difference between effective employment and potential employment of the sector, in percentage value
 */
-	v[0]=V("Sector_Employment");
-	v[1]=V("Sector_Potential_Employment");
+	v[0]=V("Sector_Effective_Production");
+	v[1]=V("Sector_Productive_Capacity");
 	if (v[1]!=0)
+	{
 		v[2]=max(0,((v[1]-v[0])/v[1]));
+		v[3]=v[0]/v[1];
+	}
 	else
+	{
 		v[2]=0;
+		v[3]=0;
+	}
+	WRITE("Sector_Capacity_Utilization", v[3]);
 RESULT(v[2])
+
+
+EQUATION_DUMMY("Sector_Capacity_Utilization", "Sector_Idle_Capacity")
 
 
 

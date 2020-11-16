@@ -662,12 +662,12 @@ Average Productivity of the economy weighted by the employment of each sector
 RESULT(v[2])
 
 
-EQUATION("Unemployment")
+EQUATION("Avg_Idle_Capacity")
 /*
 Unemployment rate, in percentage value
 */
-	v[0]=SUM("Sector_Potential_Employment");
-	v[1]=SUM("Sector_Employment");
+	v[0]=SUM("Sector_Productive_Capacity");
+	v[1]=SUM("Sector_Effective_Production");
 	if(v[0]==0)
 		v[2]=0;
 	else

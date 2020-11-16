@@ -77,14 +77,14 @@ MONETARY POLICY:
 		9-->												kansas city rule
 	"interest_rate_adjustment":							determines the maximum adjustment per period
 	"target_inflation":									determines the inflation target	
-	"target_unemployment":								determines the unemployment target	
+	"target_capacity":									determines the capacity target	
 	"target_credit_growth":								determines the credit growth target	
 	"target_debt_rate":									determines the debt rate target	
 	"switch_moving_targets"								determines the target calculation
 		0-->												fixed, as the parameter
 		1-->												moving, based on past average values
 	"sensitivity_inflation":							determines the central bank's sensitivity to inflation gap
-	"sensitivity_unemployment":							determines the central bank's sensitivity to unemployment gap
+	"sensitivity_capacity":								determines the central bank's sensitivity to capacity gap
 	"sensitivity_credit_growth":						determines the central bank's sensitivity to credit growth gap
 	"sensitivity_debt_rate":							determines the central bank's sensitivity to debt rate gap	
 			

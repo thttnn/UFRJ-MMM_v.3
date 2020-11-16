@@ -65,17 +65,18 @@ if (v[2]==0)														//if it is class adjustment period
   	else     														//if stock of deposits is zero                                                                               
 		v[10]=0;		
    v[11]=V("class_autonomous_consumption_adjustment_deposits");
-   
+   v[13]=V("class_propensity_to_import");
    	if(v[10]>0)
-   		v[12]=v[7]*(1+v[11]*v[10]);
+   		v[12]=v[13]*(1+v[11]*v[10]);
    	if(v[10]==0)
-   		v[12]=v[7];
+   		v[12]=v[13];
    	if(v[10]<0)
-   		v[12]=v[7]; 	
+   		v[12]=v[13]*(1+v[11]*v[10]); 
+	WRITE("class_propensity_to_import", v[12]);
   }
 else																//if it is not class adjustment period
-	v[12]=v[0]; 													//use lase period autonomous consumption                                                                       		
-RESULT(max(0,v[12]))
+	v[7]=v[0]; 													//use lase period autonomous consumption                                                                       		
+RESULT(max(0,v[7]))
 
 
 EQUATION("Class_Real_Desired_Consumption")
