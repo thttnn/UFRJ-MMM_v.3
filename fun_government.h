@@ -25,11 +25,12 @@ if(v[1]==0)                                                    //if the rest of 
 		v[8]=0;												   //use 1
 	v[9]=V("government_productivity_passtrought");             //productivity passtrough parameter
 	v[10]=V("government_inflation_passtrought");			   //inflation passtrough to public wages
-	v[11]=v[2]*(1+v[9]*v[5]+v[10]*v[8]);                       //desired adjusted government wages with no restriction
+	v[11]=V("government_demand_growth");
+	v[12]=v[2]*(1+v[9]*v[5]+v[10]*v[8]+v[11]);                 //desired adjusted government wages with no restriction
 }
 else                                                           //if it is not adjustment period
-	v[11]=v[2];                                                //use last period's
-RESULT(v[11])
+	v[12]=v[2];                                                //use last period's
+RESULT(v[12])
 
 
 EQUATION("Government_Desired_Unemployment_Benefits")

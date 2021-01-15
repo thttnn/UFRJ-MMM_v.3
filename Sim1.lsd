@@ -209,6 +209,8 @@ Label Root
 			Var: Interest_Rate_Deposits
 			Var: Policy_Targets
 			Var: Total_Stock_Loans_Growth
+			Param: switch_fixed_bank_distribution
+			Param: fs_expectations
 
 		}
 
@@ -924,6 +926,8 @@ Var: Financial_Sector_Turbulence 0 s + n n
 Var: Interest_Rate_Deposits 1 s + n n	0
 Var: Policy_Targets 0 n + n n
 Var: Total_Stock_Loans_Growth 1 s + n n	0
+Param: switch_fixed_bank_distribution 0 n + n n	0
+Param: fs_expectations 0 n + n n	0.3
 
 Object: BANKS C	1
 Param: bank_defaulted_loans_temporary 0 n + n n	0
@@ -2683,6 +2687,18 @@ Average weighted by firm's market share
 Average weighted by firm's market share
 _INIT_
 All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_switch_fixed_bank_distribution
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_fs_expectations
+(no description available)
+_INIT_
+All 1 instances equal to 0.3.
 END_DESCRIPTION
 
 Object_BANKS
