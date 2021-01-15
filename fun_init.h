@@ -13,7 +13,7 @@ Additionally, there is a strong hypothesis here: all sector are equals, except f
 */
 
 //Define Global Pointers
-country=SEARCH("MACRO");
+country=SEARCH("COUNTRY");
 external=SEARCH("EXTERNAL_SECTOR");
 government=SEARCH("GOVERNMENT");
 financial=SEARCH("FINANCIAL");
@@ -163,7 +163,7 @@ v[159]=V("scale_debt");
 
 //Begin Writting Macro Variables
 		WRITELLS(country,"Likelihood_Crisis", 0, 0, 1);                  							//zero by definition
-		WRITELLS(country,"Annual_Growth", 0, 0, 1);													//zero by definition, no growth initally
+		WRITELLS(country,"Country_Annual_Growth", 0, 0, 1);													//zero by definition, no growth initally
 		WRITELLS(country,"Annual_Real_Growth", 0, 0, 1);                 							//zero by definition, no growth initally
 		WRITELLS(country,"Annual_Inflation", 0, 0, 1);	
 	for (i=1 ; i<=(v[3]+1) ; i++)                  												//for (annual period +1) lags

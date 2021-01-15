@@ -395,7 +395,7 @@ Real quarterly GDP is the nominal GDP over the price index.
 RESULT(v[2])
 
 
-EQUATION("Annual_Growth")
+EQUATION("Country_Annual_Growth")
 /*
 Annual Nominal GDP growth rate.
 */

@@ -226,7 +226,7 @@ V("Wage_Share");
 V("Avg_Profit_Rate");                                       	
 V("GDP");                                            		
 V("GDP_Demand");                                   	    	
-V("Annual_Growth");                                     	
+V("Country_Annual_Growth");                                     	
 V("Price_Index");                                       	
 V("Consumer_Price_Index");                              	
 V("Real_GDP");                                          	

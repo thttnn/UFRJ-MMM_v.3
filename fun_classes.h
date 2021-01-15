@@ -42,9 +42,8 @@ v[1]=V("class_period");										    	//defines the class adjustment period
 v[2]= fmod((double) t,v[1]);										//divides time period by the class period and takes the rest
 if (v[2]==0)														//if it is class adjustment period 	
 	{
-	cur = SEARCH_CNDS(root, "id_consumption_goods_sector", 1);		//search consumption good sector
-	v[3]=VLS(cur, "Sector_Avg_Quality",1);     						//sector average quality in the last period                        
-	v[4]=VLS(cur, "Sector_Avg_Quality",(v[1]+1)); 					//sector average quality in the last adjustment period                          
+	v[3]=VLS(consumption, "Sector_Avg_Quality",1);     				//sector average quality in the last period                        
+	v[4]=VLS(consumption, "Sector_Avg_Quality",(v[1]+1)); 			//sector average quality in the last adjustment period                          
   	if(v[4]!=0)														//if initial average quality is not zero                                                                              
 		v[5]=(v[3]-v[4])/v[4];          							//computate quality growth                                                  			
   	else     														//if average quality is zero                                                                               
@@ -114,10 +113,9 @@ EQUATION("Class_Real_Desired_Imported_Consumption")
 	v[4]=V("Class_Avg_Real_Income");
 	v[5]=V("class_propensity_to_import");							//class propensity to import
   
-	cur=SEARCH_CNDS(root, "id_consumption_goods_sector", 1);     	//identifies the consumption goods sector
-	v[6]=VS(cur, "Sector_Avg_Price");                        		//consumption sector average price
-	v[7]=VS(cur, "Sector_External_Price");                   		//consumption sector external price
-	v[8]=V("Exchange_Rate");										//exchange rate
+	v[6]=VS(consumption, "Sector_Avg_Price");                       //consumption sector average price
+	v[7]=VS(consumption, "Sector_External_Price");                  //consumption sector external price
+	v[8]=VS(external,"Exchange_Rate");										//exchange rate
 	v[9]=V("class_import_elasticity_price");
 	v[10]=v[4]*v[5]*pow((v[6]/(v[7]*v[8])),v[9]);
 RESULT(v[10])
@@ -129,12 +127,10 @@ Class' nominal desired expenses depends on effective domestic consumption times 
 */
 	v[0]=V("Class_Real_Desired_Domestic_Consumption");              // class desired domestic consumption
 	v[1]=V("Class_Real_Desired_Imported_Consumption");              // class desired external consumption
-	v[2]=V("Exchange_Rate");                                     	//exchange rate
-	
-	cur=SEARCH_CNDS(root, "id_consumption_goods_sector", 1);     	//identifies the consumption goods sector
-		v[3]=VS(cur, "Sector_Avg_Price");                        	//sector average price
-		v[4]=VS(cur, "Sector_External_Price");                   	//sector external price
-		v[5]=v[0]*v[3] + v[1]*v[2]*v[4];     					 	//total nominal expenses                  	
+	v[2]=VS(external,"Exchange_Rate");                              //exchange rate
+	v[3]=VS(consumption, "Sector_Avg_Price");                       //sector average price
+	v[4]=VS(consumption, "Sector_External_Price");                  //sector external price
+	v[5]=v[0]*v[3] + v[1]*v[2]*v[4];     					 		//total nominal expenses                  	
 RESULT(v[5])
 
 
@@ -158,9 +154,9 @@ EQUATION("Class_Interest_Rate")
 Interest rate paid by the class depends on a specific spread over basic interest rate, based on the average debt rate of the class.
 If risk premium is zero, the interest rate will be the same for all classes
 */
-	v[0]=V("risk_premium_class");									//class risk premium defined by the banks							
+	v[0]=VS(financial,"risk_premium_class");						//class risk premium defined by the banks							
 	v[1]=V("Class_Avg_Debt_Rate");									//class avvg debt rate											
-	v[2]=V("Avg_Interest_Rate_Short_Term");							//avg base interest rate on short term loans
+	v[2]=VS(financial,"Avg_Interest_Rate_Short_Term");				//avg base interest rate on short term loans
 	v[3]=(1+v[1]*v[0])*v[2];
 RESULT(v[3])
 
@@ -398,8 +394,7 @@ EQUATION("Class_Real_Domestic_Consumption_Demand")
 Class effective domestic consumption goods demand. There is a priority between domestic and imported, in which the first is preferible. The effective real demand will be the minimum between the desired and the possible amount.
 */
 	v[0]=V("Class_Maximum_Expenses");
-	cur=SEARCH_CNDS(root, "id_consumption_goods_sector", 1);     //identifies the consumption goods sector
-	v[1]=VS(cur, "Sector_Avg_Price"); 							 //consumption goods price
+	v[1]=VS(consumption, "Sector_Avg_Price"); 					 //consumption goods price
 	v[2]=v[0]/v[1];												 //real effective consumption demand possible																																		 
 	v[3]=V("Class_Real_Desired_Domestic_Consumption");           //real desired consumption demand desired
 	v[4]=min(v[2],v[3]);
@@ -411,13 +406,12 @@ EQUATION("Class_Real_Imported_Consumption_Demand")
 Class effective external domestic consumption, depending on desired level of imports plus the demand not met by the domestic production
 */
 	v[0]=V("Class_Maximum_Expenses");
-	cur=SEARCH_CNDS(root, "id_consumption_goods_sector", 1);    //identifies the consumption goods sector
-	v[1]=VS(cur, "Sector_Avg_Price"); 							//consumption goods price
-	v[2]=VS(cur, "Sector_External_Price");						//consumption goods external price
+	v[1]=VS(consumption, "Sector_Avg_Price"); 					//consumption goods price
+	v[2]=VS(consumption, "Sector_External_Price");				//consumption goods external price
 	v[3]=V("Class_Real_Domestic_Consumption_Demand");           //real effetive demand for domestic consumption gooods
 	v[4]=v[3]*v[1];												//nominal effective expenses with domestic caital goods
 	v[5]=max(0, (v[0]-v[4]));									//effective amount that can be spended with external consumption goods
-	v[6]=V("Exchange_Rate");
+	v[6]=VS(external,"Exchange_Rate");
 	v[7]=v[5]/(v[2]*v[6]);										//effective real demand for imported consumption goods
 	v[8]=V("Class_Real_Desired_Imported_Consumption");
 	v[9]=min(v[7],v[8]);
@@ -428,8 +422,7 @@ EQUATION("Class_Effective_Real_Domestic_Consumption")
 /*
 Class effective real domestic consumption, depending on how much the domestic consumption goods sector was able to meet demand.
 */
-	cur=SEARCH_CNDS(root, "id_consumption_goods_sector", 1);     //identifies the consumption goods sector
-	v[0]=VS(cur,"Sector_Demand_Met");                     		 //percentage of the total demand met by the sector
+	v[0]=VS(consumption,"Sector_Demand_Met");                    //percentage of the total demand met by the sector
 	v[1]=V("Class_Real_Domestic_Consumption_Demand");			 //real demand    
 	v[2]=v[0]*v[1];
 RESULT(v[2])
@@ -439,9 +432,8 @@ EQUATION("Class_Effective_Real_Imported_Consumption")
 /*
 Class effective external consumption, depending on desired level of imports plus the demand not met by the domestic production
 */
-	cur=SEARCH_CNDS(root, "id_consumption_goods_sector", 1);     //identifies the consumption goods sector
-	v[0]=VS(cur,"Sector_Demand_Met");                     		 //percentage of the total demand met by the sector
-	v[1]=VS(cur,"Sector_Demand_Met_By_Imports");                 //identifies if classes were capable of importing the amount not mey by the domestic production
+	v[0]=VS(consumption,"Sector_Demand_Met");                    //percentage of the total demand met by the sector
+	v[1]=VS(consumption,"Sector_Demand_Met_By_Imports");         //identifies if classes were capable of importing the amount not mey by the domestic production
 	v[2]=(1-v[0])*v[1];											 //percentage of domestic demand met by extra imports
 	v[3]=V("Class_Real_Domestic_Consumption_Demand");			 //desired level of domestic consumption 
 	v[4]=V("Class_Real_Imported_Consumption_Demand"); 			 //desired level of external consumption
@@ -453,10 +445,9 @@ EQUATION("Class_Effective_Expenses")
 /*
 Class effective expenses is the sum of effective domestic consumption and effective imports, in nominal values.
 */
-	cur=SEARCH_CNDS(root, "id_consumption_goods_sector", 1);     //identifies the consumption goods sector
-	v[0]=VS(cur,"Sector_Avg_Price");                     	     //domestic price of consumption goods
-	v[1]=VS(cur,"Sector_External_Price");                 		 //external price of consumption goods
-	v[2]=V("Exchange_Rate");																					 
+	v[0]=VS(consumption,"Sector_Avg_Price");                     //domestic price of consumption goods
+	v[1]=VS(consumption,"Sector_External_Price");                //external price of consumption goods
+	v[2]=VS(external,"Exchange_Rate");																					 
 	v[3]=V("Class_Effective_Real_Domestic_Consumption");		 //effective real domestic consumption
 	v[4]=V("Class_Effective_Real_Imported_Consumption"); 	     //effective real imports
 	v[5]=v[0]*v[3] + v[1]*v[2]*v[4];							 //effective nominal expenses		
@@ -480,7 +471,7 @@ Net return on class deposits
 */
 	v[0]=V("Class_Available_Deposits");
 	v[3]=V("Class_Retained_Deposits");
-	v[1]=V("Interest_Rate_Deposits");  
+	v[1]=VS(financial,"Interest_Rate_Deposits");  
 	v[2]=(v[0]+v[3])*v[1];	
 RESULT(v[2])
 
@@ -502,12 +493,12 @@ switch_unemployment_benefits
 1--> Distributed to lowest income class only 
 
 */
-	v[0]=V("Total_Distributed_Profits");                   			  //total distributed profits
-	v[1]=V("Total_Wages");                                			  //total wages
+	v[0]=VS(country,"Total_Distributed_Profits");                     //total distributed profits
+	v[1]=VS(country,"Total_Wages");                                	  //total wages
 	v[2]=V("class_profit_share");                          		      //profit share of each class
 	v[3]=V("class_wage_share");                            			  //wage share of each class
 	v[4]=V("Class_Deposits_Return");                                  //interest receivment
-	v[5]=V("Government_Effective_Unemployment_Benefits");             //unemployment benefits (never taxed)
+	v[5]=VS(government,"Government_Effective_Unemployment_Benefits"); //unemployment benefits (never taxed)
 	v[13]=V("switch_unemployment_benefits"); 
 	if(v[13]==0)                                                      //if unemployment benefits are distributed by wage share
 		v[6]=v[0]*v[2]+v[1]*v[3]+v[4]+v[5]*v[3];     		          //class' gross total income
@@ -541,7 +532,7 @@ switch_unemployment_benefits
 		v[12]=v[10]*v[11];                                 				//amount of tax on wealth
 		v[9]=(v[0]*v[2]+v[1]*v[3]+v[4])*v[8]+v[12];        				//class total tax
 	}
-	v[19]=V("Consumer_Price_Index");
+	v[19]=VS(country,"Consumer_Price_Index");
 	
 	WRITE("Class_Taxation",v[9]);                          				//write class taxation equation_dummy
 	WRITE("Class_Gross_Nominal_Income",v[6]);              				//write class gross income equation_dummy
@@ -580,8 +571,7 @@ EQUATION("Class_Stock_Loans")
 /*
 Class Stock of Debt
 */
-	v[0]=SUM("class_loan_total_amount");
-RESULT(v[0])
+RESULT(SUM("class_loan_total_amount"))
 
 
 EQUATION("Class_Stock_Deposits")
@@ -592,7 +582,7 @@ Class stock of deposits
 	v[1]=V("Class_Retained_Deposits");
 	v[2]=V("class_profit_share");
 	v[3]=V("Exit_Deposits_Distributed");
-	v[4]=SUMS(root, "Sector_Entry_Deposits_Needed");
+	v[4]=SUMS(country, "Sector_Entry_Deposits_Needed");
 	v[5]=v[0]+v[1]+v[2]*(v[3]-v[4]);
 RESULT(v[5])
 
