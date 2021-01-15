@@ -12,6 +12,16 @@ It is set in a specific simple configuration: 3 sectors and 3 income classes. Ne
 Additionally, there is a strong hypothesis here: all sector are equals, except for how their demand is calculated.
 */
 
+//Define Global Pointers
+country=SEARCH("MACRO");
+external=SEARCH("EXTERNAL_SECTOR");
+government=SEARCH("GOVERNMENT");
+financial=SEARCH("FINANCIAL");
+consumption=SEARCH_CND("id_consumption_goods_sector",1);
+capital=SEARCH_CND("id_capital_goods_sector",1);
+input=SEARCH_CND("id_intermediate_goods_sector",1);
+
+
 //Macro Parameters
 v[0]=V("sector_investment_period");               				
 v[1]=V("markup_period");
@@ -152,25 +162,23 @@ v[158]=V("scale_bank_pro");
 v[159]=V("scale_debt");
 
 //Begin Writting Macro Variables
-CYCLE(cur, "MACRO")
-{
-		WRITELLS(cur,"Likelihood_Crisis", 0, 0, 1);                  							//zero by definition
-		WRITELLS(cur,"Annual_Growth", 0, 0, 1);													//zero by definition, no growth initally
-		WRITELLS(cur,"Annual_Real_Growth", 0, 0, 1);                 							//zero by definition, no growth initally
-		WRITELLS(cur,"Annual_Inflation", 0, 0, 1);	
+		WRITELLS(country,"Likelihood_Crisis", 0, 0, 1);                  							//zero by definition
+		WRITELLS(country,"Annual_Growth", 0, 0, 1);													//zero by definition, no growth initally
+		WRITELLS(country,"Annual_Real_Growth", 0, 0, 1);                 							//zero by definition, no growth initally
+		WRITELLS(country,"Annual_Inflation", 0, 0, 1);	
 	for (i=1 ; i<=(v[3]+1) ; i++)                  												//for (annual period +1) lags
 		{
-		WRITELLS(cur,"Price_Index", v[151], 0, i);									 			//writes Price_Index, all initial price index is 1
-		WRITELLS(cur,"Consumer_Price_Index", v[101], 0, i);          							//writes Consumper_Price_Index, all initial price index is 1
+		WRITELLS(country,"Price_Index", v[151], 0, i);									 			//writes Price_Index, all initial price index is 1
+		WRITELLS(country,"Consumer_Price_Index", v[101], 0, i);          							//writes Consumper_Price_Index, all initial price index is 1
 		}
 	for (i=1 ; i<=(2*v[3]) ; i++)                  												//for (2*annual_period) lags
 		{
-		WRITELLS(cur,"GDP", v[150], 0, i);                     	 								//GDP
-		WRITELLS(cur,"Real_GDP", (v[150]/v[151]), 0, i);                  						//Real GDP will be equal to nominal GDP because price index always begins as 1
+		WRITELLS(country,"GDP", v[150], 0, i);                     	 								//GDP
+		WRITELLS(country,"Real_GDP", (v[150]/v[151]), 0, i);                  						//Real GDP will be equal to nominal GDP because price index always begins as 1
 		}
 	for (i=1 ; i<=v[0] ; i++)
-		WRITELLS(cur,"Price_Capital_Goods", v[102], 0, i);
-}
+		WRITELLS(country,"Price_Capital_Goods", v[102], 0, i);
+
 
 //Begin Writing Classes Variables
 CYCLE(cur, "CLASSES")
