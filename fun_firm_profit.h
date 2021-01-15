@@ -4,7 +4,7 @@ EQUATION("Firm_Revenue")
 Revenue depends on sales and price
 */
 	v[0]=V("Firm_Sales");                                             //firm's sales 
-	v[1]=V("Sector_Exports");                                         //sector exports
+	v[1]=V("Sector_Real_Exports");                                         //sector exports
 	v[2]=V("Firm_Price");                                             //firm's price
 	v[4]=V("Exchange_Rate");                                          //exchange rate
 	v[5]=V("Firm_Effective_Market_Share");                            //firm's effective market share

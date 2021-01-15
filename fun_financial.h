@@ -15,10 +15,10 @@ if(t>v[2]&&v[1]==1&&v[13]==0)
 	v[5]=v[6]=v[7]=v[8]=0;
 	for(i=1;i<(10*v[0]);i++)
 		{
-		v[5]=v[5]+VL("Annual_Inflation",i);
-		v[6]=v[6]+VL("Avg_Idle_Capacity",i);
+		v[5]=v[5]+VL("Country_Annual_Inflation",i);
+		v[6]=v[6]+VL("Country_Idle_Capacity",i);
 		v[7]=v[7]+VL("Total_Stock_Loans_Growth",i);
-		v[8]=v[8]+VL("Avg_Debt_Rate_Firms",i);
+		v[8]=v[8]+VL("Country_Debt_Rate_Firms",i);
 		}
 	v[9]=v[5]/(10*v[0]);
 	v[10]=v[6]/(10*v[0]);
@@ -58,20 +58,20 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	v[3]=V("target_credit_growth");
 	v[4]=V("target_debt_rate");
 	
-	v[5]=VL("Annual_Inflation",1);
-	v[6]=VL("Avg_Idle_Capacity",1);
+	v[5]=VL("Country_Annual_Inflation",1);
+	v[6]=VL("Country_Idle_Capacity",1);
 	v[7]=VL("Total_Stock_Loans_Growth",1);
-	v[8]=VL("Avg_Debt_Rate_Firms",1);
+	v[8]=VL("Country_Debt_Rate_Firms",1);
 	
-	v[9]=VL("Avg_Productivity",1);                              //avg productivity lagged 1
-	v[10]=VL("Avg_Productivity",2);                         	//avg productivity lagged 2
+	v[9]=VL("Country_Avg_Productivity",1);                              //avg productivity lagged 1
+	v[10]=VL("Country_Avg_Productivity",2);                         	//avg productivity lagged 2
 	if(v[10]!=0)                                                //if productivity is not zero
 		v[11]=(v[9]-v[10])/v[10];                               //calculate productivity growth
 	else                                                        //if productivity is zero
 		v[11]=0;												//use 1
 		
-	v[21]=VL("Price_Index",1);                             		//avg price lagged 1
-	v[22]=VL("Price_Index",2);                         			//avg price lagged 2
+	v[21]=VL("Country_Price_Index",1);                             		//avg price lagged 1
+	v[22]=VL("Country_Price_Index",2);                         			//avg price lagged 2
 	if(v[22]!=0)                                                //if price is not zero
 		v[23]=(v[21]-v[22])/v[22];                              //calculate price growth
 	else                                                        //if price is zero

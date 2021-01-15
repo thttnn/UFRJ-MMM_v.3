@@ -162,22 +162,22 @@ v[158]=V("scale_bank_pro");
 v[159]=V("scale_debt");
 
 //Begin Writting Macro Variables
-		WRITELLS(country,"Likelihood_Crisis", 0, 0, 1);                  							//zero by definition
+		WRITELLS(country,"Country_Likelihood_Crisis", 0, 0, 1);                  							//zero by definition
 		WRITELLS(country,"Country_Annual_Growth", 0, 0, 1);													//zero by definition, no growth initally
-		WRITELLS(country,"Annual_Real_Growth", 0, 0, 1);                 							//zero by definition, no growth initally
-		WRITELLS(country,"Annual_Inflation", 0, 0, 1);	
+		WRITELLS(country,"Country_Annual_Real_Growth", 0, 0, 1);                 							//zero by definition, no growth initally
+		WRITELLS(country,"Country_Annual_Inflation", 0, 0, 1);	
 	for (i=1 ; i<=(v[3]+1) ; i++)                  												//for (annual period +1) lags
 		{
-		WRITELLS(country,"Price_Index", v[151], 0, i);									 			//writes Price_Index, all initial price index is 1
-		WRITELLS(country,"Consumer_Price_Index", v[101], 0, i);          							//writes Consumper_Price_Index, all initial price index is 1
+		WRITELLS(country,"Country_Price_Index", v[151], 0, i);									 			//writes Price_Index, all initial price index is 1
+		WRITELLS(country,"Country_Consumer_Price_Index", v[101], 0, i);          							//writes Consumper_Price_Index, all initial price index is 1
 		}
 	for (i=1 ; i<=(2*v[3]) ; i++)                  												//for (2*annual_period) lags
 		{
-		WRITELLS(country,"GDP", v[150], 0, i);                     	 								//GDP
-		WRITELLS(country,"Real_GDP", (v[150]/v[151]), 0, i);                  						//Real GDP will be equal to nominal GDP because price index always begins as 1
+		WRITELLS(country,"Country_GDP", v[150], 0, i);                     	 								//GDP
+		WRITELLS(country,"Country_Real_GDP", (v[150]/v[151]), 0, i);                  						//Real GDP will be equal to nominal GDP because price index always begins as 1
 		}
 	for (i=1 ; i<=v[0] ; i++)
-		WRITELLS(country,"Price_Capital_Goods", v[102], 0, i);
+		WRITELLS(country,"Country_Capital_Goods_Price", v[102], 0, i);
 
 
 //Begin Writing Classes Variables
@@ -306,7 +306,7 @@ CYCLE(cur, "SECTORS")
 		WRITELLS(cur, "Sector_Max_Quality", 1, 0, 1);
 		WRITELLS(cur, "Sector_Inventories", (v[200]*v[217]), 0, 1);                  			//Firms operate with desired level of inventories, thus, Current stock of inventories is the desired level times effective production
 		WRITELLS(cur, "Sector_Productive_Capacity", v[222], 0, 1);								//All firms start operating at desired degree of utilization, thus, productive capacity is endogenous calculated based on effective production and desired degree
-		WRITELLS(cur, "Sector_Exports", (v[149]/3), 0, 1);										//Total exports are divided equally among sectors.
+		WRITELLS(cur, "Sector_Real_Exports", (v[149]/3), 0, 1);										//Total exports are divided equally among sectors.
 		WRITES(cur, "sector_initial_price", v[204]);
 		WRITES(cur, "sector_exports_coefficient", v[220]);										//write the exports coefficient, assuming external price and foreign price starts as 1, so the exchange rate
 	

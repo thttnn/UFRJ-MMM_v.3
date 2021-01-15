@@ -11,14 +11,14 @@ v[1]= fmod((double) t,v[0]);                                   //divides the tim
 v[2]=VL("Government_Desired_Wages",1);
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust government wages)
 {
-	v[3]=VL("Avg_Productivity",1);                             //avg productivity lagged 1
-	v[4]=VL("Avg_Productivity", v[0]);                         //avg productivity lagged government period (4)
+	v[3]=VL("Country_Avg_Productivity",1);                             //avg productivity lagged 1
+	v[4]=VL("Country_Avg_Productivity", v[0]);                         //avg productivity lagged government period (4)
 	if(v[4]!=0)                                                //if productivity is not zero
 		v[5]=(v[3]-v[4])/v[4];                                 //calculate productivity growth
 	else                                                       //if productivity is zero
 		v[5]=0;												   //use 1
-	v[6]=VL("Consumer_Price_Index",1);                         //consumer price index lagged 1
-	v[7]=VL("Consumer_Price_Index", v[0]);                     //consumer price index lagged government period (4)
+	v[6]=VL("Country_Consumer_Price_Index",1);                         //consumer price index lagged 1
+	v[7]=VL("Country_Consumer_Price_Index", v[0]);                     //consumer price index lagged government period (4)
 	if(v[7]!=0)                                                //if consumer price index is not zero
 		v[8]=(v[6]-v[7])/v[7];                                 //calculate inflation
 	else                                                       //if consumer price index is zero
@@ -70,8 +70,8 @@ v[2]=VL("Government_Desired_Investment",1);
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
 {
 	v[3]=V("government_demand_growth");
-	v[5]=VL("Consumer_Price_Index",1);                         //consumer price index lagged 1
-	v[6]=VL("Consumer_Price_Index", v[0]);                     //consumer price index lagged government period (4)
+	v[5]=VL("Country_Consumer_Price_Index",1);                         //consumer price index lagged 1
+	v[6]=VL("Country_Consumer_Price_Index", v[0]);                     //consumer price index lagged government period (4)
 	if(v[6]!=0)                                                //if consumer price index is not zero
 		v[7]=(v[5]-v[6])/v[6];                                 //calculate inflation
 	else                                                       //if consumer price index is zero
@@ -94,8 +94,8 @@ v[2]=VL("Government_Desired_Consumption",1);
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
 {
 	v[3]=V("government_demand_growth");
-	v[5]=VL("Consumer_Price_Index",1);                         //consumer price index lagged 1
-	v[6]=VL("Consumer_Price_Index", v[0]);                     //consumer price index lagged government period (4)
+	v[5]=VL("Country_Consumer_Price_Index",1);                         //consumer price index lagged 1
+	v[6]=VL("Country_Consumer_Price_Index", v[0]);                     //consumer price index lagged government period (4)
 	if(v[6]!=0)                                                //if consumer price index is not zero
 		v[7]=(v[5]-v[6])/v[6];                                 //calculate inflation
 	else                                                       //if consumer price index is zero
@@ -118,8 +118,8 @@ v[2]=VL("Government_Desired_Inputs",1);
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
 {
 	v[3]=V("government_demand_growth");
-	v[5]=VL("Consumer_Price_Index",1);                         //consumer price index lagged 1
-	v[6]=VL("Consumer_Price_Index", v[0]);                     //consumer price index lagged government period (4)
+	v[5]=VL("Country_Consumer_Price_Index",1);                         //consumer price index lagged 1
+	v[6]=VL("Country_Consumer_Price_Index", v[0]);                     //consumer price index lagged government period (4)
 	if(v[6]!=0)                                                //if consumer price index is not zero
 		v[7]=(v[5]-v[6])/v[6];                                 //calculate inflation
 	else                                                       //if consumer price index is zero
@@ -142,8 +142,8 @@ v[2]=VL("Government_Desired_Inputs",1);
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
 {
 	v[3]=V("government_demand_growth");
-	v[5]=VL("Consumer_Price_Index",1);                         //consumer price index lagged 1
-	v[6]=VL("Consumer_Price_Index", v[0]);                     //consumer price index lagged government period (4)
+	v[5]=VL("Country_Consumer_Price_Index",1);                         //consumer price index lagged 1
+	v[6]=VL("Country_Consumer_Price_Index", v[0]);                     //consumer price index lagged government period (4)
 	if(v[6]!=0)                                                //if consumer price index is not zero
 		v[7]=(v[5]-v[6])/v[6];                                 //calculate inflation
 	else                                                       //if consumer price index is zero
@@ -193,8 +193,8 @@ v[2]=V("government_period");
 v[3]= fmod((double) t,v[2]);                                   //divides the time period by government adjustment period (adjust annualy)
 if(v[3]==0)                                                    //if the rest of the division is zero (adjust maximum expenses)
 {                                                              //adjust fiscal rules maximum expenses
-		v[4]=VL("GDP", 1);                                          	//GDP lagged 1
-		v[5]=VL("GDP", v[2]);                                       	//GDP lagged government period (4)
+		v[4]=VL("Country_GDP", 1);                                          	//GDP lagged 1
+		v[5]=VL("Country_GDP", v[2]);                                       	//GDP lagged government period (4)
 		v[6]=V("government_expectations");                              //government expectation parameter 
 		if(v[5]!=0)                                                   	//if last semiannual GDP is not zero
 			v[7]=1+v[6]*(v[4]-v[5])/v[5];                               //expected growth of gdp
@@ -205,8 +205,8 @@ if(v[3]==0)                                                    //if the rest of 
 		v[10]=v[7]*(v[8]-(v[8]*v[9]));                                 	//maximum expenses will be total taxes multiplyed by expected growth minus the surplus target
 	
 		v[11]=VL("Government_Effective_Expenses", 1);                   //last period government expeneses
-		v[12]=VL("Consumer_Price_Index",1);                             //consumer price index lagged 1
-		v[13]=VL("Consumer_Price_Index", v[2]);                         //consumer price index lagged government period (4)
+		v[12]=VL("Country_Consumer_Price_Index",1);                             //consumer price index lagged 1
+		v[13]=VL("Country_Consumer_Price_Index", v[2]);                         //consumer price index lagged government period (4)
 		if(v[13]!=0)                                                    //if consumer price index is not zero
 			v[14]=1+((v[12]-v[13])/v[13]);                              //calculate inflation
 		else                                                            //if consumer price index is zero
@@ -416,7 +416,7 @@ Public debt over annual GDP
 	v[1]=0;
 	for (v[2]=0; v[2]<=v[0]; v[2]=v[2]+1)
 		{
-		v[3]=VL("GDP",v[2]);
+		v[3]=VL("Country_GDP",v[2]);
 		v[1]=v[1]+v[3];
 		}
 	v[4]=V("Government_Debt");

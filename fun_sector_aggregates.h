@@ -55,7 +55,7 @@ Sector participation over total gross value of production
 */
 	v[0]=V("Sector_Sales");
 	v[1]=V("Sector_Avg_Price");
-	v[2]=V("Gross_Value_Production");
+	v[2]=V("Country_Total_Nominal_Production");
 	if(v[2]!=0)
 		v[3]=(v[0]*v[1])/v[2];
 	else

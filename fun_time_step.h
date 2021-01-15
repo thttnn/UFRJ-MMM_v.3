@@ -39,12 +39,12 @@ V("Firm_Desired_Markup");
 V("Firm_Desired_Price");                                    
 V("Firm_Price");                                            
 V("Sector_Avg_Price");                                     
-V("Sector_Exports");   
-V("Price_Capital_Goods");                                 		
+V("Sector_Real_Exports");   
+V("Country_Capital_Goods_Price");                                 		
 
 /*****CAPITAL GOODS DEMAND*****/
 V("Firm_Demand_Capital_Goods");                             
-V("Sector_Capital_Demand");                          		                  		
+V("Country_Domestic_Capital_Goods_Demand");                          		                  		
 V("Firm_Effective_Orders_Capital_Goods");              		
 
 /*****PLANNED PRODUCTION*****/
@@ -59,7 +59,7 @@ V("Firm_Market_Share");
 
 V("Firm_Required_Inputs");                                  
 V("Firm_Input_Demand_Next_Period");                         
-V("Sector_Intermediate_Demand");                     		                        		                    		
+V("Country_Domestic_Intermediate_Demand");                     		                        		                    		
 V("Firm_Effective_Production");                             
 V("Firm_Capacity_Utilization");								
 
@@ -84,7 +84,7 @@ V("Class_Funds");
 V("Class_Maximum_Expenses");
 V("Class_Real_Domestic_Consumption_Demand");
 V("Class_Real_Imported_Consumption_Demand");
-V("Sector_Consumption_Demand"); 
+V("Country_Domestic_Consumption_Demand"); 
 
 /*****EFFECTIVE ORDERS, SALES AND PROFITS*****/
 V("Sector_Effective_Orders");                          		
@@ -182,9 +182,9 @@ V("Sector_Productive_Capacity_Available");
 /*****CLASS INCOME*****/
 V("Financial_Sector_Profits");
 V("Financial_Sector_Distributed_Profits");  
-V("Total_Distributed_Profits"); 
-V("Total_Profits"); 
-V("Total_Wages");  
+V("Country_Distributed_Profits"); 
+V("Country_Total_Profits"); 
+V("Country_Total_Wages");  
 V("Class_Nominal_Income"); 
 V("Class_Taxation");                             		
 V("Class_Real_Income"); 
@@ -213,28 +213,28 @@ V("Sector_Effective_Loans");
 V("Sector_Short_Term_Rate");
 
 /*****MACRO RESULTS*****/
-V("Total_Inventories");                             	
-V("Gross_Value_Production");                            	
-V("Avg_Rate_Capacity_Utilization");               	
-V("Total_Consumption");                                    		               
-V("Total_Investment");                                     		
-V("Total_Intermediate");											
+V("Country_Inventories");                             	
+V("Country_Total_Nominal_Production");                            	
+V("Country_Capacity_Utilization");               	
+V("Country_Nominal_Consumption_Production");                                    		               
+V("Country_Nominal_Capital_Production");                                     		
+V("Country_Nominal_Input_Production");											
 V("Sector_Participation");									
 V("Total_Indirect_Taxes");                                  
-V("Profit_Share");                                      	
-V("Wage_Share"); 
-V("Avg_Profit_Rate");                                       	
-V("GDP");                                            		
-V("GDP_Demand");                                   	    	
+V("Country_Profit_Share");                                      	
+V("Country_Wage_Share"); 
+V("Country_Avg_Profit_Rate");                                       	
+V("Country_GDP");                                            		
+V("Country_GDP_Demand");                                   	    	
 V("Country_Annual_Growth");                                     	
-V("Price_Index");                                       	
-V("Consumer_Price_Index");                              	
-V("Real_GDP");                                          	
-V("Annual_Real_Growth");                                	
-V("Likelihood_Crisis");                                 	
+V("Country_Price_Index");                                       	
+V("Country_Consumer_Price_Index");                              	
+V("Country_Real_GDP");                                          	
+V("Country_Annual_Real_Growth");                                	
+V("Country_Likelihood_Crisis");                                 	
 V("Sector_Employment");                                 						    	
 V("Sector_Idle_Capacity");									
-V("Avg_Idle_Capacity");                                      	
+V("Country_Idle_Capacity");                                      	
 
 /*****ANALYSIS*****/
 V("Class_Income_Share");

@@ -33,8 +33,8 @@ EQUATION("Trade_Balance")
 /*
 The trade balance is obtained by the difference between total exports and total imports.
 */
-	v[0]=V("Total_Exports");
-	v[1]=V("Total_Imports");
+	v[0]=V("Country_Nominal_Exports");
+	v[1]=V("Country_Nominal_Imports");
 	v[2]=v[0]-v[1];
 RESULT(v[2])
 

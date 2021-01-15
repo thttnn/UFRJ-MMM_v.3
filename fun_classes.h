@@ -493,8 +493,8 @@ switch_unemployment_benefits
 1--> Distributed to lowest income class only 
 
 */
-	v[0]=VS(country,"Total_Distributed_Profits");                     //total distributed profits
-	v[1]=VS(country,"Total_Wages");                                	  //total wages
+	v[0]=VS(country,"Country_Distributed_Profits");                     //total distributed profits
+	v[1]=VS(country,"Country_Total_Wages");                                	  //total wages
 	v[2]=V("class_profit_share");                          		      //profit share of each class
 	v[3]=V("class_wage_share");                            			  //wage share of each class
 	v[4]=V("Class_Deposits_Return");                                  //interest receivment
@@ -532,7 +532,7 @@ switch_unemployment_benefits
 		v[12]=v[10]*v[11];                                 				//amount of tax on wealth
 		v[9]=(v[0]*v[2]+v[1]*v[3]+v[4])*v[8]+v[12];        				//class total tax
 	}
-	v[19]=VS(country,"Consumer_Price_Index");
+	v[19]=VS(country,"Country_Consumer_Price_Index");
 	
 	WRITE("Class_Taxation",v[9]);                          				//write class taxation equation_dummy
 	WRITE("Class_Gross_Nominal_Income",v[6]);              				//write class gross income equation_dummy

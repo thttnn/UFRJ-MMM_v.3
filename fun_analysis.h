@@ -3,79 +3,79 @@
 /*****COUNTRY STATS*****/
 
 EQUATION("P")//Price Index
-RESULT(VS(country, "Price_Index"))
+RESULT(VS(country, "Country_Price_Index"))
 
 EQUATION("P_G")//Inflation
-RESULT(VS(country, "Annual_Inflation"))
+RESULT(VS(country, "Country_Annual_Inflation"))
 
 EQUATION("U")//Unemployment
-RESULT(VS(country, "Avg_Idle_Capacity"))
+RESULT(VS(country, "Country_Idle_Capacity"))
 
 EQUATION("EMP")//Employment
 RESULT(SUMS(country, "Sector_Employment"))
 
 EQUATION("GDP_G")//GDP real growth rate
-RESULT(VS(country, "Annual_Real_Growth"))
+RESULT(VS(country, "Country_Annual_Real_Growth"))
 
 EQUATION("G_n")//GDP nominal growth rate
-RESULT(VS(country, "Annual_Growth"))
+RESULT(VS(country, "Country_Annual_Growth"))
 
 EQUATION("Cri")//Crisis counters
-RESULT(VS(country, "Annual_Growth"))
+RESULT(VS(country, "Country_Likelihood_Crisis"))
 
 EQUATION("C")//Quarterly Nominal Consumption
-RESULT(VS(country, "Total_Consumption"))
+RESULT(VS(country, "Country_Nominal_Consumption_Production"))
 
 EQUATION("I")//Quarterly Nominal Investment
-RESULT(VS(country, "Total_Investment"))
+RESULT(VS(country, "Country_Nominal_Capital_Production"))
 
 EQUATION("PROD")//Average Productivity
-RESULT(VS(country, "Avg_Productivity"))
+RESULT(VS(country, "Country_Avg_Productivity"))
 
 EQUATION("MK")//Average Markup
-RESULT(VS(country, "Avg_Markup"))
+RESULT(VS(country, "Country_Avg_Markup"))
 
 EQUATION("PDEBT")//Public Debt
 RESULT(VS(government, "Government_Debt"))
 
 EQUATION("KL")//Capital labour ratio
-RESULT(VS(country,"Observed_Capital_Labor_Ratio"))
+RESULT(VS(country,"Country_Capital_Labor_Ratio"))
 
 EQUATION("PR")//Profit Rate
-RESULT(VS(country,"Avg_Profit_Rate"))
+RESULT(VS(country,"Country_Avg_Profit_Rate"))
 
 EQUATION("PCU")//Productive Capacity Utilization Rate
-RESULT(VS(country,"Avg_Rate_Capacity_Utilization"))
+RESULT(VS(country,"Country_Capacity_Utilization"))
 
 
 /*****REAL STATS*****/
 
 EQUATION("C_r")//Quarterly Real Consumption
-RESULT(VS(country, "Total_Consumption")/V("P"))
+RESULT(VS(country, "Country_Nominal_Consumption_Production")/V("P"))
 
 EQUATION("I_r")//Quarterly Real Investment
-RESULT(VS(country, "Total_Investment")/V("P"))
+RESULT(VS(country, "Country_Nominal_Capital_Production")/V("P"))
 
 EQUATION("INVE_r")//Real Aggregate Inventories
-RESULT(VS(country, "Total_Inventories")/V("P"))
+RESULT(VS(country, "Country_Inventories")/V("P"))
 
 EQUATION("K_r")//Real Stock of Capital
-RESULT(VS(country, "Total_Capital_Stock")/V("P"))
+RESULT(VS(country, "Country_Capital_Stock")/V("P"))
 
 EQUATION("G_r")//Quarterly Real Government Expenses
 RESULT(VS(government, "Government_Effective_Expenses")/V("P"))
 
 EQUATION("PROFITS")//Real Profits
-RESULT(VS(country, "Total_Profits")/V("P"))
+RESULT(VS(country, "Country_Total_Profits")/V("P"))
 
 EQUATION("WAGE")//Real Wages
-RESULT(VS(country, "Total_Wages")/V("P"))
+RESULT(VS(country, "Country_Total_Wages")/V("P"))
 
 EQUATION("M_r")//Quarterly Real Imports
-RESULT(VS(country, "Total_Imports")/V("P"))
+RESULT(VS(country, "Country_Nominal_Imports")/V("P"))
 
 EQUATION("X_r")//Quarterly Real Exports
-RESULT(VS(country, "Total_Exports")/V("P"))
+RESULT(VS(country, "Country_Nominal_Exports")/V("P"))
 
 EQUATION("NX_r")//Quarterly Real Net Exports
 RESULT(V("X_r")-V("M_r"))
@@ -93,10 +93,10 @@ EQUATION("DEBT_RT_I")//Average Debt Rate of Intermediate good sector
 RESULT(VS(input, "Sector_Avg_Debt_Rate"))
 
 EQUATION("DEBT_RT_FI")//Average Debt Rate of all firms
-RESULT(VS(country, "Avg_Debt_Rate_Firms"))
+RESULT(VS(country, "Country_Debt_Rate_Firms"))
 
 EQUATION("DEBT_RT_CL")//Average Debt Rate of all classes
-RESULT(VS(country, "Avg_Debt_Rate_Class"))
+RESULT(VS(country, "Country_Debt_Rate_Class"))
 
 EQUATION("DEBT_FS_ST")//Stock of short term debt in the financial sector
 RESULT(VS(financial, "Financial_Sector_Stock_Loans_Short_Term"))
@@ -129,13 +129,13 @@ EQUATION("FS_PR")//Financial sector profits
 RESULT(VS(financial, "Financial_Sector_Profits"))   
 
 EQUATION("PONZI")//Share of Firms in Ponzi position
-RESULT(VS(country, "Avg_Ponzi_Share"))    
+RESULT(VS(country, "Country_Ponzi_Share"))    
 
 EQUATION("SPEC")//Share of Firms in Speculative position
-RESULT(VS(country, "Avg_Speculative_Share"))  
+RESULT(VS(country, "Country_Speculative_Share"))  
 
 EQUATION("HEDGE")//Share of Firms in Hedge position
-RESULT(VS(country, "Avg_Hedge_Share")) 
+RESULT(VS(country, "Country_Hedge_Share")) 
 
 EQUATION("IR")//Basic Interest Rate
 RESULT(VS(financial, "Basic_Interest_Rate"))     
@@ -390,7 +390,7 @@ EQUATION("CGDP")
 Real Consumption share of GDP
 */
 v[0]=V("C_r");
-v[1]=VS(country,"Real_GDP");
+v[1]=VS(country,"Country_Real_GDP");
 if(v[1]!=0)
 	v[2]=v[0]/v[1];
 else
@@ -402,7 +402,7 @@ EQUATION("IGDP")
 Real Investment share of GDP
 */
 v[0]=V("I_r");
-v[1]=VS(country,"Real_GDP");
+v[1]=VS(country,"Country_Real_GDP");
 if(v[1]!=0)
 	v[2]=v[0]/v[1];
 else
@@ -414,7 +414,7 @@ EQUATION("GGDP")
 Real Government Expenses share of GDP
 */
 v[0]=V("G_r");
-v[1]=VS(country,"Real_GDP");
+v[1]=VS(country,"Country_Real_GDP");
 if(v[1]!=0)
 	v[2]=v[0]/v[1];
 else
@@ -426,7 +426,7 @@ EQUATION("NXGDP")
 Real net exports share of GDP
 */
 v[0]=V("NX_r");
-v[1]=VS(country,"Real_GDP");
+v[1]=VS(country,"Country_Real_GDP");
 if(v[1]!=0)
 	v[2]=v[0]/v[1];
 else
@@ -438,7 +438,7 @@ EQUATION("INVGDP")
 Real inventories share of GDP
 */
 v[0]=V("INVE_r");
-v[1]=VS(country,"Real_GDP");
+v[1]=VS(country,"Country_Real_GDP");
 if(v[1]!=0)
 	v[2]=v[0]/v[1];
 else
@@ -450,7 +450,7 @@ EQUATION("KGDP")
 Real stock of capital share of GDP, or capital-output ratio
 */
 v[0]=V("K_r");
-v[1]=VS(country,"Real_GDP");
+v[1]=VS(country,"Country_Real_GDP");
 if(v[1]!=0)
 	v[2]=v[0]/v[1];
 else
