@@ -290,7 +290,8 @@ else
 {
 	if(v[7]==0)												   //if only government wages
 	{
-		v[8]=min(v[0],v[1]);								   //government wages is desired limited by maximum expenses
+		v[8]=v[0];								   			   //government wages is desired limited by maximum expenses
+		//v[8]=min(v[0],v[1]);
 		v[9]=0;    											   //government unemployment benefits equal 0
 		v[10]=0;                                               //government consumption equal 0
 		v[11]=0;                                               //government investment equal 0
@@ -402,8 +403,8 @@ EQUATION("Government_Debt")
 Defined as the stock of debt in the last period plus current government deficit
 */
 	v[0]=VL("Government_Debt",1);
-	v[1]=V("Government_Primary_Surplus");
-	v[2]=v[0]-v[1];
+	v[1]=V("Government_Nominal_Deficit");
+	v[2]=v[0]+v[1];
 RESULT(v[2])
 
 

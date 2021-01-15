@@ -119,7 +119,7 @@ Firm profit, including
 	
 	v[9]=v[0]-v[3]-v[5]-v[8];										  //firm profits
 	
-	v[10]=V("Firm_Financial_Obligations");							  //firm's financial obligations
+	v[10]=V("Firm_Interest_Payment");							 	  //firm's financial obligations
 	v[11]=V("Firm_Deposits_Return");								  //firm's financial revenue
 	
 	v[12]=v[9]-v[10]+v[11];						  					  //firm's net profits, after interest

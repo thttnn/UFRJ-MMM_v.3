@@ -102,7 +102,8 @@ Can be negative, if retained profits is negative (in that case, no retained liqu
 	v[1]=V("Firm_Retained_Profits");		//current net retained proffits
 	v[2]=VL("Firm_Stock_Deposits",1);		//stock of deposits
 	v[3]=V("Firm_Retained_Deposits");		//retained deposits
-	v[4]=v[1]+v[2]-v[3];					//current internal funds.
+	v[5]=V("Firm_Debt_Payment");
+	v[4]=v[1]+v[2]-v[3]-v[5];					//current internal funds.
 RESULT(v[4])
 
 
