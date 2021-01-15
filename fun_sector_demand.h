@@ -19,7 +19,7 @@ Stores the value of the Demand Function if it is a consumption goods sector
 */
 	v[0]=V("id_consumption_goods_sector");                  	//identifies consumption goods sector
 	if(v[0]==1)                                             	//if it is a consumption good sector
-		v[1]=V("Total_Domestic_Consumption_Demand");       	//stores the value of the function  
+		v[1]=V("Total_Domestic_Consumption_Demand");       		//stores the value of the function  
 	else                                                    	//if it is not a consumption good sector 
 		v[1]=0;                                               	//domestic consumption is zero
 RESULT(v[1])

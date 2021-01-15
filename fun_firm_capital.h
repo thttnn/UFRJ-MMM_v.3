@@ -30,7 +30,7 @@ Depends on the demand for productive capacity in the last investment period. Thi
 	v[0]=V("Firm_Investment_Period");													//if it is investment period for the firm
 	if(v[0]==1)
 		{
-		v[1]=V("investment_period");													//investment period
+		v[1]=V("sector_investment_period");													//investment period
 		cur=SEARCH_CNDS(root, "id_capital_goods_sector", 1);							//search the capital goods sector
 		v[6]=v[7]=0;
 		for (i=1; i<=v[1]; i++)															//for the current production period until the last investment period -1
@@ -69,12 +69,12 @@ EQUATION("Firm_Productive_Capacity")
 In this variable, the firm receive the new capital goods ordered in the last investment period, including the ones for modernization and the ones for expansion. Then, it counts the total productive capacity of old and new capital goods.
 */
 	USE_ZERO_INSTANCE
-	v[0]=V("investment_period");												//investment period
+	v[0]=V("sector_investment_period");												//investment period
 	v[1]=VL("Firm_Frontier_Productivity",v[0]);									//available technology when the capital good was ordered
 	v[2]=V("Firm_Effective_Capital_Goods_Expansion");	
 	v[3]=V("Firm_Effective_Capital_Goods_Replacement");	
 	v[4]=v[2]+v[3];	
-	v[5]=V("capital_output_ratio");															//amount of Capital Goods bought
+	v[5]=V("sector_capital_output_ratio");															//amount of Capital Goods bought
 	v[7]=V("Firm_Investment_Period");											//if it is investment period for the firm
 	v[8]=V("depreciation_period");
 	v[9]=VL("Price_Capital_Goods",v[0]);
@@ -142,7 +142,7 @@ Nominal value of firm's total capital
 */
 	v[0]=V("Firm_Productive_Capacity");                       					//firm's productive capacity in the last period   
 	v[1]=V("Price_Capital_Goods");                       						//price of capital goods
-	v[2]=V("capital_output_ratio");                      						//capital output ratio 
+	v[2]=V("sector_capital_output_ratio");                      				//capital output ratio 
 	v[3]=v[0]*v[1]*v[2];                                 						//nominal value of firm's total capital
 RESULT(v[3])
 

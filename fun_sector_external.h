@@ -7,14 +7,14 @@ EQUATION("Sector_External_Price")
 External price of the sector's goods. 
 */
 	v[0]=VL("Sector_External_Price",1);
-	v[1]=V("external_price_growth");
+	v[1]=V("sector_external_price_growth");
 	if(v[1]!=0)	
 		v[2]=(1+v[1])*v[0];
 	else
    	{     
 		v[3]=VL("Sector_Avg_Price",2);
 		v[4]=VL("Sector_Avg_Price",1);
-		v[5]=V("external_price_competitiveness");
+		v[5]=V("sector_external_price_competitiveness");
 		v[2]=v[0]*(1+v[5]*((v[4]-v[3])/v[3]));
    	}  
 RESULT(v[2])
@@ -28,8 +28,8 @@ Exports are defined for each sector based on the application of an export coeffi
 	v[1]=V("sector_exports_coefficient");
 	v[2]=V("Sector_Avg_Price");
 	v[3]=V("Sector_External_Price");
-	v[4]=V("exports_elasticity_income");
-	v[5]=V("exports_elasticity_price");
+	v[4]=V("sector_exports_elasticity_income");
+	v[5]=V("sector_exports_elasticity_price");
 	v[6]=V("Exchange_Rate");
 	v[7]=v[1]*pow((v[3]*v[6])/v[2],v[5])*pow(v[0],v[4]);
 	v[8]=v[7]/v[2];

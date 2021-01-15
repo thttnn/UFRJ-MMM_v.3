@@ -871,7 +871,7 @@ Object: FINANCIAL C	1
 Param: bank_default_sensitivity 0 n + n n	1
 Param: bank_fragility_sensitivity 0 n + n n	1
 Param: bank_profit_distribution 0 n + n n	0
-Param: begin_credit_rationing 0 n + n n	0
+Param: begin_credit_rationing 0 n + n n	-1
 Param: fs_elasticity_default 0 n + n n	0
 Param: fs_elasticity_interest_long_term 0 n + n n	0
 Param: fs_elasticity_interest_short_term 0 n + n n	0
@@ -980,18 +980,18 @@ Object: GOVERNMENT C	1
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
 Param: begin_surplus_target_rule 0 n + n n	0
 Param: government_benefit 0 n + n n	0.1
-Param: government_demand_growth 0 n + n n	0.02
+Param: government_demand_growth 0 n + n n	0.01
 Param: government_expectations 0 n + n n	0.3
 Param: government_inflation_passtrought 0 n + n n	1
-Param: government_initial_capital_share 0 n + n n	0.2
-Param: government_initial_consumption_share 0 n + n n	0.1
-Param: government_initial_input_share 0 n + n n	0.1
+Param: government_initial_capital_share 0 n + n n	0
+Param: government_initial_consumption_share 0 n + n n	0
+Param: government_initial_input_share 0 n + n n	0
 Param: government_max_debt 0 n + n n	1
 Param: government_min_debt 0 n + n n	0
 Param: government_productivity_passtrought 0 n + n n	1
 Param: government_surplus_rate_target 0 n + n n	0
 Param: government_surplus_target_adjustment 0 n + n n	0
-Param: switch_government_composition 0 n + n n	2
+Param: switch_government_composition 0 n + n n	0
 Param: switch_unemployment_benefits 0 n + n n	1
 Var: Government_Debt 4 s + n n	0	0	0	0
 Var: Government_Debt_GDP_Ratio 1 s + n n	0
@@ -1943,7 +1943,7 @@ END_DESCRIPTION
 Parameter_class_propensity_to_import
 (no description available)
 _INIT_
-All 2 instances equal to 1.
+All 2 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_class_wage_share
@@ -3015,7 +3015,7 @@ END_DESCRIPTION
 Parameter_government_demand_growth
 (no description available)
 _INIT_
-All 1 instances equal to 0.02.
+All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Parameter_government_expectations
@@ -3033,19 +3033,19 @@ END_DESCRIPTION
 Parameter_government_initial_capital_share
 (no description available)
 _INIT_
-All 1 instances equal to 0.2.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_government_initial_consumption_share
 (no description available)
 _INIT_
-All 1 instances equal to 0.1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_government_initial_input_share
 (no description available)
 _INIT_
-All 1 instances equal to 0.1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_government_max_debt
@@ -3081,7 +3081,7 @@ END_DESCRIPTION
 Parameter_switch_government_composition
 (no description available)
 _INIT_
-All 1 instances equal to 2.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_switch_unemployment_benefits

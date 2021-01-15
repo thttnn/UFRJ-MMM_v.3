@@ -328,9 +328,28 @@ EQUATION_DUMMY("Government_Effective_Investment","Government_Effective_Expenses"
 EQUATION_DUMMY("Government_Effective_Inputs","Government_Effective_Expenses")
 
 
+EQUATION("Government_RND");
+/*
+Share of government wages, consequently distributed to income classes as normal wages.
+*/
+	v[0]=V("Government_Effective_Wages");					//government effective wages
+	v[1]=V("government_rnd_share");							//fixed share of effective wages allocated to rnd
+	v[2]=1-exp(-v[0]*v[1]);									//probability of success, based on effective rnd expenses
+	if(RND<v[2])                              				//draws a random number. if it is lower then innovation probability
+	{
+		v[3]=V("government_std_dev_innovation");        	//innovation standard deviation
+		v[4]=V("government_initial_productivity");			//initial frontier productivity
+		v[5]=V("goverment_tech_opportunity_productivity"); 	//technological opportunity for process innovation
+		v[6]=log(v[4])+(double)t*(v[5]);        			//the average of the innovation distribution will be the initial frontier productivity plus the opportunity parameter times the time period
+		v[7]=exp(norm(v[6],v[3]));             				//the innovation productivity will be a draw from a normal distribution with average depending of the tech regime and std. dev fixed
+	}  	
+  	else                                      				//if the random number is not lower than imitation probability
+     	v[7]=0; 
+RESULT(v[7])
+
+
 EQUATION("Total_Income_Taxes")
 RESULT(SUM("Class_Taxation"))
-
 
 EQUATION("Total_Indirect_Taxes")
 RESULT(SUM("Sector_Taxation"))

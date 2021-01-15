@@ -29,7 +29,7 @@ CYCLE(cur1, "SECTORS")
 	 
      if ( v[1] <= 0.001 && i > 1 && t>(v[0]+v[3]))				//if firm's market share is near zero
      {
-      //plog("\nFirm Deleted - Small Market Share");				//write on log window
+      //plog("\nFirm Deleted - Small Market Share");			//write on log window
       	if (v[7]>=v[6])											//firm pays current debt with current deposits 
       		{
       		v[11]=v[11]+(v[7]-v[6]);							//deposits distributed to income classes (no need to substract from bank's stock)
@@ -54,7 +54,7 @@ CYCLE(cur1, "SECTORS")
      {
 		if(v[4]>1 &&i>1 && t>(v[0]+v[3]))
 		{
-		//plog("\nFirm Deleted - High Debt");						//write on log window
+		//plog("\nFirm Deleted - High Debt");					//write on log window
       	if (v[7]>=v[6])											//firm pays current debt with current deposits 
       		{
       		v[11]=v[11]+(v[7]-v[6]);							//deposits distributed to income classes (no need to substract from bank's stock)
@@ -125,7 +125,7 @@ EQUATION("Sector_Entry_Condition")
 Can only be 0 or 1, if all enter conditions are met.
 */
 	v[0]=V("switch_entry");
-	v[1]=V("investment_period");
+	v[1]=V("sector_investment_period");
 	v[2]=VL("Sector_Effective_Orders",1);
 	v[3]=VL("Sector_Effective_Orders",2);
 	v[4]=VL("Sector_Effective_Orders",3);
@@ -199,7 +199,7 @@ CYCLE(cur6, "SECTORS")
 		v[19]=VS(cur1, "id_bank");								//identify the chosen bank
 		v[20]=VS(cur1, "Bank_Interest_Rate_Long_Term");
 		
-		v[21]=VS(cur6, "capital_output_ratio");
+		v[21]=VS(cur6, "sector_capital_output_ratio");
 		v[22]=V("depreciation_period");
 		v[23]=VS(cur6, "Sector_Avg_Productivity");
 		
@@ -265,14 +265,14 @@ In this variable a new firm enters if there is market space available and the en
       if(v[1]>0&&v[6]<1)												//if entry conditions are met and there are market space 
       {
 	  v[20]=V("Sector_Effective_Orders");								//sector effective orders
-      v[0]=V("investment_period");										//sector investment period
-      v[22]=V("desired_degree_capacity_utilization");					//sector degree of capacity utilization
-      v[23]=V("desired_inventories_proportion");						//sector inventories proportion
+      v[0]=V("sector_investment_period");								//sector investment period
+      v[22]=V("sector_desired_degree_capacity_utilization");			//sector degree of capacity utilization
+      v[23]=V("sector_desired_inventories_proportion");					//sector inventories proportion
 	  v[25]=V("Price_Capital_Goods");									//price of capital goods
       v[34]=VL("Sector_Productive_Capacity_Available",1);				//productive capacity available in the last period
 	  v[44]=V("Sector_Productive_Capacity_Exit");						//productive capacity exited in the current period
       v[36]=V("Sector_Avg_Price");										//sector avg price
-      v[35]=V("capital_output_ratio");									//sector capital output ratio
+      v[35]=V("sector_capital_output_ratio");									//sector capital output ratio
       v[38]=V("depreciation_period");									//sector depreciation period
       v[39]=V("Sector_Avg_Productivity");   							//sector avg productivity	
       v[42]=uniform_int(1, v[0]);										//randon integer number between 1 and investment period

@@ -67,8 +67,8 @@ V("Firm_Capacity_Utilization");
 V("Class_Avg_Real_Income");
 V("Class_Avg_Nominal_Income");
 V("Class_Real_Autonomous_Consumption");
-V("Class_Real_Desired_Consumption");
-V("Class_Real_Desired_Imports");
+V("Class_Real_Desired_Domestic_Consumption");
+V("Class_Real_Desired_Imported_Consumption");
 V("Class_Desired_Expenses");
 V("Class_Interest_Payment");
 V("Class_Debt_Payment");
@@ -82,8 +82,8 @@ V("Class_Demand_Loans");
 V("Class_Effective_Loans");
 V("Class_Funds");
 V("Class_Maximum_Expenses");
-V("Class_Real_Consumption_Demand");
-V("Class_Real_Imports_Demand");
+V("Class_Real_Domestic_Consumption_Demand");
+V("Class_Real_Imported_Consumption_Demand");
 V("Sector_Consumption_Demand"); 
 
 /*****EFFECTIVE ORDERS, SALES AND PROFITS*****/

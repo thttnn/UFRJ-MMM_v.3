@@ -13,7 +13,7 @@ Additionally, there is a strong hypothesis here: all sector are equals, except f
 */
 
 //Macro Parameters
-v[0]=V("investment_period");               				
+v[0]=V("sector_investment_period");               				
 v[1]=V("markup_period");
 v[2]=V("class_period");									
 v[3]=V("annual_period");
@@ -44,43 +44,43 @@ cur1=SEARCH_CND("id_consumption_goods_sector",1);
 cur2=SEARCH_CND("id_capital_goods_sector",1);
 cur3=SEARCH_CND("id_intermediate_goods_sector",1);
 
-v[40]=V("number_object_banks");																	//sector control parameter
+v[40]=V("number_object_banks");																			//sector control parameter
 
-v[41]=VS(cur1, "number_object_firms");															//sector control parameter
-v[42]=VS(cur2, "number_object_firms");															//sector control parameter
-v[43]=VS(cur3, "number_object_firms");															//sector control parameter
+v[41]=VS(cur1, "sector_number_object_firms");															//sector control parameter
+v[42]=VS(cur2, "sector_number_object_firms");															//sector control parameter
+v[43]=VS(cur3, "sector_number_object_firms");															//sector control parameter
 
 v[44]=VS(cur1, "sector_initial_productivity");															//sector control parameter
 v[45]=VS(cur2, "sector_initial_productivity");															//sector control parameter
 v[46]=VS(cur3, "sector_initial_productivity");															//sector control parameter
 
-v[47]=VS(cur1, "initial_markup");																//sector control parameter
-v[48]=VS(cur2, "initial_markup");																//sector control parameter
-v[49]=VS(cur3, "initial_markup");																//sector control parameter
+v[47]=VS(cur1, "sector_initial_markup");																//sector control parameter
+v[48]=VS(cur2, "sector_initial_markup");																//sector control parameter
+v[49]=VS(cur3, "sector_initial_markup");																//sector control parameter
 
-v[50]=VS(cur1, "initial_wage");																	//sector control parameter
-v[51]=VS(cur2, "initial_wage");																	//sector control parameter
-v[52]=VS(cur3, "initial_wage");																	//sector control parameter
+v[50]=VS(cur1, "sector_initial_wage");																	//sector control parameter
+v[51]=VS(cur2, "sector_initial_wage");																	//sector control parameter
+v[52]=VS(cur3, "sector_initial_wage");																	//sector control parameter
 
-v[53]=VS(cur1, "input_tech_coefficient");														//sector control parameter
-v[54]=VS(cur2, "input_tech_coefficient");														//sector control parameter
-v[55]=VS(cur3, "input_tech_coefficient");														//sector control parameter
+v[53]=VS(cur1, "sector_input_tech_coefficient");														//sector control parameter
+v[54]=VS(cur2, "sector_input_tech_coefficient");														//sector control parameter
+v[55]=VS(cur3, "sector_input_tech_coefficient");														//sector control parameter
 
-v[56]=VS(cur1, "capital_output_ratio");															//sector control parameter
-v[57]=VS(cur2, "capital_output_ratio");															//sector control parameter
-v[58]=VS(cur3, "capital_output_ratio");															//sector control parameter
+v[56]=VS(cur1, "sector_capital_output_ratio");															//sector control parameter
+v[57]=VS(cur2, "sector_capital_output_ratio");															//sector control parameter
+v[58]=VS(cur3, "sector_capital_output_ratio");															//sector control parameter
 
-v[59]=VS(cur1, "rnd_revenue_proportion");														//sector control parameter
-v[60]=VS(cur2, "rnd_revenue_proportion");														//sector control parameter
-v[61]=VS(cur3, "rnd_revenue_proportion");														//sector control parameter
+v[59]=VS(cur1, "sector_rnd_revenue_proportion");														//sector control parameter
+v[60]=VS(cur2, "sector_rnd_revenue_proportion");														//sector control parameter
+v[61]=VS(cur3, "sector_rnd_revenue_proportion");														//sector control parameter
 
-v[62]=VS(cur1, "profits_distribution_rate");													//sector control parameter
-v[63]=VS(cur2, "profits_distribution_rate");													//sector control parameter
-v[64]=VS(cur3, "profits_distribution_rate");													//sector control parameter
+v[62]=VS(cur1, "sector_profits_distribution_rate");														//sector control parameter
+v[63]=VS(cur2, "sector_profits_distribution_rate");														//sector control parameter
+v[64]=VS(cur3, "sector_profits_distribution_rate");														//sector control parameter
 
-v[65]=VS(cur1, "indirect_tax_rate");															//sector control parameter
-v[66]=VS(cur2, "indirect_tax_rate");															//sector control parameter
-v[67]=VS(cur3, "indirect_tax_rate");															//sector control parameter
+v[65]=VS(cur1, "sector_indirect_tax_rate");																//sector control parameter
+v[66]=VS(cur2, "sector_indirect_tax_rate");																//sector control parameter
+v[67]=VS(cur3, "sector_indirect_tax_rate");																//sector control parameter
 
 v[74]=v[41]+v[42]+v[43];																		//total number of firms
 v[75]=v[41]/v[74];																				//sector share of firms
@@ -179,7 +179,7 @@ CYCLE(cur, "CLASSES")
 	v[162]=VS(cur, "class_wage_share"); 														//class parameter
 	v[163]=VS(cur, "class_direct_tax");															//class parameter
 	v[164]=(v[161]*v[148]+v[162]*v[146])*(1-v[163]);             								//class nominal net income																		//total imports
-	v[165]=v[6]*v[41]*v[162];																		//class initial autonomous consumption
+	v[165]=v[6]*v[41]*v[162];																	//class initial autonomous consumption
 		for (i=1 ; i<=v[2] ; i++)                          										//for (class_period) lags
 			{
 			WRITELLS(cur, "Class_Nominal_Income", v[164], 0, i);            					//writes Class_Nominal_Income
@@ -236,18 +236,18 @@ CYCLE(cur, "SECTORS")
 	v[203]=VS(cur, "id_intermediate_goods_sector");
 	
 	v[205]=VS(cur,"sector_initial_productivity");
-	v[206]=VS(cur,"initial_markup");
-	v[207]=VS(cur,"initial_quality");
-	v[209]=VS(cur,"initial_wage");
-	v[210]=VS(cur,"input_tech_coefficient");
-	v[211]=VS(cur,"capital_output_ratio");
-	v[212]=VS(cur,"number_object_firms");
-	v[213]=VS(cur,"rnd_revenue_proportion");
-	v[214]=VS(cur,"profits_distribution_rate");
-	v[215]=VS(cur,"indirect_tax_rate");
-	v[216]=VS(cur,"exports_elasticity_income");
-	v[217]=VS(cur,"desired_inventories_proportion");	
-	v[218]=VS(cur,"desired_degree_capacity_utilization");
+	v[206]=VS(cur,"sector_initial_markup");
+	v[207]=VS(cur,"sector_initial_quality");
+	v[209]=VS(cur,"sector_initial_wage");
+	v[210]=VS(cur,"sector_input_tech_coefficient");
+	v[211]=VS(cur,"sector_capital_output_ratio");
+	v[212]=VS(cur,"sector_number_object_firms");
+	v[213]=VS(cur,"sector_rnd_revenue_proportion");
+	v[214]=VS(cur,"sector_profits_distribution_rate");
+	v[215]=VS(cur,"sector_indirect_tax_rate");
+	v[216]=VS(cur,"sector_exports_elasticity_income");
+	v[217]=VS(cur,"sector_desired_inventories_proportion");	
+	v[218]=VS(cur,"sector_desired_degree_capacity_utilization");
 	
 	if(v[201]==1)																				//if it is a consumption good sector
 	{
@@ -273,7 +273,7 @@ CYCLE(cur, "SECTORS")
 
 	
 	v[219]=v[222]*v[211]/v[212];																//number of capital goods of each firm
-	v[220]=v[204]*((v[149]*v[212]/v[74])/(pow(v[150], v[216])));										//calculate sector exports coefficient
+	v[220]=v[204]*((v[149]*v[212]/v[74])/(pow(v[150], v[216])));								//calculate sector exports coefficient
 	v[221]=(1+v[217])*v[211]/v[218];
 	v[222]=SEARCH_INSTS(root, cur);	
 	
@@ -288,14 +288,14 @@ CYCLE(cur, "SECTORS")
 	for (i=1 ; i<=(v[2]+1) ; i++)                        		 								//for (class_period+1) lags
 		{
 		WRITELLS(cur, "Sector_Avg_Quality", 1, 0, i);               							//Effective_Orders_Sectors equals demand_initial
-		WRITELLS(cur, "Sector_Employment", v[200]/v[205], 0, i);               							//Effective_Orders_Sectors equals demand_initial
+		WRITELLS(cur, "Sector_Employment", v[200]/v[205], 0, i);               					//Effective_Orders_Sectors equals demand_initial
 		}
 		WRITELLS(cur, "Sector_Productive_Capacity_Available", 0, 0, 1);                  		//it is assumed that there is no entry or exit initially. Equals 0 by definition
 		WRITELLS(cur, "Sector_Avg_Competitiveness", 1, 0, 1);                     				//if all firms are the same, equals 1 by definition
 		WRITELLS(cur, "Sector_External_Price", v[204], 0, 1);                               	//Foreign_Price equals foreign_price initial
 		WRITELLS(cur, "Sector_Avg_Productivity", v[205], 0,  1);               	 				//If all firms are the same, Avg Productivity will be the initial productivivity for all firms
 		WRITELLS(cur, "Sector_Max_Productivity", v[205], 0,  1);                      			//If all capital goods have the same productivity, Max_Productivity equals productivity_initial 
-		WRITELLS(cur, "Sector_Max_Quality", 1, 0,  1);
+		WRITELLS(cur, "Sector_Max_Quality", 1, 0, 1);
 		WRITELLS(cur, "Sector_Inventories", (v[200]*v[217]), 0, 1);                  			//Firms operate with desired level of inventories, thus, Current stock of inventories is the desired level times effective production
 		WRITELLS(cur, "Sector_Productive_Capacity", v[222], 0, 1);								//All firms start operating at desired degree of utilization, thus, productive capacity is endogenous calculated based on effective production and desired degree
 		WRITELLS(cur, "Sector_Exports", (v[149]/3), 0, 1);										//Total exports are divided equally among sectors.
@@ -348,10 +348,10 @@ CYCLE(cur, "SECTORS")
 		WRITELLS(cur1, "Firm_Competitiveness", 1, 0, 1);                           				//if all firms are the same
 	  	WRITELLS(cur1, "Firm_Delivery_Delay", 1, 0, 1);                           		  		//it is assumed that all demand is met initially, so equals 1 by definition
 		WRITELLS(cur1, "Firm_Stock_Deposits", 0, 0, 1);											//no financial assets initially
-	  	WRITELLS(cur1, "Firm_Stock_Loans", v[159]*(v[219]*v[102]), 0, 1);                                    		//no debt initially
-	  	WRITELLS(cur1, "Firm_Avg_Debt_Rate", v[159], 0, 1);                       					//no debt initially
-	  	WRITELLS(cur1, "Firm_Desired_Debt_Rate", v[152], 0, 1);                       					//no debt initially
-	  	WRITELLS(cur1, "Firm_Liquidity_Preference", v[153], 0, 1);                       					//no debt initially
+	  	WRITELLS(cur1, "Firm_Stock_Loans", v[159]*(v[219]*v[102]), 0, 1);                       //no debt initially
+	  	WRITELLS(cur1, "Firm_Avg_Debt_Rate", v[159], 0, 1);                       				//no debt initially
+	  	WRITELLS(cur1, "Firm_Desired_Debt_Rate", v[152], 0, 1);                       			//no debt initially
+	  	WRITELLS(cur1, "Firm_Liquidity_Preference", v[153], 0, 1);                       		//no debt initially
 		
 	  		//Begin writting Capital Goods Variables and parameters
 	  		cur2=SEARCHS(cur1, "CAPITALS");														//search the first and only instance of capital below firms
@@ -367,9 +367,9 @@ CYCLE(cur, "SECTORS")
 	 			
 	 	CYCLES(cur, cur1, "FIRMS")                                                 				//CYCLE trough all firms
 			{
-			v[230]=SEARCH_INSTS(cur, cur1);													//search current firm position in the total economy
+			v[230]=SEARCH_INSTS(cur, cur1);														//search current firm position in the total economy
 			WRITES(cur1, "id_firm_number", v[230]);                         					//write the firm number as the current position (only initial difference between firms)
-			//WRITES(cur1, "id_firm_bank",(uniform_int(1, v[40])));									//firm's bank identifier
+			//WRITES(cur1, "id_firm_bank",(uniform_int(1, v[40])));								//firm's bank identifier
 			v[225]=v[230]/(v[212]/v[40]);
 			v[226]=round(v[225]);
 			if(v[226]<v[225])
@@ -380,7 +380,7 @@ CYCLE(cur, "SECTORS")
 			v[231]=fmod((double) (v[230]+v[0]), v[0]);                                 			//divide the firm's number plus investment period by the investment period and takes the rest (possible results if investment period =6 are 0, 5, 4, 3, 2, 1)
 			
 			//Begin creating capital goods and writting "capital_good_date_birth"		
-			for(i=1; i<=(v[219]-1); i++)                        									//for the number of capital goods of each firm
+			for(i=1; i<=(v[219]-1); i++)                        								//for the number of capital goods of each firm
 			{
 			cur2=SEARCHS(cur1, "CAPITALS");                                         			//search the first and only capital good of each firm
 			cur3=ADDOBJ_EXLS(cur1,"CAPITALS", cur2, 0);			                       			//create new capital goods using the first one as example
@@ -391,7 +391,7 @@ CYCLE(cur, "SECTORS")
 				v[232]=VS(cur5, "id_capital_good_number");
 				v[233]=(-v[5]+v[231]+1)+(v[232]-1)*v[0];                                  		//calculates the capital good date of birth based on the firm number and the number of the capital good
 				v[224]=uniform_int(30, 60);
-				WRITES(cur5, "capital_good_date_birth", 0);								//write the capital good date of birth
+				WRITES(cur5, "capital_good_date_birth", 0);										//write the capital good date of birth
 				WRITES(cur5, "capital_good_depreciation_period", v[224]);
 				WRITES(cur5, "capital_good_price", v[102]);
 				}
