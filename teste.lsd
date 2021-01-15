@@ -40,9 +40,9 @@ Label Root
 			Var: Class_Deposits_Return
 			Var: Class_Desired_Debt_Rate
 			Var: Class_Desired_Expenses
-			Var: Class_Effective_Consumption
+			Var: Class_Effective_Real_Domestic_Consumption
 			Var: Class_Effective_Expenses
-			Var: Class_Effective_Imports
+			Var: Class_Effective_Real_Imported_Consumption
 			Var: Class_Effective_Loans
 			Var: Class_Financial_Obligations
 			Var: Class_Funds
@@ -56,19 +56,20 @@ Label Root
 			Var: Class_Maximum_Expenses
 			Var: Class_Nominal_Income
 			Var: Class_Real_Autonomous_Consumption
-			Var: Class_Real_Consumption_Demand
-			Var: Class_Real_Desired_Consumption
-			Var: Class_Real_Desired_Imports
+			Var: Class_Real_Domestic_Consumption_Demand
+			Var: Class_Real_Desired_Domestic_Consumption
+			Var: Class_Real_Desired_Imported_Consumption
 			Var: Class_Real_Disposable_Interest
 			Var: Class_Real_Disposable_Profits
 			Var: Class_Real_Disposable_Wages
-			Var: Class_Real_Imports_Demand
+			Var: Class_Real_Imported_Consumption_Demand
 			Var: Class_Real_Income
 			Var: Class_Retained_Deposits
 			Var: Class_Stock_Deposits
 			Var: Class_Stock_Loans
 			Var: Class_Taxation
 			Var: Class_Wealth_Share
+			Param: class_import_elasticity_price
 
 		}
 
@@ -251,6 +252,11 @@ Label Root
 			Var: Total_Income_Taxes
 			Var: Total_Indirect_Taxes
 			Var: Total_Taxes
+			Var: Government_RND
+			Param: goverment_tech_opportunity_productivity
+			Param: government_initial_productivity
+			Param: government_rnd_share
+			Param: government_std_dev_innovation
 
 		}
 
@@ -399,49 +405,49 @@ Label Root
 
 			}
 
-			Param: antecipation
-			Param: capital_output_ratio
-			Param: desired_degree_capacity_utilization
-			Param: desired_inventories_proportion
+			Param: sector_antecipation
+			Param: sector_capital_output_ratio
+			Param: sector_desired_degree_capacity_utilization
+			Param: sector_desired_inventories_proportion
 			Param: sector_elascitity_delay
 			Param: sector_elasticity_price
 			Param: sector_elasticity_quality
 			Param: sector_expectations
-			Param: exports_elasticity_income
-			Param: exports_elasticity_price
-			Param: external_price_competitiveness
-			Param: external_price_growth
-			Param: financial_cost_weight
-			Param: firm_debt_rate_adjustment
-			Param: firm_liquidity_preference_adjustment
+			Param: sector_exports_elasticity_income
+			Param: sector_exports_elasticity_price
+			Param: sector_external_price_competitiveness
+			Param: sector_external_price_growth
+			Param: sector_financial_cost_weight
+			Param: sector_debt_rate_adjustment
+			Param: sector_liquidity_preference_adjustment
 			Param: id_capital_goods_sector
 			Param: id_consumption_goods_sector
 			Param: id_intermediate_goods_sector
-			Param: indirect_tax_rate
-			Param: initial_markup
-			Param: initial_quality
-			Param: initial_wage
-			Param: innovation_proportion
-			Param: input_tech_coefficient
-			Param: investment_period
-			Param: learning_adjustment
-			Param: market_share_expansion
-			Param: markup_apropriation
-			Param: number_object_firms
-			Param: payback_period
-			Param: productive_capacity_cost
-			Param: profits_distribution_rate
-			Param: rnd_revenue_proportion
+			Param: sector_indirect_tax_rate
+			Param: sector_initial_markup
+			Param: sector_initial_quality
+			Param: sector_initial_wage
+			Param: sector_innovation_proportion
+			Param: sector_input_tech_coefficient
+			Param: sector_investment_period
+			Param: sector_learning_adjustment
+			Param: sector_market_share_expansion
+			Param: sector_markup_apropriation
+			Param: sector_number_object_firms
+			Param: sector_payback_period
+			Param: sector_productive_capacity_cost
+			Param: sector_profits_distribution_rate
+			Param: sector_rnd_revenue_proportion
 			Param: sector_exports_coefficient
 			Param: sector_initial_price
 			Param: sector_initial_productivity
 			Param: sector_passthrough_employment
 			Param: sector_passthrough_inflation
 			Param: sector_passthrough_productivity
-			Param: std_dev_innovation
-			Param: strategic_price_weight
-			Param: tech_opportunity_productivity
-			Param: tech_opportunity_quality
+			Param: sector_std_dev_innovation
+			Param: sector_strategic_price_weight
+			Param: sector_tech_opportunity_productivity
+			Param: sector_tech_opportunity_quality
 			Var: Sector_Avg_Capital_Demand_Price_External
 			Var: Sector_Avg_Capital_Demand_Price_Internal
 			Var: Sector_Avg_Competitiveness
@@ -787,7 +793,7 @@ Var: Avg_Idle_Capacity 5 s + n n	0.18	0.18	0.18	0.18	0.18
 Var: Wage_Share 0 s + n n
 
 Object: CLASSES C	2
-Param: class_autonomous_consumption_adjustment 0 n + n n	2	2
+Param: class_autonomous_consumption_adjustment 0 n + n n	1	1
 Param: class_autonomous_consumption_adjustment_deposits 0 n + n n	0	0
 Param: class_debt_rate_adjustment 0 n + n n	0	0
 Param: class_desired_debt_rate 0 n + n n	1	1
@@ -795,8 +801,8 @@ Param: class_direct_tax 0 n + n n	0.1	0.1
 Param: class_liquidity_preference_adjustment 0 n + n n	0	0
 Param: class_population_share 0 n + n n	0.01	0.01
 Param: class_profit_share 0 n + n n	0.9	0.1
-Param: class_propensity_to_consume 0 n + n n	0.85	0.9
-Param: class_propensity_to_import 0 n + n n	0.1	0.1
+Param: class_propensity_to_consume 0 n + n n	0.6	0.9
+Param: class_propensity_to_import 0 s + n n	0.4	0.1
 Param: class_wage_share 0 n + n n	0.1	0.9
 Param: class_wealth_tax 0 n + n n	0	0
 Param: id_class 0 n + n n	1	1
@@ -810,35 +816,36 @@ Var: Class_Demand_Loans 0 s + n n
 Var: Class_Deposits_Return 0 s + n n
 Var: Class_Desired_Debt_Rate 1 s + n n	0	0
 Var: Class_Desired_Expenses 0 s + n n
-Var: Class_Effective_Consumption 0 n + n n
+Var: Class_Effective_Real_Domestic_Consumption 0 s + n n
 Var: Class_Effective_Expenses 0 s + n n
-Var: Class_Effective_Imports 0 s + n n
+Var: Class_Effective_Real_Imported_Consumption 0 s + n n
 Var: Class_Effective_Loans 0 n + n n
 Var: Class_Financial_Obligations 4 s + n n	0	0	0	0	0	0	0	0
-Var: Class_Funds 0 n + n n
+Var: Class_Funds 0 s + n n
 Var: Class_Gross_Nominal_Income 0 s + n n
 Var: Class_Income_Share 0 s + n n
 Var: Class_Interest_Payment 4 s + n n	0	0	0	0	0	0	0	0
 Var: Class_Interest_Rate 0 n + n n
 Var: Class_Internal_Funds 0 s + n n
 Var: Class_Liquidity_Preference 1 s + n n	0	0
-Var: Class_Max_Loans 0 n + n n
-Var: Class_Maximum_Expenses 0 n + n n
+Var: Class_Max_Loans 0 s + n n
+Var: Class_Maximum_Expenses 0 s + n n
 Var: Class_Nominal_Income 4 s + n n	0	0	0	0	0	0	0	0
 Var: Class_Real_Autonomous_Consumption 1 s + n n	0	0
-Var: Class_Real_Consumption_Demand 0 n + n n
-Var: Class_Real_Desired_Consumption 0 s + n n
-Var: Class_Real_Desired_Imports 0 s + n n
+Var: Class_Real_Domestic_Consumption_Demand 0 s + n n
+Var: Class_Real_Desired_Domestic_Consumption 0 s + n n
+Var: Class_Real_Desired_Imported_Consumption 0 s + n n
 Var: Class_Real_Disposable_Interest 0 s + n n
 Var: Class_Real_Disposable_Profits 4 s + n n	0	0	0	0	0	0	0	0
 Var: Class_Real_Disposable_Wages 4 s + n n	0	0	0	0	0	0	0	0
-Var: Class_Real_Imports_Demand 0 n + n n
+Var: Class_Real_Imported_Consumption_Demand 0 s + n n
 Var: Class_Real_Income 4 s + n n	0	0	0	0	0	0	0	0
 Var: Class_Retained_Deposits 0 s + n n
 Var: Class_Stock_Deposits 5 s + n n	0	0	0	0	0	0	0	0	0	0
 Var: Class_Stock_Loans 0 s + n n
 Var: Class_Taxation 0 s + n n
 Var: Class_Wealth_Share 0 s + n n
+Param: class_import_elasticity_price 0 n + n n	1	1
 
 Object: CLASS_LOANS C	1	1
 Param: class_loan_fixed_amortization 0 n + n n	0	0
@@ -848,7 +855,7 @@ Param: class_loan_total_amount 0 n + n n	0	0
 
 Object: EXTERNAL_SECTOR C	1
 Param: International_Reserves 1 n + n n	10000
-Param: exchange_rate_adjustment 0 n + n n	0
+Param: exchange_rate_adjustment 0 n + n n	0.01
 Param: exchange_rate_growth 0 n + n n	0
 Param: external_income_adjustmnent 0 n + n n	0
 Param: external_income_growth 0 n + n n	0.01
@@ -856,7 +863,7 @@ Param: external_interest_rate 0 n + n n	0.01
 Param: external_shock_begin 0 n + n n	200
 Param: external_shock_duration 0 n + n n	20
 Param: external_shock_size 0 n + n n	0
-Var: Exchange_Rate 1 s + n n	1
+Var: Exchange_Rate 1 s + d n	1
 Var: External_Income 1 s + n n	100
 Var: Trade_Balance 1 s + n n	0
 
@@ -875,15 +882,15 @@ Param: interest_shock_size 0 n + n n	0
 Param: minimum_capital_ratio 0 n + n n	0.05
 Param: price_strategy_long_term 0 n + n n	1
 Param: price_strategy_short_term 0 n + n n	1
-Param: real_interest_rate 0 n + n n	0
+Param: real_interest_rate 0 n + n n	0.01
 Param: risk_premium_class 0 n + n n	0
 Param: risk_premium_long_term 0 n + n n	0
 Param: risk_premium_short_term 0 n + n n	0
-Param: spread_deposits 0 n + n n	0.01
+Param: spread_deposits 0 n + n n	0.005
 Param: spread_long_term 0 n + n n	0.05
 Param: spread_long_term_adjustment 0 n + n n	0
 Param: spread_long_term_public 0 n + n n	1
-Param: spread_short_term 0 n + n n	0
+Param: spread_short_term 0 n + n n	0.01
 Param: spread_short_term_adjustment 0 n + n n	0
 Param: spread_short_term_public 0 n + n n	0.5
 Var: Avg_Competitiveness_Financial_Sector 1 s + n n	1
@@ -1007,51 +1014,56 @@ Var: Government_Surplus_Rate_Target 1 s + n n	0
 Var: Total_Income_Taxes 0 n + n n
 Var: Total_Indirect_Taxes 0 n + n n
 Var: Total_Taxes 1 s + n n	0
+Var: Government_RND 0 n + n n
+Param: goverment_tech_opportunity_productivity 0 n + n n	0.002
+Param: government_initial_productivity 0 n + n n	1
+Param: government_rnd_share 0 n + n n	0
+Param: government_std_dev_innovation 0 n + n n	0.001
 
 Object: SECTORS C	3
-Param: antecipation 0 n + n n	0	0	0
-Param: capital_output_ratio 0 n + n n	1	1	1
-Param: desired_degree_capacity_utilization 0 n + n n	0.85	0.85	0.85
-Param: desired_inventories_proportion 0 n + n n	0.1	0.1	0.1
+Param: sector_antecipation 0 n + n n	0	0	0
+Param: sector_capital_output_ratio 0 n + n n	1	1	1
+Param: sector_desired_degree_capacity_utilization 0 n + n n	0.85	0.85	0.85
+Param: sector_desired_inventories_proportion 0 n + n n	0.1	0.1	0.1
 Param: sector_elascitity_delay 0 n + n n	0.25	0.25	0.25
 Param: sector_elasticity_price 0 n + n n	1	1	1
 Param: sector_elasticity_quality 0 n + n n	1	1	1
 Param: sector_expectations 0 n + n n	0.3	0.3	0.3
-Param: exports_elasticity_income 0 n + n n	1	1	1
-Param: exports_elasticity_price 0 n + n n	1	1	1
-Param: external_price_competitiveness 0 n + n n	1	1	1
-Param: external_price_growth 0 n + n n	0	0	0
-Param: financial_cost_weight 0 n + n n	0	0	0
-Param: firm_debt_rate_adjustment 0 n + n n	0	0	0
-Param: firm_liquidity_preference_adjustment 0 n + n n	0	0	0
+Param: sector_exports_elasticity_income 0 n + n n	1	1	1
+Param: sector_exports_elasticity_price 0 n + n n	1	1	1
+Param: sector_external_price_competitiveness 0 n + n n	1	1	1
+Param: sector_external_price_growth 0 n + n n	0	0	0
+Param: sector_financial_cost_weight 0 n + n n	0	0	0
+Param: sector_debt_rate_adjustment 0 n + n n	0	0	0
+Param: sector_liquidity_preference_adjustment 0 n + n n	0	0	0
 Param: id_capital_goods_sector 0 n + n n	0	1	0
 Param: id_consumption_goods_sector 0 n + n n	1	0	0
 Param: id_intermediate_goods_sector 0 n + n n	0	0	1
-Param: indirect_tax_rate 0 n + n n	0	0	0
-Param: initial_markup 0 n + n n	1.3	1.3	1.3
-Param: initial_quality 0 n + n n	1	1	1
-Param: initial_wage 0 n + n n	1	1	1
-Param: innovation_proportion 0 n + n n	0.5	0.5	0.5
-Param: input_tech_coefficient 0 n + n n	0.5	0.5	0.5
-Param: investment_period 0 n + n n	4	4	4
-Param: learning_adjustment 0 n + n n	0	0	0
-Param: market_share_expansion 0 n + n n	1	1	1
-Param: markup_apropriation 0 n + n n	0	0	0
-Param: number_object_firms 0 n + n n	40	20	20
-Param: payback_period 0 n + n n	20	20	20
-Param: productive_capacity_cost 0 n + n n	0	0	0
-Param: profits_distribution_rate 0 n + n n	0.95	0.95	0.95
-Param: rnd_revenue_proportion 0 n + n n	0.05	0.05	0.05
+Param: sector_indirect_tax_rate 0 n + n n	0	0	0
+Param: sector_initial_markup 0 n + n n	1.3	1.3	1.3
+Param: sector_initial_quality 0 n + n n	1	1	1
+Param: sector_initial_wage 0 n + n n	1	1	1
+Param: sector_innovation_proportion 0 n + n n	0.5	0.5	0.5
+Param: sector_input_tech_coefficient 0 n + n n	0.5	0.5	0.5
+Param: sector_investment_period 0 n + n n	4	4	4
+Param: sector_learning_adjustment 0 n + n n	0	0	0
+Param: sector_market_share_expansion 0 n + n n	1	1	1
+Param: sector_markup_apropriation 0 n + n n	0	0	0
+Param: sector_number_object_firms 0 n + n n	10	10	10
+Param: sector_payback_period 0 n + n n	20	20	20
+Param: sector_productive_capacity_cost 0 n + n n	0	0	0
+Param: sector_profits_distribution_rate 0 n + n n	0.95	0.95	0.95
+Param: sector_rnd_revenue_proportion 0 n + n n	0.05	0.05	0.05
 Param: sector_exports_coefficient 0 s + n n	0	0	0
 Param: sector_initial_price 0 n + n n	0	0	0
 Param: sector_initial_productivity 0 n + n n	1	1	1
 Param: sector_passthrough_employment 0 n + n n	0.1	0.1	0.1
 Param: sector_passthrough_inflation 0 n + n n	0.5	0.5	0.5
 Param: sector_passthrough_productivity 0 s + n n	1	1	1
-Param: std_dev_innovation 0 n + n n	0.005	0.005	0.005
-Param: strategic_price_weight 0 n + n n	0.5	0.5	0.5
-Param: tech_opportunity_productivity 0 n + n n	0.002	0.002	0.002
-Param: tech_opportunity_quality 0 n + n n	0.002	0.002	0.002
+Param: sector_std_dev_innovation 0 n + n n	0.005	0.005	0.005
+Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5
+Param: sector_tech_opportunity_productivity 0 n + n n	0.002	0.002	0.002
+Param: sector_tech_opportunity_quality 0 n + n n	0.002	0.002	0.002
 Var: Sector_Avg_Capital_Demand_Price_External 0 s + n n
 Var: Sector_Avg_Capital_Demand_Price_Internal 0 s + n n
 Var: Sector_Avg_Competitiveness 1 n + n n	1	1	1
@@ -1877,13 +1889,13 @@ END_DESCRIPTION
 Parameter_class_autonomous_consumption_adjustment
 (no description available)
 _INIT_
-All 2 instances equal to 2.
+All 2 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_class_autonomous_consumption_adjustment_deposits
 (no description available)
 _INIT_
-All 2 instances equal to 0.5.
+All 2 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_class_debt_rate_adjustment
@@ -2019,7 +2031,7 @@ _INIT_
 
 END_DESCRIPTION
 
-Variable_Class_Effective_Consumption
+Variable_Class_Effective_Real_Domestic_Consumption
 Class effective real domestic consumption, depending on how much the domestic consumption goods sector was able to meet demand.
 _INIT_
 
@@ -2031,7 +2043,7 @@ _INIT_
 
 END_DESCRIPTION
 
-Variable_Class_Effective_Imports
+Variable_Class_Effective_Real_Imported_Consumption
 (no description available)
 _INIT_
 
@@ -2122,19 +2134,19 @@ _INIT_
 All 3 instances equal to 0.
 END_DESCRIPTION
 
-Variable_Class_Real_Consumption_Demand
+Variable_Class_Real_Domestic_Consumption_Demand
 Class effective domestic consumption goods demand. There is a priority between domestic and imported, in which the first is preferible. The effective real demand will be the minimum between the desired and the possible amount.
 _INIT_
 
 END_DESCRIPTION
 
-Variable_Class_Real_Desired_Consumption
+Variable_Class_Real_Desired_Domestic_Consumption
 Class real domestic conumption is based on average past real income and on the class' propensity to consume, plus autonomous consumption
 _INIT_
 
 END_DESCRIPTION
 
-Variable_Class_Real_Desired_Imports
+Variable_Class_Real_Desired_Imported_Consumption
 Class real imports are based on average past real income and on the class' propensity to import and restricted to the amount of existing international resevres
 _INIT_
 
@@ -2158,7 +2170,7 @@ _INIT_
 All 2 instances equal to 0.
 END_DESCRIPTION
 
-Variable_Class_Real_Imports_Demand
+Variable_Class_Real_Imported_Consumption_Demand
 Class effective external domestic consumption, depending on desired level of imports plus the demand not met by the domestic production
 _INIT_
 
@@ -2206,6 +2218,12 @@ _INIT_
 
 END_DESCRIPTION
 
+Parameter_class_import_elasticity_price
+(no description available)
+_INIT_
+All 2 instances equal to 1.
+END_DESCRIPTION
+
 Object_CLASS_LOANS
 (no description available)
 _INIT_
@@ -2251,7 +2269,7 @@ END_DESCRIPTION
 Parameter_exchange_rate_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Parameter_exchange_rate_growth
@@ -2407,7 +2425,7 @@ END_DESCRIPTION
 Parameter_real_interest_rate
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Parameter_risk_premium_class
@@ -2431,7 +2449,7 @@ END_DESCRIPTION
 Parameter_spread_deposits
 (no description available)
 _INIT_
-All 1 instances equal to 0.01.
+All 1 instances equal to 0.005.
 END_DESCRIPTION
 
 Parameter_spread_long_term
@@ -2455,7 +2473,7 @@ END_DESCRIPTION
 Parameter_spread_short_term
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Parameter_spread_short_term_adjustment
@@ -3229,31 +3247,62 @@ _INIT_
 
 END_DESCRIPTION
 
+Variable_Government_RND
+Share of government wages, consequently distributed to income classes as normal wages.
+Share of government wages, consequently distributed to income classes as normal wages.
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_goverment_tech_opportunity_productivity
+(no description available)
+_INIT_
+All 1 instances equal to 0.002.
+END_DESCRIPTION
+
+Parameter_government_initial_productivity
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_government_rnd_share
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_government_std_dev_innovation
+(no description available)
+_INIT_
+All 1 instances equal to 0.001.
+END_DESCRIPTION
+
 Object_SECTORS
 (no description available )
 _INIT_
 
 END_DESCRIPTION
 
-Parameter_antecipation
+Parameter_sector_antecipation
 (no description available)
 _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_capital_output_ratio
+Parameter_sector_capital_output_ratio
 Capital/good relation for every sector related to a specific capital good sector
 _INIT_
 All 3 instances equal to 1.
 END_DESCRIPTION
 
-Parameter_desired_degree_capacity_utilization
+Parameter_sector_desired_degree_capacity_utilization
 (no description available)
 _INIT_
 
 END_DESCRIPTION
 
-Parameter_desired_inventories_proportion
+Parameter_sector_desired_inventories_proportion
 (no description available)
 _INIT_
 All 3 instances equal to 0.1.
@@ -3283,43 +3332,43 @@ _INIT_
 All 1 instances equal to 0.3.
 END_DESCRIPTION
 
-Parameter_exports_elasticity_income
+Parameter_sector_exports_elasticity_income
 (no description available)
 _INIT_
 
 END_DESCRIPTION
 
-Parameter_exports_elasticity_price
+Parameter_sector_exports_elasticity_price
 (no description available)
 _INIT_
 
 END_DESCRIPTION
 
-Parameter_external_price_competitiveness
+Parameter_sector_external_price_competitiveness
 (no description available)
 _INIT_
 
 END_DESCRIPTION
 
-Parameter_external_price_growth
-(no description available)
-_INIT_
-All 3 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_financial_cost_weight
+Parameter_sector_external_price_growth
 (no description available)
 _INIT_
 All 3 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_firm_debt_rate_adjustment
+Parameter_sector_financial_cost_weight
+(no description available)
+_INIT_
+All 3 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_sector_debt_rate_adjustment
 (no description available)
 _INIT_
 All 1 instances equal to 0.01.
 END_DESCRIPTION
 
-Parameter_firm_liquidity_preference_adjustment
+Parameter_sector_liquidity_preference_adjustment
 (no description available)
 _INIT_
 All 1 instances equal to 0.
@@ -3343,91 +3392,91 @@ _INIT_
 
 END_DESCRIPTION
 
-Parameter_indirect_tax_rate
+Parameter_sector_indirect_tax_rate
 (no description available)
 _INIT_
 All 3 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_initial_markup
+Parameter_sector_initial_markup
 (no description available)
 _INIT_
 All 1 instances equal to 1.3.
 END_DESCRIPTION
 
-Parameter_initial_quality
+Parameter_sector_initial_quality
 (no description available)
 _INIT_
 All 1 instances equal to 1.
 END_DESCRIPTION
 
-Parameter_initial_wage
+Parameter_sector_initial_wage
 (no description available)
 _INIT_
 All 3 instances equal to 1.
 END_DESCRIPTION
 
-Parameter_innovation_proportion
+Parameter_sector_innovation_proportion
 (no description available)
 _INIT_
 All 3 instances equal to 0.5.
 END_DESCRIPTION
 
-Parameter_input_tech_coefficient
+Parameter_sector_input_tech_coefficient
 (no description available)
 _INIT_
 All 3 instances equal to 0.5.
 END_DESCRIPTION
 
-Parameter_investment_period
+Parameter_sector_investment_period
 (no description available)
 _INIT_
 All 3 instances equal to 4.
 END_DESCRIPTION
 
-Parameter_learning_adjustment
+Parameter_sector_learning_adjustment
 (no description available)
 _INIT_
 All 3 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_market_share_expansion
+Parameter_sector_market_share_expansion
 (no description available)
 _INIT_
 All 1 instances equal to 1.
 END_DESCRIPTION
 
-Parameter_markup_apropriation
+Parameter_sector_markup_apropriation
 (no description available)
 _INIT_
 All 3 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_number_object_firms
+Parameter_sector_number_object_firms
 (no description available)
 _INIT_
 All 3 instances equal to 20.
 END_DESCRIPTION
 
-Parameter_payback_period
+Parameter_sector_payback_period
 (no description available)
 _INIT_
 All 1 instances equal to 20.
 END_DESCRIPTION
 
-Parameter_productive_capacity_cost
+Parameter_sector_productive_capacity_cost
 (no description available)
 _INIT_
 All 3 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_profits_distribution_rate
+Parameter_sector_profits_distribution_rate
 (no description available)
 _INIT_
 All 3 instances equal to 0.95.
 END_DESCRIPTION
 
-Parameter_rnd_revenue_proportion
+Parameter_sector_rnd_revenue_proportion
 (no description available)
 _INIT_
 All 3 instances equal to 0.05.
@@ -3469,25 +3518,25 @@ _INIT_
 All 3 instances equal to 1.
 END_DESCRIPTION
 
-Parameter_std_dev_innovation
+Parameter_sector_std_dev_innovation
 (no description available)
 _INIT_
 All 1 instances equal to 0.005.
 END_DESCRIPTION
 
-Parameter_strategic_price_weight
+Parameter_sector_strategic_price_weight
 (no description available)
 _INIT_
 All 3 instances equal to 0.5.
 END_DESCRIPTION
 
-Parameter_tech_opportunity_productivity
+Parameter_sector_tech_opportunity_productivity
 (no description available)
 _INIT_
 All 3 instances equal to 0.002.
 END_DESCRIPTION
 
-Parameter_tech_opportunity_quality
+Parameter_sector_tech_opportunity_quality
 (no description available)
 _INIT_
 All 3 instances equal to 0.002.

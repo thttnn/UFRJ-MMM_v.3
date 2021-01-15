@@ -103,7 +103,7 @@ Must be called by the sector.
 	v[0]=0;                                                 		//initializes the CYCLE
 	CYCLE(cur, "CLASSES")                                   		//CYCLE trought all income classes
 	{
-		v[1]=VS(cur, "Class_Real_Consumption_Demand");      	    //class consumption
+		v[1]=VS(cur, "Class_Real_Domestic_Consumption_Demand");      	    //class consumption
 		v[0]=v[0]+v[1];                                       		//sums up all classes consumption
 	}
 	cur = SEARCH_CND("id_consumption_goods_sector", 1);
@@ -122,17 +122,17 @@ EQUATION("Total_Domestic_Capital_Goods_Demand")
 The demand for capital goods is calculated by summing up the demand for capital goods from all sectors with government spending on investment.
 Must be called by the sectors.
 */
-	v[1]=0;                                                 	//initializes the CYCLE
-	CYCLE(cur, "SECTORS")                                   	//CYCLE trought the sectors
+	v[1]=0;                                                 			//initializes the CYCLE
+	CYCLE(cur, "SECTORS")                                   			//CYCLE trought the sectors
 	{	
-		v[2]=0;                                               	//initializes the second CYCLE
-		CYCLES(cur, cur1, "FIRMS")                            	//CYCLE trought the firms
+		v[2]=0;                                               			//initializes the second CYCLE
+		CYCLES(cur, cur1, "FIRMS")                            			//CYCLE trought the firms
 		{
 			v[10]=VLS(cur1, "Firm_Demand_Capital_Goods_Expansion", 1);
 			v[11]=VLS(cur1, "Firm_Demand_Capital_Goods_Replacement", 1);
-			v[2]=v[2]+v[10]+v[11];                                     //sums up all capital goods demand
+			v[2]=v[2]+v[10]+v[11];                                     	//sums up all capital goods demand
 		}
-		v[1]=v[1]+v[2];                                       	//sums up all firm's capital goods demand
+		v[1]=v[1]+v[2];                                       			//sums up all firm's capital goods demand
 	}
 	
 RESULT(v[1])
@@ -204,13 +204,13 @@ The total wage is calculated by the sum of the wages paid by the sectors with go
 			v[5]=VS(cur1, "Firm_RND_Expenses");                     //firm's rnd expeses, returned as salary to researchers
 			v[8]=VS(cur1, "Firm_Overhead_Costs");				
 			if(v[4]!=0)
-				v[1]=v[1]+v[3]*(v[2]/v[4])+v[5]+v[8];                       	//sums up all firms' wage, determined by a unitary wage (sectorial wage divided by firm's productivity) multiplied by firm's effective production plus RND expenses
+				v[1]=v[1]+v[3]*(v[2]/v[4])+v[5]+v[8];               //sums up all firms' wage, determined by a unitary wage (sectorial wage divided by firm's productivity) multiplied by firm's effective production plus RND expenses
 			else
 				v[1]=v[1];
 		}
 		v[0]=v[0]+v[1];                                          	//sums up all wages of all sectors
 	}
-	v[6]=V("Government_Effective_Wages");                                		//wages paid by the government
+	v[6]=V("Government_Effective_Wages");                           //wages paid by the government
 	v[7]=v[0]+v[6];                                            		//sums up productive sectors wages with government wages
 RESULT(v[7])
 
@@ -464,7 +464,7 @@ Counts the number of crisis ocurrances.
 		v[3]=0;                           		//do not count a crisis   
 	v[4]=VL("Likelihood_Crisis",1);     		//crisis counter in the last period
 	v[5]=v[4]+v[3];                     		//acumulates the crisis counters
-	v[6]=(v[5]/t/v[7]);                      		//gives the probability, total crisis counter divided by the number of time periods
+	v[6]=(v[5]/t/v[7]);                      	//gives the probability, total crisis counter divided by the number of time periods
 RESULT(v[3])
 
 
@@ -696,7 +696,7 @@ EQUATION("Total_Imports")
 Total imports in nominal value are obtained from the sum of imports of all sectors multiplied by the respective international prices, and converted to national currency by the exchange rate.
 */
 	v[0]=WHTAVE("Sector_Extra_Imports", "Sector_External_Price");
-	v[1]=SUM("Class_Effective_Imports");
+	v[1]=SUM("Class_Effective_Real_Imported_Consumption");
 	v[2]=V("Exchange_Rate");
 	cur = SEARCH_CND("id_consumption_goods_sector", 1);
 	v[4]=VLS(cur, "Sector_External_Price", 1);

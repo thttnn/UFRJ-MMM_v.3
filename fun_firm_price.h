@@ -10,8 +10,8 @@ Firm Variable
 	if(v[1]==0)                                                              		//if the rest of the above division is zero, adjust strategic markup
 		{
 		v[2]=VL("Firm_Avg_Potential_Markup",1);                                     //average potential markup of the firm in the last period        
-		v[3]=V("market_share_expansion");                                           //market-share expantion parameter
-		v[4]=V("markup_apropriation");                                              //profits apropriation parameter   
+		v[3]=V("sector_market_share_expansion");                                    //market-share expantion parameter
+		v[4]=V("sector_markup_apropriation");                                       //profits apropriation parameter   
 		v[5]=V("Firm_Desired_Market_Share");                                        //desired market-share 
 		v[6]=VL("Firm_Avg_Market_Share",1);                                    		//firm average market share in the last period   
 		v[7]=VL("Firm_Competitiveness",1);                                          //firm's competitiveness in the last period
@@ -60,10 +60,10 @@ Nominal Wage of the firm. It increases year by year depending on inflation and f
 			v[14]=0;
 		v[15]=V("sector_passthrough_employment");
 		v[16]=VL("Sector_Capacity_Utilization", 1);
-		v[17]=V("desired_degree_capacity_utilization");
+		v[17]=V("sector_desired_degree_capacity_utilization");
 		v[18]=v[16]-v[17];
 		v[19]=V("sector_passthrough_capacity");
-		v[10]=v[0]*(1+v[5]*v[4]+v[9]*v[8]+v[15]*v[14]+v[18]*v[19]);                                  //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
+		v[10]=v[0]*(1+v[5]*v[4]+v[9]*v[8]+v[15]*v[14]+v[18]*v[19]);                      //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
 		}
 	else                                                                             	 //if the rest of the division is not zero, do not adjust wages
 		v[10]=v[0];                                                                      //current wages will be the last period's
@@ -74,7 +74,11 @@ EQUATION("Firm_Variable_Cost")
 /*
 Variable unit cost is the wage cost (nominal wages over productivity) plus intermediate costs
 */
-	v[0]=V("Firm_Input_Cost");
+	cur=SEARCH_CND("id_intermediate_goods_sector",1);
+	v[4]=VLS(cur, "Sector_Avg_Price",1);
+	v[5]=V("sector_input_tech_coefficient");
+	v[0]=v[4]*v[5];
+	//v[0]=V("Firm_Input_Cost");
 	v[1]=V("Firm_Wage");
 	v[2]=VL("Firm_Avg_Productivity",1);
 	if(v[2]!=0)
@@ -88,8 +92,8 @@ EQUATION("Firm_Unit_Financial_Cost")
 /*
 Financial costs include interest payment and debt payment. Unit financial cost is total financial costs divided by effective production.
 */
-	v[0]=V("investment_period");
-	v[6]=V("desired_degree_capacity_utilization");
+	v[0]=V("sector_investment_period");
+	v[6]=V("sector_desired_degree_capacity_utilization");
 	v[4]=0;
 	for(i=1; i<=v[0]; i++)
 		{
@@ -115,7 +119,7 @@ EQUATION("Firm_Financial_Cost_Passtrough")
 	v[3]=VL("Firm_Debt_Rate",1);
 	v[4]=VL("Firm_Desired_Debt_Rate",1);
 	v[5]=VL("Firm_Avg_Debt_Rate",1);
-	v[6]=V("financial_cost_weight");
+	v[6]=V("sector_financial_cost_weight");
 	if(v[2]>v[0]&&v[3]>v[4])
 		v[7]=v[6];
 	else
@@ -141,7 +145,7 @@ Firm's effective price is a average between the desired price and the sector ave
 */
 	v[0]=VL("Firm_Price",1);                                                   //firm's price in the last period
 	v[1]=V("Firm_Desired_Price");                                              //firm's desired price
-	v[2]=V("strategic_price_weight");                                          //strategic weight parameter
+	v[2]=V("sector_strategic_price_weight");                                   //strategic weight parameter
 	v[3]=VL("Sector_Avg_Price", 1);                                            //sector average price in the last period
 	v[4]=v[2]*(v[1])+(1-v[2])*(v[3]);                                          //firm's price is a average between the desired price and the sector average price
 	if(v[1]>0)                                                                 //if desired price is positive

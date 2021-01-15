@@ -75,11 +75,11 @@ if (v[2]==0)														//if it is class adjustment period
 	WRITE("class_propensity_to_import", v[12]);
   }
 else																//if it is not class adjustment period
-	v[7]=v[0]; 													//use lase period autonomous consumption                                                                       		
+	v[7]=v[0]; 														//use last period autonomous consumption                                                                       		
 RESULT(max(0,v[7]))
 
 
-EQUATION("Class_Real_Desired_Consumption")
+EQUATION("Class_Real_Desired_Domestic_Consumption")
 /*
 Class real domestic conumption is based on average past real disposable income from profits and wages and on the class' propensity to consume, plus autonomous consumption
 */
@@ -91,24 +91,44 @@ Class real domestic conumption is based on average past real disposable income f
 		v[3]=VL("Class_Real_Disposable_Wages", i);					//count class disposable wages
 		v[1]=v[1]+v[2]+v[3];										//sum disposable wages and profits
 		}
-	v[4]=v[1]/v[0];     											//average disposable wages+profits in the last class periods
-  	v[5]=V("class_propensity_to_consume");          				//class propensity to consume on income
+	//v[4]=v[1]/v[0];     											//average disposable wages+profits in the last class periods
+  	v[4]=V("Class_Avg_Real_Income");
+	v[5]=V("class_propensity_to_consume");          				//class propensity to consume on income
 	v[6]=V("class_propensity_to_import");							//class propensity to import
   	v[7]=V("Class_Real_Autonomous_Consumption");    				//class autonomous consumption
   	v[8]=v[4]*v[5]+v[7];                            				//class real desired consumption
-	v[9]=v[4]*v[6];													//class real desired imports
-	WRITE("Class_Real_Desired_Imports", v[9]);						//write the imporst equation
 RESULT(v[8])
 
-EQUATION_DUMMY("Class_Real_Desired_Imports", "Class_Real_Desired_Consumption")
 
+EQUATION("Class_Real_Desired_Imported_Consumption")
+	
+	v[0]=V("class_period");											//define the class adjustment period
+	v[1]=0;															//initializes the sum
+		for (i=1; i<=v[0]; i++)										//for the number os lags equal the adjustment parameter
+		{
+		v[2]=VL("Class_Real_Disposable_Profits", i);				//count class disposable profits
+		v[3]=VL("Class_Real_Disposable_Wages", i);					//count class disposable wages
+		v[1]=v[1]+v[2]+v[3];										//sum disposable wages and profits
+		}
+	//v[4]=v[1]/v[0];     											//average disposable wages+profits in the last class periods
+	v[4]=V("Class_Avg_Real_Income");
+	v[5]=V("class_propensity_to_import");							//class propensity to import
+  
+	cur=SEARCH_CNDS(root, "id_consumption_goods_sector", 1);     	//identifies the consumption goods sector
+	v[6]=VS(cur, "Sector_Avg_Price");                        		//consumption sector average price
+	v[7]=VS(cur, "Sector_External_Price");                   		//consumption sector external price
+	v[8]=V("Exchange_Rate");										//exchange rate
+	v[9]=V("class_import_elasticity_price");
+	v[10]=v[4]*v[5]*pow((v[6]/(v[7]*v[8])),v[9]);
+RESULT(v[10])
+	
 
 EQUATION("Class_Desired_Expenses")
 /*
 Class' nominal desired expenses depends on effective domestic consumption times avg price plus effective external consumption times foreign price
 */
-	v[0]=V("Class_Real_Desired_Consumption");                    	// class desired domestic consumption
-	v[1]=V("Class_Real_Desired_Imports");                        	// class desired external consumption
+	v[0]=V("Class_Real_Desired_Domestic_Consumption");              // class desired domestic consumption
+	v[1]=V("Class_Real_Desired_Imported_Consumption");              // class desired external consumption
 	v[2]=V("Exchange_Rate");                                     	//exchange rate
 	
 	cur=SEARCH_CNDS(root, "id_consumption_goods_sector", 1);     	//identifies the consumption goods sector
@@ -175,7 +195,7 @@ EQUATION("Class_Debt_Payment")
 Sum up total debt payment on all class' loans. Amortizations are fixed for each loan. 
 This variable also adjusts the total amount of each loan and delete loan objects if all debt is paid.
 */
-	v[0]=SUM("class_loan_fixed_amortization");		 	//sum up all amortizations for current period
+	v[0]=SUM("class_loan_fixed_amortization");		 			//sum up all amortizations for current period
 	
 		CYCLE_SAFE(cur, "CLASS_LOANS")							//CYCLE trough all class' loans
 		{
@@ -323,14 +343,14 @@ Class demand for loans is the amount that internal funds (already discounted req
 	v[0]=V("Class_Desired_Expenses");
 	v[1]=V("Class_Internal_Funds");
 	v[2]=V("Class_Max_Loans");
-	v[3]=v[0]-v[1];													//will demand loans for the amount of desired expenses that internal funds can not pay for
+	v[3]=v[0]-v[1];															//will demand loans for the amount of desired expenses that internal funds can not pay for
 
 		if(v[2]>0)															//if there is available debt 
 			v[4]=min(v[3],v[2]);											//demand will be the minimum between amount needed and amount available
 		else																//if there is no available debt
 			v[4]=0;															//no demand for debt
 
-	v[5]=max(0,v[4]);													//demand for new loans can not be negative
+	v[5]=max(0,v[4]);														//demand for new loans can not be negative
 RESULT(v[5])
 
 
@@ -373,7 +393,7 @@ Nominal value of possible expenses, restricted to the amount of funds available.
 RESULT(v[2])
 
 
-EQUATION("Class_Real_Consumption_Demand")
+EQUATION("Class_Real_Domestic_Consumption_Demand")
 /*
 Class effective domestic consumption goods demand. There is a priority between domestic and imported, in which the first is preferible. The effective real demand will be the minimum between the desired and the possible amount.
 */
@@ -381,12 +401,12 @@ Class effective domestic consumption goods demand. There is a priority between d
 	cur=SEARCH_CNDS(root, "id_consumption_goods_sector", 1);     //identifies the consumption goods sector
 	v[1]=VS(cur, "Sector_Avg_Price"); 							 //consumption goods price
 	v[2]=v[0]/v[1];												 //real effective consumption demand possible																																		 
-	v[3]=V("Class_Real_Desired_Consumption");                    //real desired consumption demand desired
+	v[3]=V("Class_Real_Desired_Domestic_Consumption");           //real desired consumption demand desired
 	v[4]=min(v[2],v[3]);
 RESULT(v[4])
 
 
-EQUATION("Class_Real_Imports_Demand")
+EQUATION("Class_Real_Imported_Consumption_Demand")
 /*
 Class effective external domestic consumption, depending on desired level of imports plus the demand not met by the domestic production
 */
@@ -394,28 +414,28 @@ Class effective external domestic consumption, depending on desired level of imp
 	cur=SEARCH_CNDS(root, "id_consumption_goods_sector", 1);    //identifies the consumption goods sector
 	v[1]=VS(cur, "Sector_Avg_Price"); 							//consumption goods price
 	v[2]=VS(cur, "Sector_External_Price");						//consumption goods external price
-	v[3]=V("Class_Real_Consumption_Demand");                    //real effetive demand for domestic consumption gooods
+	v[3]=V("Class_Real_Domestic_Consumption_Demand");           //real effetive demand for domestic consumption gooods
 	v[4]=v[3]*v[1];												//nominal effective expenses with domestic caital goods
 	v[5]=max(0, (v[0]-v[4]));									//effective amount that can be spended with external consumption goods
 	v[6]=V("Exchange_Rate");
 	v[7]=v[5]/(v[2]*v[6]);										//effective real demand for imported consumption goods
-	v[8]=V("Class_Real_Desired_Imports");
+	v[8]=V("Class_Real_Desired_Imported_Consumption");
 	v[9]=min(v[7],v[8]);
 RESULT(v[9])
 
 
-EQUATION("Class_Effective_Consumption")
+EQUATION("Class_Effective_Real_Domestic_Consumption")
 /*
 Class effective real domestic consumption, depending on how much the domestic consumption goods sector was able to meet demand.
 */
 	cur=SEARCH_CNDS(root, "id_consumption_goods_sector", 1);     //identifies the consumption goods sector
 	v[0]=VS(cur,"Sector_Demand_Met");                     		 //percentage of the total demand met by the sector
-	v[1]=V("Class_Real_Consumption_Demand");			         //real demand    
+	v[1]=V("Class_Real_Domestic_Consumption_Demand");			 //real demand    
 	v[2]=v[0]*v[1];
 RESULT(v[2])
 
 
-EQUATION("Class_Effective_Imports")
+EQUATION("Class_Effective_Real_Imported_Consumption")
 /*
 Class effective external consumption, depending on desired level of imports plus the demand not met by the domestic production
 */
@@ -423,8 +443,8 @@ Class effective external consumption, depending on desired level of imports plus
 	v[0]=VS(cur,"Sector_Demand_Met");                     		 //percentage of the total demand met by the sector
 	v[1]=VS(cur,"Sector_Demand_Met_By_Imports");                 //identifies if classes were capable of importing the amount not mey by the domestic production
 	v[2]=(1-v[0])*v[1];											 //percentage of domestic demand met by extra imports
-	v[3]=V("Class_Real_Consumption_Demand");					 //desired level of domestic consumption 
-	v[4]=V("Class_Real_Imports_Demand"); 						 //desired level of external consumption
+	v[3]=V("Class_Real_Domestic_Consumption_Demand");			 //desired level of domestic consumption 
+	v[4]=V("Class_Real_Imported_Consumption_Demand"); 			 //desired level of external consumption
 	v[5]=v[2]*v[3] + v[4];						
 RESULT(v[5])
 
@@ -437,8 +457,8 @@ Class effective expenses is the sum of effective domestic consumption and effect
 	v[0]=VS(cur,"Sector_Avg_Price");                     	     //domestic price of consumption goods
 	v[1]=VS(cur,"Sector_External_Price");                 		 //external price of consumption goods
 	v[2]=V("Exchange_Rate");																					 
-	v[3]=V("Class_Effective_Consumption");						 //effective real domestic consumption
-	v[4]=V("Class_Effective_Imports"); 						     //effective real imports
+	v[3]=V("Class_Effective_Real_Domestic_Consumption");		 //effective real domestic consumption
+	v[4]=V("Class_Effective_Real_Imported_Consumption"); 	     //effective real imports
 	v[5]=v[0]*v[3] + v[1]*v[2]*v[4];							 //effective nominal expenses		
 RESULT(v[5])
 

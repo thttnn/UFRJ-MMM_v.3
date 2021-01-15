@@ -26,14 +26,14 @@ Programed Production is subjected to a existing capactity restriction, but it is
 	v[0]=V("id_capital_goods_sector");                    	//identifies the capital goods sector      
 	v[1]=V("Firm_Expected_Sales");                          //calls the firm's expected sales
 	v[2]=VL("Firm_Productive_Capacity", 1);                 //calls the firm's productive capacity of the last period
-	v[5]=V("desired_inventories_proportion");             	//calls the firm's desired inventories ratio as a proportion of sales
+	v[5]=V("sector_desired_inventories_proportion");        //calls the firm's desired inventories ratio as a proportion of sales
 	v[6]=VL("Firm_Stock_Inventories",1);                    //calls the firm's stock of inventories in the last period
 
 	if(v[0]==0)                                           	//if it is not capital goods sector
 		v[7]=v[1]*(1+v[5])-v[6];                            //planned production will be expected sales plus the desired proportion of investories minus the existing stock of inventories
 	else                                                  	//if it is a capital goods sector
 		{
-		v[10]=V("investment_period");
+		v[10]=V("sector_investment_period");
 		v[7]=0;
 		for(i=0;i<=(v[10]-1);i++)
 			{

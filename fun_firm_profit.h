@@ -17,7 +17,7 @@ EQUATION("Firm_Net_Revenue")
 Firm's net revenue, discounting taxes and R&D expenses.
 */
 	v[0]=V("Firm_Revenue");
-	v[1]=V("indirect_tax_rate");
+	v[1]=V("sector_indirect_tax_rate");
 	v[2]=v[0]*v[1];
 	v[3]=v[0]-v[2];
 	WRITE("Firm_Indirect_Tax", v[2]);
@@ -110,10 +110,10 @@ Firm profit, including
 	v[2]=V("Firm_Variable_Cost");                                     //firm's variable cost	
 	v[3]=v[1]*v[2];													  //production cost
 
-	v[4]=V("rnd_revenue_proportion");								  //share of net profits to allocate in R&D
+	v[4]=V("sector_rnd_revenue_proportion");						  //share of net profits to allocate in R&D
 	v[5]=v[0]*v[4];													  //R&d expenses
 	
-	v[6]=V("productive_capacity_cost");                               //firm's capacity cost
+	v[6]=V("sector_productive_capacity_cost");                        //firm's capacity cost
 	v[7]=VL("Firm_Productive_Capacity",1);                            //firm's productive capacity in the last period
 	v[8]=v[6]*v[7];													  //overhead costs
 	
@@ -124,7 +124,7 @@ Firm profit, including
 	
 	v[12]=v[9]-v[10]+v[11];						  					  //firm's net profits, after interest
 	
-	v[13]=V("profits_distribution_rate");							  //distribution rate
+	v[13]=V("sector_profits_distribution_rate");					  //distribution rate
 	if(v[12]>0)
 		{
 		v[14]=v[12]*v[13];											  //distributed profits

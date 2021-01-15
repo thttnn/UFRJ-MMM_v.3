@@ -4,7 +4,7 @@ EQUATION("Firm_Avg_Debt_Rate")
 /*
 Firm's avg debt rate of the last investment period
 */
-	v[0]=V("investment_period");
+	v[0]=V("sector_investment_period");
 	v[3]=0;																				//initializes the sum
 	for (v[1]=1; v[1]<=v[0]; v[1]=v[1]+1)												//from 0 to investment period-1 lags
 		{
@@ -48,7 +48,7 @@ Formulation proposed by Moreira (2010)
 Proportion of physical capital. 
 Evolves based on average debt rate and profit growth.
 */
-	v[0]=V("investment_period");
+	v[0]=V("sector_investment_period");
 	v[1]=V("Firm_Investment_Period");
 	v[2]=V("Firm_Net_Profits");
 	v[3]=VL("Firm_Net_Profits",v[0]);
@@ -59,7 +59,7 @@ Evolves based on average debt rate and profit growth.
 	v[5]=V("Firm_Avg_Debt_Rate");
 	v[6]=V("Firm_Desired_Debt_Rate");
 	v[7]=VL("Firm_Liquidity_Preference",1);
-	v[8]=V("firm_liquidity_preference_adjustment");
+	v[8]=V("sector_liquidity_preference_adjustment");
 	
 	if(v[1]==1)
 	{
@@ -112,7 +112,7 @@ Firm's desired debt rate as a proportion to total capital.
 Formulation proposed by Moreira (2010) 
 Evolves based on capacity utilization and profit growth.
 */
-	v[0]=V("investment_period");
+	v[0]=V("sector_investment_period");
 	v[1]=V("Firm_Investment_Period");
 	v[2]=V("Firm_Net_Profits");
 	v[3]=VL("Firm_Net_Profits",v[0]);
@@ -121,9 +121,9 @@ Evolves based on capacity utilization and profit growth.
 	else
 		v[4]=0;
 		
-	v[9]=V("desired_degree_capacity_utilization");
+	v[9]=V("sector_desired_degree_capacity_utilization");
 	v[10]=VL("Firm_Desired_Debt_Rate",1);
-	v[11]=V("firm_debt_rate_adjustment");
+	v[11]=V("sector_debt_rate_adjustment");
 	
 	if(v[1]==1)
 	{
@@ -161,13 +161,13 @@ Firm demand for loans is the amount that internal funds can not pay
 	v[0]=V("Firm_Desired_Investment_Expenses");
 	v[1]=V("Firm_Internal_Funds");
 	v[2]=V("Firm_Available_Loans");
-	v[3]=v[0]-v[1];													//will demand loans for the amount of desired expenses that internal funds can not pay for
+	v[3]=v[0]-v[1];															//will demand loans for the amount of desired expenses that internal funds can not pay for
 
 		if(v[2]>0)															//if there is available debt 
 			v[4]=min(v[3],v[2]);											//demand will be the minimum between amount needed and amount available
 		else																//if there is no available debt
 			v[4]=0;															//no demand for debt
-	v[5]=max(0,v[4]);													//demand for new loans can not be negative
+	v[5]=max(0,v[4]);														//demand for new loans can not be negative
 	
 	if(v[0]!=0)
 	{
@@ -194,7 +194,7 @@ This variable also creates the object LOAN.
 */
 	v[2]=V("annual_period");
 	v[3]=V("Firm_Interest_Rate_Short_Term");
-	v[4]=V("investment_period");
+	v[4]=V("sector_investment_period");
 	v[5]=V("Firm_Interest_Rate_Long_Term");
 	v[8]=V("firm_effective_loans");
 	v[9]=V("depreciation_period");

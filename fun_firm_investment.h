@@ -3,7 +3,7 @@ EQUATION("Firm_Investment_Period")
 /*
 This variable writes for each firm, if it is investment period or not, assuming 1 or 0.
 */
-	v[0]=V("investment_period");							//sector investment period parameter
+	v[0]=V("sector_investment_period");						//sector investment period parameter
 	v[1]=fmod((t+v[0]),v[0]);								//devides the current time step by the investment period and takes the rest
 	v[2]=V("id_firm_number");								//firm number
 	v[3]=fmod((v[2]+v[0]),v[0]);							//divides the firm number by the investment period and takes the rest
@@ -18,7 +18,7 @@ EQUATION("Firm_Expected_Sales_Long_Term")
 /*
 The sectors update their productive capacity from year to year, time it takes for new capacity to be produced and to be available for use. The variation in the desired productive capacity is then defined according to the expected orders for the following year. Expected orders are calculated from the average of actual orders for the last six periods and the growth projection for six periods thereafter. This projection is determined on the basis of the difference between the averages of orders for the last six periods and the six periods prior to them, on which a doubling annual extrapolation factor applies.
 */
-	v[0]=V("investment_period");
+	v[0]=V("sector_investment_period");
 	v[3]=0;													//initializes the sum
 	for (v[1]=0; v[1]<=(v[0]-1); v[1]=v[1]+1)				//from 0 to investment period-1 lags
 		{
@@ -59,7 +59,7 @@ Nominal value of desired new capital goods.
 		
 		v[10]=0;													//initializes the cycle
 		v[11]=V("depreciation_period");								//depreciation period
-		v[12]=V("investment_period");								//investment period
+		v[12]=V("sector_investment_period");						//investment period
 		
 		CYCLE(cur, "CAPITALS")										//cycle trough all capital goods
 		{
@@ -72,10 +72,9 @@ Nominal value of desired new capital goods.
 				v[10]=v[10];										//do not sum up productive capacity
 		}
 		
-   		v[2]=V("desired_inventories_proportion");																										
-   		v[3]=V("desired_degree_capacity_utilization");
+   		v[2]=V("sector_desired_inventories_proportion");																										
+   		v[3]=V("sector_desired_degree_capacity_utilization");
 		v[4]=((v[0]*(1+v[2]))/v[3]) - (v[1] - v[10]);				//desired productive capacity will be the amount needed based on expected sales minus existing plus what will depreciate in the next investment period
-   													//cannot be negative
    		
 		v[15]=V("switch_expansion_investment");
 		v[16]=V("Firm_Depreciated_Productive_Capacity");
@@ -85,7 +84,7 @@ Nominal value of desired new capital goods.
 			v[5]=v[16]+v[10];
 		
 		v[6]=V("Price_Capital_Goods");								//price of capital goods
-		v[7]=V("capital_output_ratio");								//capital output ratio
+		v[7]=V("sector_capital_output_ratio");						//capital output ratio
    		v[8]=v[5]*v[6]*v[7];										//desired expansion expenses is the nominal value of the capital goods to meet desired productive capacity
 		}
    	else
@@ -97,19 +96,19 @@ EQUATION("Firm_Desired_Replacement_Investment_Expenses")
 /*
 Nominal value of derired new capital goods for modernization replacement
 */
- v[1]=V("investment_period");
+ v[1]=V("sector_investment_period");
  v[3]=V("Firm_Investment_Period");
  v[4]=V("Firm_Frontier_Productivity");
- v[5]=V("learning_adjustment");
- v[6]=V("antecipation");
+ v[5]=V("sector_learning_adjustment");
+ v[6]=V("sector_antecipation");
  v[7]=V("Firm_Max_Productivity");
  v[8]=max(v[4]*(1+v[6]*v[5]),v[7]);
  
  v[9]=V("depreciation_period");
  v[10]=V("Firm_Wage");
  v[11]=V("Price_Capital_Goods");
- v[12]=V("capital_output_ratio");
- v[13]=V("payback_period");
+ v[12]=V("sector_capital_output_ratio");
+ v[13]=V("sector_payback_period");
  
  v[30]=V("switch_interest_investment");
 	if(v[30]==0)//no interest
@@ -187,7 +186,7 @@ Effective productive capacity demanded, in real values
 */
 	v[0]=V("Firm_Effective_Expansion_Investment_Expenses");
 	v[1]=V("Price_Capital_Goods");
-	v[2]=V("capital_output_ratio");
+	v[2]=V("sector_capital_output_ratio");
 	v[3]=(v[0]/v[1])/v[2];
 RESULT(v[3])
 
@@ -207,18 +206,18 @@ EQUATION("Firm_Demand_Productive_Capacity_Replacement")
 New productive capacity in aquisition of new equipment to replace obsolete ones.
 */
 	v[0]=V("Firm_Available_Funds_Replacement");
-	v[1]=V("investment_period");
+	v[1]=V("sector_investment_period");
 	v[3]=V("Firm_Investment_Period");
 	v[4]=V("Firm_Frontier_Productivity");
-	v[5]=V("learning_adjustment");
-	v[6]=V("antecipation");
+	v[5]=V("sector_learning_adjustment");
+	v[6]=V("sector_antecipation");
 	v[7]=V("Firm_Max_Productivity");
 	v[8]=max(v[4]*(1+v[6]*v[5]),v[7]);
 	v[9]=V("depreciation_period");
 	v[10]=V("Firm_Wage");
 	v[11]=V("Price_Capital_Goods");
-	v[12]=V("capital_output_ratio");
-	v[13]=V("payback_period");
+	v[12]=V("sector_capital_output_ratio");
+	v[13]=V("sector_payback_period");
 	v[29]=V("switch_replacement_investment");
 	v[30]=V("switch_interest_investment");
 	if(v[30]==0)//no interest
@@ -228,7 +227,7 @@ New productive capacity in aquisition of new equipment to replace obsolete ones.
 	if(v[30]==2)//use firm interest
 	v[31]=V("Firm_Interest_Rate_Long_Term");
   				
-	if(v[3]==1&&v[29]!=0)														// if it is investment period for the firm
+	if(v[3]==1&&v[29]!=0)											// if it is investment period for the firm
 	{
 		v[14]=0;													// initializes the CYCLE for expenses 
 		v[15]=v[0];													// count available funds
@@ -236,8 +235,8 @@ New productive capacity in aquisition of new equipment to replace obsolete ones.
 		SORT("CAPITALS","Capital_Good_Productivity","UP");			// sort capital goods from the lowest to highest 
 		CYCLE(cur, "CAPITALS")										// CYCLE trought capital goods
 		{
-			v[19]=VS(cur, "capital_good_depreciation_period");				// capital good date of birth
-			if((double)t!=v[19] && (double)t < v[19]-v[1])		// if the capitalgood was not created in the current period nor will depreciate in the next investment period
+			v[19]=VS(cur, "capital_good_depreciation_period");		// capital good date of birth
+			if((double)t!=v[19] && (double)t < v[19]-v[1])			// if the capitalgood was not created in the current period nor will depreciate in the next investment period
 				{
 				v[17]=VS(cur, "Capital_Good_Productivity");			// current capital good productivivty
 				v[18]=VS(cur, "capital_good_productive_capacity");  // current capital good productive capacity  
@@ -281,7 +280,7 @@ Nominal value of desired new capital goods for modernization.
 */
 	v[1]=V("Firm_Demand_Productive_Capacity_Replacement");
 	v[2]=V("Price_Capital_Goods");
-	v[3]=V("capital_output_ratio");
+	v[3]=V("sector_capital_output_ratio");
 	v[4]=v[1]*v[3]*v[2];
 RESULT(v[4])
 
@@ -321,7 +320,7 @@ EQUATION("Firm_Demand_Capital_Goods_Replacement")
 Number of capital goods demanded to modernie productive capacity 
 */
 	v[1]=V("Firm_Demand_Productive_Capacity_Replacement");
-	v[2]=V("capital_output_ratio");
+	v[2]=V("sector_capital_output_ratio");
 	v[3]=v[1]*v[2];
 RESULT(v[3])
 
@@ -330,16 +329,16 @@ EQUATION("Firm_Demand_Capital_Goods")
 /*
 The demand for capital goods in each period will be determined by the sum of 1/6 of the variation of the productive capacity with modernization
 */
-	v[0]=V("investment_period");
+	v[0]=V("sector_investment_period");
 	v[4]=0;																					//initializes the sum
 	for (v[1]=1; v[1]<=v[0]; v[1]=v[1]+1)													//from the last production period until the last investment period
 		{
-		v[2]=VL("Firm_Demand_Capital_Goods_Expansion", v[1]);						//computates desired productive capacity to replace of the current lag
-		v[3]=VL("Firm_Demand_Capital_Goods_Replacement", v[1]);							//computates desired productive capacity to expand of the current lag
+		v[2]=VL("Firm_Demand_Capital_Goods_Expansion", v[1]);								//computates desired productive capacity to replace of the current lag
+		v[3]=VL("Firm_Demand_Capital_Goods_Replacement", v[1]);								//computates desired productive capacity to expand of the current lag
 		v[4]=v[4]+v[2]+v[3];																//sum up firm's lagged  desired productive capacity to replace plus productive capacity to expand
 		}
 	v[5]=v[4]/v[0];																			//divides the total amount of demand by the invesmet period. This is because capital goods take a whole investment period to be produced. This distributed the demand for the capital goods firms equally during the investment period. It does not mean that each firm demands 1/6 of capital each period, it's just to distribute the production															
-	v[6]=V("capital_output_ratio");															//capital outrput ratio
+	v[6]=V("sector_capital_output_ratio");															//capital outrput ratio
 	v[7]=v[5]*v[6];																			//number of capital goods to be demanded (produced) in each production period inside the investment period
 RESULT(v[5])
 

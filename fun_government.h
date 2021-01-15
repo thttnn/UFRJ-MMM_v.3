@@ -25,11 +25,12 @@ if(v[1]==0)                                                    //if the rest of 
 		v[8]=0;												   //use 1
 	v[9]=V("government_productivity_passtrought");             //productivity passtrough parameter
 	v[10]=V("government_inflation_passtrought");			   //inflation passtrough to public wages
-	v[11]=v[2]*(1+v[9]*v[5]+v[10]*v[8]);                       //desired adjusted government wages with no restriction
+	v[11]=V("government_demand_growth");
+	v[12]=v[2]*(1+v[9]*v[5]+v[10]*v[8]+v[11]);                 //desired adjusted government wages with no restriction
 }
 else                                                           //if it is not adjustment period
-	v[11]=v[2];                                                //use last period's
-RESULT(v[11])
+	v[12]=v[2];                                                //use last period's
+RESULT(v[12])
 
 
 EQUATION("Government_Desired_Unemployment_Benefits")
@@ -328,9 +329,28 @@ EQUATION_DUMMY("Government_Effective_Investment","Government_Effective_Expenses"
 EQUATION_DUMMY("Government_Effective_Inputs","Government_Effective_Expenses")
 
 
+EQUATION("Government_RND");
+/*
+Share of government wages, consequently distributed to income classes as normal wages.
+*/
+	v[0]=V("Government_Effective_Wages");					//government effective wages
+	v[1]=V("government_rnd_share");							//fixed share of effective wages allocated to rnd
+	v[2]=1-exp(-v[0]*v[1]);									//probability of success, based on effective rnd expenses
+	if(RND<v[2])                              				//draws a random number. if it is lower then innovation probability
+	{
+		v[3]=V("government_std_dev_innovation");        	//innovation standard deviation
+		v[4]=V("government_initial_productivity");			//initial frontier productivity
+		v[5]=V("goverment_tech_opportunity_productivity"); 	//technological opportunity for process innovation
+		v[6]=log(v[4])+(double)t*(v[5]);        			//the average of the innovation distribution will be the initial frontier productivity plus the opportunity parameter times the time period
+		v[7]=exp(norm(v[6],v[3]));             				//the innovation productivity will be a draw from a normal distribution with average depending of the tech regime and std. dev fixed
+	}  	
+  	else                                      				//if the random number is not lower than imitation probability
+     	v[7]=0; 
+RESULT(v[7])
+
+
 EQUATION("Total_Income_Taxes")
 RESULT(SUM("Class_Taxation"))
-
 
 EQUATION("Total_Indirect_Taxes")
 RESULT(SUM("Sector_Taxation"))

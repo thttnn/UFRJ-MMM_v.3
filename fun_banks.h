@@ -468,27 +468,54 @@ v[6]=v[4]*v[5];
 RESULT(v[3]+v[6])
 
 
+
 EQUATION("Bank_Distributed_Profits")
-/*
-Current bank profits distributed 
-*/
+
 v[0]=V("Bank_Profits");
-v[1]=V("bank_profit_distribution");
-if(v[0]>0)
-	v[2]=v[0]*v[1];
+if(v[0]<=0)//losses
+{
+	v[1]=0;//distribution is zero
+	v[2]=v[0];//losses are fully internalized
+}
 else
-	v[2]=0;
-RESULT(v[2])
+{
+	v[20]=V("switch_fixed_bank_distribution");
+	if(v[20]==1)
+	{
+	v[21]=V("bank_profit_distribution");
+	v[1]=v[0]*v[21];
+	v[2]=v[0]*(1-v[21]);
+	}
+	else
+	{
+	v[3]=VL("Bank_Accumulated_Profits",1);
+	v[4]=V("Bank_Total_Stock_Loans");
+	v[5]=V("minimum_capital_ratio");									//minimum capital ratio defined by the regulatory rule
+	v[6]=V("bank_fragility_sensitivity");								//bank's sensitivity to overall indebtedness of the economy
+	v[7]=V("Avg_Debt_Rate_Firms");										//average debt rate of firms of the economy
+	v[8]=V("Bank_Default_Share");										//bank's share of accumulated defaulted loans over total loans
+	v[9]=V("bank_default_sensitivity");									//bank's sensitivity to its own default ratio
+	v[10]=(v[5]+v[9]*v[8]+v[6]*v[7]);
+	v[11]=v[4]*v[10];													//needed accumulated profits
+	v[12]=V("Bank_Demand_Loans");
+	v[13]=V("fs_expectations");
+	v[14]=(v[4]+v[13]*v[12])*v[10];
+	if(v[14]<=v[3])														//if what is needed is lower than what the bank already has
+		{
+		v[1]=v[0];														//distribute everything
+		v[2]=0;															//retain nothing
+		}
+	else
+		{
+		v[2]=min(v[0],(v[14]-v[3]));									//retain the needed difference, limited to current profits
+		v[1]=v[0]-v[2];													//distribute the rest
+		}
+	}
+}
+WRITE("Bank_Retained_Profits", v[2]);
+RESULT(v[1])
 
-
-EQUATION("Bank_Retained_Profits")
-/*
-Current bank profits retained
-*/
-v[0]=V("Bank_Profits");
-v[1]=V("Bank_Distributed_Profits");
-v[2]=v[0]-v[1];
-RESULT(v[2])
+EQUATION_DUMMY("Bank_Retained_Profits", "Bank_Distributed_Profits")
 
 
 EQUATION("Bank_Accumulated_Profits")

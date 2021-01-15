@@ -8,7 +8,7 @@ Sector Variable for Analysis
 	v[0]=0;                           		//initializes the CYCLE    
 	CYCLE(cur, "FIRMS")               		//CYCLE trought all firms of the sector
 	{
-		v[1]=VS(cur, "Firm_Net_Profits");  		//firm's profits
+		v[1]=VS(cur, "Firm_Net_Profits");  	//firm's profits
 		v[2]=VS(cur, "Firm_Capital");		//firm's capital
 		if(v[2]!=0)
 			v[0]=v[0]+(v[1]/v[2]);          //sums up firm's profit rate
