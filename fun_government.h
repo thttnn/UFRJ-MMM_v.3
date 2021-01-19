@@ -43,8 +43,8 @@ v[0]=V("government_period");
 v[1]= fmod((double) t,v[0]);                                   //divides the time period by government adjustment period (adjust annualy)
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
 {
-	v[2]=WHTAVES(root, "Sector_Avg_Wage", "Sector_Employment");
-	v[3]=SUM("Sector_Employment");
+	v[2]=WHTAVELS(root, "Sector_Avg_Wage", "Sector_Employment",1);
+	v[3]=SUML("Sector_Employment",1);
 	if(v[3]!=0)
 		v[4]=v[2]/v[3];
 	else
@@ -200,7 +200,7 @@ if(v[3]==0)                                                    //if the rest of 
 			v[7]=1+v[6]*(v[4]-v[5])/v[5];                               //expected growth of gdp
 		else                                                          	//if last semiannual GDP is zero
 			v[7]=1;                                                     //use one for the expected growth
-		v[8]=VL("Total_Taxes",1);                                     	//total taxes in the last period
+		v[8]=VL("Government_Total_Taxes",1);                                     	//total taxes in the last period
 		v[9]=V("Government_Surplus_Rate_Target");                     	//government surplus target rate
 		v[10]=v[7]*(v[8]-(v[8]*v[9]));                                 	//maximum expenses will be total taxes multiplyed by expected growth minus the surplus target
 	
@@ -350,19 +350,19 @@ Share of government wages, consequently distributed to income classes as normal 
 RESULT(v[7])
 
 
-EQUATION("Total_Income_Taxes")
-RESULT(SUM("Class_Taxation"))
+EQUATION("Government_Income_Taxes")
+RESULT(SUMS(country,"Class_Taxation"))
 
-EQUATION("Total_Indirect_Taxes")
-RESULT(SUM("Sector_Taxation"))
+EQUATION("Government_Indirect_Taxes")
+RESULT(SUMS(country,"Sector_Taxation"))
 
 
-EQUATION("Total_Taxes")
+EQUATION("Government_Total_Taxes")
 /*
 Sum of income and indirect taxes
 */
-	v[0]=V("Total_Income_Taxes");
-	v[1]=V("Total_Indirect_Taxes");
+	v[0]=V("Government_Income_Taxes");
+	v[1]=V("Government_Indirect_Taxes");
 	v[2]=v[0]+v[1];
 RESULT(v[2])
 
@@ -372,7 +372,7 @@ EQUATION("Government_Primary_Surplus")
 Total Taxes minus Government Expenses
 */
 	v[0]=V("Government_Effective_Expenses");
-	v[1]=V("Total_Taxes");
+	v[1]=V("Government_Total_Taxes");
 	v[2]=v[1]-v[0];
 RESULT(v[2])
 
@@ -392,7 +392,7 @@ EQUATION("Government_Nominal_Deficit")
 Government expenses minus taxes plus interest payments
 */
 	v[0]=V("Government_Effective_Expenses");
-	v[1]=V("Total_Taxes");
+	v[1]=V("Government_Total_Taxes");
 	v[2]=V("Government_Interest_Payment");
 	v[3]=v[0]-v[1]+v[2];
 RESULT(v[3])

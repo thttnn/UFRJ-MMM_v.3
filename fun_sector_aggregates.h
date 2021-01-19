@@ -42,11 +42,7 @@ RESULT(v[3])
 
 
 EQUATION("Sector_Number_Firms")
-/*
-Sector Variable for Analysis
-*/
-	v[0]=COUNT("FIRMS");
-RESULT(v[0])
+RESULT(COUNT("FIRMS"))
 
 
 EQUATION("Sector_Participation")

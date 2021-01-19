@@ -12,7 +12,7 @@ Might impact effective loans
 	v[0]=VL("Bank_Accumulated_Profits",1);								//bank's accumulated profits (net worth) in the last period
 	v[1]=V("minimum_capital_ratio");									//minimum capital ratio defined by the regulatory rule
 	v[2]=V("bank_fragility_sensitivity");								//bank's sensitivity to overall indebtedness of the economy
-	v[3]=VL("Country_Debt_Rate_Firms",1);									//average debt rate of firms of the economy
+	v[3]=VL("Country_Debt_Rate_Firms",1);								//average debt rate of firms of the economy
 	v[4]=VL("Bank_Default_Share",1);									//bank's share of accumulated defaulted loans over total loans
 	v[5]=V("bank_default_sensitivity");									//bank's sensitivity to its own default ratio
 	v[6]=v[1]+v[2]*v[3]+v[5]*v[4];										//desired share of net worth in relation to total loans

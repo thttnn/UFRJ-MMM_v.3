@@ -251,9 +251,9 @@ Label Root
 			Var: Government_Nominal_Deficit
 			Var: Government_Primary_Surplus
 			Var: Government_Surplus_Rate_Target
-			Var: Total_Income_Taxes
-			Var: Total_Indirect_Taxes
-			Var: Total_Taxes
+			Var: Government_Income_Taxes
+			Var: Government_Indirect_Taxes
+			Var: Government_Total_Taxes
 			Var: Government_RND
 			Param: goverment_tech_opportunity_productivity
 			Param: government_initial_productivity
@@ -508,6 +508,7 @@ Label Root
 			Var: Sector_Capacity_Utilization
 			Param: sector_passthrough_capacity
 			Var: Sector_Exports_Share
+			Param: sector_competitiveness_adjustment
 
 		}
 
@@ -689,6 +690,7 @@ Label Root
 		Var: Country_Total_Wages
 		Var: Country_Idle_Capacity
 		Var: Country_Wage_Share
+		Var: Country_Annual_CPI_Inflation
 
 	}
 
@@ -786,6 +788,7 @@ Var: Country_Total_Profits 0 s + n n
 Var: Country_Total_Wages 0 n + n n
 Var: Country_Idle_Capacity 5 s + n n	0.18	0.18	0.18	0.18	0.18
 Var: Country_Wage_Share 0 s + n n
+Var: Country_Annual_CPI_Inflation 0 s + n n
 
 Object: CLASSES C	2
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1
@@ -853,7 +856,7 @@ Param: International_Reserves 1 n + n n	10000
 Param: exchange_rate_adjustment 0 n + n n	0.01
 Param: exchange_rate_growth 0 n + n n	0
 Param: external_income_adjustmnent 0 n + n n	0
-Param: external_income_growth 0 n + n n	0.01
+Param: external_income_growth 0 n + n n	0.02
 Param: external_interest_rate 0 n + n n	0.01
 Param: external_shock_begin 0 n + n n	200
 Param: external_shock_duration 0 n + n n	20
@@ -866,7 +869,7 @@ Object: FINANCIAL C	1
 Param: bank_default_sensitivity 0 n + n n	1
 Param: bank_fragility_sensitivity 0 n + n n	1
 Param: bank_profit_distribution 0 n + n n	0
-Param: begin_credit_rationing 0 n + n n	0
+Param: begin_credit_rationing 0 n + n n	-1
 Param: fs_elasticity_default 0 n + n n	0
 Param: fs_elasticity_interest_long_term 0 n + n n	0
 Param: fs_elasticity_interest_short_term 0 n + n n	0
@@ -1008,9 +1011,9 @@ Var: Government_Max_Expenses 1 s + n n	0
 Var: Government_Nominal_Deficit 0 s + n n
 Var: Government_Primary_Surplus 0 s + n n
 Var: Government_Surplus_Rate_Target 1 s + n n	0
-Var: Total_Income_Taxes 0 n + n n
-Var: Total_Indirect_Taxes 0 n + n n
-Var: Total_Taxes 1 s + n n	0
+Var: Government_Income_Taxes 0 n + n n
+Var: Government_Indirect_Taxes 0 n + n n
+Var: Government_Total_Taxes 1 s + n n	0
 Var: Government_RND 0 n + n n
 Param: goverment_tech_opportunity_productivity 0 n + n n	0.002
 Param: government_initial_productivity 0 n + n n	1
@@ -1030,7 +1033,7 @@ Param: sector_exports_elasticity_income 0 n + n n	1	1	1
 Param: sector_exports_elasticity_price 0 n + n n	1	1	1
 Param: sector_external_price_competitiveness 0 n + n n	1	1	1
 Param: sector_external_price_growth 0 n + n n	0	0	0
-Param: sector_financial_cost_weight 0 n + n n	0	0	0
+Param: sector_financial_cost_weight 0 n + n n	1	1	1
 Param: sector_debt_rate_adjustment 0 n + n n	0	0	0
 Param: sector_liquidity_preference_adjustment 0 n + n n	0	0	0
 Param: id_capital_goods_sector 0 n + n n	0	1	0
@@ -1047,7 +1050,7 @@ Param: sector_learning_adjustment 0 n + n n	0	0	0
 Param: sector_market_share_expansion 0 n + n n	1	1	1
 Param: sector_markup_apropriation 0 n + n n	0	0	0
 Param: sector_number_object_firms 0 n + n n	10	10	10
-Param: sector_payback_period 0 n + n n	20	20	20
+Param: sector_payback_period 0 n + n n	40	40	40
 Param: sector_productive_capacity_cost 0 n + n n	0	0	0
 Param: sector_profits_distribution_rate 0 n + n n	0.8	0.8	0.8
 Param: sector_rnd_revenue_proportion 0 n + n n	0.05	0.05	0.05
@@ -1055,7 +1058,7 @@ Param: sector_exports_coefficient 0 s + n n	0	0	0
 Param: sector_initial_price 0 n + n n	0	0	0
 Param: sector_initial_productivity 0 n + n n	1	1	1
 Param: sector_passthrough_employment 0 n + n n	0	0	0
-Param: sector_passthrough_inflation 0 n + n n	0.9	0.9	0.9
+Param: sector_passthrough_inflation 0 n + n n	1	1	1
 Param: sector_passthrough_productivity 0 s + n n	1	1	1
 Param: sector_std_dev_innovation 0 n + n n	0.001	0.001	0.001
 Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5
@@ -1119,6 +1122,7 @@ Var: Sector_Avg_Internal_Finance_Rate 0 s + n n
 Var: Sector_Capacity_Utilization 0 s + n n
 Param: sector_passthrough_capacity 0 n + n n	0	0	0
 Var: Sector_Exports_Share 0 s + n n
+Param: sector_competitiveness_adjustment 0 n + n n	0.2	0.2	0.2
 
 Object: FIRMS C	1	1	1
 Var: Firm_Available_Funds_After_Replacement 0 n + n n
@@ -1860,6 +1864,13 @@ _INIT_
 
 END_DESCRIPTION
 
+Variable_Country_Annual_CPI_Inflation
+Annual growth of the consumer price index
+Annual growth of the consumer price index
+_INIT_
+
+END_DESCRIPTION
+
 Object_CLASSES
 (no description available)
 _INIT_
@@ -2339,7 +2350,7 @@ END_DESCRIPTION
 Parameter_begin_credit_rationing
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to -1.
 END_DESCRIPTION
 
 Parameter_fs_elasticity_default
@@ -3221,19 +3232,19 @@ _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
-Variable_Total_Income_Taxes
+Variable_Government_Income_Taxes
 (no description available)
 _INIT_
 
 END_DESCRIPTION
 
-Variable_Total_Indirect_Taxes
+Variable_Government_Indirect_Taxes
 (no description available)
 _INIT_
 
 END_DESCRIPTION
 
-Variable_Total_Taxes
+Variable_Government_Total_Taxes
 (no description available)
 _INIT_
 
@@ -3351,7 +3362,7 @@ END_DESCRIPTION
 Parameter_sector_financial_cost_weight
 (no description available)
 _INIT_
-All 3 instances equal to 0.
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_sector_debt_rate_adjustment
@@ -3453,7 +3464,7 @@ END_DESCRIPTION
 Parameter_sector_payback_period
 (no description available)
 _INIT_
-All 1 instances equal to 20.
+All 3 instances equal to 40.
 END_DESCRIPTION
 
 Parameter_sector_productive_capacity_cost
@@ -3501,7 +3512,7 @@ END_DESCRIPTION
 Parameter_sector_passthrough_inflation
 (no description available)
 _INIT_
-All 3 instances equal to 0.9.
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_sector_passthrough_productivity
@@ -3898,6 +3909,12 @@ Variable_Sector_Exports_Share
 (no description available)
 _INIT_
 
+END_DESCRIPTION
+
+Parameter_sector_competitiveness_adjustment
+(no description available)
+_INIT_
+All 3 instances equal to 0.2.
 END_DESCRIPTION
 
 Object_FIRMS

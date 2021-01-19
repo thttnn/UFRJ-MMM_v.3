@@ -220,7 +220,7 @@ v[171]=VS(cur, "government_initial_capital_share");
 v[172]=VS(cur, "government_initial_input_share");
 v[173]=v[170]+v[171]+v[172];
 
-WRITELLS(cur,"Total_Taxes", v[144], 0, 1);														//write initial total taxes, initial total taxes is calculated in the demand calibration based only on parameters
+WRITELLS(cur,"Government_Total_Taxes", v[144], 0, 1);														//write initial total taxes, initial total taxes is calculated in the demand calibration based only on parameters
 WRITELLS(cur,"Government_Max_Expenses", v[144], 0, 1);        									//initial max government expenses equals total taxes calculated in the calibration
 WRITELLS(cur,"Government_Effective_Expenses", v[144], 0, 1);		            				//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity		
 if (v[168]!=2)

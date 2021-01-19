@@ -19,7 +19,7 @@ CYCLE(cur1, "SECTORS")
      v[1]=VS(cur, "Firm_Market_Share");							//firm's curent market share
      v[2]=VS(cur, "Firm_Productive_Capacity");					//firm's current productive capacity																				
      v[3]=VS(cur, "firm_date_birth");							//firm's date birth
-	 v[4]=VS(cur, "Firm_Avg_Debt_Rate");						//firm's avg debt rate
+	 v[4]=VS(cur, "Firm_Debt_Rate");						//firm's avg debt rate
      v[5]=VLS(cur, "Firm_Avg_Debt_Rate", 1);					//firm's avg debt rate in the last period
      v[6]=VS(cur, "Firm_Stock_Loans");
      v[7]=VS(cur, "Firm_Stock_Deposits");

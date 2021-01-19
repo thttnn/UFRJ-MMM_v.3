@@ -28,7 +28,13 @@ Firm Variable
 			v[14]=(v[12]-v[13])/v[13];
 		else
 			v[14]=0;
-		v[15]=v[0]*(1+max(0,v[4]*v[14]));		
+		v[21]=VL("Firm_Market_Share",1);
+		v[22]=VL("Firm_Market_Share",v[11]);
+		if(v[22]!=0)
+			v[23]=(v[21]-v[22])/v[22];
+		else
+			v[23]=0;
+		v[15]=v[0]*(1+v[4]*v[23]);		
 		}
 	else                                                                     		//if the rest of the above division is not zero, do not adjust strategic markup
 		v[15]=v[0];                                                            		//strategic markup will be the last period's			
@@ -50,7 +56,7 @@ Nominal Wage of the firm. It increases year by year depending on inflation and f
 		v[5]=V("sector_passthrough_productivity");                                       //pass through of productivity to wages
 		v[6]=VLS(GRANDPARENT, "Country_Consumer_Price_Index", 1);                                //price index in the last period
 		v[7]=VLS(GRANDPARENT, "Country_Consumer_Price_Index", (v[11]+1));                        //price index five periods before
-		v[8]=max(0,((v[6]-v[7])/v[7]));                                                  //annual growth of price index (annual inflation)
+		v[8]=max(0,((v[6]-v[7])/v[7])-v[21]);                                                  //annual growth of price index (annual inflation)
 		v[9]=V("sector_passthrough_inflation");                                          //pass through of inflation to wages   	
 		v[12]=VL("Sector_Employment", 1);                                				 //sector employment in the last period
 		v[13]=VL("Sector_Employment", (v[11]+1));                        				 //sector employment five periods before
@@ -61,10 +67,12 @@ Nominal Wage of the firm. It increases year by year depending on inflation and f
 		v[15]=V("sector_passthrough_employment");
 		v[16]=VL("Sector_Capacity_Utilization", 1);
 		v[17]=V("sector_desired_degree_capacity_utilization");
-		v[18]=v[16]-v[17];
+		v[18]=v[16]-v[17]>0?1:0;
 		v[19]=V("sector_passthrough_capacity");
-		v[20]=v[18]>0?v[14]:0;
-		v[10]=v[0]*(1+v[5]*v[4]+v[9]*v[8]+v[15]*v[20]+v[18]*v[19]);                      //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
+		v[20]=v[18]>0?1:0;
+		v[21]=VS(financial, "target_inflation");
+		v[22]=VLS(country, "Country_Annual_CPI_Inflation", 1);
+		v[10]=v[0]*(1+v[21]+v[5]*v[4]+v[9]*(v[22]-v[21])+v[15]*v[20]+v[18]*v[19]);                      //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
 		}
 	else                                                                             	 //if the rest of the division is not zero, do not adjust wages
 		v[10]=v[0];                                                                      //current wages will be the last period's
@@ -75,11 +83,9 @@ EQUATION("Firm_Variable_Cost")
 /*
 Variable unit cost is the wage cost (nominal wages over productivity) plus intermediate costs
 */
-	cur=SEARCH_CND("id_intermediate_goods_sector",1);
-	v[4]=VLS(cur, "Sector_Avg_Price",1);
+	v[4]=VLS(input, "Sector_Avg_Price",1);
 	v[5]=V("sector_input_tech_coefficient");
 	v[0]=v[4]*v[5];
-	//v[0]=V("Firm_Input_Cost");
 	v[1]=V("Firm_Wage");
 	v[2]=VL("Firm_Avg_Productivity",1);
 	if(v[2]!=0)
@@ -137,7 +143,7 @@ Firm's desired price is a desired markup over variable costs.
 	v[3]=V("Firm_Unit_Financial_Cost");
 	v[4]=V("Firm_Financial_Cost_Passtrough");
 	v[2]=v[0]*(v[1]+v[3]*v[4]);                                  				//firm's desired price will be the desired markup applied to labor cost plus inputs cost, labor cost defined as wages over productivity
-RESULT(v[2])
+RESULT(max(CURRENT,v[2]))
 
 
 EQUATION("Firm_Price")
@@ -190,9 +196,9 @@ Average Market Share between the market share of the firm in the last markup per
 */
 	v[0]=V("markup_period");
 	v[3]=0;										   						//initializes the sum
-	for (v[1]=0; v[1]<=(v[0]-1); v[1]=v[1]+1)							//from 0 to markup period-1 lags
+	for (i=0; i<=(v[0]-1); i++)											//from 0 to markup period-1 lags
 		{
-		v[2]=VL("Firm_Market_Share", v[1]);								//computates firm's market share of the current lag
+		v[2]=VL("Firm_Market_Share", i);								//computates firm's market share of the current lag
 		v[3]=v[3]+v[2];													//sum up firm's lagged market share
 		}
 	v[4]=v[3]/v[0];														//average firm's market share of the last investment period
@@ -218,9 +224,9 @@ Average Potential Markup between the potential markup of the firm in the last 8 
 */
 	v[0]=V("markup_period");
 	v[3]=0;																//initializes the sum
-	for (v[1]=0; v[1]<=(v[0]-1); v[1]=v[1]+1)							//from 0 to markup period-1 lags
+	for (i=0; i<=(v[0]-1); i++)											//from 0 to markup period-1 lags
 		{
-		v[2]=VL("Firm_Potential_Markup", v[1]);							//computates firm's potential markup of the current lag
+		v[2]=VL("Firm_Potential_Markup", i);							//computates firm's potential markup of the current lag
 		v[3]=v[3]+v[2];													//sum up firm's lagged potential markup
 		}
 	v[4]=v[3]/v[0];														//average firm's market share of the last potential markup

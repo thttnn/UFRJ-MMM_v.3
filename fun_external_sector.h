@@ -10,7 +10,7 @@ Nominal value of external income.
 	v[2]= fmod((double) t,v[1]);                				//divides the time period by annual adjustment period (adjust annualy)
 	if(v[2]==0)                               					//if the rest of the division is zero (adjust external income)
 		{
-		v[3]=VL("Country_Annual_Growth", 1);							//nominal growth in the last year
+		v[3]=VL("Country_Annual_Growth", 1);					//nominal growth in the last year
 		v[4]=norm(v[3], abs(v[3]));								//random draw from a normal distribution with average equals to past growth and standard deviation equals to past growth in absolute value
 		v[5]=V("external_income_growth");						//fixed external income growth
 		v[11]=V("external_income_adjustmnent");                 //exogenous parameter that amplifies external growth based on domestic growth

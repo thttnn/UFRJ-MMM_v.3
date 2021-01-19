@@ -220,7 +220,7 @@ V("Country_Nominal_Consumption_Production");
 V("Country_Nominal_Capital_Production");                                     		
 V("Country_Nominal_Input_Production");											
 V("Sector_Participation");									
-V("Total_Indirect_Taxes");                                  
+V("Government_Indirect_Taxes");                                  
 V("Country_Profit_Share");                                      	
 V("Country_Wage_Share"); 
 V("Country_Avg_Profit_Rate");                                       	

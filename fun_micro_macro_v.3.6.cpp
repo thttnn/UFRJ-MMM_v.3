@@ -27,7 +27,6 @@ MODELBEGIN
 	#include "fun_financial.h"    					// Financial Sector Object Variables
 	#include "fun_banks.h"    						// Bank Object Variables
 		#include "fun_entry_exit.h"       			// Entry and Exit Variables (inside Sector Object)
-		#include "fun_sector_external.h"			// Sector Variables related to External Sector
 		#include "fun_sector_demand.h"				// Sector Variables for Demand Calculations
 		#include "fun_sector_aggregates.h"			// Sector Agreggates and Averages Variables
 			#include "fun_firm_rnd.h"				// Firm's R&D Variables			
