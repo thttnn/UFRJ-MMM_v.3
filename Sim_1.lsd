@@ -730,7 +730,7 @@ Param: switch_discount_rate 0 n + n n	3
 Param: switch_entry 0 n + n n	1
 Param: switch_expansion_investment 0 n + n n	1
 Param: switch_fixed_exports 0 n + n n	0
-Param: switch_interest_investment 0 n + n n	0
+Param: switch_interest_investment 0 n + n n	2
 Param: switch_interest_payment 0 n + n n	0
 Param: switch_replacement_investment 0 n + n n	1
 Var: Country_Annual_Growth 1 s + n n	0
@@ -791,7 +791,7 @@ Var: Country_Wage_Share 0 s + n n
 Var: Country_Annual_CPI_Inflation 0 s + n n
 
 Object: CLASSES C	2
-Param: class_autonomous_consumption_adjustment 0 n + n n	1	1
+Param: class_autonomous_consumption_adjustment 0 n + n n	2	2
 Param: class_autonomous_consumption_adjustment_deposits 0 n + n n	0	0
 Param: class_debt_rate_adjustment 0 n + n n	0	0
 Param: class_desired_debt_rate 0 n + n n	1	1
@@ -799,7 +799,7 @@ Param: class_direct_tax 0 n + n n	0.1	0.1
 Param: class_liquidity_preference_adjustment 0 n + n n	0	0
 Param: class_population_share 0 n + n n	0.01	0.01
 Param: class_profit_share 0 n + n n	0.9	0.1
-Param: class_propensity_to_consume 0 n + n n	0.6	0.9
+Param: class_propensity_to_consume 0 n + n n	0.5	0.9
 Param: class_propensity_to_import 0 s + n n	0.4	0.1
 Param: class_wage_share 0 n + n n	0.1	0.9
 Param: class_wealth_tax 0 n + n n	0	0
@@ -858,8 +858,8 @@ Param: exchange_rate_growth 0 n + n n	0
 Param: external_income_adjustmnent 0 n + n n	0
 Param: external_income_growth 0 n + n n	0.03
 Param: external_interest_rate 0 n + n n	0.01
-Param: external_shock_begin 0 n + n n	200
-Param: external_shock_duration 0 n + n n	20
+Param: external_shock_begin 0 n + n n	400
+Param: external_shock_duration 0 n + n n	40
 Param: external_shock_size 0 n + n n	0
 Var: Exchange_Rate 1 s + d n	1
 Var: External_Income 1 s + n n	100
@@ -882,13 +882,13 @@ Param: price_strategy_long_term 0 n + n n	1
 Param: price_strategy_short_term 0 n + n n	1
 Param: real_interest_rate 0 n + n n	0.01
 Param: risk_premium_class 0 n + n n	0
-Param: risk_premium_long_term 0 n + n n	0.5
+Param: risk_premium_long_term 0 n + n n	1
 Param: risk_premium_short_term 0 n + n n	0
-Param: spread_deposits 0 n + n n	0.005
+Param: spread_deposits 0 n + n n	0.02
 Param: spread_long_term 0 n + n n	0.05
 Param: spread_long_term_adjustment 0 n + n n	0
 Param: spread_long_term_public 0 n + n n	1
-Param: spread_short_term 0 n + n n	0.01
+Param: spread_short_term 0 n + n n	0.02
 Param: spread_short_term_adjustment 0 n + n n	0
 Param: spread_short_term_public 0 n + n n	0.5
 Var: Avg_Competitiveness_Financial_Sector 1 s + n n	1
@@ -972,22 +972,22 @@ Param: target_credit_growth 0 s + n n	0.003
 Param: target_debt_rate 0 s + n n	0.3
 Param: target_inflation 0 s + n n	0.02
 Param: target_capacity 0 s + n n	0.15
-Param: begin_monetary_policy 0 n + n n	100
-Param: switch_monetary_policy 0 n + n n	2
+Param: begin_monetary_policy 0 n + n n	0
+Param: switch_monetary_policy 0 n + n n	1
 Param: switch_moving_targets 0 n + n n	0
 
 Object: GOVERNMENT C	1
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
-Param: begin_surplus_target_rule 0 n + n n	0
-Param: government_benefit 0 n + n n	0.1
-Param: government_demand_growth 0 n + n n	0.03
+Param: begin_surplus_target_rule 0 n + n n	-1
+Param: government_benefit 0 n + n n	0.5
+Param: government_demand_growth 0 n + n n	0.008
 Param: government_expectations 0 n + n n	0.3
 Param: government_inflation_passtrought 0 n + n n	1
 Param: government_initial_capital_share 0 n + n n	0.2
 Param: government_initial_consumption_share 0 n + n n	0.1
 Param: government_initial_input_share 0 n + n n	0.1
-Param: government_max_debt 0 n + n n	1
-Param: government_min_debt 0 n + n n	0
+Param: government_max_debt 0 n + n n	0.6
+Param: government_min_debt 0 n + n n	0.4
 Param: government_productivity_passtrought 0 n + n n	1
 Param: government_surplus_rate_target 0 n + n n	0
 Param: government_surplus_target_adjustment 0 n + n n	0
@@ -1050,7 +1050,7 @@ Param: sector_learning_adjustment 0 n + n n	0	0	0
 Param: sector_market_share_expansion 0 n + n n	1	1	1
 Param: sector_markup_apropriation 0 n + n n	0	0	0
 Param: sector_number_object_firms 0 n + n n	10	10	10
-Param: sector_payback_period 0 n + n n	40	40	40
+Param: sector_payback_period 0 n + n n	30	30	30
 Param: sector_productive_capacity_cost 0 n + n n	0	0	0
 Param: sector_profits_distribution_rate 0 n + n n	0.8	0.8	0.8
 Param: sector_rnd_revenue_proportion 0 n + n n	0.05	0.05	0.05
@@ -1518,7 +1518,7 @@ END_DESCRIPTION
 Parameter_switch_interest_investment
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 2.
 END_DESCRIPTION
 
 Parameter_switch_interest_payment
@@ -1880,7 +1880,7 @@ END_DESCRIPTION
 Parameter_class_autonomous_consumption_adjustment
 (no description available)
 _INIT_
-All 2 instances equal to 1.
+All 2 instances equal to 2.
 END_DESCRIPTION
 
 Parameter_class_autonomous_consumption_adjustment_deposits
@@ -2296,7 +2296,7 @@ END_DESCRIPTION
 Parameter_external_shock_duration
 (no description available)
 _INIT_
-All 1 instances equal to 20.
+All 1 instances equal to 40.
 END_DESCRIPTION
 
 Parameter_external_shock_size
@@ -2440,7 +2440,7 @@ END_DESCRIPTION
 Parameter_spread_deposits
 (no description available)
 _INIT_
-All 1 instances equal to 0.005.
+All 1 instances equal to 0.02.
 END_DESCRIPTION
 
 Parameter_spread_long_term
@@ -2976,13 +2976,13 @@ END_DESCRIPTION
 Parameter_begin_monetary_policy
 (no description available)
 _INIT_
-All 1 instances equal to 100.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_switch_monetary_policy
 (no description available)
 _INIT_
-All 1 instances equal to 2.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_switch_moving_targets
@@ -3006,19 +3006,19 @@ END_DESCRIPTION
 Parameter_begin_surplus_target_rule
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to -1.
 END_DESCRIPTION
 
 Parameter_government_benefit
 (no description available)
 _INIT_
-All 1 instances equal to 0.1.
+All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Parameter_government_demand_growth
 (no description available)
 _INIT_
-All 1 instances equal to 0.02.
+All 1 instances equal to 0.008.
 END_DESCRIPTION
 
 Parameter_government_expectations
@@ -3464,7 +3464,7 @@ END_DESCRIPTION
 Parameter_sector_payback_period
 (no description available)
 _INIT_
-All 3 instances equal to 40.
+All 3 instances equal to 30.
 END_DESCRIPTION
 
 Parameter_sector_productive_capacity_cost

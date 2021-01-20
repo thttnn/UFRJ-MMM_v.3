@@ -138,7 +138,13 @@ EQUATION("Country_Price_Index")
 /*
 Average Price of all sector. GDP deflator
 */
-RESULT(WHTAVE("Sector_Sales","Sector_Avg_Price")/SUM("Sector_Sales"))
+v[0]=WHTAVE("Sector_Sales","Sector_Avg_Price");
+v[1]=SUM("Sector_Sales");
+if(v[1]!=0)
+	v[2]=v[0]/v[1];
+else
+	v[2]=CURRENT;
+RESULT(v[2])
 
 
 EQUATION("Country_Consumer_Price_Index")
@@ -362,7 +368,8 @@ Nominal quarterly GDP is calculated summing up profits, wages and indirect taxes
 	v[1]=V("Country_Total_Wages");
 	v[2]=V("Government_Indirect_Taxes");
 	v[3]=v[0]+v[1]+v[2];
-RESULT(v[3])
+	v[4]=V("Country_GDP_Demand");
+RESULT(v[4])
 
 
 EQUATION("Country_Real_GDP")

@@ -208,32 +208,30 @@ CYCLE(cur, "CLASSES")
 v[167]=COUNT("CLASSES");
 
 //Begin Writing External Variables
-cur2 = SEARCH("EXTERNAL_SECTOR");																//search the external sector
-WRITELLS(cur2, "External_Income", v[150], 0, 1);												//writes initial external income equal to domestic GDP
+WRITELLS(external, "External_Income", v[150], 0, 1);												//writes initial external income equal to domestic GDP
 
-//Begin Writing Government Variables
-cur = SEARCH("GOVERNMENT");																		
-v[168]=VS(cur, "switch_government_composition");
-v[169]=VS(cur, "government_surplus_rate_target");
-v[170]=VS(cur, "government_initial_consumption_share");
-v[171]=VS(cur, "government_initial_capital_share");
-v[172]=VS(cur, "government_initial_input_share");
+//Begin Writing Government Variables																
+v[168]=VS(government, "switch_government_composition");
+v[169]=VS(government, "government_surplus_rate_target");
+v[170]=VS(government, "government_initial_consumption_share");
+v[171]=VS(government, "government_initial_capital_share");
+v[172]=VS(government, "government_initial_input_share");
 v[173]=v[170]+v[171]+v[172];
 
-WRITELLS(cur,"Government_Total_Taxes", v[144], 0, 1);														//write initial total taxes, initial total taxes is calculated in the demand calibration based only on parameters
-WRITELLS(cur,"Government_Max_Expenses", v[144], 0, 1);        									//initial max government expenses equals total taxes calculated in the calibration
-WRITELLS(cur,"Government_Effective_Expenses", v[144], 0, 1);		            				//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity		
+WRITELLS(government,"Government_Total_Taxes", v[144], 0, 1);														//write initial total taxes, initial total taxes is calculated in the demand calibration based only on parameters
+WRITELLS(government,"Government_Max_Expenses", v[144], 0, 1);        									//initial max government expenses equals total taxes calculated in the calibration
+WRITELLS(government,"Government_Effective_Expenses", v[144], 0, 1);		            				//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity		
 if (v[168]!=2)
-	WRITELLS(cur,"Government_Desired_Wages", v[144], 0, 1);										//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity
+	WRITELLS(government,"Government_Desired_Wages", v[144], 0, 1);										//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity
 if (v[168]==2)
-	WRITELLS(cur,"Government_Desired_Wages", (1-v[173])*v[144], 0, 1);		            		//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity		            				    
-WRITELLS(cur,"Government_Desired_Consumption", v[170]*v[144], 0, 1);		            		//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
-WRITELLS(cur,"Government_Desired_Investment", v[170]*v[144], 0, 1);		            			//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
-WRITELLS(cur,"Government_Desired_Inputs", v[172]*v[144], 0, 1);		            			    //initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
-WRITELLS(cur,"Government_Surplus_Rate_Target", v[169], 0, 1);
+	WRITELLS(government,"Government_Desired_Wages", (1-v[173])*v[144], 0, 1);		            		//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity		            				    
+WRITELLS(government,"Government_Desired_Consumption", v[170]*v[144], 0, 1);		            		//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
+WRITELLS(government,"Government_Desired_Investment", v[170]*v[144], 0, 1);		            			//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
+WRITELLS(government,"Government_Desired_Inputs", v[172]*v[144], 0, 1);		            			    //initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
+WRITELLS(government,"Government_Surplus_Rate_Target", v[169], 0, 1);
 for (i=1 ; i<=v[4] ; i++)		              													//for (government_period) lags	
-	WRITELLS(cur,"Government_Debt", 0, 0, i);                  									//no debt initially																	//base interest rate parameter
-WRITELLS(cur,"Government_Debt_GDP_Ratio", 0, 0, 1);
+	WRITELLS(government,"Government_Debt", 0, 0, i);                  									//no debt initially																	//base interest rate parameter
+WRITELLS(government,"Government_Debt_GDP_Ratio", 0, 0, 1);
 
 
 //Begin Writing Sector Variables
@@ -407,26 +405,25 @@ CYCLE(cur, "SECTORS")
 }
 
 //Begin Writting Bank Variables
-CYCLE(cur, "FINANCIAL")
-{
-	v[250]=VS(cur, "real_interest_rate");
-	v[251]=VS(cur, "spread_deposits");
-	v[252]=VS(cur, "spread_short_term");
-	v[253]=VS(cur, "spread_long_term");
+	v[250]=VS(financial, "real_interest_rate");
+	v[251]=VS(financial, "spread_deposits");
+	v[252]=VS(financial, "spread_short_term");
+	v[253]=VS(financial, "spread_long_term");
+	v[254]=VS(financial, "target_inflation");
 
-	WRITELLS(cur, "Basic_Interest_Rate", v[250], 0, 1);
-	WRITELLS(cur, "Avg_Competitiveness_Financial_Sector", 1, 0, 1);
-	WRITELLS(cur, "Avg_Interest_Rate_Long_Term", (v[253]+v[250]), 0, 1);
-	WRITELLS(cur, "Avg_Interest_Rate_Short_Term", (v[252]+v[250]), 0, 1);
+	WRITELLS(financial, "Basic_Interest_Rate", v[250]+v[254], 0, 1);
+	WRITELLS(financial, "Avg_Competitiveness_Financial_Sector", 1, 0, 1);
+	WRITELLS(financial, "Avg_Interest_Rate_Long_Term", (v[253]+v[250]+v[254]), 0, 1);
+	WRITELLS(financial, "Avg_Interest_Rate_Short_Term", (v[252]+v[250]+v[254]), 0, 1);
 	
-	cur1=SEARCHS(cur, "BANKS");
+	cur1=SEARCHS(financial, "BANKS");
 	for(i=1; i<=(v[40]-1); i++)																//for the number of firms of each sector (defined by the parameter)
-	 	cur4=ADDOBJ_EXLS(cur,"BANKS", cur1, 0);
-	CYCLES(cur, cur1, "BANKS")                                                 				//CYCLE trough all firms
+	 	cur4=ADDOBJ_EXLS(financial,"BANKS", cur1, 0);
+	CYCLES(financial, cur1, "BANKS")                                                 				//CYCLE trough all firms
 		{
-		v[254]=SEARCH_INSTS(root, cur1);													//search current firm position in the total economy
-		WRITES(cur1, "id_bank", v[254]); 
-		if(v[254]==1)
+		v[255]=SEARCH_INSTS(root, cur1);													//search current firm position in the total economy
+		WRITES(cur1, "id_bank", v[255]); 
+		if(v[255]==1)
 			WRITES(cur1, "id_public_bank", 0);
 		else
 			WRITES(cur1, "id_public_bank", 0);
@@ -438,10 +435,10 @@ CYCLE(cur, "FINANCIAL")
 		WRITELLS(cur1, "Bank_Demand_Met", 1, 0, 1);
 		WRITELLS(cur1, "Bank_Desired_Long_Term_Spread", v[253], 0, 1);
 		WRITELLS(cur1, "Bank_Desired_Short_Term_Spread", v[252], 0, 1);
-		WRITELLS(cur1, "Bank_Interest_Rate_Long_Term", (v[253]+v[250]), 0, 1);
-		WRITELLS(cur1, "Bank_Interest_Rate_Short_Term", (v[252]+v[250]), 0, 1);
+		WRITELLS(cur1, "Bank_Interest_Rate_Long_Term", (v[253]+v[250]+v[254]), 0, 1);
+		WRITELLS(cur1, "Bank_Interest_Rate_Short_Term", (v[252]+v[250]+v[254]), 0, 1);
 		}
-}
+
 
 PARAMETER
 RESULT(0)

@@ -168,15 +168,7 @@ Nominal value of new capital goods, restricted to the amount of funds available.
 */
 	v[0]=V("Firm_Desired_Expansion_Investment_Expenses");
 	v[1]=V("Firm_Total_Funds");
-	if(v[1]<=0)												//no available funds
-		v[2]=0;
-	else
-		{
-		if(v[1]>=v[0]) 										//available funds and enought for the investment
-			v[2]=v[0];
-		else 												//available funds but not enought for the desired investment
-			v[2]=v[1];
-		}
+	v[2]=max(0,min(v[0],v[1]));
 RESULT(v[2])
 
 

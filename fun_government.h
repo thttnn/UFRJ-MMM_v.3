@@ -23,6 +23,7 @@ if(v[1]==0)                                                    //if the rest of 
 		v[8]=(v[6]-v[7])/v[7];                                 //calculate inflation
 	else                                                       //if consumer price index is zero
 		v[8]=0;												   //use 1
+	v[8]=VS(financial, "target_inflation");
 	v[9]=V("government_productivity_passtrought");             //productivity passtrough parameter
 	v[10]=V("government_inflation_passtrought");			   //inflation passtrough to public wages
 	v[11]=V("government_demand_growth");
@@ -43,20 +44,47 @@ v[0]=V("government_period");
 v[1]= fmod((double) t,v[0]);                                   //divides the time period by government adjustment period (adjust annualy)
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
 {
-	v[2]=WHTAVELS(root, "Sector_Avg_Wage", "Sector_Employment",1);
-	v[3]=SUML("Sector_Employment",1);
+	v[2]=WHTAVELS(country, "Sector_Avg_Wage", "Sector_Employment",1);
+	v[3]=SUMLS(country,"Sector_Employment",1);
 	if(v[3]!=0)
 		v[4]=v[2]/v[3];
 	else
 		v[4]=0;
 	
 	v[5]=V("government_benefit");
-	v[6]=SUMLS(root, "Sector_Idle_Capacity",1);
-	v[8]=v[4]*v[5]*v[7];
+	v[14]=0;
+	CYCLES(country, cur, "SECTORS")
+	{
+		v[6]=VS(cur, "sector_desired_degree_capacity_utilization");
+		v[7]=VLS(cur, "Sector_Idle_Capacity", 1);
+		v[8]=v[7]-(1-v[6]);
+		v[9]=VLS(cur, "Sector_Productive_Capacity", 1);
+		v[10]=v[8]*v[9];
+		v[11]=VLS(cur, "Sector_Avg_Productivity", 1);
+		v[12]=VLS(cur, "Sector_Avg_Wage", 1);
+		v[13]=v[10]*(v[5]*v[12]/v[11]);
+		v[14]=v[14]+v[13];
+	}
+	
+	v[24]=0;
+	CYCLES(country, cur, "SECTORS")
+	{
+		v[19]=VLS(cur, "Sector_Employment", 1);
+		v[20]=VLS(cur, "Sector_Employment", v[0]+1);
+		v[21]=max(0,(v[20]-v[19]));
+		v[22]=VLS(cur, "Sector_Avg_Wage", 1);
+		v[23]=v[21]*v[5]*v[22];
+		v[24]=v[24]+v[23];
+	}
+	
+	
+	//v[6]=WHTAVELS(country, "Sector_Idle_Capacity", "Sector_Productive_Capacity",1);
+	//v[6]=SUMLS(country, "Sector_Idle_Capacity",1);
+	v[15]=v[4]*v[5]*v[14];
 }
 else
-	v[8]=CURRENT;
-RESULT(max(0,v[8]))
+	v[14]=CURRENT;
+RESULT(max(0,v[14]))
 
 
 EQUATION("Government_Desired_Investment")
@@ -202,7 +230,7 @@ if(v[3]==0)                                                    //if the rest of 
 			v[7]=1;                                                     //use one for the expected growth
 		v[8]=VL("Government_Total_Taxes",1);                                     	//total taxes in the last period
 		v[9]=V("Government_Surplus_Rate_Target");                     	//government surplus target rate
-		v[10]=v[7]*(v[8]-(v[8]*v[9]));                                 	//maximum expenses will be total taxes multiplyed by expected growth minus the surplus target
+		v[10]=v[7]*v[8]-(v[7]*v[4]*v[9]);                                 	//maximum expenses will be total taxes multiplyed by expected growth minus the surplus target
 	
 		v[11]=VL("Government_Effective_Expenses", 1);                   //last period government expeneses
 		v[12]=VL("Country_Consumer_Price_Index",1);                             //consumer price index lagged 1

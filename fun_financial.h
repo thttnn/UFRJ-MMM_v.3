@@ -31,6 +31,7 @@ if(t>v[2]&&v[1]==1&&v[13]==0)
 	}
 RESULT(0)
 
+
 EQUATION("Basic_Interest_Rate")
 /*
 Nominal Interest rate is set by the central bank following a (possible) dual mandate Taylor Rule, considering the inflation and unemployment gaps.
@@ -116,7 +117,7 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 		v[16]=V("sensitivity_debt_rate");
 		}
 	
-		v[17]=v[0]+v[13]*(v[5]-v[1])+v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4])));
+		v[17]=v[0]+v[1]+v[13]*(v[5]-v[1])+v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4])));
 		if(abs(v[17]-v[19])>v[18])
 		{
 			if(v[17]>v[19])
@@ -132,10 +133,10 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	}
 	
 	if(v[12]==5)												//smithin rule
-		v[20]=v[23];	
+		v[20]=v[5];	
 	if(v[12]==6)												//smithin rule smoothing
 	{
-		v[17]=v[23];
+		v[17]=v[5];
 		if(abs(v[17]-v[19])>v[18])
 			{
 			if(v[17]>v[19])
@@ -148,10 +149,10 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	}
 	
 	if(v[12]==7)												//pasinetti rule
-		v[20]=v[23]+v[11];
+		v[20]=v[5]+v[11];
 	if(v[12]==8)												//pasinetti rule smoothing
 	{
-		v[17]=v[23]+v[11];
+		v[17]=v[5]+v[11];
 		if(abs(v[17]-v[19])>v[18])
 			{
 			if(v[17]>v[19])
@@ -164,13 +165,13 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	}
 	
 	if(v[12]==9)												//kansas city rule.
-		v[20]=0.001;
+		v[20]=0;
 		
 	
 	if(t>v[24]&&v[24]!=-1)
 		v[25]=v[20];
 	else
-		v[25]=v[0];
+		v[25]=v[19];
 	
 	v[30]=V("interest_shock_begin");          //defines when the shock happens
 	v[31]=V("interest_shock_duration");       //defines how long the shock lasts
