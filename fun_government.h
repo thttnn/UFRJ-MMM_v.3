@@ -442,14 +442,15 @@ Public debt over annual GDP
 */
 	v[0]=V("annual_period");
 	v[1]=0;
-	for (v[2]=0; v[2]<=v[0]; v[2]=v[2]+1)
+	for (i=0; i<=v[0]; i++)
 		{
-		v[3]=VL("Country_GDP",v[2]);
+		v[3]=VL("Country_GDP",i);
 		v[1]=v[1]+v[3];
 		}
 	v[4]=V("Government_Debt");
-	if (v[1]!=0)
-		v[5]=v[4]/v[1];
+	v[6]=V("Country_GDP");
+	if (v[6]!=0)
+		v[5]=v[4]/v[6];
 	else	
 		v[5]=0;
 RESULT(v[5])

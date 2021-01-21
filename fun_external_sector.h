@@ -32,13 +32,24 @@ Nominal value of external income.
 RESULT(max(0,v[6]))
 
 
+EQUATION("Capital_Flows")
+v[0]=V("External_Income");
+v[1]=V("Basic_Interest_Rate");
+v[2]=V("external_interest_rate");
+v[3]=V("capital_flow_adjustment");
+v[4]=(v[1]-v[2])*v[0]*v[3];
+RESULT(v[4])
+
+
+
 EQUATION("Trade_Balance")
 /*
 The trade balance is obtained by the difference between total exports and total imports.
 */
 	v[0]=V("Country_Nominal_Exports");
 	v[1]=V("Country_Nominal_Imports");
-	v[2]=v[0]-v[1];
+	v[3]=V("Capital_Flows");
+	v[2]=v[0]-v[1]+v[3];
 RESULT(v[2])
 
 

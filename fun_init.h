@@ -230,8 +230,8 @@ WRITELLS(government,"Government_Desired_Investment", v[170]*v[144], 0, 1);		    
 WRITELLS(government,"Government_Desired_Inputs", v[172]*v[144], 0, 1);		            			    //initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
 WRITELLS(government,"Government_Surplus_Rate_Target", v[169], 0, 1);
 for (i=1 ; i<=v[4] ; i++)		              													//for (government_period) lags	
-	WRITELLS(government,"Government_Debt", 0, 0, i);                  									//no debt initially																	//base interest rate parameter
-WRITELLS(government,"Government_Debt_GDP_Ratio", 0, 0, 1);
+	WRITELLS(government,"Government_Debt", V("initial_debt_gdp")*v[150], 0, i);                  									//no debt initially																	//base interest rate parameter
+WRITELLS(government,"Government_Debt_GDP_Ratio", V("initial_debt_gdp"), 0, 1);
 
 
 //Begin Writing Sector Variables

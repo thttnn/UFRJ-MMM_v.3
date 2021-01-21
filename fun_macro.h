@@ -369,7 +369,7 @@ Nominal quarterly GDP is calculated summing up profits, wages and indirect taxes
 	v[2]=V("Government_Indirect_Taxes");
 	v[3]=v[0]+v[1]+v[2];
 	v[4]=V("Country_GDP_Demand");
-RESULT(v[4])
+RESULT(v[3])
 
 
 EQUATION("Country_Real_GDP")
@@ -592,6 +592,19 @@ GDP calculated by the demand perspective
 	v[6]=V("Country_Total_Investment_Expenses");
 	v[7]=v[0]+v[1]+v[2]-v[3]+v[6];
 RESULT(v[7])
+
+
+EQUATION("Country_Real_GDP_Demand")
+/*
+Real quarterly GDP is the nominal GDP over the price index.
+*/
+	v[0]=V("Country_GDP_Demand");              //nominal GDP
+	v[1]=V("Country_Price_Index");      //current price index
+	if(v[1]!=0)                      	//if the price index is not zero
+		v[2]=v[0]/v[1];                	//real GDP is the nominal GDP devided by the price index
+	else                             	//if the price index is zero
+		v[2]=v[0];                     	//real GDP equals nominal GDP
+RESULT(v[2])
 
 
 EQUATION("Country_Total_Classes_Expenses")

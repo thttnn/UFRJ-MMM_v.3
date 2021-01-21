@@ -72,7 +72,11 @@ Nominal Wage of the firm. It increases year by year depending on inflation and f
 		v[20]=v[18]>0?1:0;
 		v[21]=VS(financial, "target_inflation");
 		v[22]=VLS(country, "Country_Annual_CPI_Inflation", 1);
-		v[10]=v[0]*(1+v[21]+v[5]*v[4]+v[9]*(v[22]-v[21])+v[15]*v[20]+v[18]*v[19]);                      //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
+		if(V("switch_cb_credibility")==1)
+			v[23]=v[21];
+		else
+			v[23]=v[22];
+		v[10]=v[0]*(1+v[23]+v[5]*v[4]+v[9]*(v[22]-v[21])+v[15]*v[20]+v[18]*v[19]);                      //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
 		}
 	else                                                                             	 //if the rest of the division is not zero, do not adjust wages
 		v[10]=v[0];                                                                      //current wages will be the last period's
