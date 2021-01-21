@@ -19,7 +19,7 @@ CYCLE(cur1, "SECTORS")
      v[1]=VS(cur, "Firm_Market_Share");							//firm's curent market share
      v[2]=VS(cur, "Firm_Productive_Capacity");					//firm's current productive capacity																				
      v[3]=VS(cur, "firm_date_birth");							//firm's date birth
-	 v[4]=VS(cur, "Firm_Avg_Debt_Rate");						//firm's avg debt rate
+	 v[4]=VS(cur, "Firm_Debt_Rate");						//firm's avg debt rate
      v[5]=VLS(cur, "Firm_Avg_Debt_Rate", 1);					//firm's avg debt rate in the last period
      v[6]=VS(cur, "Firm_Stock_Loans");
      v[7]=VS(cur, "Firm_Stock_Deposits");
@@ -176,7 +176,7 @@ CYCLE(cur6, "SECTORS")
 		v[11]=v[10]+v[9];											//total productive capacity available in the sector
 		
 		v[12]=V("entry_debt_share");								//parameter that defines the share of debt
-		v[13]=V("Price_Capital_Goods");								//current price of capital goods
+		v[13]=V("Country_Capital_Goods_Price");								//current price of capital goods
 		
 		if(v[7]<=v[11])        										//new productive capacity will bre free, from available capacity
 			{
@@ -268,7 +268,7 @@ In this variable a new firm enters if there is market space available and the en
       v[0]=V("sector_investment_period");								//sector investment period
       v[22]=V("sector_desired_degree_capacity_utilization");			//sector degree of capacity utilization
       v[23]=V("sector_desired_inventories_proportion");					//sector inventories proportion
-	  v[25]=V("Price_Capital_Goods");									//price of capital goods
+	  v[25]=V("Country_Capital_Goods_Price");									//price of capital goods
       v[34]=VL("Sector_Productive_Capacity_Available",1);				//productive capacity available in the last period
 	  v[44]=V("Sector_Productive_Capacity_Exit");						//productive capacity exited in the current period
       v[36]=V("Sector_Avg_Price");										//sector avg price

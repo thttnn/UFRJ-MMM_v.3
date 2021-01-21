@@ -10,32 +10,46 @@ Nominal value of external income.
 	v[2]= fmod((double) t,v[1]);                				//divides the time period by annual adjustment period (adjust annualy)
 	if(v[2]==0)                               					//if the rest of the division is zero (adjust external income)
 		{
-		v[3]=VL("Annual_Growth", 1);							//nominal growth in the last year
-		v[4]=norm(v[3], abs(v[3]));								//random draw from a normal distribution with average equals to past growth and standard deviation equals to past growth in absolute value
 		v[5]=V("external_income_growth");						//fixed external income growth
-		v[11]=V("external_income_adjustmnent");                 //exogenous parameter that amplifies external growth based on domestic growth
-		v[6]=(1+v[11]*v[4]+v[5])*v[0];							//current external nominal income will be past income plus random growth
-		
 		v[7]=V("external_shock_begin");          				//defines when the shock happens
 		v[8]=V("external_shock_duration");       				//defines how long the shock lasts
 		v[9]=V("external_shock_size");           				//defines the size, in percentage, of the shock
 		if(t>=v[7]&&t<v[7]+v[8])
-			v[10]=v[6]*(1+v[9]);
+			v[10]=v[5]*(1+v[9]);
 		else
-			v[10]=v[6];
+			v[10]=v[5];
+		
+		v[3]=VL("Country_Annual_Growth", 1);					//nominal growth in the last year
+		v[4]=norm(v[3], abs(v[3]));								//random draw from a normal distribution with average equals to past growth and standard deviation equals to past growth in absolute value
+		
+		v[11]=V("external_income_adjustmnent");                 //exogenous parameter that amplifies external growth based on domestic growth
+		v[6]=(1+v[11]*v[4]+v[10])*v[0];							//current external nominal income will be past income plus random growth
+		
+		
 		}
 	else														//if it is not annual period
-		v[10]=v[0];												//use last period income
-RESULT(max(0,v[10]))
+		v[6]=v[0];												//use last period income
+RESULT(max(0,v[6]))
+
+
+EQUATION("Capital_Flows")
+v[0]=V("External_Income");
+v[1]=V("Basic_Interest_Rate");
+v[2]=V("external_interest_rate");
+v[3]=V("capital_flow_adjustment");
+v[4]=(v[1]-v[2])*v[0]*v[3];
+RESULT(v[4])
+
 
 
 EQUATION("Trade_Balance")
 /*
 The trade balance is obtained by the difference between total exports and total imports.
 */
-	v[0]=V("Total_Exports");
-	v[1]=V("Total_Imports");
-	v[2]=v[0]-v[1];
+	v[0]=V("Country_Nominal_Exports");
+	v[1]=V("Country_Nominal_Imports");
+	v[3]=V("Capital_Flows");
+	v[2]=v[0]-v[1]+v[3];
 RESULT(v[2])
 
 

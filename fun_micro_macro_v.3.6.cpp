@@ -3,7 +3,15 @@
 
 #include "fun_head_fast.h"
 #define FAST_FULL
-// do not add Equations in this area
+
+//Create global pointers
+object *country;
+object *external;
+object *government;
+object *financial;
+object *consumption;
+object *capital;
+object *input;
 
 MODELBEGIN
 
@@ -19,7 +27,6 @@ MODELBEGIN
 	#include "fun_financial.h"    					// Financial Sector Object Variables
 	#include "fun_banks.h"    						// Bank Object Variables
 		#include "fun_entry_exit.h"       			// Entry and Exit Variables (inside Sector Object)
-		#include "fun_sector_external.h"			// Sector Variables related to External Sector
 		#include "fun_sector_demand.h"				// Sector Variables for Demand Calculations
 		#include "fun_sector_aggregates.h"			// Sector Agreggates and Averages Variables
 			#include "fun_firm_rnd.h"				// Firm's R&D Variables			
@@ -33,8 +40,6 @@ MODELBEGIN
 			#include "fun_firm_inputs.h" 			// Firm's Input Variable      
 				#include "fun_capital_goods.h"  	// Capital Goods Object Variables
 #include "fun_analysis.h"           				// Variables for Analysis
-#include "fun_sector_analysis.h"					// Sector Variables for Analysis
-#include "fun_financial_analysis.h"					// Financial variables for Analysis
 
 
 

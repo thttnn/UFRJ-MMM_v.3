@@ -65,3 +65,5 @@ The actual production of each sector will be determined by the constraint impose
 		v[3]=v[3]+v[5];                                                                            	//sums up the production of each capital good to determine firm's effective production
 	}
 RESULT(v[3])
+
+EQUATION_DUMMY("Capital_Good_Production", "Firm_Effective_Production")

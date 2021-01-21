@@ -856,7 +856,7 @@ Param: International_Reserves 1 n + n n	10000
 Param: exchange_rate_adjustment 0 n + n n	0.01
 Param: exchange_rate_growth 0 n + n n	0
 Param: external_income_adjustmnent 0 n + n n	0
-Param: external_income_growth 0 n + n n	0.01
+Param: external_income_growth 0 n + n n	0.02
 Param: external_interest_rate 0 n + n n	0.01
 Param: external_shock_begin 0 n + n n	200
 Param: external_shock_duration 0 n + n n	20
@@ -869,7 +869,7 @@ Object: FINANCIAL C	1
 Param: bank_default_sensitivity 0 n + n n	1
 Param: bank_fragility_sensitivity 0 n + n n	1
 Param: bank_profit_distribution 0 n + n n	0
-Param: begin_credit_rationing 0 n + n n	0
+Param: begin_credit_rationing 0 n + n n	-1
 Param: fs_elasticity_default 0 n + n n	0
 Param: fs_elasticity_interest_long_term 0 n + n n	0
 Param: fs_elasticity_interest_short_term 0 n + n n	0
@@ -970,7 +970,7 @@ Param: sensitivity_inflation 0 n + n n	1
 Param: sensitivity_capacity 0 n + n n	1
 Param: target_credit_growth 0 s + n n	0.003
 Param: target_debt_rate 0 s + n n	0.3
-Param: target_inflation 0 s + n n	0.02
+Param: target_inflation 0 s + n n	0
 Param: target_capacity 0 s + n n	0.1
 Param: begin_monetary_policy 0 n + n n	100
 Param: switch_monetary_policy 0 n + n n	0
@@ -1058,7 +1058,7 @@ Param: sector_exports_coefficient 0 s + n n	0	0	0
 Param: sector_initial_price 0 n + n n	0	0	0
 Param: sector_initial_productivity 0 n + n n	1	1	1
 Param: sector_passthrough_employment 0 n + n n	0	0	0
-Param: sector_passthrough_inflation 0 n + n n	0	0	0
+Param: sector_passthrough_inflation 0 n + n n	1	1	1
 Param: sector_passthrough_productivity 0 s + n n	1	1	1
 Param: sector_std_dev_innovation 0 n + n n	0.001	0.001	0.001
 Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5
@@ -2350,7 +2350,7 @@ END_DESCRIPTION
 Parameter_begin_credit_rationing
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to -1.
 END_DESCRIPTION
 
 Parameter_fs_elasticity_default
@@ -2964,7 +2964,7 @@ END_DESCRIPTION
 Parameter_target_inflation
 (no description available)
 _INIT_
-All 1 instances equal to 0.02.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_target_capacity
@@ -3512,7 +3512,7 @@ END_DESCRIPTION
 Parameter_sector_passthrough_inflation
 (no description available)
 _INIT_
-All 3 instances equal to 0.
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_sector_passthrough_productivity

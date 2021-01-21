@@ -74,7 +74,7 @@ Nominal value of desired new capital goods.
 		
    		v[2]=V("sector_desired_inventories_proportion");																										
    		v[3]=V("sector_desired_degree_capacity_utilization");
-		v[4]=((v[0]*(1+v[2]))/v[3]) - (v[1] - v[10]);				//desired productive capacity will be the amount needed based on expected sales minus existing plus what will depreciate in the next investment period
+		v[4]=((v[0])/v[3]) - (v[1] - v[10]);				//desired productive capacity will be the amount needed based on expected sales minus existing plus what will depreciate in the next investment period
    		
 		v[15]=V("switch_expansion_investment");
 		v[16]=V("Firm_Depreciated_Productive_Capacity");
@@ -83,7 +83,7 @@ Nominal value of desired new capital goods.
 		if(v[15]==0)
 			v[5]=v[16]+v[10];
 		
-		v[6]=V("Price_Capital_Goods");								//price of capital goods
+		v[6]=V("Country_Capital_Goods_Price");								//price of capital goods
 		v[7]=V("sector_capital_output_ratio");						//capital output ratio
    		v[8]=v[5]*v[6]*v[7];										//desired expansion expenses is the nominal value of the capital goods to meet desired productive capacity
 		}
@@ -106,7 +106,7 @@ Nominal value of derired new capital goods for modernization replacement
  
  v[9]=V("depreciation_period");
  v[10]=V("Firm_Wage");
- v[11]=V("Price_Capital_Goods");
+ v[11]=V("Country_Capital_Goods_Price");
  v[12]=V("sector_capital_output_ratio");
  v[13]=V("sector_payback_period");
  
@@ -168,15 +168,7 @@ Nominal value of new capital goods, restricted to the amount of funds available.
 */
 	v[0]=V("Firm_Desired_Expansion_Investment_Expenses");
 	v[1]=V("Firm_Total_Funds");
-	if(v[1]<=0)												//no available funds
-		v[2]=0;
-	else
-		{
-		if(v[1]>=v[0]) 										//available funds and enought for the investment
-			v[2]=v[0];
-		else 												//available funds but not enought for the desired investment
-			v[2]=v[1];
-		}
+	v[2]=max(0,min(v[0],v[1]));
 RESULT(v[2])
 
 
@@ -185,7 +177,7 @@ EQUATION("Firm_Demand_Productive_Capacity_Expansion")
 Effective productive capacity demanded, in real values 
 */
 	v[0]=V("Firm_Effective_Expansion_Investment_Expenses");
-	v[1]=V("Price_Capital_Goods");
+	v[1]=V("Country_Capital_Goods_Price");
 	v[2]=V("sector_capital_output_ratio");
 	v[3]=(v[0]/v[1])/v[2];
 RESULT(v[3])
@@ -215,7 +207,7 @@ New productive capacity in aquisition of new equipment to replace obsolete ones.
 	v[8]=max(v[4]*(1+v[6]*v[5]),v[7]);
 	v[9]=V("depreciation_period");
 	v[10]=V("Firm_Wage");
-	v[11]=V("Price_Capital_Goods");
+	v[11]=V("Country_Capital_Goods_Price");
 	v[12]=V("sector_capital_output_ratio");
 	v[13]=V("sector_payback_period");
 	v[29]=V("switch_replacement_investment");
@@ -279,7 +271,7 @@ EQUATION("Firm_Replacement_Expenses")
 Nominal value of desired new capital goods for modernization. 
 */
 	v[1]=V("Firm_Demand_Productive_Capacity_Replacement");
-	v[2]=V("Price_Capital_Goods");
+	v[2]=V("Country_Capital_Goods_Price");
 	v[3]=V("sector_capital_output_ratio");
 	v[4]=v[1]*v[3]*v[2];
 RESULT(v[4])
@@ -310,7 +302,7 @@ EQUATION("Firm_Demand_Capital_Goods_Expansion")
 Number of capital goods demanded to expand productive capacity 
 */
 	v[0]=V("Firm_Effective_Expansion_Investment_Expenses");
-	v[1]=V("Price_Capital_Goods");
+	v[1]=V("Country_Capital_Goods_Price");
 	v[2]=v[0]/v[1];
 RESULT(v[2])
 
@@ -396,7 +388,7 @@ Taker's risk is already included in the firm specific interest rate.
 	v[3]=V("Basic_Interest_Rate");
 	v[4]=V("Interest_Rate_Deposits");
 	v[5]=V("switch_discount_rate");
-	v[6]=V("Price_Capital_Goods");
+	v[6]=V("Country_Capital_Goods_Price");
 	v[7]=V("depreciation_period");
 	v[8]=v[2]*v[6] + v[6]/v[7];
 	

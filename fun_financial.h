@@ -15,10 +15,10 @@ if(t>v[2]&&v[1]==1&&v[13]==0)
 	v[5]=v[6]=v[7]=v[8]=0;
 	for(i=1;i<(10*v[0]);i++)
 		{
-		v[5]=v[5]+VL("Annual_Inflation",i);
-		v[6]=v[6]+VL("Avg_Idle_Capacity",i);
+		v[5]=v[5]+VL("Country_Annual_Inflation",i);
+		v[6]=v[6]+VL("Country_Idle_Capacity",i);
 		v[7]=v[7]+VL("Total_Stock_Loans_Growth",i);
-		v[8]=v[8]+VL("Avg_Debt_Rate_Firms",i);
+		v[8]=v[8]+VL("Country_Debt_Rate_Firms",i);
 		}
 	v[9]=v[5]/(10*v[0]);
 	v[10]=v[6]/(10*v[0]);
@@ -30,6 +30,7 @@ if(t>v[2]&&v[1]==1&&v[13]==0)
 	WRITE("target_debt_rate",v[12]);
 	}
 RESULT(0)
+
 
 EQUATION("Basic_Interest_Rate")
 /*
@@ -58,20 +59,20 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	v[3]=V("target_credit_growth");
 	v[4]=V("target_debt_rate");
 	
-	v[5]=VL("Annual_Inflation",1);
-	v[6]=VL("Avg_Idle_Capacity",1);
+	v[5]=VL("Country_Annual_CPI_Inflation",1);
+	v[6]=VL("Country_Idle_Capacity",1);
 	v[7]=VL("Total_Stock_Loans_Growth",1);
-	v[8]=VL("Avg_Debt_Rate_Firms",1);
+	v[8]=VL("Country_Debt_Rate_Firms",1);
 	
-	v[9]=VL("Avg_Productivity",1);                              //avg productivity lagged 1
-	v[10]=VL("Avg_Productivity",2);                         	//avg productivity lagged 2
+	v[9]=VL("Country_Avg_Productivity",1);                              //avg productivity lagged 1
+	v[10]=VL("Country_Avg_Productivity",2);                         	//avg productivity lagged 2
 	if(v[10]!=0)                                                //if productivity is not zero
 		v[11]=(v[9]-v[10])/v[10];                               //calculate productivity growth
 	else                                                        //if productivity is zero
 		v[11]=0;												//use 1
 		
-	v[21]=VL("Price_Index",1);                             		//avg price lagged 1
-	v[22]=VL("Price_Index",2);                         			//avg price lagged 2
+	v[21]=VL("Country_Consumer_Price_Index",1);                             		//avg price lagged 1
+	v[22]=VL("Country_Consumer_Price_Index",2);                         			//avg price lagged 2
 	if(v[22]!=0)                                                //if price is not zero
 		v[23]=(v[21]-v[22])/v[22];                              //calculate price growth
 	else                                                        //if price is zero
@@ -116,24 +117,26 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 		v[16]=V("sensitivity_debt_rate");
 		}
 	
-		v[17]=v[0]+v[13]*(v[5]-v[1])+v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4])));
+		v[17]=v[0]+v[5]+v[13]*(v[5]-v[1])+v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4])));
 		if(abs(v[17]-v[19])>v[18])
-			{
+		{
 			if(v[17]>v[19])
 				v[20]=v[19]+v[18];
-			else
+			else if(v[17]<v[19])
 				v[20]=v[19]-v[18];
-			}
+			else
+				v[20]=v[19];
+		}
 		else
 			v[20]=v[17];
 
 	}
 	
 	if(v[12]==5)												//smithin rule
-		v[20]=v[23];	
+		v[20]=v[5];	
 	if(v[12]==6)												//smithin rule smoothing
 	{
-		v[17]=v[23];
+		v[17]=v[5];
 		if(abs(v[17]-v[19])>v[18])
 			{
 			if(v[17]>v[19])
@@ -146,10 +149,10 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	}
 	
 	if(v[12]==7)												//pasinetti rule
-		v[20]=v[23]+v[11];
+		v[20]=v[5]+v[11];
 	if(v[12]==8)												//pasinetti rule smoothing
 	{
-		v[17]=v[23]+v[11];
+		v[17]=v[5]+v[11];
 		if(abs(v[17]-v[19])>v[18])
 			{
 			if(v[17]>v[19])
@@ -162,13 +165,13 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	}
 	
 	if(v[12]==9)												//kansas city rule.
-		v[20]=0.001;
+		v[20]=0;
 		
 	
 	if(t>v[24]&&v[24]!=-1)
 		v[25]=v[20];
 	else
-		v[25]=v[0];
+		v[25]=v[19];
 	
 	v[30]=V("interest_shock_begin");          //defines when the shock happens
 	v[31]=V("interest_shock_duration");       //defines how long the shock lasts
