@@ -181,13 +181,15 @@ v[159]=V("scale_debt");
 
 
 //Begin Writing Classes Variables
+v[160]=COUNT("CLASSES");
 CYCLE(cur, "CLASSES")
 {
 	v[161]=VS(cur, "class_profit_share");                						   		  		//class parameter
 	v[162]=VS(cur, "class_wage_share"); 														//class parameter
 	v[163]=VS(cur, "class_direct_tax");															//class parameter
 	v[164]=(v[161]*v[148]+v[162]*v[146])*(1-v[163]);             								//class nominal net income																		//total imports
-	v[165]=v[6]*v[41]*v[162];																	//class initial autonomous consumption
+	//v[165]=v[6]*v[41]*v[162];																	//class initial autonomous consumption
+	v[165]=v[6]*v[41]/v[160];
 		for (i=1 ; i<=v[2] ; i++)                          										//for (class_period) lags
 			{
 			WRITELLS(cur, "Class_Nominal_Income", v[164], 0, i);            					//writes Class_Nominal_Income

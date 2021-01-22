@@ -188,7 +188,7 @@ Total amount of distributed profits by the firms. Will be used to determine the 
 	}
 	v[3]=V("Financial_Sector_Distributed_Profits");
 	v[4]=v[0]+v[3];
-RESULT(v[4])
+RESULT(v[0])
 
 
 EQUATION("Country_Total_Profits")

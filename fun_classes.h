@@ -493,6 +493,8 @@ switch_unemployment_benefits
 1--> Distributed to lowest income class only 
 
 */
+	v[30]=VS(financial, "Financial_Sector_Distributed_Profits");
+	v[31]=V("class_financial_share");
 	v[0]=VS(country,"Country_Distributed_Profits");                     //total distributed profits
 	v[1]=VS(country,"Country_Total_Wages");                                	  //total wages
 	v[2]=V("class_profit_share");                          		      //profit share of each class
@@ -501,7 +503,7 @@ switch_unemployment_benefits
 	v[5]=VS(government,"Government_Effective_Unemployment_Benefits"); //unemployment benefits (never taxed)
 	v[13]=V("switch_unemployment_benefits"); 
 	if(v[13]==0)                                                      //if unemployment benefits are distributed by wage share
-		v[6]=v[0]*v[2]+v[1]*v[3]+v[4]+v[5]*v[3];     		          //class' gross total income
+		v[6]=v[0]*v[2]+v[30]*v[31]+v[1]*v[3]+v[4]+v[5]*v[3];     		          //class' gross total income
 	if(v[13]==1)                                                      //if unemployment benefits are distributed only for the lowest income class
 	{
 		v[17]=MINLS(PARENT, "Class_Nominal_Income", 1);				  //search the lowest value of nominal income in the last period
@@ -509,9 +511,9 @@ switch_unemployment_benefits
 		v[18]=VS(cur,"id_class");									  //identify lowest income class
 		v[16]=V("id_class");                                          //current object id
 		if(v[16]==v[18])                                              //if current object is the one with minimum income
-			v[6]=v[0]*v[2]+v[1]*v[3]+v[4]+v[5];     		          //class' gross total income, including unemployment benefits
+			v[6]=v[0]*v[2]+v[30]*v[31]+v[1]*v[3]+v[4]+v[5];     		          //class' gross total income, including unemployment benefits
 		else                                                          //if it is not
-			v[6]=v[0]*v[2]+v[1]*v[3]+v[4];                            //class' gross total income excluding unemployment benefits
+			v[6]=v[0]*v[2]+v[30]*v[31]+v[1]*v[3]+v[4];                            //class' gross total income excluding unemployment benefits
 	} 
 	v[7]=V("switch_class_tax_structure");                 			 	//defines taxation structure
 	v[8]=V("class_direct_tax");                            				//class tax rate
@@ -520,17 +522,17 @@ switch_unemployment_benefits
 	if(v[7]==1)											   				//taxation structure = only wages
 		v[9]=(v[1]*v[3])*v[8];                  		   				//class total tax
 	if(v[7]==2)											   				//taxation structure = only profits
-		v[9]=(v[0]*v[2])*v[8];              			   				//class total tax
+		v[9]=(v[0]*v[2]+v[30]*v[31])*v[8];              			   				//class total tax
 	if(v[7]==3)											   				//taxation structure = profits and wages 
-		v[9]=(v[0]*v[2]+v[1]*v[3])*v[8];              	   				//class total tax
+		v[9]=(v[0]*v[2]+v[30]*v[31]+v[1]*v[3])*v[8];              	   				//class total tax
 	if(v[7]==4)											   				//taxation structure = profits, wages and interest
-		v[9]=(v[0]*v[2]+v[1]*v[3]+v[4])*v[8];              				//class total tax
+		v[9]=(v[0]*v[2]+v[30]*v[31]+v[1]*v[3]+v[4])*v[8];              				//class total tax
 	if(v[7]==5)
 	{
 		v[10]=VL("Class_Stock_Deposits",1);                				//class stock of deposits in the last period
 		v[11]=V("class_wealth_tax");                       				//tax rate on stock of wealth
 		v[12]=v[10]*v[11];                                 				//amount of tax on wealth
-		v[9]=(v[0]*v[2]+v[1]*v[3]+v[4])*v[8]+v[12];        				//class total tax
+		v[9]=(v[0]*v[2]+v[30]*v[31]+v[1]*v[3]+v[4])*v[8]+v[12];        				//class total tax
 	}
 	v[19]=VS(country,"Country_Consumer_Price_Index");
 	
@@ -539,9 +541,9 @@ switch_unemployment_benefits
 	WRITE("Class_Real_Income",(v[6]-v[9])/v[19]); 		   				//write class real income equation_dummy
 	
 	if(v[7]==2||v[7]==3||v[7]==4||v[7]==5)
-		v[20]=(v[0]*v[2]*(1-v[8]))/v[19];
+		v[20]=(v[0]*v[2]+v[30]*v[31]*(1-v[8]))/v[19];
 	else
-		v[20]=(v[0]*v[2])/v[19];
+		v[20]=(v[0]*v[2]+v[30]*v[31])/v[19];
 	WRITE("Class_Real_Disposable_Profits",v[20]);                          
 	
 	if(v[7]==1||v[7]==3||v[7]==4||v[7]==5)
