@@ -2,11 +2,20 @@
 
 /*****COUNTRY STATS*****/
 
+EQUATION("GDP")//Nominal GDP
+RESULT(VS(country, "Country_GDP_Demand"))
+
 EQUATION("P")//Price Index
 RESULT(VS(country, "Country_Price_Index"))
 
+EQUATION("CPI")//Price Index
+RESULT(VS(country, "Country_Consumer_Price_Index"))
+
 EQUATION("P_G")//Inflation
 RESULT(VS(country, "Country_Annual_Inflation"))
+
+EQUATION("CPI_G")//Inflation
+RESULT(VS(country, "Country_Annual_CPI_Inflation"))
 
 EQUATION("U")//Unemployment
 RESULT(VS(country, "Country_Idle_Capacity"))
@@ -47,8 +56,17 @@ RESULT(VS(country,"Country_Avg_Profit_Rate"))
 EQUATION("PCU")//Productive Capacity Utilization Rate
 RESULT(VS(country,"Country_Capacity_Utilization"))
 
+EQUATION("PSH")//Profit Share
+RESULT(VS(country,"Country_Profit_Share"))
+
+EQUATION("WSH")//Wage Share
+RESULT(VS(country,"Country_Wage_Share"))
+
 
 /*****REAL STATS*****/
+
+EQUATION("GDP_r")//Real GDP
+RESULT(VS(country, "Country_Real_GDP_Demand"))
 
 EQUATION("C_r")//Quarterly Real Consumption
 RESULT(VS(country, "Country_Nominal_Consumption_Production")/V("P"))
@@ -154,6 +172,31 @@ RESULT(VS(country, "Exit_Bankruptcy_Events"))
 
 EQUATION("BKR_RT")//Bankrupt Rate
 RESULT(VS(country, "Exit_Bankruptcy_Share")) 
+
+/*****CLASS STATS*****/
+EQUATION("YSH_A")
+cur=SEARCH_CNDS(country, "id_class", 1);
+RESULT(VS(cur, "Class_Income_Share"))
+
+EQUATION("YSH_B")
+cur=SEARCH_CNDS(country, "id_class", 2);
+RESULT(VS(cur, "Class_Income_Share"))
+
+EQUATION("YSH_C")
+cur=SEARCH_CNDS(country, "id_class", 3);
+RESULT(VS(cur, "Class_Income_Share"))
+
+EQUATION("WSH_A")
+cur=SEARCH_CNDS(country, "id_class", 1);
+RESULT(VS(cur, "Class_Wealth_Share"))
+
+EQUATION("WSH_B")
+cur=SEARCH_CNDS(country, "id_class", 2);
+RESULT(VS(cur, "Class_Wealth_Share"))
+
+EQUATION("WSH_C")
+cur=SEARCH_CNDS(country, "id_class", 3);
+RESULT(VS(cur, "Class_Wealth_Share"))
 
 
 /*****SECTORAL STATS*****/
@@ -383,7 +426,9 @@ else
 	v[2]=0;
 RESULT(v[2])
 
+
 /*****MACRO SHARE STATS*****/
+
 
 EQUATION("CGDP")
 /*

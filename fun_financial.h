@@ -135,47 +135,21 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	if(v[12]==5)
 		{												//smithin rule
 		v[20]=v[5];	
-		WRITE("target_inflation", v[5]);
+		//WRITE("target_inflation", v[5]);
 		}
-	if(v[12]==6)												//smithin rule smoothing
-	{
-		v[17]=v[5];
-		if(abs(v[17]-v[19])>v[18])
-			{
-			if(v[17]>v[19])
-				v[20]=v[19]+v[18];
-			else
-				v[20]=v[19]-v[18];
-			}
-		else
-			v[20]=v[17];
-	WRITE("target_inflation", v[5]);
-	}
 	
-	if(v[12]==7)		
+	
+	if(v[12]==6)		
 		{										//pasinetti rule
 		v[20]=v[5]+v[11];
-		WRITE("target_inflation", v[5]);
+		//WRITE("target_inflation", v[5]);
 		}
-	if(v[12]==8)												//pasinetti rule smoothing
-	{
-		v[17]=v[5]+v[11];
-		if(abs(v[17]-v[19])>v[18])
-			{
-			if(v[17]>v[19])
-				v[20]=v[19]+v[18];
-			else
-				v[20]=v[19]-v[18];
-			}
-		else
-			v[20]=v[17];
-	WRITE("target_inflation", v[5]);
-	}
 	
-	if(v[12]==9)
+	
+	if(v[12]==7)
 	{												//kansas city rule.
 		v[20]=0;
-		WRITE("target_inflation", v[5]);
+		//WRITE("target_inflation", v[5]);
 	}
 		
 	
