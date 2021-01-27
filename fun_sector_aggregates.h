@@ -1,5 +1,7 @@
 /*****SECTOR ANALYSIS*****/
 
+EQUATION("Sector_Number_Firms")
+RESULT(COUNT("FIRMS"))
 
 EQUATION("Sector_Profit_Rate")
 /*
@@ -16,10 +18,7 @@ Sector Variable for Analysis
 			v[0]=v[0];
 	}
 	v[3]=COUNT("FIRMS");
-	if (v[3]!=1)
-		v[4]=v[0]/v[3];
-	else	
-		v[4]=0;
+	v[4]= v[3]!=1? v[0]/v[3] : 0;
 RESULT(v[4])
 
 
@@ -41,10 +40,6 @@ Sector Variable for Analysis
 RESULT(v[3])
 
 
-EQUATION("Sector_Number_Firms")
-RESULT(COUNT("FIRMS"))
-
-
 EQUATION("Sector_Participation")
 /*
 Sector participation over total gross value of production
@@ -52,10 +47,7 @@ Sector participation over total gross value of production
 	v[0]=V("Sector_Sales");
 	v[1]=V("Sector_Avg_Price");
 	v[2]=V("Country_Total_Nominal_Production");
-	if(v[2]!=0)
-		v[3]=(v[0]*v[1])/v[2];
-	else
-		v[3]=0;
+	v[3]= v[2]!=0? (v[0]*v[1])/v[2] : 0;
 RESULT(v[3])
 
 
@@ -81,80 +73,44 @@ RESULT(v[0])
 
 
 EQUATION("Sector_Hedge_Share")
-/*
-Sector Variable for Analysis
-*/
 	v[0]=SUM("firm_hedge");
 	v[1]=COUNT("FIRMS");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
 EQUATION("Sector_Speculative_Share")
-/*
-Sector Variable for Analysis
-*/
 	v[0]=SUM("firm_speculative");
 	v[1]=COUNT("FIRMS");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
 EQUATION("Sector_Ponzi_Share")
-/*
-Sector Variable for Analysis
-*/
 	v[0]=SUM("firm_ponzi");
 	v[1]=COUNT("FIRMS");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
 EQUATION("Sector_Hedge_Normalized_Share")
-/*
-Sector Variable for Analysis
-*/
 	v[0]=WHTAVE("firm_hedge", "Firm_Market_Share");		
 	v[1]=COUNT("FIRMS");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
 EQUATION("Sector_Speculative_Normalized_Share")
-/*
-Sector Variable for Analysis
-*/
 	v[0]=WHTAVE("firm_speculative", "Firm_Market_Share");	
 	v[1]=COUNT("FIRMS");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
 EQUATION("Sector_Ponzi_Normalized_Share")
-/*
-Sector Variable for Analysis
-*/
-	v[0]=v[0]=WHTAVE("firm_ponzi", "Firm_Market_Share");	
+	v[0]=WHTAVE("firm_ponzi", "Firm_Market_Share");	
 	v[1]=COUNT("FIRMS");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -174,10 +130,7 @@ CYCLE(cur, "FIRMS")
 	else
 		v[1]=v[1];
 }
-if(v[0]!=0)
-	v[4]=v[1]/v[0];
-else
-	v[4]=v[0];
+	v[4]= v[0]!=0? v[1]/v[0] : v[0];
 RESULT(v[4])
 
 
@@ -215,10 +168,7 @@ Percentage of demand fulfilled by each sector
 */
 	v[0]=V("Sector_Effective_Orders");                     	//total effective orders of the sector
 	v[1]=V("Sector_Sales");                                	//total sales of the sector
-  	if(v[0]>0)                                           	//if effective orders is positive
-    	v[2]=v[1]/v[0];                                    	//the percentage of the demand met by the sector will be the total sales over effective orders
-  	else                                                 	//if effective orders is not positive
-    	v[2]=1;                                            	//the percentage of the demand met by the sector is 100%
+    v[2]= v[0]>0? v[1]/v[0] : 1;                        	//the percentage of the demand met by the sector will be the total sales over effective orders
 RESULT(v[2])
 
 
@@ -258,7 +208,6 @@ Unemployment, calculated as the difference between effective employment and pote
 	WRITE("Sector_Capacity_Utilization", v[3]);
 RESULT(v[2])
 
-
 EQUATION_DUMMY("Sector_Capacity_Utilization", "Sector_Idle_Capacity")
 
 
@@ -272,10 +221,7 @@ Sector average interest rate on short term loans weighted by stock of short term
 */
 	v[0]=WHTAVE("Firm_Interest_Rate_Short_Term", "Firm_Stock_Loans_Short_Term");
 	v[1]=SUM("Firm_Stock_Loans_Short_Term");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;	
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -285,10 +231,7 @@ Sector average interest rate on long term loans weighted by stock of long term l
 */
 	v[0]=WHTAVE("Firm_Interest_Rate_Long_Term", "Firm_Stock_Loans_Long_Term");
 	v[1]=SUM("Firm_Stock_Loans_Long_Term");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;	
+	v[2]= v[1]!=0? v[0]/v[1] : 0;	
 RESULT(v[2])
 
 

@@ -266,10 +266,7 @@ Analysis Variable
 */
 	v[0]=V("Financial_Sector_Stock_Loans_Short_Term");
 	v[1]=V("Financial_Sector_Total_Stock_Loans");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -278,12 +275,9 @@ EQUATION("Financial_Sector_Default_Rate")
 Total Defaluted Loans over total stock of loans
 Analysis Variable
 */
-v[0]=V("Financial_Sector_Accumulated_Defaulted_Loans");
-v[1]=V("Financial_Sector_Stock_Loans_Long_Term");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
+	v[0]=V("Financial_Sector_Accumulated_Defaulted_Loans");
+	v[1]=V("Financial_Sector_Stock_Loans_Long_Term");
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -294,10 +288,7 @@ Analysis Variable
 */
 	v[0]=V("Financial_Sector_Effective_Loans");
 	v[1]=V("Financial_Sector_Demand_Loans");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=1;
+	v[2]= v[1]!=0? v[0]/v[1] : 1;
 RESULT(v[2])
 
 
@@ -306,12 +297,9 @@ EQUATION("Financial_Sector_Leverage")
 Total Stock of Loans over Total Stock of Deposits
 Analysis Variable
 */
-v[0]=V("Financial_Sector_Total_Stock_Loans");
-v[1]=V("Financial_Sector_Stock_Deposits");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
+	v[0]=V("Financial_Sector_Total_Stock_Loans");
+	v[1]=V("Financial_Sector_Stock_Deposits");
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -320,12 +308,9 @@ EQUATION("Financial_Sector_Effective_Capital_Ratio")
 Accumulated profits over total loans
 Analysis Variable
 */
-v[0]=V("Financial_Sector_Accumulated_Profits");
-v[1]=V("Financial_Sector_Total_Stock_Loans");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
+	v[0]=V("Financial_Sector_Accumulated_Profits");
+	v[1]=V("Financial_Sector_Total_Stock_Loans");
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -351,13 +336,13 @@ EQUATION("Financial_Sector_Turbulence")
 /*
 Financial Sector Variable for Analysis
 */
-	v[0]=0;                                           //initializes the CYCLE 
-	CYCLE(cur, "BANKS")                               //CYCLE trough all firms 
+	v[0]=0;                                           	 //initializes the CYCLE 
+	CYCLE(cur, "BANKS")                              	 //CYCLE trough all firms 
 	{
- 	v[2]=VS(cur,"Bank_Market_Share");   			 //firm's effective market share in current period
- 	v[3]=VLS(cur,"Bank_Market_Share",1);			 //firm's effective market share in the last period
- 	v[4]=abs(v[2]-v[3]);                             //returns the absolute value of the difference
- 	v[0]=v[0]+v[4];                                   //sums up all absolute values for all firms
+		v[2]=VS(cur,"Bank_Market_Share");   			 //firm's effective market share in current period
+		v[3]=VLS(cur,"Bank_Market_Share",1);			 //firm's effective market share in the last period
+		v[4]=abs(v[2]-v[3]);                             //returns the absolute value of the difference
+		v[0]=v[0]+v[4];                                  //sums up all absolute values for all firms
 	}
 RESULT(v[0])
 
@@ -366,12 +351,9 @@ EQUATION("Total_Stock_Loans_Growth")
 /*
 Total credit growth
 */
-v[0]=V("Financial_Sector_Total_Stock_Loans");
-v[1]=VL("Financial_Sector_Total_Stock_Loans", 1);
-if(v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
+	v[0]=V("Financial_Sector_Total_Stock_Loans");
+	v[1]=VL("Financial_Sector_Total_Stock_Loans", 1);
+	v[2]=v[1]!=0? (v[0]-v[1])/v[1] : 0;
 RESULT(v[2])
 
 

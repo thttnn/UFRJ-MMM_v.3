@@ -73,18 +73,12 @@ EQUATION("Country_Domestic_Intermediate_Demand")
 Calculates the domestic demand for inputs.
 Must be called by the sectors.
 */
-		v[2]=0;                                                      		//initializes the value for thr CYCLE
-		CYCLE(cur, "SECTORS")                                        		//CYCLE trought all sectors
-		{
-		v[3]=SUMS(cur, "Firm_Input_Demand_Next_Period");
-		v[2]=v[2]+v[3];                                              		//sums up the demand for imputs of all setors
-		}
+	v[2]=0;                                                      		//initializes the value for thr CYCLE
+	CYCLE(cur, "SECTORS")                                        		//CYCLE trought all sectors
+		v[2]=v[2]+SUMS(cur, "Firm_Input_Demand_Next_Period");           //sums up the demand for imputs of all setors
 	v[0]=VLS(input, "Sector_Avg_Price", 1);
 	v[1]=V("Government_Effective_Inputs");
-	if(v[0]!=1)
-		v[5]=v[1]/v[0];
-	else
-		v[5]=0;
+	v[5]=v[0]!=0? v[1]/v[0] : 0;
 	v[6]=v[2]+v[5];
 RESULT(v[6])
 
@@ -95,14 +89,11 @@ Calculates the domestic demand for consumption goods.
 Must be called by the sector.
 */
 	v[0]=SUM("Class_Real_Domestic_Consumption_Demand");
-	v[4]=VLS(consumption, "Sector_Avg_Price", 1);
-	v[5]=V("Government_Effective_Consumption");
-	if(v[4]!=1)
-		v[6]=v[5]/v[4];
-	else
-		v[6]=0;
-	v[7]=v[0]+v[6];
-RESULT(v[7])
+	v[1]=VLS(consumption, "Sector_Avg_Price", 1);
+	v[2]=V("Government_Effective_Consumption");
+	v[3]= v[1]!=0? v[2]/v[1] : 0;
+	v[4]=v[0]+v[3];
+RESULT(v[4])
 
 
 EQUATION("Country_Domestic_Capital_Goods_Demand")
@@ -119,18 +110,12 @@ Must be called by the sectors.
 	}
 	v[4]=VLS(capital, "Sector_Avg_Price", 1);
 	v[5]=V("Government_Effective_Investment");
-	if(v[4]!=1)
-		v[6]=v[5]/v[4];
-	else
-		v[6]=0;
+	v[6]= v[4]!=0? v[5]/v[4] : 0;
 	v[7]=v[1]+v[6];
 RESULT(v[7])
 
 
 EQUATION("Country_Capital_Goods_Price")
-/*
-Price of capital goods for the firms is the average price of the capital goods sector
-*/
 RESULT(VLS(capital, "Sector_Avg_Price", 1))
 
 
@@ -138,12 +123,9 @@ EQUATION("Country_Price_Index")
 /*
 Average Price of all sector. GDP deflator
 */
-v[0]=WHTAVE("Sector_Sales","Sector_Avg_Price");
-v[1]=SUM("Sector_Sales");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=CURRENT;
+	v[0]=WHTAVE("Sector_Sales","Sector_Avg_Price");
+	v[1]=SUM("Sector_Sales");
+	v[2]= v[1]!=0? v[0]/v[1] : CURRENT;
 RESULT(v[2])
 
 
@@ -151,12 +133,12 @@ EQUATION("Country_Consumer_Price_Index")
 /*
 Average Price of the consumption goods sector
 */
-v[0]=VS(consumption, "Sector_Avg_Price");
-v[1]=VS(consumption, "Sector_External_Price");
-v[2]=VS(external, "Exchange_Rate");
-v[3]=SUM("Class_Effective_Real_Domestic_Consumption");
-v[4]=SUM("Class_Effective_Real_Imported_Consumption");
-v[5]=(v[0]*v[3] + v[1]*v[2]*v[4])/(v[3]+v[4]);
+	v[0]=VS(consumption, "Sector_Avg_Price");
+	v[1]=VS(consumption, "Sector_External_Price");
+	v[2]=VS(external, "Exchange_Rate");
+	v[3]=SUM("Class_Effective_Real_Domestic_Consumption");
+	v[4]=SUM("Class_Effective_Real_Imported_Consumption");
+	v[5]=(v[0]*v[3] + v[1]*v[2]*v[4])/(v[3]+v[4]);
 RESULT(v[0])
 
 
@@ -188,10 +170,7 @@ Total amount of distributed profits by the firms. Will be used to determine the 
 */
 	v[0]=0;                                            		//initializes the CYCLE
 	CYCLE(cur, "SECTORS")                              		//CYCLE trought all sectors
-	{
-		v[1]=SUMS(cur, "Firm_Distributed_Profits");
-		v[0]=v[0]+v[1];                                  	//sums up the value of distributed profits of all sectors
-	}
+		v[0]=v[0]+SUMS(cur, "Firm_Distributed_Profits");    //sums up the value of distributed profits of all sectors
 	v[3]=V("Financial_Sector_Distributed_Profits");
 	v[4]=v[0]+v[3];
 RESULT(v[0])
@@ -203,10 +182,7 @@ Total Surplus of the Economy. Is the sum of all firms net profits. Will be used 
 */
 	v[0]=0;                                                    		//initializes the CYCLE
 	CYCLE(cur, "SECTORS")                                      		//CYCLE trought all sectors
-	{ 
-		v[1]=SUMS(cur, "Firm_Net_Profits");
-		v[0]=v[0]+v[1];                                          	//sums up the surplus of all sectors
-	}
+		v[0]=v[0]+SUMS(cur, "Firm_Net_Profits");                    //sums up the surplus of all sectors
 	v[3]=V("Financial_Sector_Profits");
 	v[4]=v[0]+v[3];
 RESULT(v[4])
@@ -243,15 +219,12 @@ EQUATION("Country_Total_Investment_Expenses")
 /*
 Aggeregate Investment Expenses is calculated summing up the demand of capital goods of all firms and multiplying by the average price of the capital goods sector
 */
-	v[4]=VS(capital, "Sector_Avg_Price");
 	v[0]=0;
 	CYCLE(cur, "SECTORS")
-	{
-	v[1]=SUMS(cur, "Firm_Demand_Capital_Goods");
-	v[0]=v[0]+v[1];
-	}
-	v[5]=v[0]*v[4];
-RESULT(v[5])
+		v[0]=v[0]+SUMS(cur, "Firm_Demand_Capital_Goods");
+	v[2]=VS(capital, "Sector_Avg_Price");
+	v[3]=v[0]*v[2];
+RESULT(v[3])
 
 
 EQUATION("Country_Profit_Share")
@@ -261,10 +234,7 @@ Share of profits over the sum of profits and wages
 	v[0]=V("Country_Total_Wages");
 	v[1]=V("Country_Total_Profits");
 	v[2]=v[0]+v[1];
-	if(v[2]!=0)
-		v[3]=v[1]/v[2];
-	else 
-		v[3]=0;
+	v[3]= v[2]!=0? v[1]/v[2] : 0;
 RESULT(v[3])
 
 
@@ -275,10 +245,7 @@ Share of profits over the sum of profits and wages
 	v[0]=V("Country_Total_Wages");
 	v[1]=V("Country_Total_Profits");
 	v[2]=v[0]+v[1];
-	if(v[2]!=0)
-		v[3]=v[0]/v[2];
-	else 
-		v[3]=0;
+	v[3]= v[2]!=0? v[1]/v[2] : 0;
 RESULT(v[3])
 
 
@@ -288,10 +255,7 @@ Agregated average markup, wheighted by the sales of each sector
 */
 	v[0]=WHTAVE("Sector_Avg_Markup", "Sector_Sales");
 	v[1]=SUM("Sector_Sales");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1]: 0;
 RESULT(v[2])
 
 
@@ -301,10 +265,7 @@ Aggregated average debt rate, wheighted by the sales of each sector
 */
 	v[0]=WHTAVE("Sector_Avg_Debt_Rate", "Sector_Sales");
 	v[1]=SUM("Sector_Sales");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1]: 0;
 RESULT(v[2])	
 
 
@@ -314,56 +275,35 @@ Aggregated average markup, wheighted by the number of firms
 */
 	v[0]=WHTAVE("Sector_Normalized_HHI", "Sector_Number_Firms");
 	v[1]=SUM("Sector_Number_Firms");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1]: 0;
 RESULT(v[2])	
 
 
 EQUATION("Country_Hedge_Share")
-v[0]=0;
-CYCLE(cur, "SECTORS")
-{
-	v[3]=SUMS(cur, "firm_hedge");
-	v[0]=v[0]+v[3];
-}
-v[1]=COUNT_ALL("FIRMS");
-if(v[1]!=0)
-	v[5]=v[0]/v[1];
-else
-	v[5]=0;
-RESULT(v[5])	
+	v[0]=0;
+	CYCLE(cur, "SECTORS")
+		v[0]=v[0]+SUMS(cur, "firm_hedge");
+	v[2]=COUNT_ALL("FIRMS");
+	v[3]= v[2]!=0? v[0]/v[2] : 0;
+RESULT(v[3])	
 
 
 EQUATION("Country_Speculative_Share")
-v[0]=0;
-CYCLE(cur, "SECTORS")
-{
-	v[3]=SUMS(cur, "firm_speculative");
-	v[0]=v[0]+v[3];
-}
-v[1]=COUNT_ALL("FIRMS");
-if(v[1]!=0)
-	v[5]=v[0]/v[1];
-else
-	v[5]=0;
-RESULT(v[5])
+	v[0]=0;
+	CYCLE(cur, "SECTORS")
+		v[0]=v[0]+SUMS(cur, "firm_speculative");
+	v[2]=COUNT_ALL("FIRMS");
+	v[3]= v[2]!=0? v[0]/v[2] : 0;
+RESULT(v[3])
 
 
 EQUATION("Country_Ponzi_Share")
-v[0]=0;
-CYCLE(cur, "SECTORS")
-{
-	v[3]=SUMS(cur, "firm_ponzi");
-	v[0]=v[0]+v[3];
-}
-v[1]=COUNT_ALL("FIRMS");
-if(v[1]!=0)
-	v[5]=v[0]/v[1];
-else
-	v[5]=0;
-RESULT(v[5])
+	v[0]=0;
+	CYCLE(cur, "SECTORS")
+		v[0]=v[0]+SUMS(cur, "firm_ponzi");
+	v[2]=COUNT_ALL("FIRMS");
+	v[3]= v[2]!=0? v[0]/v[2] : 0;
+RESULT(v[3])
 
 
 EQUATION("Country_GDP")
@@ -374,7 +314,6 @@ Nominal quarterly GDP is calculated summing up profits, wages and indirect taxes
 	v[1]=V("Country_Total_Wages");
 	v[2]=V("Government_Indirect_Taxes");
 	v[3]=v[0]+v[1]+v[2];
-	v[4]=V("Country_GDP_Demand");
 RESULT(v[3])
 
 
@@ -384,10 +323,7 @@ Real quarterly GDP is the nominal GDP over the price index.
 */
 	v[0]=V("Country_GDP");              //nominal GDP
 	v[1]=V("Country_Price_Index");      //current price index
-	if(v[1]!=0)                      	//if the price index is not zero
-		v[2]=v[0]/v[1];                	//real GDP is the nominal GDP devided by the price index
-	else                             	//if the price index is zero
-		v[2]=v[0];                     	//real GDP equals nominal GDP
+	v[2]= v[1]!=0? v[0]/v[1] : 0;       //real GDP is the nominal GDP devided by the price index
 RESULT(v[2])
 
 
@@ -395,50 +331,34 @@ EQUATION("Country_Annual_Growth")
 /*
 Annual Nominal GDP growth rate.
 */
-
 	v[0]=V("annual_period");
 	v[1]=0;
-	for (v[2]=0; v[2]<=(v[0]-1); v[2]=v[2]+1)
-		{
-		v[3]=VL("Country_GDP", v[2]);
-		v[1]=v[1]+v[3];
-		}
-	v[4]=0;
-	for (v[5]=v[0]; v[5]<=(2*v[0]-1); v[5]=v[5]+1)
-		{
-		v[6]=VL("Country_GDP", v[5]);
-		v[4]=v[4]+v[6];
-		}
-	if (v[4]!=0)
-		v[7]=(v[1]-v[4])/v[4];
-	else
-		v[7]=1;
-RESULT(v[7])
+	for (i=0; i<=(v[0]-1); i++)
+		v[1]=v[1]+VL("Country_GDP", i);
+
+	v[2]=0;
+	for (i=v[0]; i<=(2*v[0]-1); i++)
+		v[2]=v[2]+VL("Country_GDP", i);
+
+	v[3]= v[2]!=0? (v[1]-v[2])/v[2] : 0;
+RESULT(v[3])
 
 
 EQUATION("Country_Annual_Real_Growth")
 /*
 Annual Real GDP Growth rate.
 */
-
 	v[0]=V("annual_period");
 	v[1]=0;
-	for (v[2]=0; v[2]<=(v[0]-1); v[2]=v[2]+1)
-		{
-		v[3]=VL("Country_Real_GDP", v[2]);
-		v[1]=v[1]+v[3];
-		}
-	v[4]=0;
-	for (v[5]=v[0]; v[5]<=(2*v[0]-1); v[5]=v[5]+1)
-		{
-		v[6]=VL("Country_Real_GDP", v[5]);
-		v[4]=v[4]+v[6];
-		}
-	if (v[4]!=0)
-		v[7]=(v[1]-v[4])/v[4];
-	else
-	v[7]=1;
-RESULT(v[7])
+	for (i=0; i<=(v[0]-1); i++)
+		v[1]=v[1]+VL("Country_Real_GDP", i);
+
+	v[2]=0;
+	for (i=v[0]; i<=(2*v[0]-1); i++)
+		v[2]=v[2]+VL("Country_Real_GDP", i);
+
+	v[3]= v[2]!=0? (v[1]-v[2])/v[2] : 0;
+RESULT(v[3])
 
 
 EQUATION("Country_Likelihood_Crisis")
@@ -465,30 +385,15 @@ RESULT(v[3])
 
 
 EQUATION("Country_Nominal_Consumption_Production")
-/*
-Quarterly aggregate nominal consumption, given by the nominal value of the consumption good sector sales
-*/
 RESULT(VS(consumption, "Sector_Sales")*VS(consumption, "Sector_Avg_Price"))
 
-
 EQUATION("Country_Nominal_Capital_Production")
-/*
-Quarterly aggregate nominal investment, given by the nominal value of capital goods sector sales
-*/
 RESULT(VS(capital, "Sector_Sales")*VS(capital, "Sector_Avg_Price"))
 
-
 EQUATION("Country_Nominal_Input_Production")
-/*
-Quarterly aggregate nominal intermediate consumption, given by the nominal value of intermediate goods sector sales
-*/
 RESULT(VS(input, "Sector_Sales")*VS(input, "Sector_Avg_Price"))
 
-
 EQUATION("Country_Total_Nominal_Production")
-/*
-Nominal value of total sales of the economy
-*/
 RESULT(WHTAVE("Sector_Avg_Price","Sector_Sales"))
 
 
@@ -513,9 +418,6 @@ RESULT(v[0])
 
 
 EQUATION("Country_Inventories")
-/*
-Sum up the nominal value of the stock of invesntories of each sector
-*/
 RESULT(WHTAVE("Sector_Avg_Price","Sector_Inventories"))
 
 
@@ -525,10 +427,7 @@ Sum up the value of changes in iventories of all firms
 */
 	v[0]=0;
 	CYCLE(cur, "SECTORS")
-	{
-		v[1]=SUMS(cur, "Firm_Inventories_Variation");
-		v[0]=v[0]+v[1];
-	}
+		v[0]=v[0]+SUMS(cur, "Firm_Inventories_Variation");
 RESULT(v[0])
 
 
@@ -538,10 +437,7 @@ Average Productivity of the economy weighted by the employment of each sector
 */
 	v[0]=WHTAVE("Sector_Avg_Productivity", "Sector_Employment");
 	v[1]=SUM("Sector_Employment");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -551,10 +447,7 @@ Unemployment rate, in percentage value
 */
 	v[0]=SUM("Sector_Productive_Capacity");
 	v[1]=SUM("Sector_Effective_Production");
-	if(v[0]==0)
-		v[2]=0;
-	else
-		v[2]=(v[0]-v[1])/v[0];
+	v[2]= v[0]!=0? (v[0]-v[1])/v[0] : 0;
 RESULT(max(0,v[2]))
 
 
@@ -604,19 +497,13 @@ EQUATION("Country_Real_GDP_Demand")
 /*
 Real quarterly GDP is the nominal GDP over the price index.
 */
-	v[0]=V("Country_GDP_Demand");              //nominal GDP
+	v[0]=V("Country_GDP_Demand");       //nominal GDP
 	v[1]=V("Country_Price_Index");      //current price index
-	if(v[1]!=0)                      	//if the price index is not zero
-		v[2]=v[0]/v[1];                	//real GDP is the nominal GDP devided by the price index
-	else                             	//if the price index is zero
-		v[2]=v[0];                     	//real GDP equals nominal GDP
+	v[2]= v[1]!=0? v[0]/v[1] : 0;   	//real GDP is the nominal GDP devided by the price index
 RESULT(v[2])
 
 
 EQUATION("Country_Total_Classes_Expenses")
-/*
-Sum up the income classes expenses
-*/
 RESULT(SUM("Class_Effective_Expenses"))
 
 
@@ -626,10 +513,7 @@ Sum up the value of depreciated productive capacity of all firms
 */
 	v[0]=0;
 	CYCLE(cur, "SECTORS")
-	{
-		v[1]=SUMS(cur, "Firm_Productive_Capacity_Depreciation");
-		v[0]=v[0]+v[1];
-	}
+		v[0]=v[0]+SUMS(cur, "Firm_Productive_Capacity_Depreciation");
 RESULT(v[0])
 
 
@@ -639,10 +523,7 @@ Sum up the value of productive capacity for expanstion of all firms
 */
 	v[0]=0;
 	CYCLE(cur, "SECTORS")
-	{
-		v[1]=SUMS(cur, "Firm_Demand_Productive_Capacity_Expansion");
-		v[0]=v[0]+v[1];
-	}
+		v[0]=v[0]+SUMS(cur, "Firm_Demand_Productive_Capacity_Expansion");
 RESULT(v[0])
 
 
@@ -652,10 +533,7 @@ Sum up the value of productive capacity for replacement of all firms
 */
 	v[0]=0;
 	CYCLE(cur, "SECTORS")
-	{
-		v[1]=SUMS(cur, "Firm_Demand_Productive_Capacity_Replacement");
-		v[0]=v[0]+v[1];
-	}
+		v[0]=v[0]+SUMS(cur, "Firm_Demand_Productive_Capacity_Replacement");
 RESULT(v[0])
 
 
@@ -665,10 +543,7 @@ Sum up the nominal value of firms stock of capital
 */
 	v[0]=0;
 	CYCLE(cur, "SECTORS")
-	{
-		v[1]=SUMS(cur, "Firm_Capital");
-		v[0]=v[0]+v[1];
-	}
+		v[0]=v[0]+SUMS(cur, "Firm_Capital");
 RESULT(v[0])
 
 
@@ -678,10 +553,7 @@ Observed Ratio, Stock of Capital over GDP
 */
 	v[0]=V("Country_GDP");
 	v[1]=V("Country_Capital_Stock");
-	if (v[0]!=0)
-		v[2]=v[1]/v[0];
-	else 
-		v[2]=0;
+	v[2]= v[0]!=0? v[1]/v[0] : 0;
 RESULT(v[2])
 
 
@@ -691,10 +563,7 @@ Observed Ratio, Stock of Capital over Total Employment
 */
 	v[0]=SUM("Sector_Employment");
 	v[1]=V("Country_Capital_Stock");
-	if (v[0]!=0)
-		v[2]=v[1]/v[0];
-	else 
-		v[2]=0;
+	v[2]= v[0]!=0? v[1]/v[0] : 0;
 RESULT(v[2])
 
 
@@ -704,10 +573,7 @@ Observed Ratio, Total Profits over Stock of Capital
 */
 	v[0]=V("Country_Total_Profits");
 	v[1]=V("Country_Capital_Stock");
-	if (v[1]!=0)
-		v[2]=v[0]/v[1];
-	else 
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -717,10 +583,7 @@ Sum up the nominal value of effective expansion investment of all firms
 */
 	v[0]=0;
 	CYCLE(cur, "SECTORS")
-	{
-		v[1]=SUMS(cur, "Firm_Effective_Expansion_Investment_Expenses");
-		v[0]=v[0]+v[1];
-	}
+		v[0]=v[0]+=SUMS(cur, "Firm_Effective_Expansion_Investment_Expenses");
 RESULT(v[0])
 
 
@@ -730,10 +593,7 @@ Sum up the nominal value of effective replacement investment of all firms
 */
 	v[0]=0;
 	CYCLE(cur, "SECTORS")
-	{
-		v[1]=SUMS(cur, "Firm_Replacement_Expenses");
-		v[0]=v[0]+v[1];
-	}
+		v[0]=v[0]+SUMS(cur, "Firm_Replacement_Expenses");
 RESULT(v[0])
 
 
@@ -753,10 +613,7 @@ Aggregated average class debt rate, wheighted by the income of each class
 */
 	v[0]=WHTAVE("Class_Debt_Rate", "Class_Nominal_Income");
 	v[1]=SUM("Class_Nominal_Income");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 

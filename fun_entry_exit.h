@@ -98,25 +98,17 @@ WRITE("Exit_Defaulted_Loans", v[19]);
 WRITE("Exit_Bankruptcy_Events", v[21]);																														
 RESULT(v[23])
 
-EQUATION("Exit_Deposits_Distributed")
-RESULT(CURRENT)
-EQUATION("Exit_Productive_Capacity")
-RESULT(CURRENT)
-EQUATION("Exit_Defaulted_Loans")
-RESULT(CURRENT)
-EQUATION("Exit_Bankruptcy_Events")
-RESULT(CURRENT)
-EQUATION("Sector_Productive_Capacity_Exit")
-RESULT(CURRENT)
+EQUATION_DUMMY("Exit_Deposits_Distributed", "Exit")
+EQUATION_DUMMY("Exit_Productive_Capacity", "Exit")
+EQUATION_DUMMY("Exit_Defaulted_Loans", "Exit")
+EQUATION_DUMMY("Exit_Bankruptcy_Events", "Exit")
+EQUATION_DUMMY("Sector_Productive_Capacity_Exit", "Exit")
 
 
 EQUATION("Exit_Bankruptcy_Share")
-v[0]=V("Exit_Bankruptcy_Events");
-v[1]=SUML("Sector_Number_Firms",1);
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
+	v[0]=V("Exit_Bankruptcy_Events");
+	v[1]=SUML("Sector_Number_Firms",1);
+	v[2]=v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -135,9 +127,9 @@ Can only be 0 or 1, if all enter conditions are met.
 	v[8]=(v[3]-v[4])/v[4];
   
     if(v[0]==1 & v[6]>0 && v[7]>0 && v[8]>0)
-     v[9]=1;
+		v[9]=1;
     else
-     v[9]=0;
+		v[9]=0;
 RESULT(v[9])
 
 /*

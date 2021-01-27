@@ -79,13 +79,12 @@ EQUATION("Firm_Input_Cost")
 /*
 Unitary costs of the inputs. It's given by the domestic input price plus the external input price, weighted by the proportion of the demand met by domestic and external sectors
 */
-	cur=SEARCH_CND("id_intermediate_goods_sector", 1);    //search the inputs for the one from the intermediate sector
-	v[1]=VLS(cur,"Sector_Avg_Price",1);                   //intermediate sector average price
-	v[2]=VS(cur,"Sector_External_Price");                 //sector external price
+	v[1]=VLS(input,"Sector_Avg_Price",1);                 //intermediate sector average price
+	v[2]=VS(input,"Sector_External_Price");               //sector external price
 	v[3]=V("sector_input_tech_coefficient");              //input technical relationship 
 	v[5]=V("Exchange_Rate");                              //exchange rate
-	v[6]=VLS(cur,"Sector_Demand_Met",1);                  //demand for inputs met by the domestic production in the last period
-	v[7]=VLS(cur,"Sector_Demand_Met_By_Imports", 1);
+	v[6]=VLS(input,"Sector_Demand_Met",1);                //demand for inputs met by the domestic production in the last period
+	v[7]=VLS(input,"Sector_Demand_Met_By_Imports", 1);
 	v[8]=v[1]*v[3]*v[6]+(1-v[6])*v[7]*v[3]*v[2]*v[5];     //input cost will be the amount demanded domesticaly multiplied by domestic price plus the amount demanded externally miltiplied by the external price
 RESULT(v[8])
 

@@ -8,11 +8,8 @@ Will affect induced consumption, imports decisions and debt assessment
 */
 	v[0]=V("class_period");											//define the class adjustment period
 	v[1]=0;															//initializes the sum
-		for (i=1; i<=v[0]; i++)										//for the number os lags equal the adjustment parameter
-		{
-		v[2]=VL("Class_Real_Income", i);
-		v[1]=v[1]+v[2];
-		}
+	for (i=1; i<=v[0]; i++)											//for the number os lags equal the adjustment parameter
+		v[1]=v[1]+VL("Class_Real_Income", i);
 	v[3]=v[1]/v[0];                  								//class average income in the last v[0] periods
 RESULT(v[3])
 
@@ -24,11 +21,8 @@ Will be the base for debt rate calculus
 */
 	v[0]=V("class_period");											//define the class adjustment period
 	v[1]=0;															//initializes the sum
-		for (i=1; i<=v[0]; i++)										//for the number os lags equal the adjustment parameter
-		{
-		v[2]=VL("Class_Nominal_Income", i);           				//lagged class' income
-		v[1]=v[1]+v[2];												//sum lagged income until the adjustment period
-		}
+	for (i=1; i<=v[0]; i++)											//for the number os lags equal the adjustment parameter
+		v[1]=v[1]+VL("Class_Nominal_Income", i);
 	v[3]=v[1]/v[0];                  								//class average income in the last v[0] periods
 RESULT(v[3])
 
@@ -37,17 +31,14 @@ EQUATION("Class_Real_Autonomous_Consumption")
 /*
 Class autonomous consumption depends on the average quality growth of the consumption goods sector
 */
-v[0]=VL("Class_Real_Autonomous_Consumption",1);                 	//class autonomous consumption in the last period
+v[0]=CURRENT;                 										//class autonomous consumption in the last period
 v[1]=V("class_period");										    	//defines the class adjustment period 
 v[2]= fmod((double) t,v[1]);										//divides time period by the class period and takes the rest
 if (v[2]==0)														//if it is class adjustment period 	
 	{
 	v[3]=VLS(consumption, "Sector_Avg_Quality",1);     				//sector average quality in the last period                        
 	v[4]=VLS(consumption, "Sector_Avg_Quality",(v[1]+1)); 			//sector average quality in the last adjustment period                          
-  	if(v[4]!=0)														//if initial average quality is not zero                                                                              
-		v[5]=(v[3]-v[4])/v[4];          							//computate quality growth                                                  			
-  	else     														//if average quality is zero                                                                               
-		v[5]=0;														//quality growth is zero
+	v[5]= v[4]!=0? (v[3]-v[4])/v[4] : 0;          					//quality growth                                                  			
     
    v[6]=V("class_autonomous_consumption_adjustment");				//autonomous consumption adjustment parameter
 		if(v[5]>0) 													//if quality growth was positive
@@ -66,25 +57,24 @@ EQUATION("Class_Real_Desired_Domestic_Consumption")
 /*
 Class real domestic conumption is based on average past real disposable income from profits and wages and on the class' propensity to consume, plus autonomous consumption
 */
-	v[4]=V("Class_Avg_Real_Income");
-	v[5]=V("class_propensity_to_consume");          				//class propensity to consume on income
-	v[6]=V("class_propensity_to_import");							//class propensity to import
-  	v[7]=V("Class_Real_Autonomous_Consumption");    				//class autonomous consumption
-  	v[8]=v[4]*v[5]+v[7];                            				//class real desired consumption
-RESULT(v[8])
+	v[0]=V("Class_Avg_Real_Income");
+	v[1]=V("class_propensity_to_consume");          				//class propensity to consume on income
+  	v[2]=V("Class_Real_Autonomous_Consumption");    				//class autonomous consumption
+  	v[3]=v[0]*v[1]+v[2];                            				//class real desired consumption
+RESULT(v[3])
 
 
 EQUATION("Class_Real_Desired_Imported_Consumption")
 	
-	v[4]=V("Class_Avg_Real_Income");
-	v[5]=V("class_propensity_to_import");							//class propensity to import
+	v[1]=V("Class_Avg_Real_Income");
+	v[2]=V("class_propensity_to_import");							//class propensity to import
   
-	v[6]=VS(consumption, "Sector_Avg_Price");                       //consumption sector average price
-	v[7]=VS(consumption, "Sector_External_Price");                  //consumption sector external price
-	v[8]=VS(external,"Exchange_Rate");										//exchange rate
-	v[9]=V("class_import_elasticity_price");
-	v[10]=v[4]*v[5]*pow((v[6]/(v[7]*v[8])),v[9]);
-RESULT(v[10])
+	v[3]=VS(consumption, "Sector_Avg_Price");                       //consumption sector average price
+	v[4]=VS(consumption, "Sector_External_Price");                  //consumption sector external price
+	v[5]=VS(external,"Exchange_Rate");								//exchange rate
+	v[6]=V("class_import_elasticity_price");
+	v[7]=v[1]*v[2]*pow((v[3]/(v[4]*v[5])),v[6]);
+RESULT(v[7])
 	
 
 EQUATION("Class_Desired_Expenses")
@@ -107,10 +97,7 @@ Class avg debt rate of the last class period (equal to annual period)
 	v[0]=V("class_period");
 	v[1]=0;															//initializes the sum
 	for (i=1; i<=v[0]; i++)											//from 0 to investment period-1 lags
-		{
-		v[2]=VL("Class_Debt_Rate", i);								//computates class debt rate of the current lag
-		v[1]=v[1]+v[2];												//sum up class lagged debt rate
-		}
+		v[1]=v[1]+VL("Class_Debt_Rate", i);							//sum up class lagged debt rate
 	v[3]=v[1]/v[0];													//average class debt rate of the last class period
 RESULT(v[3])
 

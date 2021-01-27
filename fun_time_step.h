@@ -27,7 +27,9 @@ V("Class_Avg_Debt_Rate");
 V("Class_Interest_Rate");   
 V("Bank_Max_Total_Loans"); 
 
-/*****EXPORTS (AUTONOMOUS) AND PRICE SETTING*****/                                 
+/*****EXPORTS (AUTONOMOUS) AND PRICE SETTING*****/     
+V("Country_Annual_Inflation");  
+V("Country_Annual_CPI_Inflation");                           
 V("Firm_Wage");                                      	   	
 V("External_Income");                                  		
 V("Sector_External_Price");                                 

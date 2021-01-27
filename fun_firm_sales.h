@@ -1,7 +1,4 @@
 EQUATION("Firm_Effective_Orders")
-/*
-Firm Variable
-*/
 	v[0]=V("Firm_Market_Share"); 
 	v[1]=V("Sector_Effective_Orders");
 	v[2]=v[0]*v[1];
@@ -66,10 +63,7 @@ Firm Variable
 	v[1]=V("Firm_Market_Share");                    //firm's market share
 	v[2]=v[0]*v[1];                                 //firm's effective orders
 	v[3]=V("Firm_Sales");                           //firm's sales
-	if (v[3]!=0)                                    //if firm's sales is not zero
-		v[4]=v[2]/v[3];                             //delivery delay will be determined by the ratio between effective orders and sales
-	else                                            //if firm's sales is zero
-		v[4]=1;                                     //delivery delay will be one
+	v[4]= v[3]!=0? v[2]/v[3] : 1;                   //delivery delay will be determined by the ratio between effective orders and sales
 RESULT(v[4])
 
 
@@ -97,10 +91,7 @@ Effective market share is given by firm's sales over total sales of the sector
 */
 	v[0]=V("Firm_Sales");
 	v[1]=V("Sector_Sales");
-	if (v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 

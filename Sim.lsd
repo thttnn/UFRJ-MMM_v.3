@@ -77,21 +77,21 @@ Label Root
 		Son: EXTERNAL_SECTOR
 		Label EXTERNAL_SECTOR
 		{
-			Param: International_Reserves
+			Param: capital_flow_adjustment
 			Param: exchange_rate_adjustment
 			Param: exchange_rate_growth
 			Param: external_income_adjustmnent
 			Param: external_income_growth
+			Param: external_income_sd
 			Param: external_interest_rate
 			Param: external_shock_begin
 			Param: external_shock_duration
 			Param: external_shock_size
+			Var: Capital_Flows
 			Var: Exchange_Rate
 			Var: External_Income
+			Var: International_Reserves
 			Var: Trade_Balance
-			Var: Capital_Flows
-			Param: capital_flow_adjustment
-			Param: external_income_sd
 
 		}
 
@@ -152,8 +152,6 @@ Label Root
 				Param: target_inflation
 				Param: target_capacity
 				Param: begin_monetary_policy
-				Param: switch_monetary_policy
-				Param: switch_moving_targets
 				Param: interest_shock_begin
 				Param: interest_shock_duration
 				Param: interest_shock_size
@@ -213,7 +211,6 @@ Label Root
 			Var: Interest_Rate_Deposits
 			Var: Policy_Targets
 			Var: Total_Stock_Loans_Growth
-			Param: switch_fixed_bank_distribution
 			Param: fs_expectations
 
 		}
@@ -224,7 +221,7 @@ Label Root
 			Param: begin_expenses_ceiling_rule
 			Param: begin_surplus_target_rule
 			Param: government_benefit
-			Param: government_demand_growth
+			Param: government_real_growth
 			Param: government_expectations
 			Param: government_inflation_passtrought
 			Param: government_initial_capital_share
@@ -235,8 +232,6 @@ Label Root
 			Param: government_productivity_passtrought
 			Param: government_surplus_rate_target
 			Param: government_surplus_target_adjustment
-			Param: switch_government_composition
-			Param: switch_unemployment_benefits
 			Var: Government_Debt
 			Var: Government_Debt_GDP_Ratio
 			Var: Government_Desired_Consumption
@@ -252,8 +247,8 @@ Label Root
 			Var: Government_Effective_Wages
 			Var: Government_Interest_Payment
 			Var: Government_Max_Expenses
-			Var: Government_Nominal_Deficit
-			Var: Government_Primary_Surplus
+			Var: Government_Nominal_Result
+			Var: Government_Primary_Result
 			Var: Government_Surplus_Rate_Target
 			Var: Government_Income_Taxes
 			Var: Government_Indirect_Taxes
@@ -513,6 +508,7 @@ Label Root
 			Param: sector_passthrough_capacity
 			Var: Sector_Exports_Share
 			Param: sector_competitiveness_adjustment
+			Param: sector_external_price_sd
 
 		}
 
@@ -642,15 +638,6 @@ Label Root
 		Param: scale_debt
 		Param: scale_prod_cap
 		Param: survival_period
-		Param: switch_class_tax_structure
-		Param: switch_creditworthness
-		Param: switch_discount_rate
-		Param: switch_entry
-		Param: switch_expansion_investment
-		Param: switch_fixed_exports
-		Param: switch_interest_investment
-		Param: switch_interest_payment
-		Param: switch_replacement_investment
 		Var: Country_Annual_Growth
 		Var: Country_Annual_Inflation
 		Var: Country_Annual_Real_Growth
@@ -707,7 +694,6 @@ Label Root
 		Var: Country_Idle_Capacity
 		Var: Country_Wage_Share
 		Var: Country_Annual_CPI_Inflation
-		Param: switch_cb_credibility
 		Param: initial_debt_gdp
 		Var: Country_Real_GDP_Demand
 
@@ -715,6 +701,20 @@ Label Root
 
 	Var: Initialization
 	Var: Time_Step
+	Param: switch_cb_credibility
+	Param: switch_class_tax_structure
+	Param: switch_creditworthness
+	Param: switch_discount_rate
+	Param: switch_entry
+	Param: switch_expansion_investment
+	Param: switch_interest_investment
+	Param: switch_interest_payment
+	Param: switch_replacement_investment
+	Param: switch_government_composition
+	Param: switch_unemployment_benefits
+	Param: switch_fixed_bank_distribution
+	Param: switch_monetary_policy
+	Param: switch_moving_targets
 
 }
 
@@ -724,6 +724,20 @@ DATA
 Object: Root C	1
 Var: Initialization 0 n + n n
 Var: Time_Step 0 n + n n
+Param: switch_cb_credibility 0 n + n n	1
+Param: switch_class_tax_structure 0 n + n n	3
+Param: switch_creditworthness 0 n + n n	0
+Param: switch_discount_rate 0 n + n n	3
+Param: switch_entry 0 n + n n	1
+Param: switch_expansion_investment 0 n + n n	1
+Param: switch_interest_investment 0 n + n n	0
+Param: switch_interest_payment 0 n + n n	1
+Param: switch_replacement_investment 0 n + n n	1
+Param: switch_government_composition 0 n + n n	1
+Param: switch_unemployment_benefits 0 n + n n	1
+Param: switch_fixed_bank_distribution 0 n + n n	0
+Param: switch_monetary_policy 0 n + n n	1
+Param: switch_moving_targets 0 n + n n	0
 
 Object: COUNTRY C	1
 Param: annual_period 0 n + n n	4
@@ -743,15 +757,6 @@ Param: scale_bank_pro 0 n + n n	0
 Param: scale_debt 0 n + n n	0
 Param: scale_prod_cap 0 n + n n	1
 Param: survival_period 0 n + n n	0
-Param: switch_class_tax_structure 0 n + n n	3
-Param: switch_creditworthness 0 n + n n	0
-Param: switch_discount_rate 0 n + n n	3
-Param: switch_entry 0 n + n n	1
-Param: switch_expansion_investment 0 n + n n	1
-Param: switch_fixed_exports 0 n + n n	0
-Param: switch_interest_investment 0 n + n n	0
-Param: switch_interest_payment 0 n + n n	1
-Param: switch_replacement_investment 0 n + n n	1
 Var: Country_Annual_Growth 1 s + n n	0
 Var: Country_Annual_Inflation 1 s + n n	0
 Var: Country_Annual_Real_Growth 1 s + n n	0
@@ -808,8 +813,7 @@ Var: Country_Total_Wages 0 n + n n
 Var: Country_Idle_Capacity 5 s + n n	0.18	0.18	0.18	0.18	0.18
 Var: Country_Wage_Share 0 s + n n
 Var: Country_Annual_CPI_Inflation 0 s + n n
-Param: switch_cb_credibility 0 n + n n	1
-Param: initial_debt_gdp 0 n + n n	0
+Param: initial_debt_gdp 0 n + n n	0.5
 Var: Country_Real_GDP_Demand 0 s + n n
 
 Object: CLASSES C	3
@@ -875,21 +879,21 @@ Param: class_loan_interest_rate 0 n + n n	0	0	0
 Param: class_loan_total_amount 0 n + n n	0	0	0
 
 Object: EXTERNAL_SECTOR C	1
-Param: International_Reserves 1 n + n n	10000
+Param: capital_flow_adjustment 0 n + n n	1
 Param: exchange_rate_adjustment 0 n + n n	0.01
 Param: exchange_rate_growth 0 n + n n	0
 Param: external_income_adjustmnent 0 n + n n	0
 Param: external_income_growth 0 n + n n	0.03
+Param: external_income_sd 0 n + n n	0.01
 Param: external_interest_rate 0 n + n n	0.01
 Param: external_shock_begin 0 n + n n	200
 Param: external_shock_duration 0 n + n n	20
 Param: external_shock_size 0 n + n n	0
+Var: Capital_Flows 0 s + n n
 Var: Exchange_Rate 1 s + d n	1
 Var: External_Income 0 s + n n
+Var: International_Reserves 0 s + n n
 Var: Trade_Balance 1 s + n n	0
-Var: Capital_Flows 0 s + n n
-Param: capital_flow_adjustment 0 n + n n	1
-Param: external_income_sd 0 n + n n	0.01
 
 Object: FINANCIAL C	1
 Param: bank_default_sensitivity 0 n + n n	1
@@ -945,7 +949,6 @@ Var: Financial_Sector_Turbulence 0 s + n n
 Var: Interest_Rate_Deposits 1 s + n n	0
 Var: Policy_Targets 0 n + n n
 Var: Total_Stock_Loans_Growth 1 s + n n	0
-Param: switch_fixed_bank_distribution 0 n + n n	0
 Param: fs_expectations 0 n + n n	1.3
 
 Object: BANKS C	1
@@ -996,8 +999,6 @@ Param: target_debt_rate 0 s + n n	0.5
 Param: target_inflation 0 s + n n	0.02
 Param: target_capacity 0 s + n n	0.15
 Param: begin_monetary_policy 0 n + n n	0
-Param: switch_monetary_policy 0 n + n n	1
-Param: switch_moving_targets 0 n + n n	0
 Param: interest_shock_begin 0 n + n n	400
 Param: interest_shock_duration 0 n + n n	600
 Param: interest_shock_size 0 n + n n	0
@@ -1006,21 +1007,19 @@ Object: GOVERNMENT C	1
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
 Param: begin_surplus_target_rule 0 n + n n	0
 Param: government_benefit 0 n + n n	0.1
-Param: government_demand_growth 0 n + n n	0.01
+Param: government_real_growth 0 n + n n	0.01
 Param: government_expectations 0 n + n n	0.3
 Param: government_inflation_passtrought 0 n + n n	1
 Param: government_initial_capital_share 0 n + n n	0.2
 Param: government_initial_consumption_share 0 n + n n	0.1
 Param: government_initial_input_share 0 n + n n	0.1
-Param: government_max_debt 0 n + n n	0.6
-Param: government_min_debt 0 n + n n	0.4
+Param: government_max_debt 0 n + n n	0.7
+Param: government_min_debt 0 n + n n	0.3
 Param: government_productivity_passtrought 0 n + n n	1
 Param: government_surplus_rate_target 0 n + n n	0
 Param: government_surplus_target_adjustment 0 n + n n	0
-Param: switch_government_composition 0 n + n n	0
-Param: switch_unemployment_benefits 0 n + n n	1
 Var: Government_Debt 4 s + n n	0	0	0	0
-Var: Government_Debt_GDP_Ratio 1 s + n n	0
+Var: Government_Debt_GDP_Ratio 4 s + n n	0	0	0	0
 Var: Government_Desired_Consumption 1 s + n n	0
 Var: Government_Desired_Inputs 1 s + n n	0
 Var: Government_Desired_Investment 1 s + n n	0
@@ -1034,8 +1033,8 @@ Var: Government_Effective_Unemployment_Benefits 0 s + n n
 Var: Government_Effective_Wages 0 s + n n
 Var: Government_Interest_Payment 0 s + n n
 Var: Government_Max_Expenses 1 s + n n	0
-Var: Government_Nominal_Deficit 0 s + n n
-Var: Government_Primary_Surplus 0 s + n n
+Var: Government_Nominal_Result 0 s + n n
+Var: Government_Primary_Result 0 s + n n
 Var: Government_Surplus_Rate_Target 1 s + n n	0
 Var: Government_Income_Taxes 0 n + n n
 Var: Government_Indirect_Taxes 0 n + n n
@@ -1149,6 +1148,7 @@ Var: Sector_Capacity_Utilization 0 s + n n
 Param: sector_passthrough_capacity 0 n + n n	0	0	0
 Var: Sector_Exports_Share 0 s + n n
 Param: sector_competitiveness_adjustment 0 n + n n	1	1	1
+Param: sector_external_price_sd 0 n + n n	0	0	0
 
 Object: FIRMS C	1	1	1
 Var: Firm_Available_Funds_After_Replacement 0 n + n n
@@ -1409,6 +1409,90 @@ _INIT_
 
 END_DESCRIPTION
 
+Parameter_switch_cb_credibility
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_switch_class_tax_structure
+(no description available)
+_INIT_
+All 1 instances equal to 3.
+END_DESCRIPTION
+
+Parameter_switch_creditworthness
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_switch_discount_rate
+(no description available)
+_INIT_
+All 1 instances equal to 3.
+END_DESCRIPTION
+
+Parameter_switch_entry
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_switch_expansion_investment
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_switch_interest_investment
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_switch_interest_payment
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_switch_replacement_investment
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_switch_government_composition
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_switch_unemployment_benefits
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_switch_fixed_bank_distribution
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_switch_monetary_policy
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_switch_moving_targets
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
 Object_COUNTRY
 (no description available)
 _INIT_
@@ -1515,60 +1599,6 @@ Parameter_survival_period
 (no description available)
 _INIT_
 All 1 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_switch_class_tax_structure
-(no description available)
-_INIT_
-All 1 instances equal to 3.
-END_DESCRIPTION
-
-Parameter_switch_creditworthness
-(no description available)
-_INIT_
-All 1 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_switch_discount_rate
-(no description available)
-_INIT_
-All 1 instances equal to 3.
-END_DESCRIPTION
-
-Parameter_switch_entry
-(no description available)
-_INIT_
-All 1 instances equal to 1.
-END_DESCRIPTION
-
-Parameter_switch_expansion_investment
-(no description available)
-_INIT_
-All 1 instances equal to 1.
-END_DESCRIPTION
-
-Parameter_switch_fixed_exports
-(no description available)
-_INIT_
-All 1 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_switch_interest_investment
-(no description available)
-_INIT_
-All 1 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_switch_interest_payment
-(no description available)
-_INIT_
-All 1 instances equal to 1.
-END_DESCRIPTION
-
-Parameter_switch_replacement_investment
-(no description available)
-_INIT_
-All 1 instances equal to 1.
 END_DESCRIPTION
 
 Variable_Country_Annual_Growth
@@ -1909,16 +1939,10 @@ _INIT_
 
 END_DESCRIPTION
 
-Parameter_switch_cb_credibility
-(no description available)
-_INIT_
-All 1 instances equal to 1.
-END_DESCRIPTION
-
 Parameter_initial_debt_gdp
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Variable_Country_Real_GDP_Demand
@@ -2313,10 +2337,10 @@ _INIT_
 
 END_DESCRIPTION
 
-Parameter_International_Reserves
+Parameter_capital_flow_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 10000.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_exchange_rate_adjustment
@@ -2343,6 +2367,12 @@ _INIT_
 All 1 instances equal to 0.03.
 END_DESCRIPTION
 
+Parameter_external_income_sd
+(no description available)
+_INIT_
+All 1 instances equal to 0.01.
+END_DESCRIPTION
+
 Parameter_external_interest_rate
 (no description available)
 _INIT_
@@ -2367,6 +2397,12 @@ _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
+Variable_Capital_Flows
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
 Variable_Exchange_Rate
 (no description available)
 _INIT_
@@ -2379,28 +2415,16 @@ _INIT_
 
 END_DESCRIPTION
 
+Variable_International_Reserves
+(no description available)
+_INIT_
+All 1 instances equal to 10000.
+END_DESCRIPTION
+
 Variable_Trade_Balance
 (no description available)
 _INIT_
 All 1 instances equal to 0.
-END_DESCRIPTION
-
-Variable_Capital_Flows
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Parameter_capital_flow_adjustment
-(no description available)
-_INIT_
-All 1 instances equal to 1.
-END_DESCRIPTION
-
-Parameter_external_income_sd
-(no description available)
-_INIT_
-All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Object_FINANCIAL
@@ -2738,12 +2762,6 @@ _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_switch_fixed_bank_distribution
-(no description available)
-_INIT_
-All 1 instances equal to 0.
-END_DESCRIPTION
-
 Parameter_fs_expectations
 (no description available)
 _INIT_
@@ -3041,18 +3059,6 @@ _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_switch_monetary_policy
-(no description available)
-_INIT_
-All 1 instances equal to 1.
-END_DESCRIPTION
-
-Parameter_switch_moving_targets
-(no description available)
-_INIT_
-All 1 instances equal to 0.
-END_DESCRIPTION
-
 Parameter_interest_shock_begin
 (no description available)
 _INIT_
@@ -3095,7 +3101,7 @@ _INIT_
 All 1 instances equal to 0.1.
 END_DESCRIPTION
 
-Parameter_government_demand_growth
+Parameter_government_real_growth
 (no description available)
 _INIT_
 All 1 instances equal to 0.02.
@@ -3134,13 +3140,13 @@ END_DESCRIPTION
 Parameter_government_max_debt
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 0.7.
 END_DESCRIPTION
 
 Parameter_government_min_debt
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.3.
 END_DESCRIPTION
 
 Parameter_government_productivity_passtrought
@@ -3159,18 +3165,6 @@ Parameter_government_surplus_target_adjustment
 (no description available)
 _INIT_
 All 1 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_switch_government_composition
-(no description available)
-_INIT_
-All 1 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_switch_unemployment_benefits
-(no description available)
-_INIT_
-All 1 instances equal to 1.
 END_DESCRIPTION
 
 Variable_Government_Debt
@@ -3294,13 +3288,13 @@ _INIT_
 
 END_DESCRIPTION
 
-Variable_Government_Nominal_Deficit
+Variable_Government_Nominal_Result
 (no description available)
 _INIT_
 
 END_DESCRIPTION
 
-Variable_Government_Primary_Surplus
+Variable_Government_Primary_Result
 (no description available)
 _INIT_
 
@@ -3995,6 +3989,12 @@ Parameter_sector_competitiveness_adjustment
 (no description available)
 _INIT_
 All 3 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_sector_external_price_sd
+(no description available)
+_INIT_
+All 3 instances equal to 0.
 END_DESCRIPTION
 
 Object_FIRMS

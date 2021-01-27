@@ -92,10 +92,7 @@ Variable unit cost is the wage cost (nominal wages over productivity) plus inter
 	v[0]=v[4]*v[5];
 	v[1]=V("Firm_Wage");
 	v[2]=VL("Firm_Avg_Productivity",1);
-	if(v[2]!=0)
-		v[3]=(v[1]/v[2])+v[0];
-	else
-		v[3]=0;
+	v[3]= v[2]!=0? (v[1]/v[2])+v[0] : v[0];
 RESULT(v[3])
 
 
@@ -154,15 +151,11 @@ EQUATION("Firm_Price")
 /*
 Firm's effective price is a average between the desired price and the sector average price
 */
-	v[0]=VL("Firm_Price",1);                                                   //firm's price in the last period
 	v[1]=V("Firm_Desired_Price");                                              //firm's desired price
 	v[2]=V("sector_strategic_price_weight");                                   //strategic weight parameter
 	v[3]=VL("Sector_Avg_Price", 1);                                            //sector average price in the last period
 	v[4]=v[2]*(v[1])+(1-v[2])*(v[3]);                                          //firm's price is a average between the desired price and the sector average price
-	if(v[1]>0)                                                                 //if desired price is positive
-		v[5]=max(0.01,v[4]);                                                   //firm's price can never be zero or lower
-	else                                                                       //if desired price is not positive
-		v[5]=v[0];                                                             //firm's price will be the last period's
+	v[5]= v[1]>0? max(0.01,v[4]) : CURRENT;                                    //firm's price can never be zero or lower
 RESULT(v[5])
 
 
@@ -172,10 +165,7 @@ Effective Markup is the Effective Price over the Variable Cost
 */
 	v[0]=V("Firm_Price");
 	v[1]=V("Firm_Variable_Cost");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -199,13 +189,10 @@ EQUATION("Firm_Avg_Market_Share")
 Average Market Share between the market share of the firm in the last markup period
 */
 	v[0]=V("markup_period");
-	v[3]=0;										   						//initializes the sum
+	v[1]=0;										   						//initializes the sum
 	for (i=0; i<=(v[0]-1); i++)											//from 0 to markup period-1 lags
-		{
-		v[2]=VL("Firm_Market_Share", i);								//computates firm's market share of the current lag
-		v[3]=v[3]+v[2];													//sum up firm's lagged market share
-		}
-	v[4]=v[3]/v[0];														//average firm's market share of the last investment period
+		v[1]=v[1]+VL("Firm_Market_Share", i);							//sum up firm's lagged market share
+	v[4]=v[1]/v[0];														//average firm's market share of the last investment period
 RESULT(v[4])
 
 
@@ -215,10 +202,7 @@ Potential markup is the sector average price over firm's variable costs
 */
 	v[0]=V("Sector_Avg_Price");                                       //sector average price
 	v[1]=V("Firm_Variable_Cost");                                     //firm's variable cost
-	if(v[1]!=0)                                                       //if firm's variable cost is not zero
-		v[2]=v[0]/v[1];                                               //potential markup is the sector average price over firm's variable costs
-	else                                                              //if firm's variable cost is zero
-		v[2]=0;                                                       //potential markup is zero
+	v[2]= v[1]!=0? v[0]/v[1] : 0;                                     //potential markup is the sector average price over firm's variable costs
 RESULT(v[2])
 
 
@@ -227,11 +211,8 @@ EQUATION("Firm_Avg_Potential_Markup")
 Average Potential Markup between the potential markup of the firm in the last 8 periods
 */
 	v[0]=V("markup_period");
-	v[3]=0;																//initializes the sum
+	v[1]=0;																//initializes the sum
 	for (i=0; i<=(v[0]-1); i++)											//from 0 to markup period-1 lags
-		{
-		v[2]=VL("Firm_Potential_Markup", i);							//computates firm's potential markup of the current lag
-		v[3]=v[3]+v[2];													//sum up firm's lagged potential markup
-		}
-	v[4]=v[3]/v[0];														//average firm's market share of the last potential markup
+		v[1]=v[1]+VL("Firm_Potential_Markup", i);						//sum up firm's lagged potential markup
+	v[4]=v[1]/v[0];														//average firm's market share of the last potential markup
 RESULT(v[4])

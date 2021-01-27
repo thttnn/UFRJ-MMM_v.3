@@ -141,7 +141,7 @@ EQUATION("Firm_Capital")
 Nominal value of firm's total capital
 */
 	v[0]=V("Firm_Productive_Capacity");                       					//firm's productive capacity in the last period   
-	v[1]=V("Country_Capital_Goods_Price");                       						//price of capital goods
+	v[1]=V("Country_Capital_Goods_Price");                       				//price of capital goods
 	v[2]=V("sector_capital_output_ratio");                      				//capital output ratio 
 	v[3]=v[0]*v[1]*v[2];                                 						//nominal value of firm's total capital
 RESULT(v[3])
@@ -162,10 +162,7 @@ Firm's productivity will be an average of each capital good productivity weighte
 		v[2]=v[2]+v[4]*v[5];                                        			//sums up the product of each capital good productivity and production
 		v[3]=v[3]+v[5];                                             			//sums up the production of each capital good
 	}
-	if (v[3]!=0)                                                   				//if the sum of the production is not zero
-		v[6]=v[2]/v[3];                                             			//firm's average productivity will be the average of each capital good productivity weighted by its respective production
-	else                                                           				//if the sum of the production is zero
-		v[6]=v[1];                                                   			//firm's average production will be the last period's 
+	v[6]= v[3]!=0? v[2]/v[3] : v[1];                                            //firm's average productivity will be the average of each capital good productivity weighted by its respective production
 RESULT(v[6])
 
 
@@ -173,12 +170,9 @@ EQUATION("Firm_Max_Productivity")
 /*
 Maximum productivity among firm's capital goods
 */
-	i=COUNT("CAPITALS");
-	if( i != 0)
-		v[0]=MAX("Capital_Good_Productivity");
-	else
-		v[0]=0;
-RESULT(v[0])
+	v[0]=COUNT("CAPITALS");
+	v[1]= v[0]!=0? MAX("Capital_Good_Productivity") : 0;
+RESULT(v[1])
 
 
 EQUATION("Firm_Capacity_Utilization")
@@ -187,10 +181,7 @@ Firm effective production over firm productive capacity
 */
 	v[0]=V("Firm_Effective_Production");
 	v[1]=VL("Firm_Productive_Capacity",1);
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 

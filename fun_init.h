@@ -210,7 +210,8 @@ CYCLE(cur, "CLASSES")
 v[167]=COUNT("CLASSES");
 
 //Begin Writing External Variables
-WRITELS(external, "External_Income", v[150], 0);												//writes initial external income equal to domestic GDP
+WRITES(external, "External_Income", v[150]);											//writes initial external income equal to domestic GDP
+WRITES(external, "International_Reserves", v[150]);	
 
 //Begin Writing Government Variables																
 v[168]=VS(government, "switch_government_composition");
@@ -231,10 +232,11 @@ WRITELLS(government,"Government_Desired_Consumption", v[170]*v[144], 0, 1);		   
 WRITELLS(government,"Government_Desired_Investment", v[170]*v[144], 0, 1);		            			//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
 WRITELLS(government,"Government_Desired_Inputs", v[172]*v[144], 0, 1);		            			    //initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
 WRITELLS(government,"Government_Surplus_Rate_Target", v[169], 0, 1);
-for (i=1 ; i<=v[4] ; i++)		              													//for (government_period) lags	
+for (i=1 ; i<=v[3] ; i++)		              													//for (government_period) lags	
+{
 	WRITELLS(government,"Government_Debt", V("initial_debt_gdp")*v[150], 0, i);                  									//no debt initially																	//base interest rate parameter
-WRITELLS(government,"Government_Debt_GDP_Ratio", V("initial_debt_gdp"), 0, 1);
-
+	WRITELLS(government,"Government_Debt_GDP_Ratio", V("initial_debt_gdp"), 0, i);
+}
 
 //Begin Writing Sector Variables
 CYCLE(cur, "SECTORS")
