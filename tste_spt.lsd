@@ -781,7 +781,7 @@ Var: Country_Capital_Output_Ratio 0 s + n n
 Var: Country_Capital_Goods_Price 6 s + n n	0	0	0	0	0	0
 Var: Country_Price_Index 5 n + n n	1	1	1	1	1
 Var: Country_Profit_Share 0 s + n n
-Var: Country_Real_GDP 8 s + n p	294	294	294	294	294	294	294	294
+Var: Country_Real_GDP 8 s + n n	294	294	294	294	294	294	294	294
 Var: Country_Autonomous_Consumption 0 n + n n
 Var: Country_Autonomous_Investment 0 s + n n
 Var: Country_Capital_Stock 0 n + n n
@@ -808,7 +808,7 @@ Var: Country_Idle_Capacity 5 s + n n	0.18	0.18	0.18	0.18	0.18
 Var: Country_Wage_Share 0 s + n n
 Var: Country_Annual_CPI_Inflation 0 s + n n
 Param: switch_cb_credibility 0 n + n n	1
-Param: initial_debt_gdp 0 n + n n	0
+Param: initial_debt_gdp 0 n + n n	0.2
 Var: Country_Real_GDP_Demand 0 s + n n
 
 Object: CLASSES C	3
@@ -886,8 +886,8 @@ Param: external_shock_size 0 n + n n	0
 Var: Exchange_Rate 1 s + d n	1
 Var: External_Income 1 s + n n	100
 Var: Trade_Balance 1 s + n n	0
-Var: Capital_Flows 0 s + n n
-Param: capital_flow_adjustment 0 n + n n	1
+Var: Capital_Flows 0 n + n n
+Param: capital_flow_adjustment 0 n + n n	0
 
 Object: FINANCIAL C	1
 Param: bank_default_sensitivity 0 n + n n	1
@@ -1010,15 +1010,15 @@ Param: government_inflation_passtrought 0 n + n n	1
 Param: government_initial_capital_share 0 n + n n	0.2
 Param: government_initial_consumption_share 0 n + n n	0.1
 Param: government_initial_input_share 0 n + n n	0.1
-Param: government_max_debt 0 n + n n	0.6
-Param: government_min_debt 0 n + n n	0.4
+Param: government_max_debt 0 n + n n	0.5
+Param: government_min_debt 0 n + n n	0
 Param: government_productivity_passtrought 0 n + n n	1
 Param: government_surplus_rate_target 0 n + n n	0
-Param: government_surplus_target_adjustment 0 n + n n	0
+Param: government_surplus_target_adjustment 0 n + n n	0.1
 Param: switch_government_composition 0 n + n n	0
 Param: switch_unemployment_benefits 0 n + n n	1
 Var: Government_Debt 4 s + n n	0	0	0	0
-Var: Government_Debt_GDP_Ratio 1 s + n n	0
+Var: Government_Debt_GDP_Ratio 1 s + n p	0
 Var: Government_Desired_Consumption 1 s + n n	0
 Var: Government_Desired_Inputs 1 s + n n	0
 Var: Government_Desired_Investment 1 s + n n	0
@@ -1916,7 +1916,7 @@ END_DESCRIPTION
 Parameter_initial_debt_gdp
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.2.
 END_DESCRIPTION
 
 Variable_Country_Real_GDP_Demand
@@ -2320,7 +2320,7 @@ END_DESCRIPTION
 Parameter_exchange_rate_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 0.02.
+All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Parameter_exchange_rate_growth
@@ -2392,7 +2392,7 @@ END_DESCRIPTION
 Parameter_capital_flow_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Object_FINANCIAL
@@ -3126,7 +3126,7 @@ END_DESCRIPTION
 Parameter_government_max_debt
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Parameter_government_min_debt
@@ -3144,13 +3144,13 @@ END_DESCRIPTION
 Parameter_government_surplus_rate_target
 (no description available)
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_government_surplus_target_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_switch_government_composition

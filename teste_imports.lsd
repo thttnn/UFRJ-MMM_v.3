@@ -764,7 +764,7 @@ Var: Country_Avg_Productivity 5 n + n n	1	1	1	1	1
 Var: Country_Avg_Profit_Rate 0 s + n n
 Var: Country_Capacity_Utilization 0 s + n n
 Var: Country_Speculative_Share 0 s + n n
-Var: Country_Consumer_Price_Index 5 s + n n	1	1	1	1	1
+Var: Country_Consumer_Price_Index 5 n + n n	1	1	1	1	1
 Var: Exit 0 s + n n
 Var: Exit_Bankruptcy_Events 0 s + n n
 Var: Exit_Bankruptcy_Share 0 s + n n
@@ -864,7 +864,7 @@ Var: Class_Stock_Deposits 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Class_Stock_Loans 0 s + n n
 Var: Class_Taxation 0 s + n n
 Var: Class_Wealth_Share 0 s + n n
-Param: class_import_elasticity_price 0 n + n n	1	1	1
+Param: class_import_elasticity_price 0 n + n n	0	0	0
 Param: class_financial_share 0 n + n n	1	0	0
 
 Object: CLASS_LOANS C	1	1	1
@@ -886,8 +886,8 @@ Param: external_shock_size 0 n + n n	0
 Var: Exchange_Rate 1 s + d n	1
 Var: External_Income 1 s + n n	100
 Var: Trade_Balance 1 s + n n	0
-Var: Capital_Flows 0 s + n n
-Param: capital_flow_adjustment 0 n + n n	1
+Var: Capital_Flows 0 n + n n
+Param: capital_flow_adjustment 0 n + n n	0
 
 Object: FINANCIAL C	1
 Param: bank_default_sensitivity 0 n + n n	1
@@ -2266,7 +2266,7 @@ END_DESCRIPTION
 Parameter_class_import_elasticity_price
 (no description available)
 _INIT_
-All 3 instances equal to 1.
+All 3 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_class_financial_share
@@ -2320,19 +2320,19 @@ END_DESCRIPTION
 Parameter_exchange_rate_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 0.02.
+All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Parameter_exchange_rate_growth
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Parameter_external_income_adjustmnent
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Parameter_external_income_growth
@@ -2392,7 +2392,7 @@ END_DESCRIPTION
 Parameter_capital_flow_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Object_FINANCIAL
@@ -3018,7 +3018,7 @@ END_DESCRIPTION
 Parameter_target_inflation
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.02.
 END_DESCRIPTION
 
 Parameter_target_capacity

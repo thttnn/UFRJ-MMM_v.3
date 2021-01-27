@@ -20,7 +20,7 @@ Nominal value of external income.
 			v[10]=v[5];
 		
 		v[3]=VL("Country_Annual_Growth", 1);					//nominal growth in the last year
-		v[4]=norm(v[3], abs(v[3]));								//random draw from a normal distribution with average equals to past growth and standard deviation equals to past growth in absolute value
+		v[4]=norm(v[3], 0.01);								//random draw from a normal distribution with average equals to past growth and standard deviation equals to past growth in absolute value
 		
 		v[11]=V("external_income_adjustmnent");                 //exogenous parameter that amplifies external growth based on domestic growth
 		v[6]=(1+v[11]*v[4]+v[10])*v[0];							//current external nominal income will be past income plus random growth

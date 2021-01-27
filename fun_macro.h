@@ -151,7 +151,13 @@ EQUATION("Country_Consumer_Price_Index")
 /*
 Average Price of the consumption goods sector
 */
-RESULT(VLS(consumption, "Sector_Avg_Price", 1))
+v[0]=VS(consumption, "Sector_Avg_Price");
+v[1]=VS(consumption, "Sector_External_Price");
+v[2]=VS(external, "Exchange_Rate");
+v[3]=SUM("Class_Effective_Real_Domestic_Consumption");
+v[4]=SUM("Class_Effective_Real_Imported_Consumption");
+v[5]=(v[0]*v[3] + v[1]*v[2]*v[4])/(v[3]+v[4]);
+RESULT(v[0])
 
 
 EQUATION("Country_Annual_Inflation")

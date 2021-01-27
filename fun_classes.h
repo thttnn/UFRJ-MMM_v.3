@@ -56,22 +56,6 @@ if (v[2]==0)														//if it is class adjustment period
 			v[7]=v[0];												//use last period autonomous consumption
 		if(v[5]<0)													//if quality growth was negative
 			v[7]=v[0]*(1+v[6]*v[5]);							 	//decrease autonomous consumption by the adjustment parameter
-		
-	v[8]=VL("Class_Stock_Deposits",1);     							//class stock of deposits in the last period                
-	v[9]=VL("Class_Stock_Deposits",(v[1]+1)); 						//class stock of deposits in the las class period                          
-  	if(v[9]!=0)														//if initial stock of deposits is not zero                                                                              
-		v[10]=(v[8]-v[9])/v[9];          							//computate deposits growth growth                                                  			
-  	else     														//if stock of deposits is zero                                                                               
-		v[10]=0;		
-   v[11]=V("class_autonomous_consumption_adjustment_deposits");
-   v[13]=V("class_propensity_to_import");
-   	if(v[10]>0)
-   		v[12]=v[13]*(1+v[11]*v[10]);
-   	if(v[10]==0)
-   		v[12]=v[13];
-   	if(v[10]<0)
-   		v[12]=v[13]*(1+v[11]*v[10]); 
-	WRITE("class_propensity_to_import", v[12]);
   }
 else																//if it is not class adjustment period
 	v[7]=v[0]; 														//use last period autonomous consumption                                                                       		
@@ -82,16 +66,7 @@ EQUATION("Class_Real_Desired_Domestic_Consumption")
 /*
 Class real domestic conumption is based on average past real disposable income from profits and wages and on the class' propensity to consume, plus autonomous consumption
 */
-	v[0]=V("class_period");											//define the class adjustment period
-	v[1]=0;															//initializes the sum
-		for (i=1; i<=v[0]; i++)										//for the number os lags equal the adjustment parameter
-		{
-		v[2]=VL("Class_Real_Disposable_Profits", i);				//count class disposable profits
-		v[3]=VL("Class_Real_Disposable_Wages", i);					//count class disposable wages
-		v[1]=v[1]+v[2]+v[3];										//sum disposable wages and profits
-		}
-	//v[4]=v[1]/v[0];     											//average disposable wages+profits in the last class periods
-  	v[4]=V("Class_Avg_Real_Income");
+	v[4]=V("Class_Avg_Real_Income");
 	v[5]=V("class_propensity_to_consume");          				//class propensity to consume on income
 	v[6]=V("class_propensity_to_import");							//class propensity to import
   	v[7]=V("Class_Real_Autonomous_Consumption");    				//class autonomous consumption
@@ -101,15 +76,6 @@ RESULT(v[8])
 
 EQUATION("Class_Real_Desired_Imported_Consumption")
 	
-	v[0]=V("class_period");											//define the class adjustment period
-	v[1]=0;															//initializes the sum
-		for (i=1; i<=v[0]; i++)										//for the number os lags equal the adjustment parameter
-		{
-		v[2]=VL("Class_Real_Disposable_Profits", i);				//count class disposable profits
-		v[3]=VL("Class_Real_Disposable_Wages", i);					//count class disposable wages
-		v[1]=v[1]+v[2]+v[3];										//sum disposable wages and profits
-		}
-	//v[4]=v[1]/v[0];     											//average disposable wages+profits in the last class periods
 	v[4]=V("Class_Avg_Real_Income");
 	v[5]=V("class_propensity_to_import");							//class propensity to import
   
