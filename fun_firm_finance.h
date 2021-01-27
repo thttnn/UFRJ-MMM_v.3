@@ -193,7 +193,7 @@ EQUATION("Firm_Effective_Loans")
 Firm effective loans is the amount demanded.
 This variable also creates the object LOAN.
 */
-	v[2]=V("annual_period");
+	v[2]=V("annual_frequency");
 	v[3]=V("Firm_Interest_Rate_Short_Term");
 	v[4]=V("sector_investment_period");
 	v[5]=V("Firm_Interest_Rate_Long_Term");

@@ -25,9 +25,6 @@ input=SEARCH_CND("id_intermediate_goods_sector",1);
 //Macro Parameters
 v[0]=V("sector_investment_period");               				
 v[1]=V("markup_period");
-v[2]=V("class_period");									
-v[3]=V("annual_period");
-v[4]=V("government_period");
 v[5]=V("depreciation_period");
 v[6]=V("scale_autonomous_consumption");
 
@@ -166,18 +163,21 @@ v[159]=V("scale_debt");
 		WRITELLS(country,"Country_Annual_Growth", 0, 0, 1);													//zero by definition, no growth initally
 		WRITELLS(country,"Country_Annual_Real_Growth", 0, 0, 1);                 							//zero by definition, no growth initally
 		WRITELLS(country,"Country_Annual_Inflation", 0, 0, 1);	
-	for (i=1 ; i<=(v[3]+1) ; i++)                  												//for (annual period +1) lags
+	for (i=1 ; i<=(V("annual_frequency")+1) ; i++)                  												//for (annual period +1) lags
 		{
 		WRITELLS(country,"Country_Price_Index", v[151], 0, i);									 			//writes Price_Index, all initial price index is 1
 		WRITELLS(country,"Country_Consumer_Price_Index", v[101], 0, i);          							//writes Consumper_Price_Index, all initial price index is 1
 		}
-	for (i=1 ; i<=(2*v[3]) ; i++)                  												//for (2*annual_period) lags
+	for (i=1 ; i<=(2*V("annual_frequency")) ; i++)                  												//for (2*annual_period) lags
 		{
 		WRITELLS(country,"Country_GDP", v[150], 0, i);                     	 								//GDP
 		WRITELLS(country,"Country_Real_GDP", (v[150]/v[151]), 0, i);                  						//Real GDP will be equal to nominal GDP because price index always begins as 1
 		}
-	for (i=1 ; i<=v[0] ; i++)
+	for (i=1 ; i<=V("annual_frequency")+1 ; i++)
+		{
 		WRITELLS(country,"Country_Capital_Goods_Price", v[102], 0, i);
+		WRITELLS(country,"Country_Avg_Productivity", v[102], 0, i);
+		}
 
 
 //Begin Writing Classes Variables
@@ -190,7 +190,7 @@ CYCLE(cur, "CLASSES")
 	v[164]=(v[161]*v[148]+v[162]*v[146])*(1-v[163]);             								//class nominal net income																		//total imports
 	//v[165]=v[6]*v[41]*v[162];																	//class initial autonomous consumption
 	v[165]=v[6]*v[41]/v[160];
-		for (i=1 ; i<=v[2] ; i++)                          										//for (class_period) lags
+		for (i=1 ; i<=V("annual_frequency") ; i++)                          										//for (class_period) lags
 			{
 			WRITELLS(cur, "Class_Nominal_Income", v[164], 0, i);            					//writes Class_Nominal_Income
 			WRITELLS(cur, "Class_Real_Income", (v[164]/v[101]), 0, i);							//writes Class_Real_Income
@@ -232,7 +232,7 @@ WRITELLS(government,"Government_Desired_Consumption", v[170]*v[144], 0, 1);		   
 WRITELLS(government,"Government_Desired_Investment", v[170]*v[144], 0, 1);		            			//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
 WRITELLS(government,"Government_Desired_Inputs", v[172]*v[144], 0, 1);		            			    //initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
 WRITELLS(government,"Government_Surplus_Rate_Target", v[169], 0, 1);
-for (i=1 ; i<=v[3] ; i++)		              													//for (government_period) lags	
+for (i=1 ; i<=V("annual_frequency")+1 ; i++)		              													//for (government_period) lags	
 {
 	WRITELLS(government,"Government_Debt", V("initial_debt_gdp")*v[150], 0, i);                  									//no debt initially																	//base interest rate parameter
 	WRITELLS(government,"Government_Debt_GDP_Ratio", V("initial_debt_gdp"), 0, i);
@@ -293,12 +293,11 @@ CYCLE(cur, "SECTORS")
 		WRITELLS(cur, "Sector_Demand_Met_By_Imports", 1, 0, i);                      			//it is assumed thatt all imports are met initially. Equals 1 by definition
 		WRITELLS(cur, "Sector_Effective_Orders", v[200], 0, i);               					//Effective_Orders_Sectors equals demand_initial
 		}		
-	for (i=1; i<=v[2]; i++)
-		WRITELLS(cur, "Sector_Avg_Price", v[204], 0, i);                                   		//Avg_Price equals avg_price initial
-	for (i=1 ; i<=(v[2]+1) ; i++)                        		 								//for (class_period+1) lags
+	for (i=1 ; i<=(V("annual_frequency")+1) ; i++)                        		 								//for (class_period+1) lags
 		{
 		WRITELLS(cur, "Sector_Avg_Quality", 1, 0, i);               							//Effective_Orders_Sectors equals demand_initial
 		WRITELLS(cur, "Sector_Employment", v[200]/v[205], 0, i);               					//Effective_Orders_Sectors equals demand_initial
+		WRITELLS(cur, "Sector_Avg_Price", v[204], 0, i);                                   		//Avg_Price equals avg_price initial
 		}
 		WRITELLS(cur, "Sector_Productive_Capacity_Available", 0, 0, 1);                  		//it is assumed that there is no entry or exit initially. Equals 0 by definition
 		WRITELLS(cur, "Sector_Avg_Competitiveness", 1, 0, 1);                     				//if all firms are the same, equals 1 by definition

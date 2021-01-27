@@ -146,7 +146,7 @@ EQUATION("Country_Annual_Inflation")
 /*
 Annual growth of the overall price index
 */
-	v[0]=V("annual_period");
+	v[0]=V("annual_frequency");
 	v[1]=VL("Country_Price_Index",1);
 	v[2]=VL("Country_Price_Index",(v[0]+1));
 	v[3]=(v[1]/v[2])-1;
@@ -157,7 +157,7 @@ EQUATION("Country_Annual_CPI_Inflation")
 /*
 Annual growth of the consumer price index
 */
-	v[0]=V("annual_period");
+	v[0]=V("annual_frequency");
 	v[1]=VL("Country_Consumer_Price_Index",1);
 	v[2]=VL("Country_Consumer_Price_Index",(v[0]+1));
 	v[3]=(v[1]/v[2])-1;
@@ -331,7 +331,7 @@ EQUATION("Country_Annual_Growth")
 /*
 Annual Nominal GDP growth rate.
 */
-	v[0]=V("annual_period");
+	v[0]=V("annual_frequency");
 	v[1]=0;
 	for (i=0; i<=(v[0]-1); i++)
 		v[1]=v[1]+VL("Country_GDP", i);
@@ -348,7 +348,7 @@ EQUATION("Country_Annual_Real_Growth")
 /*
 Annual Real GDP Growth rate.
 */
-	v[0]=V("annual_period");
+	v[0]=V("annual_frequency");
 	v[1]=0;
 	for (i=0; i<=(v[0]-1); i++)
 		v[1]=v[1]+VL("Country_Real_GDP", i);
@@ -365,7 +365,7 @@ EQUATION("Country_Likelihood_Crisis")
 /*
 Counts the number of crisis ocurrances. 
 */
-	v[7]=V("annual_period");
+	v[7]=V("annual_frequency");
 	v[0]= fmod((double) t,v[7]);        		//divides the time period by four
 	if(v[0]==0)                        		 	//if the rest of the above division is zero (begenning of the year)
 		{

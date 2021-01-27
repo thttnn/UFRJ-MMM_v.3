@@ -6,7 +6,7 @@ Interest Rates
 
 EQUATION("Policy_Targets")
 USE_SAVED
-v[0]=V("government_period");
+v[0]=V("annual_frequency");
 v[13]= fmod((double) t,v[0]); 
 v[1]=V("switch_moving_targets");
 v[2]=V("begin_monetary_policy");

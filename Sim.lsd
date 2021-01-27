@@ -621,7 +621,7 @@ Label Root
 
 		}
 
-		Param: annual_period
+		Param: annual_frequency
 		Param: class_period
 		Param: crisis_threshold
 		Param: depreciation_period
@@ -740,7 +740,7 @@ Param: switch_monetary_policy 0 n + n n	1
 Param: switch_moving_targets 0 n + n n	0
 
 Object: COUNTRY C	1
-Param: annual_period 0 n + n n	4
+Param: annual_frequency 0 n + n n	4
 Param: class_period 0 n + n n	4
 Param: crisis_threshold 0 n + n n	0
 Param: depreciation_period 0 n + n n	40
@@ -1018,8 +1018,8 @@ Param: government_min_debt 0 n + n n	0.3
 Param: government_productivity_passtrought 0 n + n n	1
 Param: government_surplus_rate_target 0 n + n n	0
 Param: government_surplus_target_adjustment 0 n + n n	0
-Var: Government_Debt 4 s + n n	0	0	0	0
-Var: Government_Debt_GDP_Ratio 4 s + n n	0	0	0	0
+Var: Government_Debt 5 s + n n	0	0	0	0	0
+Var: Government_Debt_GDP_Ratio 5 s + n n	0	0	0	0	0
 Var: Government_Desired_Consumption 1 s + n n	0
 Var: Government_Desired_Inputs 1 s + n n	0
 Var: Government_Desired_Investment 1 s + n n	0
@@ -1102,7 +1102,7 @@ Var: Sector_Avg_Investment_Rate 0 s + n n
 Var: Sector_Avg_Liquidity_Rate 0 s + n n
 Var: Sector_Avg_Markup 0 n + n n
 Var: Sector_Avg_Modernization_Rate 0 s + n n
-Var: Sector_Avg_Price 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Avg_Price 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Sector_Avg_Productivity 1 s + n n	0	0	0
 Var: Sector_Avg_Quality 5 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
 Var: Sector_Avg_Wage 0 s + n n
@@ -1499,7 +1499,7 @@ _INIT_
 
 END_DESCRIPTION
 
-Parameter_annual_period
+Parameter_annual_frequency
 (no description available)
 _INIT_
 All 1 instances equal to 4.

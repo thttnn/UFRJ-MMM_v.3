@@ -6,7 +6,7 @@ EQUATION("Class_Avg_Real_Income")
 Class average real income based on the past "class period" periods, considering financial obligations.
 Will affect induced consumption, imports decisions and debt assessment
 */
-	v[0]=V("class_period");											//define the class adjustment period
+	v[0]=V("annual_frequency");											//define the class adjustment period
 	v[1]=0;															//initializes the sum
 	for (i=1; i<=v[0]; i++)											//for the number os lags equal the adjustment parameter
 		v[1]=v[1]+VL("Class_Real_Income", i);
@@ -19,7 +19,7 @@ EQUATION("Class_Avg_Nominal_Income")
 Class average nominal income based on thepast "class period" periods.
 Will be the base for debt rate calculus
 */
-	v[0]=V("class_period");											//define the class adjustment period
+	v[0]=V("annual_frequency");											//define the class adjustment period
 	v[1]=0;															//initializes the sum
 	for (i=1; i<=v[0]; i++)											//for the number os lags equal the adjustment parameter
 		v[1]=v[1]+VL("Class_Nominal_Income", i);
@@ -32,7 +32,7 @@ EQUATION("Class_Real_Autonomous_Consumption")
 Class autonomous consumption depends on the average quality growth of the consumption goods sector
 */
 v[0]=CURRENT;                 										//class autonomous consumption in the last period
-v[1]=V("class_period");										    	//defines the class adjustment period 
+v[1]=V("annual_frequency");										    	//defines the class adjustment period 
 v[2]= fmod((double) t,v[1]);										//divides time period by the class period and takes the rest
 if (v[2]==0)														//if it is class adjustment period 	
 	{
@@ -94,7 +94,7 @@ EQUATION("Class_Avg_Debt_Rate")
 /*
 Class avg debt rate of the last class period (equal to annual period)
 */
-	v[0]=V("class_period");
+	v[0]=V("annual_frequency");
 	v[1]=0;															//initializes the sum
 	for (i=1; i<=v[0]; i++)											//from 0 to investment period-1 lags
 		v[1]=v[1]+VL("Class_Debt_Rate", i);							//sum up class lagged debt rate
@@ -180,7 +180,7 @@ Inspired by Moreira (2010)
 Proportion of average nominal income capital. 
 Evolves based on average debt rate and income growth.
 */
-	v[0]=V("class_period");
+	v[0]=V("annual_frequency");
 	v[1]=fmod((double)t,v[0]);
 	v[2]=VL("Class_Nominal_Income",1);
 	v[3]=VL("Class_Nominal_Income",v[0]);
@@ -245,7 +245,7 @@ Class desired debt rate.
 Formulation proposed by Moreira (2010) 
 Evolves based on nominal income growth.
 */
-	v[0]=V("class_period");
+	v[0]=V("annual_frequency");
 	v[1]=fmod((double)t,v[0]);
 	v[2]=VL("Class_Nominal_Income",1);
 	v[3]=VL("Class_Nominal_Income",v[0]);
@@ -309,7 +309,7 @@ Class effective loans is the amount demanded that the financial sector was able 
 */
 	v[0]=V("Class_Demand_Loans");
 	v[1]=V("Class_Interest_Rate");
-	v[2]=V("class_period");
+	v[2]=V("annual_frequency");
 
 	cur = ADDOBJ("CLASS_LOANS");
 	WRITES(cur, "class_loan_total_amount", v[0]);

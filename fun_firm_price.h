@@ -46,7 +46,7 @@ EQUATION("Firm_Wage")
 Nominal Wage of the firm. It increases year by year depending on inflation and firm's avg productivity. Passtrough parameters are sectorial.
 */
 	v[0]=VL("Firm_Wage",1);                                                          	 //firm wage in the last period
-	v[11]=V("annual_period");
+	v[11]=V("annual_frequency");
 	v[1]= fmod((double) t,v[11]);                                                        //divide the time period by the annual period parameter
 	if(v[1]==0)                                                                      	 //if the rest of the above division is zero (beggining of the year, adjust wages)
 		{

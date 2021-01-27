@@ -6,10 +6,10 @@ EQUATION("External_Income")
 Nominal value of external income.
 */
 	v[0]=CURRENT;
-	//v[1]=V("annual_period");
-	//v[2]=fmod((double) t,v[1]);                					//divides the time period by annual adjustment period (adjust annualy)
-	//if(v[2]==0)                               					//if the rest of the division is zero (adjust external income)
-	//	{
+	v[1]=V("annual_frequency");
+	v[2]=fmod((double) t,v[1]);                					//divides the time period by annual adjustment period (adjust annualy)
+	if(v[2]==0)                               					//if the rest of the division is zero (adjust external income)
+		{
 		v[3]=V("external_income_growth");						//fixed external income growth
 		v[4]=V("external_income_sd");							//fixed external income sd
 		
@@ -26,9 +26,9 @@ Nominal value of external income.
 			v[12]=v[8];
 
 		v[13]=v[12]*v[0];
-	//	}
-	//else														//if it is not annual period
-	//	v[13]=v[0];												//use last period income
+		}
+	else														//if it is not annual period
+		v[13]=v[0];												//use last period income
 RESULT(max(0,v[13]))
 
 
