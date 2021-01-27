@@ -5,31 +5,31 @@ EQUATION("External_Income")
 /*
 Nominal value of external income.
 */
-	v[0]=VL("External_Income",1);
+	v[0]=CURRENT;
 	v[1]=V("annual_period");
-	v[2]= fmod((double) t,v[1]);                				//divides the time period by annual adjustment period (adjust annualy)
+	v[2]=fmod((double) t,v[1]);                					//divides the time period by annual adjustment period (adjust annualy)
 	if(v[2]==0)                               					//if the rest of the division is zero (adjust external income)
 		{
-		v[5]=V("external_income_growth");						//fixed external income growth
-		v[7]=V("external_shock_begin");          				//defines when the shock happens
-		v[8]=V("external_shock_duration");       				//defines how long the shock lasts
-		v[9]=V("external_shock_size");           				//defines the size, in percentage, of the shock
-		if(t>=v[7]&&t<v[7]+v[8])
-			v[10]=v[5]*(1+v[9]);
+		v[3]=V("external_income_growth");						//fixed external income growth
+		v[4]=V("external_income_sd");							//fixed external income sd
+		
+		v[6]=VL("Country_Annual_Growth", 1);					//nominal growth in the last year
+		v[7]=V("external_income_adjustmnent");                  //exogenous parameter that amplifies external growth based on domestic growth
+		v[8]=1+norm((v[3]+v[6]*v[7]), v[4]);					//random draw from a normal distribution with average equals to past growth and standard deviation equals to past growth in absolute value
+		
+		v[9]=V("external_shock_begin");          				//defines when the shock happens
+		v[10]=V("external_shock_duration");       				//defines how long the shock lasts
+		v[11]=V("external_shock_size");           				//defines the size, in percentage, of the shock
+		if(t>=v[9]&&t<v[9]+v[10])
+			v[12]=v[8]*(1+v[11]);
 		else
-			v[10]=v[5];
-		
-		v[3]=VL("Country_Annual_Growth", 1);					//nominal growth in the last year
-		v[4]=norm(v[3], 0.01);								//random draw from a normal distribution with average equals to past growth and standard deviation equals to past growth in absolute value
-		
-		v[11]=V("external_income_adjustmnent");                 //exogenous parameter that amplifies external growth based on domestic growth
-		v[6]=(1+v[11]*v[4]+v[10])*v[0];							//current external nominal income will be past income plus random growth
-		
-		
+			v[12]=v[8];
+
+		v[13]=v[12]*v[0];
 		}
 	else														//if it is not annual period
-		v[6]=v[0];												//use last period income
-RESULT(max(0,v[6]))
+		v[13]=v[0];												//use last period income
+RESULT(max(0,v[13]))
 
 
 EQUATION("Capital_Flows")

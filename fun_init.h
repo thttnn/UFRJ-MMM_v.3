@@ -210,7 +210,7 @@ CYCLE(cur, "CLASSES")
 v[167]=COUNT("CLASSES");
 
 //Begin Writing External Variables
-WRITELLS(external, "External_Income", v[150], 0, 1);												//writes initial external income equal to domestic GDP
+WRITELS(external, "External_Income", v[150], 0);												//writes initial external income equal to domestic GDP
 
 //Begin Writing Government Variables																
 v[168]=VS(government, "switch_government_composition");

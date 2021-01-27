@@ -91,6 +91,7 @@ Label Root
 			Var: Trade_Balance
 			Var: Capital_Flows
 			Param: capital_flow_adjustment
+			Param: external_income_sd
 
 		}
 
@@ -884,10 +885,11 @@ Param: external_shock_begin 0 n + n n	200
 Param: external_shock_duration 0 n + n n	20
 Param: external_shock_size 0 n + n n	0
 Var: Exchange_Rate 1 s + d n	1
-Var: External_Income 1 s + n n	100
+Var: External_Income 0 s + n n
 Var: Trade_Balance 1 s + n n	0
 Var: Capital_Flows 0 s + n n
 Param: capital_flow_adjustment 0 n + n n	1
+Param: external_income_sd 0 n + n n	0.01
 
 Object: FINANCIAL C	1
 Param: bank_default_sensitivity 0 n + n n	1
@@ -2393,6 +2395,12 @@ Parameter_capital_flow_adjustment
 (no description available)
 _INIT_
 All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_external_income_sd
+(no description available)
+_INIT_
+All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Object_FINANCIAL
