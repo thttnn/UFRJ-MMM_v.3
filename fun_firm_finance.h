@@ -4,7 +4,7 @@ EQUATION("Firm_Avg_Debt_Rate")
 /*
 Firm's avg debt rate of the last investment period
 */
-	v[0]=V("sector_investment_period");
+	v[0]=V("sector_investment_frequency");
 	v[3]=0;																				//initializes the sum
 	for (v[1]=1; v[1]<=v[0]; v[1]=v[1]+1)												//from 0 to investment period-1 lags
 		{
@@ -48,7 +48,7 @@ Formulation proposed by Moreira (2010)
 Proportion of physical capital. 
 Evolves based on average debt rate and profit growth.
 */
-	v[0]=V("sector_investment_period");
+	v[0]=V("sector_investment_frequency");
 	v[1]=V("Firm_Investment_Period");
 	v[2]=V("Firm_Net_Profits");
 	v[3]=VL("Firm_Net_Profits",v[0]);
@@ -113,7 +113,7 @@ Firm's desired debt rate as a proportion to total capital.
 Formulation proposed by Moreira (2010) 
 Evolves based on capacity utilization and profit growth.
 */
-	v[0]=V("sector_investment_period");
+	v[0]=V("sector_investment_frequency");
 	v[1]=V("Firm_Investment_Period");
 	v[2]=V("Firm_Net_Profits");
 	v[3]=VL("Firm_Net_Profits",v[0]);
@@ -195,10 +195,10 @@ This variable also creates the object LOAN.
 */
 	v[2]=V("annual_frequency");
 	v[3]=V("Firm_Interest_Rate_Short_Term");
-	v[4]=V("sector_investment_period");
+	v[4]=V("sector_investment_frequency");
 	v[5]=V("Firm_Interest_Rate_Long_Term");
 	v[8]=V("firm_effective_loans");
-	v[9]=V("depreciation_period");
+	v[9]=V("sector_capital_duration");
 	v[10]=V("Firm_Desired_Investment_Expenses");
 	
 	cur = ADDOBJ("FIRM_LOANS");

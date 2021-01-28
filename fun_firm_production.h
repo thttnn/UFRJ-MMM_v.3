@@ -33,7 +33,7 @@ Programed Production is subjected to a existing capactity restriction, but it is
 		v[7]=v[1]*(1+v[5])-v[6];                            //planned production will be expected sales plus the desired proportion of investories minus the existing stock of inventories
 	else                                                  	//if it is a capital goods sector
 		{
-		v[10]=V("sector_investment_period");
+		v[10]=V("sector_investment_frequency");
 		v[7]=0;
 		for(i=0;i<=(v[10]-1);i++)
 			{

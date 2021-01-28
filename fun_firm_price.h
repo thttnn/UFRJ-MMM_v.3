@@ -3,7 +3,7 @@ EQUATION("Firm_Desired_Markup")
 /*
 Firm Variable
 */
-	v[11]=V("markup_period");
+	v[11]=V("sector_price_frequency");
 	v[0]=VL("Firm_Desired_Markup",1);                                             	//strategic markup in the last period
 	v[1]= fmod((double) t-1, v[11]);                                         		//divides the time period by 8
 
@@ -100,7 +100,7 @@ EQUATION("Firm_Unit_Financial_Cost")
 /*
 Financial costs include interest payment and debt payment. Unit financial cost is total financial costs divided by effective production.
 */
-	v[0]=V("sector_investment_period");
+	v[0]=V("sector_investment_frequency");
 	v[6]=V("sector_desired_degree_capacity_utilization");
 	v[4]=0;
 	for(i=1; i<=v[0]; i++)
@@ -173,7 +173,7 @@ EQUATION("Firm_Desired_Market_Share")
 /*
 Desired Market Share is a simple average between last period's desired market share and firm's average market share
 */
-	v[0]=V("markup_period");
+	v[0]=V("sector_price_frequency");
 	v[1]=VL("Firm_Desired_Market_Share", 1);                        //desired market share in the last period
 	v[2]=VL("Firm_Avg_Market_Share", 1);                        	//firm's average market share (desired)
 	v[3]= fmod((double) t-1, v[0]);                               	//devides the last period by eight
@@ -188,7 +188,7 @@ EQUATION("Firm_Avg_Market_Share")
 /*
 Average Market Share between the market share of the firm in the last markup period
 */
-	v[0]=V("markup_period");
+	v[0]=V("sector_price_frequency");
 	v[1]=0;										   						//initializes the sum
 	for (i=0; i<=(v[0]-1); i++)											//from 0 to markup period-1 lags
 		v[1]=v[1]+VL("Firm_Market_Share", i);							//sum up firm's lagged market share
@@ -210,7 +210,7 @@ EQUATION("Firm_Avg_Potential_Markup")
 /*
 Average Potential Markup between the potential markup of the firm in the last 8 periods
 */
-	v[0]=V("markup_period");
+	v[0]=V("sector_price_frequency");
 	v[1]=0;																//initializes the sum
 	for (i=0; i<=(v[0]-1); i++)											//from 0 to markup period-1 lags
 		v[1]=v[1]+VL("Firm_Potential_Markup", i);						//sum up firm's lagged potential markup

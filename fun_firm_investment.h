@@ -3,7 +3,7 @@ EQUATION("Firm_Investment_Period")
 /*
 This variable writes for each firm, if it is investment period or not, assuming 1 or 0.
 */
-	v[0]=V("sector_investment_period");						//sector investment period parameter
+	v[0]=V("sector_investment_frequency");						//sector investment period parameter
 	v[1]=fmod((t+v[0]),v[0]);								//devides the current time step by the investment period and takes the rest
 	v[2]=V("id_firm_number");								//firm number
 	v[3]=fmod((v[2]+v[0]),v[0]);							//divides the firm number by the investment period and takes the rest
@@ -18,7 +18,7 @@ EQUATION("Firm_Expected_Sales_Long_Term")
 /*
 The sectors update their productive capacity from year to year, time it takes for new capacity to be produced and to be available for use. The variation in the desired productive capacity is then defined according to the expected orders for the following year. Expected orders are calculated from the average of actual orders for the last six periods and the growth projection for six periods thereafter. This projection is determined on the basis of the difference between the averages of orders for the last six periods and the six periods prior to them, on which a doubling annual extrapolation factor applies.
 */
-	v[0]=V("sector_investment_period");
+	v[0]=V("sector_investment_frequency");
 	v[3]=0;													//initializes the sum
 	for (v[1]=0; v[1]<=(v[0]-1); v[1]=v[1]+1)				//from 0 to investment period-1 lags
 		{
@@ -58,8 +58,8 @@ Nominal value of desired new capital goods.
    		v[1]=V("Firm_Productive_Capacity"); 						//current productive capacity
 		
 		v[10]=0;													//initializes the cycle
-		v[11]=V("depreciation_period");								//depreciation period
-		v[12]=V("sector_investment_period");						//investment period
+		v[11]=V("sector_capital_duration");								//depreciation period
+		v[12]=V("sector_investment_frequency");						//investment period
 		
 		CYCLE(cur, "CAPITALS")										//cycle trough all capital goods
 		{
@@ -96,7 +96,7 @@ EQUATION("Firm_Desired_Replacement_Investment_Expenses")
 /*
 Nominal value of derired new capital goods for modernization replacement
 */
- v[1]=V("sector_investment_period");
+ v[1]=V("sector_investment_frequency");
  v[3]=V("Firm_Investment_Period");
  v[4]=V("Firm_Frontier_Productivity");
  v[5]=V("sector_learning_adjustment");
@@ -104,7 +104,7 @@ Nominal value of derired new capital goods for modernization replacement
  v[7]=V("Firm_Max_Productivity");
  v[8]=max(v[4]*(1+v[6]*v[5]),v[7]);
  
- v[9]=V("depreciation_period");
+ v[9]=V("sector_capital_duration");
  v[10]=V("Firm_Wage");
  v[11]=V("Country_Capital_Goods_Price");
  v[12]=V("sector_capital_output_ratio");
@@ -198,14 +198,14 @@ EQUATION("Firm_Demand_Productive_Capacity_Replacement")
 New productive capacity in aquisition of new equipment to replace obsolete ones.
 */
 	v[0]=V("Firm_Available_Funds_Replacement");
-	v[1]=V("sector_investment_period");
+	v[1]=V("sector_investment_frequency");
 	v[3]=V("Firm_Investment_Period");
 	v[4]=V("Firm_Frontier_Productivity");
 	v[5]=V("sector_learning_adjustment");
 	v[6]=V("sector_antecipation");
 	v[7]=V("Firm_Max_Productivity");
 	v[8]=max(v[4]*(1+v[6]*v[5]),v[7]);
-	v[9]=V("depreciation_period");
+	v[9]=V("sector_capital_duration");
 	v[10]=V("Firm_Wage");
 	v[11]=V("Country_Capital_Goods_Price");
 	v[12]=V("sector_capital_output_ratio");
@@ -321,7 +321,7 @@ EQUATION("Firm_Demand_Capital_Goods")
 /*
 The demand for capital goods in each period will be determined by the sum of 1/6 of the variation of the productive capacity with modernization
 */
-	v[0]=V("sector_investment_period");
+	v[0]=V("sector_investment_frequency");
 	v[4]=0;																					//initializes the sum
 	for (v[1]=1; v[1]<=v[0]; v[1]=v[1]+1)													//from the last production period until the last investment period
 		{
@@ -382,14 +382,14 @@ Sum of profit rate over interest rate on deposits.
 Formulation proposed by Moreira (2010)
 Taker's risk is already included in the firm specific interest rate.
 */
-	v[0]=V("depreciation_period");
+	v[0]=V("sector_capital_duration");
 	v[1]=V("Firm_Profit_Rate");
 	v[2]=V("Firm_Interest_Rate_Long_Term");
 	v[3]=V("Basic_Interest_Rate");
 	v[4]=V("Interest_Rate_Deposits");
 	v[5]=V("switch_discount_rate");
 	v[6]=V("Country_Capital_Goods_Price");
-	v[7]=V("depreciation_period");
+	v[7]=V("sector_capital_duration");
 	v[8]=v[2]*v[6] + v[6]/v[7];
 	
 	if(v[5]==1)//use firm specific rate

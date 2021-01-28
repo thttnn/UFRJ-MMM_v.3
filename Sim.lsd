@@ -430,7 +430,7 @@ Label Root
 			Param: sector_initial_wage
 			Param: sector_innovation_proportion
 			Param: sector_input_tech_coefficient
-			Param: sector_investment_period
+			Param: sector_investment_frequency
 			Param: sector_learning_adjustment
 			Param: sector_market_share_expansion
 			Param: sector_markup_apropriation
@@ -509,6 +509,8 @@ Label Root
 			Var: Sector_Exports_Share
 			Param: sector_competitiveness_adjustment
 			Param: sector_external_price_sd
+			Param: sector_price_frequency
+			Param: sector_capital_duration
 
 		}
 
@@ -622,16 +624,12 @@ Label Root
 		}
 
 		Param: annual_frequency
-		Param: class_period
 		Param: crisis_threshold
-		Param: depreciation_period
 		Param: entry_debt_share
-		Param: government_period
 		Param: initial_class_desired_debt_rate
 		Param: initial_class_liquidity_preference
 		Param: initial_firm_desired_debt_rate
 		Param: initial_firm_liquidity_preference
-		Param: markup_period
 		Param: number_object_banks
 		Param: scale_autonomous_consumption
 		Param: scale_bank_pro
@@ -741,16 +739,12 @@ Param: switch_moving_targets 0 n + n n	0
 
 Object: COUNTRY C	1
 Param: annual_frequency 0 n + n n	4
-Param: class_period 0 n + n n	4
 Param: crisis_threshold 0 n + n n	0
-Param: depreciation_period 0 n + n n	40
 Param: entry_debt_share 0 n + n n	1
-Param: government_period 0 n + n n	4
 Param: initial_class_desired_debt_rate 0 n + n n	0.5
 Param: initial_class_liquidity_preference 0 n + n n	0
 Param: initial_firm_desired_debt_rate 0 n + n n	0.5
 Param: initial_firm_liquidity_preference 0 n + n n	0
-Param: markup_period 0 n + n n	4
 Param: number_object_banks 0 n + n n	5
 Param: scale_autonomous_consumption 0 n + n n	1
 Param: scale_bank_pro 0 n + n n	0
@@ -1070,7 +1064,7 @@ Param: sector_initial_quality 0 n + n n	1	1	1
 Param: sector_initial_wage 0 n + n n	1	1	1
 Param: sector_innovation_proportion 0 n + n n	0.5	0.5	0.5
 Param: sector_input_tech_coefficient 0 n + n n	0.5	0.5	0.5
-Param: sector_investment_period 0 n + n n	4	4	4
+Param: sector_investment_frequency 0 n + n n	4	4	4
 Param: sector_learning_adjustment 0 n + n n	0	0	0
 Param: sector_market_share_expansion 0 n + n n	1	1	1
 Param: sector_markup_apropriation 0 n + n n	0	0	0
@@ -1149,6 +1143,8 @@ Param: sector_passthrough_capacity 0 n + n n	0	0	0
 Var: Sector_Exports_Share 0 s + n n
 Param: sector_competitiveness_adjustment 0 n + n n	1	1	1
 Param: sector_external_price_sd 0 n + n n	0	0	0
+Param: sector_price_frequency 0 n + n n	4	4	4
+Param: sector_capital_duration 0 n + n n	40	40	40
 
 Object: FIRMS C	1	1	1
 Var: Firm_Available_Funds_After_Replacement 0 n + n n
@@ -1505,34 +1501,16 @@ _INIT_
 All 1 instances equal to 4.
 END_DESCRIPTION
 
-Parameter_class_period
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
 Parameter_crisis_threshold
 (no description available)
 _INIT_
 
 END_DESCRIPTION
 
-Parameter_depreciation_period
-(no description available)
-_INIT_
-All 1 instances equal to 40.
-END_DESCRIPTION
-
 Parameter_entry_debt_share
 (no description available)
 _INIT_
 All 1 instances equal to 1.
-END_DESCRIPTION
-
-Parameter_government_period
-(no description available)
-_INIT_
-All 1 instances equal to 4.
 END_DESCRIPTION
 
 Parameter_initial_class_desired_debt_rate
@@ -1557,12 +1535,6 @@ Parameter_initial_firm_liquidity_preference
 (no description available)
 _INIT_
 All 1 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_markup_period
-(no description available)
-_INIT_
-All 1 instances equal to 4.
 END_DESCRIPTION
 
 Parameter_number_object_banks
@@ -3505,7 +3477,7 @@ _INIT_
 All 3 instances equal to 0.5.
 END_DESCRIPTION
 
-Parameter_sector_investment_period
+Parameter_sector_investment_frequency
 (no description available)
 _INIT_
 All 3 instances equal to 4.
@@ -3995,6 +3967,18 @@ Parameter_sector_external_price_sd
 (no description available)
 _INIT_
 All 3 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_sector_price_frequency
+(no description available)
+_INIT_
+All 1 instances equal to 4.
+END_DESCRIPTION
+
+Parameter_sector_capital_duration
+(no description available)
+_INIT_
+All 1 instances equal to 40.
 END_DESCRIPTION
 
 Object_FIRMS

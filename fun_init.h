@@ -23,9 +23,7 @@ input=SEARCH_CND("id_intermediate_goods_sector",1);
 
 
 //Macro Parameters
-v[0]=V("sector_investment_period");               				
-v[1]=V("markup_period");
-v[5]=V("depreciation_period");
+         			
 v[6]=V("scale_autonomous_consumption");
 
 //Class Aggregation
@@ -53,41 +51,41 @@ cur3=SEARCH_CND("id_intermediate_goods_sector",1);
 
 v[40]=V("number_object_banks");																			//sector control parameter
 
-v[41]=VS(cur1, "sector_number_object_firms");															//sector control parameter
-v[42]=VS(cur2, "sector_number_object_firms");															//sector control parameter
-v[43]=VS(cur3, "sector_number_object_firms");															//sector control parameter
+v[41]=VS(consumption, "sector_number_object_firms");													//sector control parameter
+v[42]=VS(capital, "sector_number_object_firms");														//sector control parameter
+v[43]=VS(input, "sector_number_object_firms");															//sector control parameter
 
-v[44]=VS(cur1, "sector_initial_productivity");															//sector control parameter
-v[45]=VS(cur2, "sector_initial_productivity");															//sector control parameter
-v[46]=VS(cur3, "sector_initial_productivity");															//sector control parameter
+v[44]=VS(consumption, "sector_initial_productivity");													//sector control parameter
+v[45]=VS(capital, "sector_initial_productivity");														//sector control parameter
+v[46]=VS(input, "sector_initial_productivity");															//sector control parameter
 
-v[47]=VS(cur1, "sector_initial_markup");																//sector control parameter
-v[48]=VS(cur2, "sector_initial_markup");																//sector control parameter
-v[49]=VS(cur3, "sector_initial_markup");																//sector control parameter
+v[47]=VS(consumption, "sector_initial_markup");															//sector control parameter
+v[48]=VS(capital, "sector_initial_markup");																//sector control parameter
+v[49]=VS(input, "sector_initial_markup");																//sector control parameter
 
-v[50]=VS(cur1, "sector_initial_wage");																	//sector control parameter
-v[51]=VS(cur2, "sector_initial_wage");																	//sector control parameter
-v[52]=VS(cur3, "sector_initial_wage");																	//sector control parameter
+v[50]=VS(consumption, "sector_initial_wage");															//sector control parameter
+v[51]=VS(capital, "sector_initial_wage");																//sector control parameter
+v[52]=VS(input, "sector_initial_wage");																	//sector control parameter
 
-v[53]=VS(cur1, "sector_input_tech_coefficient");														//sector control parameter
-v[54]=VS(cur2, "sector_input_tech_coefficient");														//sector control parameter
-v[55]=VS(cur3, "sector_input_tech_coefficient");														//sector control parameter
+v[53]=VS(consumption, "sector_input_tech_coefficient");													//sector control parameter
+v[54]=VS(capital, "sector_input_tech_coefficient");														//sector control parameter
+v[55]=VS(input, "sector_input_tech_coefficient");														//sector control parameter
 
-v[56]=VS(cur1, "sector_capital_output_ratio");															//sector control parameter
-v[57]=VS(cur2, "sector_capital_output_ratio");															//sector control parameter
-v[58]=VS(cur3, "sector_capital_output_ratio");															//sector control parameter
+v[56]=VS(consumption, "sector_capital_output_ratio");													//sector control parameter
+v[57]=VS(capital, "sector_capital_output_ratio");														//sector control parameter
+v[58]=VS(input, "sector_capital_output_ratio");															//sector control parameter
 
-v[59]=VS(cur1, "sector_rnd_revenue_proportion");														//sector control parameter
-v[60]=VS(cur2, "sector_rnd_revenue_proportion");														//sector control parameter
-v[61]=VS(cur3, "sector_rnd_revenue_proportion");														//sector control parameter
+v[59]=VS(consumption, "sector_rnd_revenue_proportion");													//sector control parameter
+v[60]=VS(capital, "sector_rnd_revenue_proportion");														//sector control parameter
+v[61]=VS(input, "sector_rnd_revenue_proportion");														//sector control parameter
 
-v[62]=VS(cur1, "sector_profits_distribution_rate");														//sector control parameter
-v[63]=VS(cur2, "sector_profits_distribution_rate");														//sector control parameter
-v[64]=VS(cur3, "sector_profits_distribution_rate");														//sector control parameter
+v[62]=VS(consumption, "sector_profits_distribution_rate");												//sector control parameter
+v[63]=VS(capital, "sector_profits_distribution_rate");													//sector control parameter
+v[64]=VS(input, "sector_profits_distribution_rate");													//sector control parameter
 
-v[65]=VS(cur1, "sector_indirect_tax_rate");																//sector control parameter
-v[66]=VS(cur2, "sector_indirect_tax_rate");																//sector control parameter
-v[67]=VS(cur3, "sector_indirect_tax_rate");																//sector control parameter
+v[65]=VS(consumption, "sector_indirect_tax_rate");														//sector control parameter
+v[66]=VS(capital, "sector_indirect_tax_rate");															//sector control parameter
+v[67]=VS(input, "sector_indirect_tax_rate");															//sector control parameter
 
 v[74]=v[41]+v[42]+v[43];																		//total number of firms
 v[75]=v[41]/v[74];																				//sector share of firms
@@ -241,6 +239,9 @@ for (i=1 ; i<=V("annual_frequency")+1 ; i++)		              													//for (
 //Begin Writing Sector Variables
 CYCLE(cur, "SECTORS")
 {
+	v[0]=VS(cur,"sector_investment_frequency"); 
+	v[1]=VS(cur,"sector_price_frequency");	
+	v[5]=VS(cur,"sector_capital_duration");
 	v[201]=VS(cur, "id_consumption_goods_sector");
 	v[202]=VS(cur, "id_capital_goods_sector");
 	v[203]=VS(cur, "id_intermediate_goods_sector");

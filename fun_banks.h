@@ -63,7 +63,7 @@ Effective Loans is the minimum between demanded loans and max loans.
 */
 	v[0]=V("Bank_Demand_Loans");
 	v[1]=V("Bank_Max_Total_Loans");
-	v[2]=V("depreciation_period");
+	v[2]=V("sector_capital_duration");
 	v[3]=VL("Bank_Total_Stock_Loans",1);
 	v[4]=max(0,(v[1]-v[3]));
 	v[5]=V("id_public_bank");

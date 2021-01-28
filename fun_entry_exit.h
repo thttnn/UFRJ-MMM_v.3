@@ -117,7 +117,7 @@ EQUATION("Sector_Entry_Condition")
 Can only be 0 or 1, if all enter conditions are met.
 */
 	v[0]=V("switch_entry");
-	v[1]=V("sector_investment_period");
+	v[1]=V("sector_investment_frequency");
 	v[2]=VL("Sector_Effective_Orders",1);
 	v[3]=VL("Sector_Effective_Orders",2);
 	v[4]=VL("Sector_Effective_Orders",3);
@@ -192,7 +192,7 @@ CYCLE(cur6, "SECTORS")
 		v[20]=VS(cur1, "Bank_Interest_Rate_Long_Term");
 		
 		v[21]=VS(cur6, "sector_capital_output_ratio");
-		v[22]=V("depreciation_period");
+		v[22]=V("sector_capital_duration");
 		v[23]=VS(cur6, "Sector_Avg_Productivity");
 		
 		cur2=ADDOBJ_EXS(cur6,"FIRMS",cur);							//create new firm
@@ -257,7 +257,7 @@ In this variable a new firm enters if there is market space available and the en
       if(v[1]>0&&v[6]<1)												//if entry conditions are met and there are market space 
       {
 	  v[20]=V("Sector_Effective_Orders");								//sector effective orders
-      v[0]=V("sector_investment_period");								//sector investment period
+      v[0]=V("sector_investment_frequency");								//sector investment period
       v[22]=V("sector_desired_degree_capacity_utilization");			//sector degree of capacity utilization
       v[23]=V("sector_desired_inventories_proportion");					//sector inventories proportion
 	  v[25]=V("Country_Capital_Goods_Price");									//price of capital goods
@@ -265,7 +265,7 @@ In this variable a new firm enters if there is market space available and the en
 	  v[44]=V("Sector_Productive_Capacity_Exit");						//productive capacity exited in the current period
       v[36]=V("Sector_Avg_Price");										//sector avg price
       v[35]=V("sector_capital_output_ratio");									//sector capital output ratio
-      v[38]=V("depreciation_period");									//sector depreciation period
+      v[38]=V("sector_capital_duration");									//sector depreciation period
       v[39]=V("Sector_Avg_Productivity");   							//sector avg productivity	
       v[42]=uniform_int(1, v[0]);										//randon integer number between 1 and investment period
       v[5]=COUNT("FIRMS");												//current number of firms
