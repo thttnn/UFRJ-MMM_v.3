@@ -454,11 +454,7 @@ switch_unemployment_benefits
 	v[3]=V("class_wage_share");                            			  //wage share of each class
 	v[4]=V("Class_Deposits_Return");                                  //interest receivment
 	v[5]=VS(government,"Government_Effective_Unemployment_Benefits"); //unemployment benefits (never taxed)
-	v[13]=V("switch_unemployment_benefits"); 
-	if(v[13]==0)                                                      //if unemployment benefits are distributed by wage share
-		v[6]=v[0]*v[2]+v[30]*v[31]+v[1]*v[3]+v[4]+v[5]*v[3];     		          //class' gross total income
-	if(v[13]==1)                                                      //if unemployment benefits are distributed only for the lowest income class
-	{
+
 		v[17]=MAXS(PARENT, "class_wage_share");				 		 //search the lowest value of nominal income in the last period
 		cur=SEARCH_CNDS(PARENT, "class_wage_share", v[17] );  			//search the class with nominal income equal to the lowest value
 		v[18]=VS(cur,"id_class");									  //identify lowest income class
@@ -467,7 +463,7 @@ switch_unemployment_benefits
 			v[6]=v[0]*v[2]+v[30]*v[31]+v[1]*v[3]+v[4]+v[5];     		          //class' gross total income, including unemployment benefits
 		else                                                          //if it is not
 			v[6]=v[0]*v[2]+v[30]*v[31]+v[1]*v[3]+v[4];                            //class' gross total income excluding unemployment benefits
-	} 
+	
 	v[7]=V("switch_class_tax_structure");                 			 	//defines taxation structure
 	v[8]=V("class_direct_tax");                            				//class tax rate
 	if(v[7]==0)											   				//taxation structure = no tax

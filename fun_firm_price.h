@@ -140,20 +140,6 @@ Financial costs include interest payment and debt payment. Unit financial cost i
 RESULT(v[9])
 
 
-EQUATION("Firm_Financial_Cost_Passtrough")
-/*
-1 if average market share is greater than desired and if debt rate is greater than desired, otherwise 0.
-*/
-	v[3]=VL("Firm_Debt_Rate",1);
-	v[4]=VL("Firm_Desired_Debt_Rate",1);
-	v[6]=V("sector_financial_cost_weight");
-	if(v[3]>v[4])
-		v[7]=v[6];
-	else
-		v[7]=0;
-RESULT(v[7])
-
-
 EQUATION("Firm_Desired_Price")
 /*
 Firm's desired price is a desired markup over variable costs.
