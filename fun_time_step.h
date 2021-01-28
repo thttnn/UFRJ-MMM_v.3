@@ -6,7 +6,6 @@ Determines the order in which the variables will be calculated in each time step
 */
 
 /*****INTEREST RATES*****/
-V("Policy_Targets");
 V("Basic_Interest_Rate");  
 V("Interest_Rate_Deposits");
 V("Bank_Competitiveness");

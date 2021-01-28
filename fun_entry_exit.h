@@ -117,7 +117,6 @@ EQUATION("Sector_Entry_Condition")
 Can only be 0 or 1, if all enter conditions are met.
 */
 	v[0]=V("switch_entry");
-	v[1]=V("sector_investment_frequency");
 	v[2]=VL("Sector_Effective_Orders",1);
 	v[3]=VL("Sector_Effective_Orders",2);
 	v[4]=VL("Sector_Effective_Orders",3);

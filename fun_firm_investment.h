@@ -20,30 +20,21 @@ The sectors update their productive capacity from year to year, time it takes fo
 */
 	v[0]=V("sector_investment_frequency");
 	v[3]=0;													//initializes the sum
-	for (v[1]=0; v[1]<=(v[0]-1); v[1]=v[1]+1)				//from 0 to investment period-1 lags
-		{
-		v[2]=VL("Firm_Effective_Orders", v[1]);				//computates firm's effective orders of the current lag
-		v[3]=v[3]+v[2];										//sum up firm's lagged effective oders
-		}
+	for (i=0; i<=(v[0]-1); i++)								//from 0 to investment period-1 lags
+		v[3]=v[3]+VL("Firm_Effective_Orders", i);			//sum up firm's lagged effective oders
 	v[4]=v[3]/v[0];											//average firm's effective orders of the last investment period
 	
 	v[5]=0;													//initializes the sum
-	for (v[6]=v[0]; v[6]<=(2*v[0]-1); v[6]=v[6]+1)			//from investment period lag to twice investment period-1 lags
-		{
-		v[7]=VL("Firm_Effective_Orders", v[6]);				//computates firm's effective orders of the current lag
-		v[5]=v[5]+v[7];										//sum up firm's lagged effective oders
-		}
+	for (i=v[0]; i<=(2*v[0]-1); i++)						//from investment period lag to twice investment period-1 lags
+		v[5]=v[5]+VL("Firm_Effective_Orders", i);										//sum up firm's lagged effective oders
 	v[8]=v[5]/v[0];											//average firm's effective orders of the investment period prior to the last
 		
 	v[9]=V("sector_expectations");                          //firm expectations
 	if (v[8]!=0)                                    		//if the average effective orders of the six periods prior to the last six is not zero
-		{
 		v[10]=v[4]*(1+2*v[9]*((v[4]-v[8])/v[8]));     		//expected orders for the next six periods will be the average effective orders of the last six periods multiplied by the growth rate between the averages and the double of the expectation parameter
-		v[11]=max(0,v[10]);                           		//expected orders for the next six periods can never be negative
-		}
 	else                                            		//if the average effective orders of the six periods prior to the last six is zero
-		v[11]=0;                                      		//expected orders for the next six periods will be zero
-RESULT(v[11])
+		v[10]=0;                                      		//expected orders for the next six periods will be zero
+RESULT(max(0,v[10]))
 
 
 EQUATION("Firm_Desired_Expansion_Investment_Expenses")
@@ -323,10 +314,10 @@ The demand for capital goods in each period will be determined by the sum of 1/6
 */
 	v[0]=V("sector_investment_frequency");
 	v[4]=0;																					//initializes the sum
-	for (v[1]=1; v[1]<=v[0]; v[1]=v[1]+1)													//from the last production period until the last investment period
+	for (i=1; i<=v[0]; i++)																	//from the last production period until the last investment period
 		{
-		v[2]=VL("Firm_Demand_Capital_Goods_Expansion", v[1]);								//computates desired productive capacity to replace of the current lag
-		v[3]=VL("Firm_Demand_Capital_Goods_Replacement", v[1]);								//computates desired productive capacity to expand of the current lag
+		v[2]=VL("Firm_Demand_Capital_Goods_Expansion", i);									//computates desired productive capacity to replace of the current lag
+		v[3]=VL("Firm_Demand_Capital_Goods_Replacement", i);								//computates desired productive capacity to expand of the current lag
 		v[4]=v[4]+v[2]+v[3];																//sum up firm's lagged  desired productive capacity to replace plus productive capacity to expand
 		}
 	v[5]=v[4]/v[0];																			//divides the total amount of demand by the invesmet period. This is because capital goods take a whole investment period to be produced. This distributed the demand for the capital goods firms equally during the investment period. It does not mean that each firm demands 1/6 of capital each period, it's just to distribute the production															
@@ -341,10 +332,7 @@ Percentage of productive capacity that is replaced for modernization at each tim
 */
 v[0]=V("Firm_Demand_Productive_Capacity_Replacement");
 v[1]=V("Firm_Productive_Capacity");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
+v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -355,10 +343,7 @@ Percentage of productive capacity that is replaced for modernization at each tim
 v[0]=V("Firm_Demand_Productive_Capacity_Replacement");
 v[1]=V("Firm_Demand_Productive_Capacity_Expansion");
 v[2]=V("Firm_Productive_Capacity");
-if(v[2]!=0)
-	v[3]=(v[0]+v[1])/v[2];
-else
-	v[3]=0;
+v[3]= v[2]!=0? (v[0]+v[1])/v[2] : 0;
 RESULT(v[3])
 
 
@@ -368,10 +353,7 @@ Percentage of productive capacity that is replaced for modernization at each tim
 */
 v[0]=V("Firm_Effective_Investment_Expenses");
 v[1]=V("Firm_Desired_Investment_Expenses");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
+v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 

@@ -6,11 +6,8 @@ Firm's avg debt rate of the last investment period
 */
 	v[0]=V("sector_investment_frequency");
 	v[3]=0;																				//initializes the sum
-	for (v[1]=1; v[1]<=v[0]; v[1]=v[1]+1)												//from 0 to investment period-1 lags
-		{
-		v[2]=VL("Firm_Debt_Rate", v[1]);												//computates firm's debt rate of the current lag
-		v[3]=v[3]+v[2];																	//sum up firm's lagged effective oders
-		}
+	for (i=1; i<=v[0]; i++)																//from 0 to investment period-1 lags
+		v[3]=v[3]+VL("Firm_Debt_Rate", i);												//sum up firm's lagged effective oders
 	v[4]=v[3]/v[0];																		//average firm's debt rate of the last investment period
 RESULT(v[4])
 
@@ -227,10 +224,7 @@ Ratio between effective and demanded loans.
 */
 v[0]=V("Firm_Effective_Loans");
 v[1]=V("Firm_Demand_Loans");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else	
-	v[2]=0;
+v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 

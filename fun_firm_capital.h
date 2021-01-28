@@ -6,13 +6,13 @@ Sum up the firm's productive capacity that was depreciated in each time step, no
 */
 	v[0]=0;																				//initializes the CYCLE on Capital. Will count the productiv capacity to depreciate
 	v[1]=V("sector_capital_duration");
-	v[4]=COUNT("CAPITALS");
 	CYCLE_SAFE(cur1, "CAPITALS")
 	{
 		v[2]=VS(cur1, "capital_good_date_birth");										//capital good date of birth	
 		v[3]=VS(cur1, "capital_good_productive_capacity");								//capital good's prductive capacity
+		v[4]=VS(cur1, "capital_good_to_depreciate");
 		v[5]=VS(cur1, "capital_good_depreciation_period");
-		if((double)t>=v[5])																//if the current time step is higher than the date of birth of the capital good plus the depreciation period, this capital good must be depreciated
+		if((double)t>=v[5]&&v[4]!=1)																//if the current time step is higher than the date of birth of the capital good plus the depreciation period, this capital good must be depreciated
 			{
 			v[0]=v[0]+v[3];																//sum up the capital good productive capacity to the total productive capacity to be depreciated
 			WRITES(cur1, "capital_good_productive_capacity", 0);
@@ -87,8 +87,8 @@ In this variable, the firm receive the new capital goods ordered in the last inv
 			WRITES(cur, "capital_good_productive_capacity", (1/v[5]));			//writes the productive capacity as the inverse of current capital output ratio of the sector
 			WRITES(cur, "capital_good_date_birth", t);							//writes the new capital date of birth as the current time period
 			WRITES(cur, "capital_good_to_replace", 0);							//writes the parameter that identifies the capital goods to be replaced as zero
+			WRITES(cur, "capital_good_to_depreciate", 0);
 			WRITES(cur, "capital_good_depreciation_period", (t+v[8]));
-			WRITES(cur, "capital_good_price", v[9]);
 			WRITELS(cur, "Capital_Good_Acumulated_Production", 0, 1);			//writes the past acumulated production of the current new capital as zero
 			v[6]=v[6]+1;
 			}																																		//end the CYCLE for modernization
@@ -107,12 +107,12 @@ In this variable, the firm receive the new capital goods ordered in the last inv
 				WRITES(cur, "capital_good_to_replace", 0);							//writes the parameter that identifies the capital goods to be replaced as zero
 				WRITES(cur, "capital_good_to_depreciate", 0);
 				WRITES(cur, "capital_good_depreciation_period", (t+v[8]));
-				WRITES(cur, "capital_good_price", v[9]);
 				WRITELS(cur, "Capital_Good_Acumulated_Production", 0, 1);			//writes the past acumulated production of the current new capital as zero
      			v[3]=v[3]-1;
 				}																																							// do not sum replacement cost
   			}
   		}
+	
 	v[19]=0;
 	CYCLE_SAFE(cur, "CAPITALS")
 	{
@@ -126,10 +126,7 @@ In this variable, the firm receive the new capital goods ordered in the last inv
 	v[22]=v[19]/v[5];
 	WRITE("Firm_Depreciated_Productive_Capacity", v[22]);
 	v[6]=COUNT("CAPITALS");
-	if (v[6]!=0)																																					//if it is not zero
-		v[15] = SUM("capital_good_productive_capacity");						//sum uo their productive capacity
-	else																																							//if its zero
-		v[15]=0;																															//firm's productive capacity will be zero
+	v[15] = v[6]!=0? SUM("capital_good_productive_capacity") : 0;						//sum uo their productive capacity																															//firm's productive capacity will be zero
 RESULT(v[15])
 
 

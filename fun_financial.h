@@ -4,34 +4,6 @@
 Interest Rates
 *******************************************************************************/
 
-EQUATION("Policy_Targets")
-USE_SAVED
-v[0]=V("annual_frequency");
-v[13]= fmod((double) t,v[0]); 
-v[1]=V("switch_moving_targets");
-v[2]=V("begin_monetary_policy");
-if(t>v[2]&&v[1]==1&&v[13]==0)
-	{
-	v[5]=v[6]=v[7]=v[8]=0;
-	for(i=1;i<(10*v[0]);i++)
-		{
-		v[5]=v[5]+VL("Country_Annual_Inflation",i);
-		v[6]=v[6]+VL("Country_Idle_Capacity",i);
-		v[7]=v[7]+VL("Total_Stock_Loans_Growth",i);
-		v[8]=v[8]+VL("Country_Debt_Rate_Firms",i);
-		}
-	v[9]=v[5]/(10*v[0]);
-	v[10]=v[6]/(10*v[0]);
-	v[11]=v[7]/(10*v[0]);
-	v[12]=v[8]/(10*v[0]);
-	WRITE("target_inflation",v[9]);
-	WRITE("target_capacity",v[10]);
-	WRITE("target_credit_growth",v[11]);
-	WRITE("target_debt_rate",v[12]);
-	}
-RESULT(0)
-
-
 EQUATION("Basic_Interest_Rate")
 /*
 Nominal Interest rate is set by the central bank following a (possible) dual mandate Taylor Rule, considering the inflation and unemployment gaps.

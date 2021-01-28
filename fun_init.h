@@ -336,7 +336,7 @@ CYCLE(cur, "SECTORS")
 		}
 	for (i=1 ; i<=(2*v[0]) ; i++)																//for (2*investment period+1) lags
 	  	WRITELLS(cur1, "Firm_Effective_Orders", (v[200]/v[212]), 0, i);                    		//firm's effective orders will be sector's effective orders (given by demand_initial) divided by the number of firms
-	for (i=1 ; i<=(v[1]-1) ; i++)																//for (markup_period-1) lags
+	for (i=1 ; i<=(v[1]+1) ; i++)																//for (markup_period-1) lags
 		{
 		WRITELLS(cur1, "Firm_Market_Share", (1/v[212]), 0, i);             						//firm's market share will be the inverse of the number of firms in the sector (initial market share)
 	  	WRITELLS(cur1, "Firm_Potential_Markup", v[206], 0, i);                      			//potential markup will be the initial markup
@@ -403,7 +403,6 @@ CYCLE(cur, "SECTORS")
 				v[224]=uniform_int(30, 60);
 				WRITES(cur5, "capital_good_date_birth", 0);										//write the capital good date of birth
 				WRITES(cur5, "capital_good_depreciation_period", v[224]);
-				WRITES(cur5, "capital_good_price", v[102]);
 				}
 			}					
 }

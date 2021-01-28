@@ -459,8 +459,8 @@ switch_unemployment_benefits
 		v[6]=v[0]*v[2]+v[30]*v[31]+v[1]*v[3]+v[4]+v[5]*v[3];     		          //class' gross total income
 	if(v[13]==1)                                                      //if unemployment benefits are distributed only for the lowest income class
 	{
-		v[17]=MINLS(PARENT, "Class_Nominal_Income", 1);				  //search the lowest value of nominal income in the last period
-		cur=SEARCH_CNDLS(PARENT, "Class_Nominal_Income", v[17], 1 );  //search the class with nominal income equal to the lowest value
+		v[17]=MAXS(PARENT, "class_wage_share");				 		 //search the lowest value of nominal income in the last period
+		cur=SEARCH_CNDS(PARENT, "class_wage_share", v[17] );  			//search the class with nominal income equal to the lowest value
 		v[18]=VS(cur,"id_class");									  //identify lowest income class
 		v[16]=V("id_class");                                          //current object id
 		if(v[16]==v[18])                                              //if current object is the one with minimum income

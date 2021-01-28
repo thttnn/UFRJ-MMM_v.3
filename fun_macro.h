@@ -234,7 +234,7 @@ Share of profits over the sum of profits and wages
 	v[0]=V("Country_Total_Wages");
 	v[1]=V("Country_Total_Profits");
 	v[2]=v[0]+v[1];
-	v[3]= v[2]!=0? v[1]/v[2] : 0;
+	v[3]= v[2]!=0? v[0]/v[2] : 0;
 RESULT(v[3])
 
 
