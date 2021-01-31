@@ -14,10 +14,8 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 3-->       triple mandate (inflation, unemployment and credit growth) taylor rule
 4-->       triple mandate (inflation, unemployment and debt rate) taylor rule
 5-->       smithin rule
-6-->       smoothed smithin rule
-7--> 	   pasinetti rule
-8-->       smoothed pasinetti rule
-9-->       kansas city rule
+6--> 	   pasinetti rule
+7-->       kansas city rule
 
 "interest_rate_adjustment": absolute increase
 

@@ -8,8 +8,8 @@ Nominal value of external income.
 	v[0]=CURRENT;
 	v[1]=V("annual_frequency");
 	v[2]=fmod((double) t,v[1]);                					//divides the time period by annual adjustment period (adjust annualy)
-	if(v[2]==0)                               					//if the rest of the division is zero (adjust external income)
-		{
+	//if(v[2]==0)                               					//if the rest of the division is zero (adjust external income)
+		//{
 		v[3]=V("external_income_growth");						//fixed external income growth
 		v[4]=V("external_income_sd");							//fixed external income sd
 		
@@ -26,9 +26,9 @@ Nominal value of external income.
 			v[12]=v[8];
 
 		v[13]=v[12]*v[0];
-		}
-	else														//if it is not annual period
-		v[13]=v[0];												//use last period income
+		//}
+	//else														//if it is not annual period
+		//v[13]=v[0];												//use last period income
 RESULT(max(0,v[13]))
 
 
@@ -40,21 +40,20 @@ EQUATION("Capital_Flows")
 	v[4]=(v[1]-v[2])*v[0]*v[3];
 RESULT(v[4])
 
-
-
 EQUATION("Trade_Balance")
-/*
-The trade balance is obtained by the difference between total exports and total imports.
-*/
-	v[0]=V("Country_Nominal_Exports");
-	v[1]=V("Country_Nominal_Imports");
-	v[2]=V("Capital_Flows");
-	v[3]=v[0]-v[1]+v[2];
-RESULT(v[3])
-
+RESULT(V("Country_Nominal_Exports")-V("Country_Nominal_Imports"))
 
 EQUATION("International_Reserves")
-RESULT(CURRENT+V("Trade_Balance"))
+RESULT(CURRENT+V("Trade_Balance")+V("Capital_Flows");)
+
+EQUATION("International_Reserves_GDP_Ratio")
+	v[0]=V("annual_frequency");
+	v[1]=V("International_Reserves");
+	v[2]=0;
+	for(i=0; i<=v[0]-1; i++)
+		v[2]=v[2]+VL("Country_GDP",i);
+	v[3]= v[2]!=0? v[1]/v[2] : 0;
+RESULT(v[3])
 
 
 EQUATION("Exchange_Rate")
@@ -62,7 +61,7 @@ EQUATION("Exchange_Rate")
 Nominal exchange rate.
 */
 	v[0]=CURRENT;
-	v[1]=VL("Trade_Balance",1);
+	v[1]=VL("Trade_Balance",1)+VL("Capital_Flows",1);
 	v[2]=V("exchange_rate_adjustment");
 	if(v[1]<0)
 		v[3]=v[0]+v[2];
@@ -72,3 +71,40 @@ Nominal exchange rate.
 		v[3]=v[0];
 	
 RESULT(max(0.01,v[3]))
+
+
+EQUATION("Basic_Interest_Rate_Min")
+v[0]=V("external_interest_rate");
+v[1]=V("international_reserves_target");
+v[2]=VL("Country_GDP",1);
+v[3]=VL("Country_GDP",2);
+v[4]=VL("Country_GDP",3);
+v[5]=VS(government, "government_expectations");
+v[6]=VL("International_Reserves",1);
+v[7]=VL("Country_Nominal_Exports",1);
+v[8]=VL("Country_Nominal_Imports",1);
+v[9]=VL("External_Income",1);
+v[10]=VL("External_Income",2);
+
+v[11]= v[3]!=0? v[5]*(v[2]-v[3])/v[3] : 0;//domestic expected growth
+v[12]= v[10]!=0? v[5]*(v[9]-v[10])/v[10] : 0;//external exprected growth
+
+v[13]=V("capital_flow_adjustment");
+
+v[14]=v[2]*(2+v[11])+v[3]+v[4];//expected annual gdp
+v[15]=v[13]*v[9]*(1+v[12]);
+
+v[16]= v[15]!=0? v[0] + (v[1]*v[14] - v[6] - v[7]*(1+v[12]) + v[8]*(1+v[11]))/v[15] : 0;
+RESULT(max(0,v[16]))
+
+
+
+
+
+
+
+
+
+
+
+

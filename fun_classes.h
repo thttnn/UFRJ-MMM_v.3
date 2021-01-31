@@ -66,14 +66,14 @@ RESULT(v[3])
 
 EQUATION("Class_Real_Desired_Imported_Consumption")
 	
-	v[1]=V("Class_Avg_Real_Income");
-	v[2]=V("class_propensity_to_import");							//class propensity to import
+	v[0]=V("Class_Avg_Real_Income");
+	v[1]=V("class_propensity_to_import");							//class propensity to import
   
 	v[3]=VS(consumption, "Sector_Avg_Price");                       //consumption sector average price
 	v[4]=VS(consumption, "Sector_External_Price");                  //consumption sector external price
 	v[5]=VS(external,"Exchange_Rate");								//exchange rate
 	v[6]=V("class_import_elasticity_price");
-	v[7]=v[1]*v[2]*pow((v[3]/(v[4]*v[5])),v[6]);
+	v[7]=v[0]*v[1]*pow((v[3]/(v[4]*v[5])),v[6]);
 RESULT(v[7])
 	
 

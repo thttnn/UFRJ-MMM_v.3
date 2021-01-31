@@ -157,6 +157,8 @@ v[158]=V("scale_bank_pro");
 v[159]=V("scale_debt");
 
 //Begin Writting Macro Variables
+		WRITELLS(country,"Country_Nominal_Exports", v[149], 0, 1);
+		WRITELLS(country,"Country_Nominal_Imports", v[149], 0, 1);
 		WRITELLS(country,"Country_Likelihood_Crisis", 0, 0, 1);                  							//zero by definition
 		WRITELLS(country,"Country_Annual_Growth", 0, 0, 1);													//zero by definition, no growth initally
 		WRITELLS(country,"Country_Annual_Real_Growth", 0, 0, 1);                 							//zero by definition, no growth initally
@@ -208,8 +210,11 @@ CYCLE(cur, "CLASSES")
 v[167]=COUNT("CLASSES");
 
 //Begin Writing External Variables
-WRITES(external, "External_Income", v[150]);											//writes initial external income equal to domestic GDP
-WRITES(external, "International_Reserves", v[150]);	
+WRITES(external, "Trade_Balance", 0);
+WRITES(external, "Capital_Flows", 0);
+WRITELLS(external, "External_Income",  v[150], 0, 1);
+WRITELLS(external, "External_Income",  v[150], 0, 2);
+WRITELLS(external, "International_Reserves",  v[150]*V("annual_frequency"), 0, 1);											//writes initial external income equal to domestic GDP
 
 //Begin Writing Government Variables																
 v[168]=VS(government, "switch_government_composition");
@@ -221,7 +226,6 @@ v[173]=v[170]+v[171]+v[172];
 
 WRITELLS(government,"Government_Total_Taxes", v[144], 0, 1);														//write initial total taxes, initial total taxes is calculated in the demand calibration based only on parameters
 WRITELLS(government,"Government_Max_Expenses", v[144], 0, 1);        									//initial max government expenses equals total taxes calculated in the calibration
-WRITELLS(government,"Government_Effective_Expenses", v[144], 0, 1);		            				//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity		
 if (v[168]!=2)
 	WRITELLS(government,"Government_Desired_Wages", v[144], 0, 1);										//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity
 if (v[168]==2)
@@ -232,8 +236,9 @@ WRITELLS(government,"Government_Desired_Inputs", v[172]*v[144], 0, 1);		        
 WRITELLS(government,"Government_Surplus_Rate_Target", v[169], 0, 1);
 for (i=1 ; i<=V("annual_frequency")+1 ; i++)		              													//for (government_period) lags	
 {
-	WRITELLS(government,"Government_Debt", V("initial_debt_gdp")*v[150], 0, i);                  									//no debt initially																	//base interest rate parameter
+	WRITELLS(government,"Government_Debt", V("initial_debt_gdp")*V("annual_frequency")*v[150], 0, i);                  									//no debt initially																	//base interest rate parameter
 	WRITELLS(government,"Government_Debt_GDP_Ratio", V("initial_debt_gdp"), 0, i);
+	WRITELLS(government,"Government_Effective_Expenses", v[144], 0, i);
 }
 
 //Begin Writing Sector Variables
