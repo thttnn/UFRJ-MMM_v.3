@@ -378,7 +378,7 @@ Counts the number of crisis ocurrances.
 		}
 	else                                		//if the rest of the division is not zero
 		v[3]=0;                           		//do not count a crisis   
-	v[4]=VL("Country_Likelihood_Crisis",1);     //crisis counter in the last period
+	v[4]=CURRENT;     							//crisis counter in the last period
 	v[5]=v[4]+v[3];                     		//acumulates the crisis counters
 	v[6]=(v[5]/t/v[7]);                      	//gives the probability, total crisis counter divided by the number of time periods
 RESULT(v[3])
@@ -611,8 +611,8 @@ EQUATION("Country_Debt_Rate_Class")
 /*
 Aggregated average class debt rate, wheighted by the income of each class
 */
-	v[0]=WHTAVE("Class_Debt_Rate", "Class_Nominal_Income");
-	v[1]=SUM("Class_Nominal_Income");
+	v[0]=WHTAVE("Class_Debt_Rate", "Class_Nominal_Disposable_Income");
+	v[1]=SUM("Class_Nominal_Disposable_Income");
 	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 

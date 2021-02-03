@@ -9,7 +9,7 @@ Will affect induced consumption, imports decisions and debt assessment
 	v[0]=V("annual_frequency");											//define the class adjustment period
 	v[1]=0;															//initializes the sum
 	for (i=1; i<=v[0]; i++)											//for the number os lags equal the adjustment parameter
-		v[1]=v[1]+VL("Class_Real_Income", i);
+		v[1]=v[1]+VL("Class_Real_Disposable_Income", i);
 	v[3]=v[1]/v[0];                  								//class average income in the last v[0] periods
 RESULT(v[3])
 
@@ -22,7 +22,7 @@ Will be the base for debt rate calculus
 	v[0]=V("annual_frequency");											//define the class adjustment period
 	v[1]=0;															//initializes the sum
 	for (i=1; i<=v[0]; i++)											//for the number os lags equal the adjustment parameter
-		v[1]=v[1]+VL("Class_Nominal_Income", i);
+		v[1]=v[1]+VL("Class_Nominal_Disposable_Income", i);
 	v[3]=v[1]/v[0];                  								//class average income in the last v[0] periods
 RESULT(v[3])
 
@@ -182,8 +182,8 @@ Evolves based on average debt rate and income growth.
 */
 	v[0]=V("annual_frequency");
 	v[1]=fmod((double)t,v[0]);
-	v[2]=VL("Class_Nominal_Income",1);
-	v[3]=VL("Class_Nominal_Income",v[0]);
+	v[2]=VL("Class_Nominal_Disposable_Income",1);
+	v[3]=VL("Class_Nominal_Disposable_Income",v[0]);
 	if(v[3]!=0)
 		v[4]=(v[2]-v[3])/v[3];
 	else
@@ -218,7 +218,7 @@ Can not be negative, meaning that class will not incur in new debt to finance re
 */
 	v[1]=V("Class_Financial_Obligations");	//current financial obligations
 	v[2]=VL("Class_Stock_Deposits", 1);		//stock of deposits
-	v[8]=VL("Class_Nominal_Income",1);
+	v[8]=VL("Class_Nominal_Disposable_Income",1);
 	v[3]=max(0, (v[2]+v[8]-v[1]));			//current internal funds
 	v[4]=V("Class_Avg_Nominal_Income");		//current average income
 	v[5]=V("Class_Liquidity_Preference");	//current liquidity preference, as a ratio of capital
@@ -233,7 +233,7 @@ Total available funds for class expenses in the current period
 */
 	v[0]=V("Class_Financial_Obligations");				//class financial obligations
 	v[1]=VL("Class_Stock_Deposits", 1);					//current stock of deposits
-	v[4]=VL("Class_Nominal_Income",1);
+	v[4]=VL("Class_Nominal_Disposable_Income",1);
 	v[2]=V("Class_Retained_Deposits");
 	v[3]=v[4]+v[1]-v[0]-v[2];							//available deposits to use as internal funds	
 RESULT(v[3])
@@ -247,8 +247,8 @@ Evolves based on nominal income growth.
 */
 	v[0]=V("annual_frequency");
 	v[1]=fmod((double)t,v[0]);
-	v[2]=VL("Class_Nominal_Income",1);
-	v[3]=VL("Class_Nominal_Income",v[0]);
+	v[2]=VL("Class_Nominal_Disposable_Income",1);
+	v[3]=VL("Class_Nominal_Disposable_Income",v[0]);
 	if(v[3]!=0)
 		v[4]=(v[2]-v[3])/v[3];
 	else
@@ -429,7 +429,7 @@ Net return on class deposits
 RESULT(v[2])
 
 
-EQUATION("Class_Nominal_Income")
+EQUATION("Class_Nominal_Disposable_Income")
 /*
 Class net nominal income shall be calculated by summing the ratio of the total surplus to the proportion of the net salary that is allocated to the class plus the payment of government interest on the domestic public debt.
 
@@ -486,8 +486,8 @@ switch_unemployment_benefits
 	v[19]=VS(country,"Country_Consumer_Price_Index");
 	
 	WRITE("Class_Taxation",v[9]);                          				//write class taxation equation_dummy
-	WRITE("Class_Gross_Nominal_Income",v[6]);              				//write class gross income equation_dummy
-	WRITE("Class_Real_Income",(v[6]-v[9])/v[19]); 		   				//write class real income equation_dummy
+	WRITE("Class_Nominal_Gross_Income",v[6]);              				//write class gross income equation_dummy
+	WRITE("Class_Real_Disposable_Income",(v[6]-v[9])/v[19]); 		   				//write class real income equation_dummy
 	
 	if(v[7]==2||v[7]==3||v[7]==4||v[7]==5)
 		v[20]=(v[0]*v[2]+v[30]*v[31]*(1-v[8]))/v[19];
@@ -509,12 +509,12 @@ switch_unemployment_benefits
 	
 RESULT(v[6]-v[9])
 
-EQUATION_DUMMY("Class_Taxation","Class_Nominal_Income")
-EQUATION_DUMMY("Class_Gross_Nominal_Income","Class_Nominal_Income")
-EQUATION_DUMMY("Class_Real_Income","Class_Nominal_Income")
-EQUATION_DUMMY("Class_Real_Disposable_Profits","Class_Nominal_Income")
-EQUATION_DUMMY("Class_Real_Disposable_Wages","Class_Nominal_Income")
-EQUATION_DUMMY("Class_Real_Disposable_Interest","Class_Nominal_Income")
+EQUATION_DUMMY("Class_Taxation","Class_Nominal_Disposable_Income")
+EQUATION_DUMMY("Class_Nominal_Gross_Income","Class_Nominal_Disposable_Income")
+EQUATION_DUMMY("Class_Real_Disposable_Income","Class_Nominal_Disposable_Income")
+EQUATION_DUMMY("Class_Real_Disposable_Profits","Class_Nominal_Disposable_Income")
+EQUATION_DUMMY("Class_Real_Disposable_Wages","Class_Nominal_Disposable_Income")
+EQUATION_DUMMY("Class_Real_Disposable_Interest","Class_Nominal_Disposable_Income")
 
 
 
@@ -556,8 +556,8 @@ EQUATION("Class_Income_Share")
 /*
 Class share of nominal income
 */
-	v[0]=V("Class_Nominal_Income");
-	v[1]=SUMS(PARENT,"Class_Nominal_Income");
+	v[0]=V("Class_Nominal_Disposable_Income");
+	v[1]=SUMS(PARENT,"Class_Nominal_Disposable_Income");
 	if(v[1]!=0)
 		v[2]=v[0]/v[1];
 	else

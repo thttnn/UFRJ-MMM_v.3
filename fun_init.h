@@ -159,7 +159,6 @@ v[159]=V("scale_debt");
 //Begin Writting Macro Variables
 		WRITELLS(country,"Country_Nominal_Exports", v[149], 0, 1);
 		WRITELLS(country,"Country_Nominal_Imports", v[149], 0, 1);
-		WRITELLS(country,"Country_Likelihood_Crisis", 0, 0, 1);                  							//zero by definition
 		WRITELLS(country,"Country_Annual_Growth", 0, 0, 1);													//zero by definition, no growth initally
 		WRITELLS(country,"Country_Annual_Real_Growth", 0, 0, 1);                 							//zero by definition, no growth initally
 		WRITELLS(country,"Country_Annual_Inflation", 0, 0, 1);	
@@ -167,16 +166,13 @@ v[159]=V("scale_debt");
 		{
 		WRITELLS(country,"Country_Price_Index", v[151], 0, i);									 			//writes Price_Index, all initial price index is 1
 		WRITELLS(country,"Country_Consumer_Price_Index", v[101], 0, i);          							//writes Consumper_Price_Index, all initial price index is 1
+		WRITELLS(country,"Country_Capital_Goods_Price", v[102], 0, i);
+		WRITELLS(country,"Country_Avg_Productivity", AVE("sector_initial_productivity"), 0, i);
 		}
 	for (i=1 ; i<=(2*V("annual_frequency")) ; i++)                  												//for (2*annual_period) lags
 		{
 		WRITELLS(country,"Country_GDP", v[150], 0, i);                     	 								//GDP
 		WRITELLS(country,"Country_Real_GDP", (v[150]/v[151]), 0, i);                  						//Real GDP will be equal to nominal GDP because price index always begins as 1
-		}
-	for (i=1 ; i<=V("annual_frequency")+1 ; i++)
-		{
-		WRITELLS(country,"Country_Capital_Goods_Price", v[102], 0, i);
-		WRITELLS(country,"Country_Avg_Productivity", v[102], 0, i);
 		}
 
 
@@ -192,12 +188,8 @@ CYCLE(cur, "CLASSES")
 	v[165]=v[6]*v[41]/v[160];
 		for (i=1 ; i<=V("annual_frequency") ; i++)                          										//for (class_period) lags
 			{
-			WRITELLS(cur, "Class_Nominal_Income", v[164], 0, i);            					//writes Class_Nominal_Income
-			WRITELLS(cur, "Class_Real_Income", (v[164]/v[101]), 0, i);							//writes Class_Real_Income
-			WRITELLS(cur, "Class_Financial_Obligations", 0, 0, i);
-			WRITELLS(cur, "Class_Interest_Payment", 0, 0, i);
-			WRITELLS(cur, "Class_Real_Disposable_Profits", v[148]*v[161]*(1-v[163])/v[101], 0, i);
-			WRITELLS(cur, "Class_Real_Disposable_Wages", v[146]*v[162]*(1-v[163])/v[101], 0, i);
+			WRITELLS(cur, "Class_Nominal_Disposable_Income", v[164], 0, i);            					//writes Class_Nominal_Income
+			WRITELLS(cur, "Class_Real_Disposable_Income", (v[164]/v[101]), 0, i);							//writes Class_Real_Income
 			}
 			WRITELLS(cur, "Class_Avg_Nominal_Income", v[164], 0, 1);
 			WRITELLS(cur, "Class_Avg_Real_Income", (v[164]/v[101]), 0, 1);
@@ -227,12 +219,12 @@ v[173]=v[170]+v[171]+v[172];
 WRITELLS(government,"Government_Total_Taxes", v[144], 0, 1);														//write initial total taxes, initial total taxes is calculated in the demand calibration based only on parameters
 WRITELLS(government,"Government_Max_Expenses", v[144], 0, 1);        									//initial max government expenses equals total taxes calculated in the calibration
 if (v[168]!=2)
-	WRITELLS(government,"Government_Desired_Wages", v[144], 0, 1);										//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity
+	WRITELLS(government,"Government_Desired_Wages", v[144], 0, 0);										//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity
 if (v[168]==2)
-	WRITELLS(government,"Government_Desired_Wages", (1-v[173])*v[144], 0, 1);		            		//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity		            				    
-WRITELLS(government,"Government_Desired_Consumption", v[170]*v[144], 0, 1);		            		//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
-WRITELLS(government,"Government_Desired_Investment", v[170]*v[144], 0, 1);		            			//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
-WRITELLS(government,"Government_Desired_Inputs", v[172]*v[144], 0, 1);		            			    //initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
+	WRITELLS(government,"Government_Desired_Wages", (1-v[173])*v[144], 0, 0);		            		//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity		            				    
+WRITELLS(government,"Government_Desired_Consumption", v[170]*v[144], 0, 0);		            		//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
+WRITELLS(government,"Government_Desired_Investment", v[170]*v[144], 0, 0);		            			//initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
+WRITELLS(government,"Government_Desired_Inputs", v[172]*v[144], 0, 0);		            			    //initial government expenses is only wages, which thereafter will grow depending on inflation and average productivity	
 WRITELLS(government,"Government_Surplus_Rate_Target", v[169], 0, 1);
 for (i=1 ; i<=V("annual_frequency")+1 ; i++)		              													//for (government_period) lags	
 {
@@ -291,7 +283,7 @@ CYCLE(cur, "SECTORS")
 	v[219]=v[222]*v[211]/v[212];																//number of capital goods of each firm
 	v[220]=v[204]*((v[149]*v[212]/v[74])/(pow(v[150], v[216])));								//calculate sector exports coefficient
 	v[221]=(1+v[217])*v[211]/v[218];
-	v[222]=SEARCH_INSTS(root, cur);	
+	//v[222]=SEARCH_INSTS(root, cur);	
 	
 	for (i=1 ; i<=v[0] ; i++)																	//for (investment_period) lags 
 		{
@@ -407,7 +399,7 @@ CYCLE(cur, "SECTORS")
 				v[233]=(-v[5]+v[231]+1)+(v[232]-1)*v[0];                                  		//calculates the capital good date of birth based on the firm number and the number of the capital good
 				v[224]=uniform_int(30, 60);
 				WRITES(cur5, "capital_good_date_birth", 0);										//write the capital good date of birth
-				WRITES(cur5, "capital_good_depreciation_period", v[224]);
+				WRITES(cur5, "capital_good_depreciation_period", 601);
 				}
 			}					
 }

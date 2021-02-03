@@ -186,9 +186,9 @@ V("Financial_Sector_Distributed_Profits");
 V("Country_Distributed_Profits"); 
 V("Country_Total_Profits"); 
 V("Country_Total_Wages");  
-V("Class_Nominal_Income"); 
+V("Class_Nominal_Disposable_Income"); 
 V("Class_Taxation");                             		
-V("Class_Real_Income"); 
+V("Class_Real_Disposable_Income"); 
 
 /*****FINANCIAL SECTOR CONSOLIDATION*****/
 V("Sector_Stock_Loans");
