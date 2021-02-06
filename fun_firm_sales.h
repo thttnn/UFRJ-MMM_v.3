@@ -1,3 +1,9 @@
+EQUATION("Firm_Effective_Orders")
+	v[0]=V("Firm_Market_Share"); 
+	v[1]=V("Sector_Effective_Orders");
+	v[2]=v[0]*v[1];
+RESULT(v[2])
+
 
 EQUATION("Firm_Sales")
 /*
@@ -33,35 +39,16 @@ Firm's inventories variation in current nominal values
 RESULT(v[3])
 
 
-EQUATION("Firm_Effective_Orders")
-/*
-Firm Variable
-*/
-	v[0]=V("id_intermediate_goods_sector");
-	v[1]=V("id_consumption_goods_sector");
-	v[2]=V("id_capital_goods_sector");
-
-	if (v[0]==1);
-		v[3]=V("intermediate_effective_orders_firm_temporary");
-	if (v[1]==1)
-		v[3]=V("consumption_effective_orders_firm_temporary");
-	if (v[2]==1)
-		v[3]=V("Firm_Effective_Orders_Capital_Goods");
-
-	WRITE("intermediate_effective_orders_firm_temporary", 0);
-	WRITE("consumption_effective_orders_firm_temporary", 0);
-RESULT(v[3])
-
-
 EQUATION("Firm_Market_Share")
 /*
 Firm Variable
 */
 	v[0]=VL("Firm_Market_Share", 1);                //firm's market share in the last period
 	v[1]=V("Sector_Avg_Competitiveness");           //sector average competitiveness
+	v[2]=V("sector_competitiveness_adjustment");	//sector parameter that adjustts market share
 	v[3]=V("Firm_Competitiveness");                 //firm's competitiveness
 	if(v[1]!=0)                                     //if the sector average competitiveness is not zero
-		v[4]=v[0]+v[0]*((v[3]/v[1])-1);             //firm's market share will be the last period's inscresed by the adjustment paramter times the ratio between firm's competitiveness and sector average competitiveness
+		v[4]=v[0]+v[2]*v[0]*((v[3]/v[1])-1);             //firm's market share will be the last period's inscresed by the adjustment paramter times the ratio between firm's competitiveness and sector average competitiveness
 	else                                            //if the sector average competitiveness is zero
 		v[4]=0;                                     //firm's market share will be zero (testar, remover)
 
@@ -76,10 +63,7 @@ Firm Variable
 	v[1]=V("Firm_Market_Share");                    //firm's market share
 	v[2]=v[0]*v[1];                                 //firm's effective orders
 	v[3]=V("Firm_Sales");                           //firm's sales
-	if (v[3]!=0)                                    //if firm's sales is not zero
-		v[4]=v[2]/v[3];                             //delivery delay will be determined by the ratio between effective orders and sales
-	else                                            //if firm's sales is zero
-		v[4]=1;                                     //delivery delay will be one
+	v[4]= v[3]!=0? v[2]/v[3] : 1;                   //delivery delay will be determined by the ratio between effective orders and sales
 RESULT(v[4])
 
 
@@ -88,17 +72,13 @@ EQUATION("Firm_Competitiveness")
 Competitiveness depends on the quality of the product, the price and the delivery delay of the firm
 */
 	v[0]=VL("Firm_Price",1);                                           //firm's price in the last period
-	v[8]=VL("Sector_Avg_Price",1);
-	v[9]=VL("Sector_Avg_Quality",1);
-	v[10]=v[0]/v[8];
-	v[11]=v[2]/v[9];
-	v[1]=V("elasticity_price");                                        //price elasticity
+	v[1]=V("sector_elasticity_price");                                 //price elasticity
 	v[2]=VL("Firm_Quality",1);                                         //product quaility
-	v[3]=V("elasticity_quality");                                      //quality elasticity
+	v[3]=V("sector_elasticity_quality");                               //quality elasticity
 	v[4]=VL("Firm_Competitiveness",1);                                 //firm's competitiveness in the last period
 	v[5]=VL("Firm_Delivery_Delay",1);                                  //firm's delivery delay in the last period
-	v[6]=V("elascitity_delay");                                        //delay elasticity	
-   	if(v[0]!=0&&v[2]!=0&&v[5]!=0)                                               //if the price was not zero neither the quality
+	v[6]=V("sector_elascitity_delay");                                 //delay elasticity	
+   	if(v[0]!=0&&v[2]!=0&&v[5]!=0)                                      //if the price was not zero neither the quality
      	v[7]=(pow(v[2],v[3]))*(1/pow(v[0],v[1]))*(1/pow(v[5],v[6]));   //firm's competitiveness will be given by the quality powered by its elasticity over the price, powered by its elasticicty, and the delivery delay, powered by its elasticicty
    	else                                                               //if either the price or the quality was zero 
      	v[7]=v[4];                                                     //firm's competitiveness will be the competitiveness in the last period
@@ -111,10 +91,7 @@ Effective market share is given by firm's sales over total sales of the sector
 */
 	v[0]=V("Firm_Sales");
 	v[1]=V("Sector_Sales");
-	if (v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 

@@ -209,6 +209,8 @@ Label Root
 			Var: Interest_Rate_Deposits
 			Var: Policy_Targets
 			Var: Total_Stock_Loans_Growth
+			Param: switch_fixed_bank_distribution
+			Param: fs_expectations
 
 		}
 
@@ -728,7 +730,7 @@ Param: survival_period 0 n + n n	0
 Param: switch_class_tax_structure 0 n + n n	3
 Param: switch_creditworthness 0 n + n n	0
 Param: switch_discount_rate 0 n + n n	3
-Param: switch_entry 0 n + n n	0
+Param: switch_entry 0 n + n n	1
 Param: switch_expansion_investment 0 n + n n	1
 Param: switch_fixed_exports 0 n + n n	0
 Param: switch_interest_investment 0 n + n n	0
@@ -871,7 +873,7 @@ Object: FINANCIAL C	1
 Param: bank_default_sensitivity 0 n + n n	1
 Param: bank_fragility_sensitivity 0 n + n n	1
 Param: bank_profit_distribution 0 n + n n	0
-Param: begin_credit_rationing 0 n + n n	-1
+Param: begin_credit_rationing 0 n + n n	0
 Param: fs_elasticity_default 0 n + n n	0
 Param: fs_elasticity_interest_long_term 0 n + n n	0
 Param: fs_elasticity_interest_short_term 0 n + n n	0
@@ -924,6 +926,8 @@ Var: Financial_Sector_Turbulence 0 s + n n
 Var: Interest_Rate_Deposits 1 s + n n	0
 Var: Policy_Targets 0 n + n n
 Var: Total_Stock_Loans_Growth 1 s + n n	0
+Param: switch_fixed_bank_distribution 0 n + n n	0
+Param: fs_expectations 0 n + n n	0.3
 
 Object: BANKS C	1
 Param: bank_defaulted_loans_temporary 0 n + n n	0
@@ -980,18 +984,18 @@ Object: GOVERNMENT C	1
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
 Param: begin_surplus_target_rule 0 n + n n	0
 Param: government_benefit 0 n + n n	0.1
-Param: government_demand_growth 0 n + n n	0.005
+Param: government_demand_growth 0 n + n n	0.03
 Param: government_expectations 0 n + n n	0.3
 Param: government_inflation_passtrought 0 n + n n	1
-Param: government_initial_capital_share 0 n + n n	0
-Param: government_initial_consumption_share 0 n + n n	0
-Param: government_initial_input_share 0 n + n n	0
+Param: government_initial_capital_share 0 n + n n	0.2
+Param: government_initial_consumption_share 0 n + n n	0.1
+Param: government_initial_input_share 0 n + n n	0.1
 Param: government_max_debt 0 n + n n	1
 Param: government_min_debt 0 n + n n	0
 Param: government_productivity_passtrought 0 n + n n	1
 Param: government_surplus_rate_target 0 n + n n	0
 Param: government_surplus_target_adjustment 0 n + n n	0
-Param: switch_government_composition 0 n + n n	0
+Param: switch_government_composition 0 n + n n	1
 Param: switch_unemployment_benefits 0 n + n n	1
 Var: Government_Debt 4 s + n n	0	0	0	0
 Var: Government_Debt_GDP_Ratio 1 s + n n	0
@@ -1046,24 +1050,24 @@ Param: sector_initial_wage 0 n + n n	1	1	1
 Param: sector_innovation_proportion 0 n + n n	0.5	0.5	0.5
 Param: sector_input_tech_coefficient 0 n + n n	0.5	0.5	0.5
 Param: sector_investment_period 0 n + n n	4	4	4
-Param: sector_learning_adjustment 0 n + n n	0	0	0
+Param: sector_learning_adjustment 0 n + n n	0.2	0.2	0.2
 Param: sector_market_share_expansion 0 n + n n	1	1	1
 Param: sector_markup_apropriation 0 n + n n	0	0	0
 Param: sector_number_object_firms 0 n + n n	10	10	10
 Param: sector_payback_period 0 n + n n	20	20	20
 Param: sector_productive_capacity_cost 0 n + n n	0	0	0
-Param: sector_profits_distribution_rate 0 n + n n	0.95	0.95	0.95
+Param: sector_profits_distribution_rate 0 n + n n	0.8	0.8	0.8
 Param: sector_rnd_revenue_proportion 0 n + n n	0.05	0.05	0.05
 Param: sector_exports_coefficient 0 s + n n	0	0	0
 Param: sector_initial_price 0 n + n n	0	0	0
 Param: sector_initial_productivity 0 n + n n	1	1	1
-Param: sector_passthrough_employment 0 n + n n	0.1	0.1	0.1
-Param: sector_passthrough_inflation 0 n + n n	0.5	0.5	0.5
+Param: sector_passthrough_employment 0 n + n n	0	0	0
+Param: sector_passthrough_inflation 0 n + n n	0.9	0.9	0.9
 Param: sector_passthrough_productivity 0 s + n n	1	1	1
-Param: sector_std_dev_innovation 0 n + n n	0.005	0.005	0.005
+Param: sector_std_dev_innovation 0 n + n n	0.001	0.001	0.001
 Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5
 Param: sector_tech_opportunity_productivity 0 n + n n	0.002	0.002	0.002
-Param: sector_tech_opportunity_quality 0 n + n n	0.002	0.002	0.002
+Param: sector_tech_opportunity_quality 0 n + n n	0.004	0.004	0.004
 Var: Sector_Avg_Capital_Demand_Price_External 0 s + n n
 Var: Sector_Avg_Capital_Demand_Price_Internal 0 s + n n
 Var: Sector_Avg_Competitiveness 1 n + n n	1	1	1
@@ -1502,7 +1506,7 @@ END_DESCRIPTION
 Parameter_switch_entry
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_switch_expansion_investment
@@ -2685,6 +2689,18 @@ _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
+Parameter_switch_fixed_bank_distribution
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_fs_expectations
+(no description available)
+_INIT_
+All 1 instances equal to 0.3.
+END_DESCRIPTION
+
 Object_BANKS
 (no description available)
 _INIT_
@@ -3003,7 +3019,7 @@ END_DESCRIPTION
 Parameter_begin_surplus_target_rule
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_government_benefit
@@ -3015,7 +3031,7 @@ END_DESCRIPTION
 Parameter_government_demand_growth
 (no description available)
 _INIT_
-All 1 instances equal to 0.01.
+All 1 instances equal to 0.02.
 END_DESCRIPTION
 
 Parameter_government_expectations
@@ -3033,19 +3049,19 @@ END_DESCRIPTION
 Parameter_government_initial_capital_share
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.2.
 END_DESCRIPTION
 
 Parameter_government_initial_consumption_share
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_government_initial_input_share
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_government_max_debt
@@ -3081,7 +3097,7 @@ END_DESCRIPTION
 Parameter_switch_government_composition
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_switch_unemployment_benefits
@@ -3437,7 +3453,7 @@ END_DESCRIPTION
 Parameter_sector_learning_adjustment
 (no description available)
 _INIT_
-All 3 instances equal to 0.
+All 3 instances equal to 0.2.
 END_DESCRIPTION
 
 Parameter_sector_market_share_expansion
@@ -3473,7 +3489,7 @@ END_DESCRIPTION
 Parameter_sector_profits_distribution_rate
 (no description available)
 _INIT_
-All 3 instances equal to 0.95.
+All 3 instances equal to 0.8.
 END_DESCRIPTION
 
 Parameter_sector_rnd_revenue_proportion
@@ -3503,13 +3519,13 @@ END_DESCRIPTION
 Parameter_sector_passthrough_employment
 (no description available)
 _INIT_
-All 3 instances equal to 0.1.
+All 3 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_sector_passthrough_inflation
 (no description available)
 _INIT_
-All 3 instances equal to 0.5.
+All 3 instances equal to 0.9.
 END_DESCRIPTION
 
 Parameter_sector_passthrough_productivity
@@ -3521,7 +3537,7 @@ END_DESCRIPTION
 Parameter_sector_std_dev_innovation
 (no description available)
 _INIT_
-All 1 instances equal to 0.005.
+All 3 instances equal to 0.001.
 END_DESCRIPTION
 
 Parameter_sector_strategic_price_weight
@@ -3539,7 +3555,7 @@ END_DESCRIPTION
 Parameter_sector_tech_opportunity_quality
 (no description available)
 _INIT_
-All 3 instances equal to 0.002.
+All 3 instances equal to 0.004.
 END_DESCRIPTION
 
 Variable_Sector_Avg_Capital_Demand_Price_External

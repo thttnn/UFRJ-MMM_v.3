@@ -728,7 +728,7 @@ Param: survival_period 0 n + n n	0
 Param: switch_class_tax_structure 0 n + n n	3
 Param: switch_creditworthness 0 n + n n	0
 Param: switch_discount_rate 0 n + n n	3
-Param: switch_entry 0 n + n n	0
+Param: switch_entry 0 n + n n	1
 Param: switch_expansion_investment 0 n + n n	1
 Param: switch_fixed_exports 0 n + n n	0
 Param: switch_interest_investment 0 n + n n	0
@@ -980,7 +980,7 @@ Object: GOVERNMENT C	1
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
 Param: begin_surplus_target_rule 0 n + n n	0
 Param: government_benefit 0 n + n n	0.1
-Param: government_demand_growth 0 n + n n	0.005
+Param: government_demand_growth 0 n + n n	0.01
 Param: government_expectations 0 n + n n	0.3
 Param: government_inflation_passtrought 0 n + n n	1
 Param: government_initial_capital_share 0 n + n n	0
@@ -1058,7 +1058,7 @@ Param: sector_exports_coefficient 0 s + n n	0	0	0
 Param: sector_initial_price 0 n + n n	0	0	0
 Param: sector_initial_productivity 0 n + n n	1	1	1
 Param: sector_passthrough_employment 0 n + n n	0.1	0.1	0.1
-Param: sector_passthrough_inflation 0 n + n n	0.5	0.5	0.5
+Param: sector_passthrough_inflation 0 n + n n	0.9	0.9	0.9
 Param: sector_passthrough_productivity 0 s + n n	1	1	1
 Param: sector_std_dev_innovation 0 n + n n	0.005	0.005	0.005
 Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5
@@ -1502,7 +1502,7 @@ END_DESCRIPTION
 Parameter_switch_entry
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_switch_expansion_investment
@@ -1943,7 +1943,7 @@ END_DESCRIPTION
 Parameter_class_propensity_to_import
 (no description available)
 _INIT_
-All 2 instances equal to 1.
+All 2 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_class_wage_share
@@ -3003,7 +3003,7 @@ END_DESCRIPTION
 Parameter_begin_surplus_target_rule
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_government_benefit
@@ -3509,7 +3509,7 @@ END_DESCRIPTION
 Parameter_sector_passthrough_inflation
 (no description available)
 _INIT_
-All 3 instances equal to 0.5.
+All 3 instances equal to 0.9.
 END_DESCRIPTION
 
 Parameter_sector_passthrough_productivity
