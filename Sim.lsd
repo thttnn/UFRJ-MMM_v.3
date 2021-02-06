@@ -734,7 +734,7 @@ Param: switch_discount_rate 0 n + n n	3
 Param: switch_entry 0 n + n n	1
 Param: switch_expansion_investment 0 n + n n	1
 Param: switch_interest_investment 0 n + n n	0
-Param: switch_interest_payment 0 n + n n	1
+Param: switch_interest_payment 0 n + n n	0
 Param: switch_replacement_investment 0 n + n n	1
 Param: switch_government_composition 0 n + n n	1
 Param: switch_fixed_bank_distribution 0 n + n n	0
@@ -823,7 +823,7 @@ Param: class_liquidity_preference_adjustment 0 n + n n	0	0	0
 Param: class_population_share 0 n + n n	0.01	0.01	0.01
 Param: class_profit_share 0 n + n n	0	1	0
 Param: class_propensity_to_consume 0 n + n n	0	0.5	0.9
-Param: class_propensity_to_import 0 s + n n	0	0.3	0.1
+Param: class_propensity_to_import 0 s + n n	0	0.5	0.1
 Param: class_wage_share 0 n + n n	0	0	1
 Param: class_wealth_tax 0 n + n n	0	0	0
 Param: id_class 0 n + n n	1	2	3
@@ -866,7 +866,7 @@ Var: Class_Stock_Deposits 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Class_Stock_Loans 0 s + n n
 Var: Class_Taxation 0 s + n n
 Var: Class_Wealth_Share 0 s + n n
-Param: class_import_elasticity_price 0 n + n n	0.5	0.5	0.5
+Param: class_import_elasticity_price 0 n + n n	1	1	1
 Param: class_financial_share 0 n + n n	1	0	0
 
 Object: CLASS_LOANS C	1	1	1
@@ -877,7 +877,7 @@ Param: class_loan_total_amount 0 n + n n	0	0	0
 
 Object: EXTERNAL_SECTOR C	1
 Param: capital_flow_adjustment 0 n + n n	1
-Param: exchange_rate_adjustment 0 n + n n	0
+Param: exchange_rate_adjustment 0 n + n n	0.005
 Param: exchange_rate_growth 0 n + n n	0
 Param: external_income_adjustmnent 0 n + n n	0
 Param: external_income_growth 0 n + n n	0.0075
@@ -1460,7 +1460,7 @@ END_DESCRIPTION
 Parameter_switch_interest_payment
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_switch_replacement_investment
@@ -2262,7 +2262,7 @@ END_DESCRIPTION
 Parameter_class_import_elasticity_price
 (no description available)
 _INIT_
-All 3 instances equal to 0.5.
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_class_financial_share
@@ -2316,7 +2316,7 @@ END_DESCRIPTION
 Parameter_exchange_rate_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.005.
 END_DESCRIPTION
 
 Parameter_exchange_rate_growth

@@ -1106,8 +1106,8 @@ Param: sector_external_price_growth 0 n + n n	0	0	0
 Param: sector_external_price_sd 0 n + n n	0	0	0
 Param: sector_indirect_tax_rate 0 n + n n	0	0	0
 Param: sector_initial_markup 0 n + n n	1.3	1.3	1.3
-Param: sector_initial_price 0 n + n n	2	5	1
-Param: sector_initial_productivity 0 n + n n	1	2	0.5
+Param: sector_initial_price 0 n + n n	1	1	1
+Param: sector_initial_productivity 0 n + n n	1	1	1
 Param: sector_initial_quality 0 n + n n	1	1	1
 Param: sector_initial_wage 0 n + n n	1	1	1
 Param: sector_innovation_proportion 0 n + n n	0.5	0.5	0.5
@@ -1126,7 +1126,7 @@ Param: sector_payback_period 0 n + n n	30	30	30
 Param: sector_price_frequency 0 n + n n	4	4	4
 Param: sector_productive_capacity_cost 0 n + n n	0	0	0
 Param: sector_profits_distribution_rate 0 n + n n	0.8	0.8	0.8
-Param: sector_rnd_revenue_proportion 0 n + n n	0.02	0.05	0.01
+Param: sector_rnd_revenue_proportion 0 n + n n	0.01	0.01	0.01
 Param: sector_std_dev_innovation 0 n + n n	0.001	0.001	0.001
 Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5
 Param: sector_tech_opportunity_productivity 0 n + n n	0	0	0
@@ -3624,7 +3624,7 @@ END_DESCRIPTION
 Parameter_sector_initial_price
 (no description available)
 _INIT_
-All 3 instances equal to 0.
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_sector_initial_productivity
@@ -3744,7 +3744,7 @@ END_DESCRIPTION
 Parameter_sector_rnd_revenue_proportion
 (no description available)
 _INIT_
-All 3 instances equal to 0.05.
+All 3 instances equal to 0.01.
 END_DESCRIPTION
 
 Parameter_sector_std_dev_innovation
