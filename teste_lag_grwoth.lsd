@@ -815,7 +815,7 @@ Var: Country_Total_Wages 0 n + n n
 Var: Country_Idle_Capacity 5 s + n n	0.18	0.18	0.18	0.18	0.18
 Var: Country_Wage_Share 0 s + n n
 Var: Country_Annual_CPI_Inflation 1 s + n n	0
-Param: initial_debt_gdp 0 n + n n	0
+Param: initial_debt_gdp 0 n + n n	0.5
 Var: Country_Real_GDP_Demand 0 s + n n
 
 Object: CLASSES C	3
@@ -823,12 +823,12 @@ Param: class_autonomous_consumption_adjustment 0 n + n n	0	0	1
 Param: class_autonomous_consumption_adjustment_deposits 0 n + n n	0	0	0
 Param: class_debt_rate_adjustment 0 n + n n	0	0	0
 Param: class_desired_debt_rate 0 n + n n	1	1	1
-Param: class_direct_tax 0 n + n n	0.3	0.3	0.3
+Param: class_direct_tax 0 n + n n	0.1	0.1	0.1
 Param: class_liquidity_preference_adjustment 0 n + n n	0	0	0
 Param: class_population_share 0 n + n n	0.01	0.01	0.01
 Param: class_profit_share 0 n + n n	0	1	0
-Param: class_propensity_to_consume 0 n + n n	0	0.9	1
-Param: class_propensity_to_import 0 s + n n	0	0.5	0.1
+Param: class_propensity_to_consume 0 n + n n	0.8	0.9	1
+Param: class_propensity_to_import 0 s + n n	0.3	0.2	0.1
 Param: class_wage_share 0 n + n n	0	0	1
 Param: class_wealth_tax 0 n + n n	0	0	0
 Param: id_class 0 n + n n	1	2	3
@@ -883,11 +883,11 @@ Param: class_loan_interest_rate 0 n + n n	0	0	0
 Param: class_loan_total_amount 0 n + n n	0	0	0
 
 Object: EXTERNAL_SECTOR C	1
-Param: capital_flow_adjustment 0 n + n n	0
-Param: exchange_rate_adjustment 0 n + n n	0.005
+Param: capital_flow_adjustment 0 n + n n	1
+Param: exchange_rate_adjustment 0 n + n n	0
 Param: exchange_rate_growth 0 n + n n	0
 Param: external_income_adjustmnent 0 n + n n	0
-Param: external_income_growth 0 n + n n	0.04
+Param: external_income_growth 0 n + n n	0.005
 Param: external_income_sd 0 n + n n	0
 Param: external_interest_rate 0 n + n n	0.03
 Param: external_shock_begin 0 n + n n	200
@@ -915,9 +915,9 @@ Param: minimum_capital_ratio 0 n + n n	0.05
 Param: price_strategy_long_term 0 n + n n	1
 Param: price_strategy_short_term 0 n + n n	1
 Param: real_interest_rate 0 n + n n	0.01
-Param: risk_premium_class 0 n + n n	0
-Param: risk_premium_long_term 0 n + n n	0
-Param: risk_premium_short_term 0 n + n n	0
+Param: risk_premium_class 0 n + n n	1
+Param: risk_premium_long_term 0 n + n n	1
+Param: risk_premium_short_term 0 n + n n	1
 Param: spread_deposits 0 n + n n	1
 Param: spread_long_term 0 n + n n	0.1
 Param: spread_long_term_adjustment 0 n + n n	0
@@ -1012,19 +1012,19 @@ Param: sensitivity_reserves 0 n + n n	0
 
 Object: GOVERNMENT C	1
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
-Param: begin_surplus_target_rule 0 n + n n	-1
-Param: government_benefit 0 n + n n	0
-Param: government_real_growth 0 n + n n	0
-Param: government_expectations 0 n + n n	1
+Param: begin_surplus_target_rule 0 n + n n	0
+Param: government_benefit 0 n + n n	0.15
+Param: government_real_growth 0 n + n n	0.01
+Param: government_expectations 0 n + n n	0.3
 Param: government_inflation_passtrought 0 n + n n	1
-Param: government_initial_capital_share 0 n + n n	0
-Param: government_initial_consumption_share 0 n + n n	0
-Param: government_initial_input_share 0 n + n n	0
-Param: government_max_debt 0 n + n n	0.5
+Param: government_initial_capital_share 0 n + n n	0.2
+Param: government_initial_consumption_share 0 n + n n	0.1
+Param: government_initial_input_share 0 n + n n	0.1
+Param: government_max_debt 0 n + n n	1
 Param: government_min_debt 0 n + n n	0
 Param: government_productivity_passtrought 0 n + n n	0
 Param: government_surplus_rate_target 0 n + n n	0
-Param: government_surplus_target_adjustment 0 n + n n	0
+Param: government_surplus_target_adjustment 0 n + n n	0.005
 Var: Government_Debt 5 s + n n	0	0	0	0	0
 Var: Government_Debt_GDP_Ratio 5 s + n n	0	0	0	0	0
 Var: Government_Desired_Consumption 1 s + n n	0
@@ -1047,10 +1047,10 @@ Var: Government_Income_Taxes 0 n + n n
 Var: Government_Indirect_Taxes 0 n + n n
 Var: Government_Total_Taxes 1 s + n n	0
 Var: Government_RND 0 n + n n
-Param: goverment_tech_opportunity_productivity 0 n + n n	0
-Param: government_initial_productivity 0 n + n n	0
+Param: goverment_tech_opportunity_productivity 0 n + n n	0.002
+Param: government_initial_productivity 0 n + n n	1
 Param: government_rnd_share 0 n + n n	0
-Param: government_std_dev_innovation 0 n + n n	0
+Param: government_std_dev_innovation 0 n + n n	0.001
 Var: Government_Max_Expenses_DEBT 0 s + n n
 Var: Government_Max_Expenses_DEBT_2 0 s + n n
 Var: Government_Max_Expenses_Ceiling 0 s + n n
@@ -1074,7 +1074,7 @@ Param: sector_elasticity_quality 0 n + n n	1	1	1
 Param: sector_expectations 0 n + n n	0.3	0.3	0.3
 Param: sector_exports_coefficient 0 s + n n	0	0	0
 Param: sector_exports_elasticity_income 0 n + n n	1	1	1
-Param: sector_exports_elasticity_price 0 n + n n	2	2	2
+Param: sector_exports_elasticity_price 0 n + n n	1	1	1
 Param: sector_external_price_competitiveness 0 n + n n	1	1	1
 Param: sector_external_price_growth 0 n + n n	0	0	0
 Param: sector_external_price_sd 0 n + n n	0	0	0
@@ -1498,7 +1498,7 @@ END_DESCRIPTION
 Parameter_switch_extra_imports
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Object_COUNTRY
@@ -1926,7 +1926,7 @@ END_DESCRIPTION
 Parameter_initial_debt_gdp
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Variable_Country_Real_GDP_Demand
@@ -1968,7 +1968,7 @@ END_DESCRIPTION
 Parameter_class_direct_tax
 (no description available)
 _INIT_
-All 3 instances equal to 0.3.
+All 3 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_class_liquidity_preference_adjustment
@@ -2342,7 +2342,7 @@ END_DESCRIPTION
 Parameter_exchange_rate_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 0.005.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_exchange_rate_growth
@@ -2360,7 +2360,7 @@ END_DESCRIPTION
 Parameter_external_income_growth
 (no description available)
 _INIT_
-All 1 instances equal to 0.01.
+All 1 instances equal to 0.0075.
 END_DESCRIPTION
 
 Parameter_external_income_sd
@@ -3052,7 +3052,7 @@ END_DESCRIPTION
 Parameter_target_inflation
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.02.
 END_DESCRIPTION
 
 Parameter_target_capacity
@@ -3106,25 +3106,25 @@ END_DESCRIPTION
 Parameter_begin_surplus_target_rule
 (no description available)
 _INIT_
-All 1 instances equal to -1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_government_benefit
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.15.
 END_DESCRIPTION
 
 Parameter_government_real_growth
 (no description available)
 _INIT_
-All 1 instances equal to 0.03.
+All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Parameter_government_expectations
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+
 END_DESCRIPTION
 
 Parameter_government_inflation_passtrought
@@ -3136,25 +3136,25 @@ END_DESCRIPTION
 Parameter_government_initial_capital_share
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.2.
 END_DESCRIPTION
 
 Parameter_government_initial_consumption_share
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_government_initial_input_share
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_government_max_debt
 (no description available)
 _INIT_
-All 1 instances equal to 0.5.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_government_min_debt
@@ -3468,13 +3468,13 @@ END_DESCRIPTION
 Parameter_sector_elascitity_delay
 (no description available)
 _INIT_
-
+All 3 instances equal to 0.25.
 END_DESCRIPTION
 
 Parameter_sector_elasticity_price
 (no description available)
 _INIT_
-All 4 instances equal to 1.
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_sector_elasticity_quality
@@ -3504,7 +3504,7 @@ END_DESCRIPTION
 Parameter_sector_exports_elasticity_price
 (no description available)
 _INIT_
-All 3 instances equal to 2.
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_sector_external_price_competitiveness

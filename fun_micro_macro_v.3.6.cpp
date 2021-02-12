@@ -3,6 +3,7 @@
 
 #include "fun_head_fast.h"
 #define FAST_FULL
+#include "fun_support.h"
 
 //Create global pointers
 object *country;

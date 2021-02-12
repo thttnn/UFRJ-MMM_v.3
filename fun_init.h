@@ -36,13 +36,13 @@ CYCLE(cur, "CLASSES")
 	v[29]=VS(cur, "class_propensity_to_import");
 	v[30]=VS(cur, "class_direct_tax");
 	
-	v[20]=v[20]+v[27]*v[28]*(1-v[30]);															//effective aggregate propensity to consume on wages
-	v[21]=v[21]+v[26]*v[28]*(1-v[30]);															//effective aggregate propensity to consume on profits
+	v[20]=v[20]+v[27]*v[28]*(1-v[30])*(1-v[29]);															//effective aggregate propensity to consume on wages
+	v[21]=v[21]+v[26]*v[28]*(1-v[30])*(1-v[29]);															//effective aggregate propensity to consume on profits
 	
 	v[22]=v[22]+v[26]*v[30];																	//effective direct tax over profits
 	v[23]=v[23]+v[27]*v[30];																	//effective direct tax over wages
-	v[24]=v[24]+v[27]*v[29]*(1-v[30]);															//effective aggregate propensity to import on wages
-	v[25]=v[25]+v[26]*v[29]*(1-v[30]);															//effective aggregate propensity to import on profits
+	v[24]=v[24]+v[27]*v[28]*v[29]*(1-v[30]);															//effective aggregate propensity to import on wages
+	v[25]=v[25]+v[26]*v[28]*v[29]*(1-v[30]);															//effective aggregate propensity to import on profits
 }
 
 cur1=SEARCH_CND("id_consumption_goods_sector",1);
@@ -399,7 +399,7 @@ CYCLE(cur, "SECTORS")
 				v[233]=(-v[5]+v[231]+1)+(v[232]-1)*v[0];                                  		//calculates the capital good date of birth based on the firm number and the number of the capital good
 				v[224]=uniform_int(30, 60);
 				WRITES(cur5, "capital_good_date_birth", 0);										//write the capital good date of birth
-				WRITES(cur5, "capital_good_depreciation_period", 601);
+				WRITES(cur5, "capital_good_depreciation_period", v[224]);
 				}
 			}					
 }
