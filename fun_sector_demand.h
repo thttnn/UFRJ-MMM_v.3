@@ -68,13 +68,17 @@ The extra import, if the sector can not meet its internal demand, is determined 
 		v[0]=V("Country_Domestic_Capital_Goods_Demand");
 	v[3]=V("Sector_Demand_Met");
 	v[4]=v[0]*(1-v[3]);
-	if(v[4]>0)
+	v[1]=V("switch_extra_imports");
+	if(v[4]>0&&v[1]==1)
 		{
 		v[6]=v[4];
 		WRITE("Sector_Demand_Met_By_Imports", 1);
 		}
 	else
+		{
 		v[6]=0;
+		WRITE("Sector_Demand_Met_By_Imports", 0);
+		}
 RESULT(v[6])
 
 EQUATION_DUMMY("Sector_Demand_Met_By_Imports", "Sector_Extra_Imports")

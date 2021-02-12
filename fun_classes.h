@@ -2,29 +2,10 @@
 
 
 EQUATION("Class_Avg_Real_Income")
-/*
-Class average real income based on the past "class period" periods, considering financial obligations.
-Will affect induced consumption, imports decisions and debt assessment
-*/
-	v[0]=V("annual_frequency");											//define the class adjustment period
-	v[1]=0;															//initializes the sum
-	for (i=1; i<=v[0]; i++)											//for the number os lags equal the adjustment parameter
-		v[1]=v[1]+VL("Class_Real_Disposable_Income", i);
-	v[3]=v[1]/v[0];                  								//class average income in the last v[0] periods
-RESULT(v[3])
-
+RESULT(LAG_AVE(p, "Class_Real_Disposable_Income", V("annual_frequency")))
 
 EQUATION("Class_Avg_Nominal_Income")
-/*
-Class average nominal income based on thepast "class period" periods.
-Will be the base for debt rate calculus
-*/
-	v[0]=V("annual_frequency");											//define the class adjustment period
-	v[1]=0;															//initializes the sum
-	for (i=1; i<=v[0]; i++)											//for the number os lags equal the adjustment parameter
-		v[1]=v[1]+VL("Class_Nominal_Disposable_Income", i);
-	v[3]=v[1]/v[0];                  								//class average income in the last v[0] periods
-RESULT(v[3])
+RESULT(LAG_AVE(p, "Class_Nominal_Disposable_Income", V("annual_frequency")))
 
 
 EQUATION("Class_Real_Autonomous_Consumption")
@@ -53,6 +34,18 @@ else																//if it is not class adjustment period
 RESULT(max(0,v[7]))
 
 
+EQUATION("Class_Imports_Share")
+	
+	v[1]=CURRENT;													//class propensity to import
+	v[3]=VS(consumption, "Sector_Avg_Price");                       //consumption sector average price
+	v[4]=VS(consumption, "Sector_External_Price");                  //consumption sector external price
+	v[5]=VS(external,"Exchange_Rate");								//exchange rate
+	v[6]=V("class_import_share_adjustment");
+	v[7]=v[1]*pow((v[3]/(v[4]*v[5])),v[6]);
+	v[8]=max(0,min(v[7],1));
+RESULT(v[8])
+
+
 EQUATION("Class_Real_Desired_Domestic_Consumption")
 /*
 Class real domestic conumption is based on average past real disposable income from profits and wages and on the class' propensity to consume, plus autonomous consumption
@@ -60,21 +53,23 @@ Class real domestic conumption is based on average past real disposable income f
 	v[0]=V("Class_Avg_Real_Income");
 	v[1]=V("class_propensity_to_consume");          				//class propensity to consume on income
   	v[2]=V("Class_Real_Autonomous_Consumption");    				//class autonomous consumption
-  	v[3]=v[0]*v[1]+v[2];                            				//class real desired consumption
+	v[4]=V("Class_Imports_Share");
+  	v[3]=v[0]*v[1]*(1-v[4])+v[2];                            				//class real desired consumption
 RESULT(v[3])
 
 
 EQUATION("Class_Real_Desired_Imported_Consumption")
 	
 	v[0]=V("Class_Avg_Real_Income");
-	v[1]=V("class_propensity_to_import");							//class propensity to import
-  
+	v[1]=V("class_propensity_to_consume");							//class propensity to import
+	v[2]=V("Class_Imports_Share");
 	v[3]=VS(consumption, "Sector_Avg_Price");                       //consumption sector average price
 	v[4]=VS(consumption, "Sector_External_Price");                  //consumption sector external price
 	v[5]=VS(external,"Exchange_Rate");								//exchange rate
 	v[6]=V("class_import_elasticity_price");
 	v[7]=v[0]*v[1]*pow((v[3]/(v[4]*v[5])),v[6]);
-RESULT(v[7])
+	v[8]=v[0]*v[1]*v[2];
+RESULT(v[8])
 	
 
 EQUATION("Class_Desired_Expenses")

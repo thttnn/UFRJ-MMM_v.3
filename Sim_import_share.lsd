@@ -160,6 +160,7 @@ Label Root
 				Param: interest_shock_begin
 				Param: interest_shock_duration
 				Param: interest_shock_size
+				Param: sensitivity_reserves
 
 			}
 
@@ -720,6 +721,7 @@ Label Root
 	Param: switch_government_composition
 	Param: switch_fixed_bank_distribution
 	Param: switch_monetary_policy
+	Param: switch_extra_imports
 
 }
 
@@ -741,6 +743,7 @@ Param: switch_replacement_investment 0 n + n n	1
 Param: switch_government_composition 0 n + n n	1
 Param: switch_fixed_bank_distribution 0 n + n n	0
 Param: switch_monetary_policy 0 n + n n	1
+Param: switch_extra_imports 0 n + n n	1
 
 Object: COUNTRY C	1
 Param: annual_frequency 0 n + n n	4
@@ -824,8 +827,8 @@ Param: class_direct_tax 0 n + n n	0.1	0.1	0.1
 Param: class_liquidity_preference_adjustment 0 n + n n	0	0	0
 Param: class_population_share 0 n + n n	0.01	0.01	0.01
 Param: class_profit_share 0 n + n n	0	1	0
-Param: class_propensity_to_consume 0 n + n n	0	0.5	0.9
-Param: class_propensity_to_import 0 s + n n	0	0.5	0.1
+Param: class_propensity_to_consume 0 n + n n	0.8	0.9	1
+Param: class_propensity_to_import 0 s + n n	0.3	0.2	0.1
 Param: class_wage_share 0 n + n n	0	0	1
 Param: class_wealth_tax 0 n + n n	0	0	0
 Param: id_class 0 n + n n	1	2	3
@@ -881,12 +884,12 @@ Param: class_loan_total_amount 0 n + n n	0	0	0
 
 Object: EXTERNAL_SECTOR C	1
 Param: capital_flow_adjustment 0 n + n n	1
-Param: exchange_rate_adjustment 0 n + n n	0.005
+Param: exchange_rate_adjustment 0 n + n n	0
 Param: exchange_rate_growth 0 n + n n	0
 Param: external_income_adjustmnent 0 n + n n	0
-Param: external_income_growth 0 n + n n	0.0075
+Param: external_income_growth 0 n + n n	0.005
 Param: external_income_sd 0 n + n n	0
-Param: external_interest_rate 0 n + n n	0.01
+Param: external_interest_rate 0 n + n n	0.03
 Param: external_shock_begin 0 n + n n	200
 Param: external_shock_duration 0 n + n n	20
 Param: external_shock_size 0 n + n n	0
@@ -1005,6 +1008,7 @@ Param: begin_monetary_policy 0 n + n n	0
 Param: interest_shock_begin 0 n + n n	400
 Param: interest_shock_duration 0 n + n n	600
 Param: interest_shock_size 0 n + n n	0
+Param: sensitivity_reserves 0 n + n n	0
 
 Object: GOVERNMENT C	1
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
@@ -1486,6 +1490,12 @@ All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_switch_monetary_policy
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_switch_extra_imports
 (no description available)
 _INIT_
 All 1 instances equal to 1.
@@ -2332,7 +2342,7 @@ END_DESCRIPTION
 Parameter_exchange_rate_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 0.005.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_exchange_rate_growth
@@ -3042,7 +3052,7 @@ END_DESCRIPTION
 Parameter_target_inflation
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.02.
 END_DESCRIPTION
 
 Parameter_target_capacity
@@ -3070,6 +3080,12 @@ All 1 instances equal to 500.
 END_DESCRIPTION
 
 Parameter_interest_shock_size
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_sensitivity_reserves
 (no description available)
 _INIT_
 All 1 instances equal to 0.
@@ -3452,13 +3468,13 @@ END_DESCRIPTION
 Parameter_sector_elascitity_delay
 (no description available)
 _INIT_
-
+All 3 instances equal to 0.25.
 END_DESCRIPTION
 
 Parameter_sector_elasticity_price
 (no description available)
 _INIT_
-All 4 instances equal to 1.
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_sector_elasticity_quality

@@ -86,8 +86,11 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 		v[15]=0;
 		v[16]=V("sensitivity_debt_rate");
 		}
+		
+		v[34]=V("sensitivity_reserves");
+		v[35]=V("Basic_Interest_Rate_Min");
 	
-		v[17]=v[0]+v[5]+v[13]*(v[5]-v[1])+v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4])));
+		v[17]=max(v[0]+v[5]+v[13]*(v[5]-v[1])+v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4]))),v[34]*v[35]);
 		if(abs(v[17]-v[19])>v[18])
 		{
 			if(v[17]>v[19])
