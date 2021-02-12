@@ -258,16 +258,16 @@ else
 {
 	v[8]=min(v[0],v[1]);								   //government wages is desired limited by maximum expenses
 	v[9]=min(v[2],(v[0]-v[8]));    						   //government unemployment benefits is desired limited by maximum expenses minus wages
-	v[10]=min(v[3],(v[0]-v[8]-v[9])*(v[14]/v[17]));        //government consumption is desired limited by maximum expenses minus wages and benefits
-	v[11]=min(v[4],(v[0]-v[8]-v[9])*(v[15]/v[17]));        //government investment is desired limited by maximum expenses minus wages and benefits
-	v[12]=min(v[5],(v[0]-v[8]-v[9])*(v[16]/v[17]));        //government intermediate is desired limited by maximum expenses minus wages and benefits
+	v[10]=min(v[3],(v[0]-v[8]-v[9]));       			   //government consumption is desired limited by maximum expenses minus wages and benefits
+	v[11]=min(v[4],(v[0]-v[8]-v[9]-v[10]));        		   //government investment is desired limited by maximum expenses minus wages and benefits
+	v[12]=min(v[5],(v[0]-v[8]-v[9]-v[10]-v[11]));          //government intermediate is desired limited by maximum expenses minus wages and benefits
 }
-WRITE("Government_Effective_Wages", v[8]);
-WRITE("Government_Effective_Unemployment_Benefits", v[9]);
-WRITE("Government_Effective_Consumption", v[10]);
-WRITE("Government_Effective_Investment", v[11]);
-WRITE("Government_Effective_Inputs", v[12]);
-v[13]=v[8]+v[9]+v[10]+v[11]+v[12];
+WRITE("Government_Effective_Wages", max(0,v[8]));
+WRITE("Government_Effective_Unemployment_Benefits",  max(0,v[9]));
+WRITE("Government_Effective_Consumption",  max(0,v[10]));
+WRITE("Government_Effective_Investment",  max(0,v[11]));
+WRITE("Government_Effective_Inputs",  max(0,v[12]));
+v[13]=max(0,(v[8]+v[9]+v[10]+v[11]+v[12]));
 RESULT(v[13])
 
 EQUATION_DUMMY("Government_Effective_Wages","Government_Effective_Expenses")
