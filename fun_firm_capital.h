@@ -31,12 +31,11 @@ Depends on the demand for productive capacity in the last investment period. Thi
 	if(v[0]==1)
 		{
 		v[1]=V("sector_investment_frequency");												//investment period
-		cur=SEARCH_CNDS(root, "id_capital_goods_sector", 1);							//search the capital goods sector
 		v[6]=v[7]=0;
 		for (i=1; i<=v[1]; i++)															//for the current production period until the last investment period -1
 			{
-			v[4]=VLS(cur, "Sector_Demand_Met", i);										//computates the demand met by the sector in the current lag
-			v[5]=VLS(cur, "Sector_Demand_Met_By_Imports", i);							//computates the demand met by imports in the current lag
+			v[4]=VLS(capital, "Sector_Demand_Met", i);										//computates the demand met by the sector in the current lag
+			v[5]=VLS(capital, "Sector_Demand_Met_By_Imports", i);							//computates the demand met by imports in the current lag
 			v[6]=v[6]+v[4];
 			v[7]=v[7]+v[5];
 			}

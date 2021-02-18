@@ -314,7 +314,8 @@ Nominal quarterly GDP is calculated summing up profits, wages and indirect taxes
 	v[1]=V("Country_Total_Wages");
 	v[2]=V("Government_Indirect_Taxes");
 	v[3]=v[0]+v[1]+v[2];
-RESULT(v[3])
+	v[4]=V("Country_GDP_Demand");
+RESULT(v[4])
 
 
 EQUATION("Country_Real_GDP")
@@ -370,8 +371,7 @@ Counts the number of crisis ocurrances.
 	if(v[0]==0)                        		 	//if the rest of the above division is zero (begenning of the year)
 		{
 		v[1]=V("Country_Annual_Real_Growth");   //real growth rate
-		v[2]=V("crisis_threshold");       		//parameter that defines crisis
-		if(v[1]<v[2])                     		//if the real growth rate is lower the the crisis threshold
+		if(v[1]<0)                     			//if the real growth rate is lower the the crisis threshold
 			v[3]=1;                         	//counts a crisis
 		else                              		//if the real growth rate is not lower the the crisis threshold
 			v[3]=0;                         	//do not count a crisis

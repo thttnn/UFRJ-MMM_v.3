@@ -55,7 +55,7 @@ double LAG_AVE( object *obj , const char *var , int lag = 0, int lag2 = 0)
 }
 
 /*
-LAG_GRWOTH(obj, "lab", lag1, lag2)
+LAG_GROWTH(obj, "lab", lag1, lag2)
 This MACRO returns the growth rate of a variable named "lab" for the lag1 periods.
 The first lag defines how many lags to sum. The secong lag defines from which lag it will start summing. By default, the second lag is 0.
 WARNING: make sure there are specified lagged values for the variable "lab".

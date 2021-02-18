@@ -63,9 +63,8 @@ EQUATION("Firm_Stock_Inputs")
 The stock of inputs of each firm at the end of the period is calculated by summing the stock of inputs in the last period with the amount demanded for the production in the next period minus the amount used in the production of the current period
 */
 	v[1]=V("Firm_Input_Demand_Next_Period");              //amount of inputs demanded in the current period to be used in the production of the next period                      
-	cur=SEARCH_CND("id_intermediate_goods_sector", 1);    //identifies the intermediate goods sector
-	v[2]=VS(cur,"Sector_Demand_Met");                     //percentage of the total demand met by the sector                
-	v[3]=VS(cur,"Sector_Demand_Met_By_Imports");          //identifies if firms were capable of inporting the amount not mey by the domestic production
+	v[2]=VS(input,"Sector_Demand_Met");                     //percentage of the total demand met by the sector                
+	v[3]=VS(input,"Sector_Demand_Met_By_Imports");          //identifies if firms were capable of inporting the amount not mey by the domestic production
 	v[4]=v[2]+(1-v[2])*v[3];                              //percentage of the demand met by the domestic production and by the external producers                     
 	v[5]=V("sector_input_tech_coefficient");              //input technical coefficient               			 
 	v[6]=V("Firm_Effective_Production");                  //firm's effective production   

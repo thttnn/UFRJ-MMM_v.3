@@ -11,20 +11,16 @@ v[1]= fmod((double) t,v[0]);                                   //divides the tim
 v[2]=CURRENT;
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust government wages)
 {
-	v[3]=VL("Country_Avg_Productivity",1);                     //avg productivity lagged 1
-	v[4]=VL("Country_Avg_Productivity", v[0]+1);               //avg productivity lagged government period (4)
-	v[5]= v[4]!=0? (v[3]-v[4])/v[4] : 0;                       //calculate productivity growth
-	v[6]=VLS(consumption, "Sector_Avg_Price",1);                         
-	v[7]=VLS(consumption, "Sector_Avg_Price", v[0]+1);       
-	v[8]= v[7]!=0? (v[6]-v[7])/v[7] : 0;
-	v[9]=V("government_productivity_passtrought");             //productivity passtrough parameter
-	v[10]=V("government_inflation_passtrought");			   //inflation passtrough to public wages
-	v[11]=V("government_real_growth");
-	v[12]=v[2]*(1+v[9]*v[5]+v[10]*v[8]+v[11]);                 //desired adjusted government wages with no restriction
+	v[3]=VLS(consumption, "Sector_Avg_Price",1);                         
+	v[4]=VLS(consumption, "Sector_Avg_Price", v[0]+1);       
+	v[5]= v[4]!=0? (v[3]-v[4])/v[4] : 0;
+	v[6]=V("government_inflation_passtrought");			   		//inflation passtrough to public wages
+	v[7]=V("government_real_growth");
+	v[8]=v[2]*(1+v[6]*v[5]+v[7]);                 				//desired adjusted government wages with no restriction
 }
-else                                                           //if it is not adjustment period
-	v[12]=v[2];                                                //use last period's
-RESULT(v[12])
+else                                                          	 //if it is not adjustment period
+	v[8]=v[2];                                                	//use last period's
+RESULT(max(0,v[8]))
 
 
 EQUATION("Government_Desired_Unemployment_Benefits")
@@ -75,7 +71,7 @@ if(v[1]==0)                                                    //if the rest of 
 }
 else
 	v[8]=v[2];
-RESULT(v[8])
+RESULT(max(0,v[8]))
 
 
 EQUATION("Government_Desired_Consumption")
@@ -96,7 +92,7 @@ if(v[1]==0)                                                    //if the rest of 
 }
 else
 	v[8]=v[2];
-RESULT(v[8])
+RESULT(max(0,v[8]))
 
 
 EQUATION("Government_Desired_Inputs")
@@ -117,7 +113,7 @@ if(v[1]==0)                                                    //if the rest of 
 }
 else
 	v[8]=v[2];
-RESULT(v[8])
+RESULT(max(0,v[8]))
 
 
 EQUATION("Government_Surplus_Rate_Target")
@@ -146,13 +142,111 @@ else                                                           //if it is not ad
 RESULT(v[7])
 
 
+
+EQUATION("Government_Max_Expenses_DEBT")
+/*
+Government Max Expenses determined by Debt Rate Target Fiscal rule
+*/
+	v[0]=V("government_expectations");
+	v[1]=VL("Country_GDP",1);
+	v[2]=VL("Country_GDP",2);
+	v[3]=VL("Country_GDP",3);
+	v[4]= v[2]!=0? v[0]*(v[1]-v[2])/v[2] : 0;
+	
+	v[5]=V("government_max_debt");
+	v[6]=VL("Government_Debt",1);
+	v[7]=VL("Government_Total_Taxes",1);
+	v[8]=VS(financial, "Basic_Interest_Rate");
+	
+	v[9]=v[5]*(v[1]*(2+v[4])+v[2]+v[3]) - v[6]*(1+v[8]) + v[7]*(1+v[4]);
+RESULT(v[9])
+	
+EQUATION("Government_Max_Expenses_DEBT_2")
+/*
+Government Max Expenses determined by Debt Rate Target Fiscal rule
+*/
+	v[0]=V("government_expectations");
+	v[1]=VL("Country_GDP",1);
+	v[2]=VL("Country_GDP",2);
+	v[3]= v[2]!=0? v[0]*(v[1]-v[2])/v[2] : 0; //expected growth
+	
+	v[5]=V("government_max_debt");
+	v[6]=VL("Government_Debt",1);
+	v[7]=VL("Government_Total_Taxes",1);
+	v[8]=VS(financial, "Basic_Interest_Rate");
+	v[9]=V("annual_frequency");
+	
+	v[10]=0;
+	for(i=1;i<=v[9];i++)
+		v[10]=v[10]+pow((1+v[3]),i);//beta
+	
+	v[11]=1;
+	for(i=1;i<=v[9]-1;i++)
+		v[11]=v[11]+pow((1+v[8]),i);//alpha
+	
+	v[12]=0;
+	for(i=1,j=v[9]-1;i<=v[9],j>=0;i++,j--)
+		v[12]=v[12]+(pow((1+v[3]),i))*(pow((1+v[8]),j));//gamma
+	
+	if(v[11]!=0)
+		v[13]=(v[5]*v[1]*v[10] + v[7]*v[12] - v[6]*pow((1+v[8]),v[9]))/v[11];
+	else
+		v[13]=0;
+	
+	v[14]= fmod((double) t,v[9]);                                   //divides the time period by government adjustment period (adjust annualy)
+	if(v[14]==0)
+		v[15]=v[13];
+	else
+		v[15]=CURRENT;
+RESULT(v[15])
+
+EQUATION("Government_Max_Expenses_Surplus")
+/*
+Government Max Expenses determined by Primary Surplus Target Fiscal rule
+*/
+	v[0]=VL("Country_GDP",1);
+	v[1]=VL("Country_GDP",2);
+	v[2]=V("government_expectations");
+	v[3]= v[1]!=0? v[2]*(v[0]-v[1])/v[1] : 0;
+	v[4]=V("annual_frequency");
+	v[5]=0;
+	for(i=1;i<=v[4];i++)
+		v[5]=v[5]+pow((1+v[3]),i);
+	v[6]=v[5]/v[4];
+	v[7]=VL("Government_Total_Taxes",1);
+	v[8]=V("Government_Surplus_Rate_Target");
+	v[9]=v[6]*(v[7]-v[8]*v[0]);
+	v[10]=fmod((double) t,v[4]);
+	if(v[10]==0)
+		v[11]=v[9];
+	else	
+		v[11]=CURRENT;
+RESULT(v[11])
+
+EQUATION("Government_Max_Expenses_Ceiling")
+/*
+Government Max Expenses determined by Expenses Ceiling Target Fiscal rule
+*/
+	v[0]=V("annual_frequency");
+	v[1]=VL("Country_Annual_CPI_Inflation",1);
+	v[2]=0;
+	for(i=1;i<=v[0];i++)
+		v[2]=v[2]+VL("Government_Effective_Expenses",i);
+	v[3]=v[2]*(1+v[1])/v[0];
+	v[4]=fmod((double) t,v[0]);
+	if(v[4]==0)
+		v[5]=v[3];
+	else
+		v[5]=CURRENT;
+RESULT(v[5])
+
+
 EQUATION("Government_Max_Expenses")
 /*
 Maximum Government expenses imposed by the fiscal rule.
 Fiscal rules can be two types: primary surplus target or expenses ceiling (or both).
 Depend on the policy parameter.
 */
-
 v[0]=V("begin_surplus_target_rule");                           //define when surplus target rule begins
 v[1]=V("begin_expenses_ceiling_rule");                         //define when expenses ceiling begins
 v[2]=V("annual_frequency");
@@ -262,6 +356,7 @@ else
 	v[11]=min(v[4],(v[0]-v[8]-v[9]-v[10]));        		   //government investment is desired limited by maximum expenses minus wages and benefits
 	v[12]=min(v[5],(v[0]-v[8]-v[9]-v[10]-v[11]));          //government intermediate is desired limited by maximum expenses minus wages and benefits
 }
+
 WRITE("Government_Effective_Wages", max(0,v[8]));
 WRITE("Government_Effective_Unemployment_Benefits",  max(0,v[9]));
 WRITE("Government_Effective_Consumption",  max(0,v[10]));
@@ -275,26 +370,6 @@ EQUATION_DUMMY("Government_Effective_Unemployment_Benefits","Government_Effectiv
 EQUATION_DUMMY("Government_Effective_Consumption","Government_Effective_Expenses")
 EQUATION_DUMMY("Government_Effective_Investment","Government_Effective_Expenses")
 EQUATION_DUMMY("Government_Effective_Inputs","Government_Effective_Expenses")
-
-
-EQUATION("Government_RND");
-/*
-Share of government wages, consequently distributed to income classes as normal wages.
-*/
-	v[0]=V("Government_Effective_Wages");					//government effective wages
-	v[1]=V("government_rnd_share");							//fixed share of effective wages allocated to rnd
-	v[2]=1-exp(-v[0]*v[1]);									//probability of success, based on effective rnd expenses
-	if(RND<v[2])                              				//draws a random number. if it is lower then innovation probability
-	{
-		v[3]=V("government_std_dev_innovation");        	//innovation standard deviation
-		v[4]=V("government_initial_productivity");			//initial frontier productivity
-		v[5]=V("goverment_tech_opportunity_productivity"); 	//technological opportunity for process innovation
-		v[6]=log(v[4])+(double)t*(v[5]);        			//the average of the innovation distribution will be the initial frontier productivity plus the opportunity parameter times the time period
-		v[7]=exp(norm(v[6],v[3]));             				//the innovation productivity will be a draw from a normal distribution with average depending of the tech regime and std. dev fixed
-	}  	
-  	else                                      				//if the random number is not lower than imitation probability
-     	v[7]=0; 
-RESULT(v[7])
 
 
 EQUATION("Government_Income_Taxes")
@@ -327,90 +402,6 @@ EQUATION("Government_Debt_GDP_Ratio")
 	v[3]= v[2]!=0? v[1]/v[2] : 0;
 RESULT(v[3])
 
-EQUATION("Government_Max_Expenses_DEBT")
-	v[0]=V("government_expectations");
-	v[1]=VL("Country_GDP",1);
-	v[2]=VL("Country_GDP",2);
-	v[3]=VL("Country_GDP",3);
-	v[4]= v[2]!=0? v[0]*(v[1]-v[2])/v[2] : 0;
-	
-	v[5]=V("government_max_debt");
-	v[6]=VL("Government_Debt",1);
-	v[7]=VL("Government_Total_Taxes",1);
-	v[8]=VS(financial, "Basic_Interest_Rate");
-	
-	v[9]=v[5]*(v[1]*(2+v[4])+v[2]+v[3]) - v[6]*(1+v[8]) + v[7]*(1+v[4]);
-RESULT(v[9])
-	
-EQUATION("Government_Max_Expenses_DEBT_2")
-	v[0]=V("government_expectations");
-	v[1]=VL("Country_GDP",1);
-	v[2]=VL("Country_GDP",2);
-	v[3]= v[2]!=0? v[0]*(v[1]-v[2])/v[2] : 0; //expected growth
-	
-	v[5]=V("government_max_debt");
-	v[6]=VL("Government_Debt",1);
-	v[7]=VL("Government_Total_Taxes",1);
-	v[8]=VS(financial, "Basic_Interest_Rate");
-	v[9]=V("annual_frequency");
-	
-	v[10]=0;
-	for(i=1;i<=v[9];i++)
-		v[10]=v[10]+pow((1+v[3]),i);//beta
-	
-	v[11]=1;
-	for(i=1;i<=v[9]-1;i++)
-		v[11]=v[11]+pow((1+v[8]),i);//alpha
-	
-	v[12]=0;
-	for(i=1,j=v[9]-1;i<=v[9],j>=0;i++,j--)
-		v[12]=v[12]+(pow((1+v[3]),i))*(pow((1+v[8]),j));//gamma
-	
-	if(v[11]!=0)
-		v[13]=(v[5]*v[1]*v[10] + v[7]*v[12] - v[6]*pow((1+v[8]),v[9]))/v[11];
-	else
-		v[13]=0;
-	
-	v[14]= fmod((double) t,v[9]);                                   //divides the time period by government adjustment period (adjust annualy)
-	if(v[14]==0)
-		v[15]=v[13];
-	else
-		v[15]=CURRENT;
-RESULT(v[15])
-
-EQUATION("Government_Max_Expenses_Surplus")
-	v[0]=VL("Country_GDP",1);
-	v[1]=VL("Country_GDP",2);
-	v[2]=V("government_expectations");
-	v[3]= v[1]!=0? v[2]*(v[0]-v[1])/v[1] : 0;
-	v[4]=V("annual_frequency");
-	v[5]=0;
-	for(i=1;i<=v[4];i++)
-		v[5]=v[5]+pow((1+v[3]),i);
-	v[6]=v[5]/v[4];
-	v[7]=VL("Government_Total_Taxes",1);
-	v[8]=V("Government_Surplus_Rate_Target");
-	v[9]=v[6]*(v[7]-v[8]*v[0]);
-	v[10]=fmod((double) t,v[4]);
-	if(v[10]==0)
-		v[11]=v[9];
-	else	
-		v[11]=CURRENT;
-RESULT(v[11])
-
-EQUATION("Government_Max_Expenses_Ceiling")
-	v[0]=V("annual_frequency");
-	v[1]=VL("Country_Annual_CPI_Inflation",1);
-	v[2]=0;
-	for(i=1;i<=v[0];i++)
-		v[2]=v[2]+VL("Government_Effective_Expenses",i);
-	v[3]=v[2]*(1+v[1])/v[0];
-	v[4]=fmod((double) t,v[0]);
-	if(v[4]==0)
-		v[5]=v[3];
-	else
-		v[5]=CURRENT;
-RESULT(v[5])
 	
 
 

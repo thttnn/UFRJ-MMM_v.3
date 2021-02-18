@@ -223,10 +223,10 @@ Label Root
 		Son: GOVERNMENT
 		Label GOVERNMENT
 		{
+			Param: begin_debt_target_rule
 			Param: begin_expenses_ceiling_rule
 			Param: begin_surplus_target_rule
 			Param: government_benefit
-			Param: government_real_growth
 			Param: government_expectations
 			Param: government_inflation_passtrought
 			Param: government_initial_capital_share
@@ -234,7 +234,7 @@ Label Root
 			Param: government_initial_input_share
 			Param: government_max_debt
 			Param: government_min_debt
-			Param: government_productivity_passtrought
+			Param: government_real_growth
 			Param: government_surplus_rate_target
 			Param: government_surplus_target_adjustment
 			Var: Government_Debt
@@ -250,24 +250,18 @@ Label Root
 			Var: Government_Effective_Investment
 			Var: Government_Effective_Unemployment_Benefits
 			Var: Government_Effective_Wages
+			Var: Government_Income_Taxes
+			Var: Government_Indirect_Taxes
 			Var: Government_Interest_Payment
 			Var: Government_Max_Expenses
+			Var: Government_Max_Expenses_Ceiling
+			Var: Government_Max_Expenses_DEBT
+			Var: Government_Max_Expenses_DEBT_2
+			Var: Government_Max_Expenses_Surplus
 			Var: Government_Nominal_Result
 			Var: Government_Primary_Result
 			Var: Government_Surplus_Rate_Target
-			Var: Government_Income_Taxes
-			Var: Government_Indirect_Taxes
 			Var: Government_Total_Taxes
-			Var: Government_RND
-			Param: goverment_tech_opportunity_productivity
-			Param: government_initial_productivity
-			Param: government_rnd_share
-			Param: government_std_dev_innovation
-			Var: Government_Max_Expenses_DEBT
-			Var: Government_Max_Expenses_DEBT_2
-			Var: Government_Max_Expenses_Ceiling
-			Var: Government_Max_Expenses_Surplus
-			Param: begin_debt_target_rule
 
 		}
 
@@ -815,7 +809,7 @@ Var: Country_Total_Wages 0 n + n n
 Var: Country_Idle_Capacity 5 s + n n	0.18	0.18	0.18	0.18	0.18
 Var: Country_Wage_Share 0 s + n n
 Var: Country_Annual_CPI_Inflation 1 s + n n	0
-Param: initial_debt_gdp 0 n + n n	0
+Param: initial_debt_gdp 0 n + n n	0.5
 Var: Country_Real_GDP_Demand 0 s + n n
 
 Object: CLASSES C	3
@@ -823,11 +817,11 @@ Param: class_autonomous_consumption_adjustment 0 n + n n	0	0	1
 Param: class_autonomous_consumption_adjustment_deposits 0 n + n n	0	0	0
 Param: class_debt_rate_adjustment 0 n + n n	0	0	0
 Param: class_desired_debt_rate 0 n + n n	1	1	1
-Param: class_direct_tax 0 n + n n	0.3	0.3	0.3
+Param: class_direct_tax 0 n + n n	0	0.3	0.3
 Param: class_liquidity_preference_adjustment 0 n + n n	0	0	0
 Param: class_population_share 0 n + n n	0.01	0.01	0.01
 Param: class_profit_share 0 n + n n	0	1	0
-Param: class_propensity_to_consume 0 n + n n	0	0.9	1
+Param: class_propensity_to_consume 0 n + n n	0	0.7	0.9
 Param: class_propensity_to_import 0 s + n n	0	0.5	0.1
 Param: class_wage_share 0 n + n n	0	0	1
 Param: class_wealth_tax 0 n + n n	0	0	0
@@ -873,8 +867,8 @@ Var: Class_Taxation 0 s + n n
 Var: Class_Wealth_Share 0 s + n n
 Param: class_import_elasticity_price 0 n + n n	1	1	1
 Param: class_financial_share 0 n + n n	1	0	0
-Var: Class_Imports_Share 1 s + n n	0.5	0.3	0.1
-Param: class_import_share_adjustment 0 n + n n	0.001	0.001	0.001
+Var: Class_Imports_Share 1 s + n n	0.5	0.2	0.1
+Param: class_import_share_adjustment 0 n + n n	0.002	0.002	0.002
 
 Object: CLASS_LOANS C	1	1	1
 Param: class_loan_fixed_amortization 0 n + n n	0	0	0
@@ -914,7 +908,7 @@ Param: fs_elasticity_rationing 0 n + n n	0
 Param: minimum_capital_ratio 0 n + n n	0.05
 Param: price_strategy_long_term 0 n + n n	1
 Param: price_strategy_short_term 0 n + n n	1
-Param: real_interest_rate 0 n + n n	0.01
+Param: real_interest_rate 0 n + n n	0.0025
 Param: risk_premium_class 0 n + n n	0
 Param: risk_premium_long_term 0 n + n n	0
 Param: risk_premium_short_term 0 n + n n	0
@@ -1011,18 +1005,18 @@ Param: interest_shock_size 0 n + n n	0
 Param: sensitivity_reserves 0 n + n n	0
 
 Object: GOVERNMENT C	1
+Param: begin_debt_target_rule 0 n + n n	-1
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
-Param: begin_surplus_target_rule 0 n + n n	-1
+Param: begin_surplus_target_rule 0 n + n n	0
 Param: government_benefit 0 n + n n	0
-Param: government_real_growth 0 n + n n	0
-Param: government_expectations 0 n + n n	1
+Param: government_expectations 0 n + n n	0.3
 Param: government_inflation_passtrought 0 n + n n	1
 Param: government_initial_capital_share 0 n + n n	0
 Param: government_initial_consumption_share 0 n + n n	0
 Param: government_initial_input_share 0 n + n n	0
 Param: government_max_debt 0 n + n n	0.5
 Param: government_min_debt 0 n + n n	0
-Param: government_productivity_passtrought 0 n + n n	0
+Param: government_real_growth 0 n + n n	0.02
 Param: government_surplus_rate_target 0 n + n n	0
 Param: government_surplus_target_adjustment 0 n + n n	0
 Var: Government_Debt 5 s + n n	0	0	0	0	0
@@ -1038,24 +1032,18 @@ Var: Government_Effective_Inputs 0 s + n n
 Var: Government_Effective_Investment 0 s + n n
 Var: Government_Effective_Unemployment_Benefits 0 s + n n
 Var: Government_Effective_Wages 0 s + n n
+Var: Government_Income_Taxes 0 n + n n
+Var: Government_Indirect_Taxes 0 n + n n
 Var: Government_Interest_Payment 0 s + n n
 Var: Government_Max_Expenses 1 s + n n	0
+Var: Government_Max_Expenses_Ceiling 0 s + n n
+Var: Government_Max_Expenses_DEBT 0 s + n n
+Var: Government_Max_Expenses_DEBT_2 0 s + n n
+Var: Government_Max_Expenses_Surplus 0 s + d n
 Var: Government_Nominal_Result 0 s + n n
 Var: Government_Primary_Result 0 s + n n
 Var: Government_Surplus_Rate_Target 1 s + n n	0
-Var: Government_Income_Taxes 0 n + n n
-Var: Government_Indirect_Taxes 0 n + n n
 Var: Government_Total_Taxes 1 s + n n	0
-Var: Government_RND 0 n + n n
-Param: goverment_tech_opportunity_productivity 0 n + n n	0
-Param: government_initial_productivity 0 n + n n	0
-Param: government_rnd_share 0 n + n n	0
-Param: government_std_dev_innovation 0 n + n n	0
-Var: Government_Max_Expenses_DEBT 0 s + n n
-Var: Government_Max_Expenses_DEBT_2 0 s + n n
-Var: Government_Max_Expenses_Ceiling 0 s + n n
-Var: Government_Max_Expenses_Surplus 0 s + d n
-Param: begin_debt_target_rule 0 n + n n	-1
 
 Object: SECTORS C	3
 Param: id_capital_goods_sector 0 n + n n	0	1	0
@@ -1926,7 +1914,7 @@ END_DESCRIPTION
 Parameter_initial_debt_gdp
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Variable_Country_Real_GDP_Demand
@@ -2294,7 +2282,7 @@ END_DESCRIPTION
 Parameter_class_import_share_adjustment
 (no description available)
 _INIT_
-All 3 instances equal to 0.001.
+All 3 instances equal to 0.002.
 END_DESCRIPTION
 
 Object_CLASS_LOANS
@@ -2336,7 +2324,7 @@ END_DESCRIPTION
 Parameter_capital_flow_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_exchange_rate_adjustment
@@ -2360,7 +2348,7 @@ END_DESCRIPTION
 Parameter_external_income_growth
 (no description available)
 _INIT_
-All 1 instances equal to 0.01.
+All 1 instances equal to 0.04.
 END_DESCRIPTION
 
 Parameter_external_income_sd
@@ -2516,7 +2504,7 @@ END_DESCRIPTION
 Parameter_real_interest_rate
 (no description available)
 _INIT_
-All 1 instances equal to 0.02.
+All 1 instances equal to 0.0025.
 END_DESCRIPTION
 
 Parameter_risk_premium_class
@@ -3097,6 +3085,12 @@ _INIT_
 
 END_DESCRIPTION
 
+Parameter_begin_debt_target_rule
+(no description available)
+_INIT_
+All 1 instances equal to -1.
+END_DESCRIPTION
+
 Parameter_begin_expenses_ceiling_rule
 (no description available)
 _INIT_
@@ -3106,7 +3100,7 @@ END_DESCRIPTION
 Parameter_begin_surplus_target_rule
 (no description available)
 _INIT_
-All 1 instances equal to -1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_government_benefit
@@ -3115,16 +3109,10 @@ _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_government_real_growth
-(no description available)
-_INIT_
-All 1 instances equal to 0.03.
-END_DESCRIPTION
-
 Parameter_government_expectations
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 0.3.
 END_DESCRIPTION
 
 Parameter_government_inflation_passtrought
@@ -3163,10 +3151,10 @@ _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
-Parameter_government_productivity_passtrought
+Parameter_government_real_growth
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.02.
 END_DESCRIPTION
 
 Parameter_government_surplus_rate_target
@@ -3178,7 +3166,7 @@ END_DESCRIPTION
 Parameter_government_surplus_target_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 0.005.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Government_Debt
@@ -3290,6 +3278,18 @@ _INIT_
 
 END_DESCRIPTION
 
+Variable_Government_Income_Taxes
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Government_Indirect_Taxes
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
 Variable_Government_Interest_Payment
 (no description available)
 _INIT_
@@ -3297,6 +3297,30 @@ _INIT_
 END_DESCRIPTION
 
 Variable_Government_Max_Expenses
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Government_Max_Expenses_Ceiling
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Government_Max_Expenses_DEBT
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Government_Max_Expenses_DEBT_2
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Government_Max_Expenses_Surplus
 (no description available)
 _INIT_
 
@@ -3320,83 +3344,10 @@ _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
-Variable_Government_Income_Taxes
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_Government_Indirect_Taxes
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
 Variable_Government_Total_Taxes
 (no description available)
 _INIT_
 
-END_DESCRIPTION
-
-Variable_Government_RND
-Share of government wages, consequently distributed to income classes as normal wages.
-Share of government wages, consequently distributed to income classes as normal wages.
-_INIT_
-
-END_DESCRIPTION
-
-Parameter_goverment_tech_opportunity_productivity
-(no description available)
-_INIT_
-All 1 instances equal to 0.002.
-END_DESCRIPTION
-
-Parameter_government_initial_productivity
-(no description available)
-_INIT_
-All 1 instances equal to 1.
-END_DESCRIPTION
-
-Parameter_government_rnd_share
-(no description available)
-_INIT_
-All 1 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_government_std_dev_innovation
-(no description available)
-_INIT_
-All 1 instances equal to 0.001.
-END_DESCRIPTION
-
-Variable_Government_Max_Expenses_DEBT
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_Government_Max_Expenses_DEBT_2
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_Government_Max_Expenses_Ceiling
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_Government_Max_Expenses_Surplus
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Parameter_begin_debt_target_rule
-(no description available)
-_INIT_
-All 1 instances equal to -1.
 END_DESCRIPTION
 
 Object_SECTORS
@@ -3498,7 +3449,7 @@ END_DESCRIPTION
 Parameter_sector_exports_elasticity_income
 (no description available)
 _INIT_
-
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_sector_exports_elasticity_price
@@ -5509,7 +5460,6 @@ END_DESCRIPTION
 DOCUOBSERVE
 Root
 CENTRAL_BANK
-government_productivity_passtrought
 DEBT_RT_CL
 
 END_DOCUOBSERVE
