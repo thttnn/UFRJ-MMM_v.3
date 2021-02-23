@@ -193,7 +193,7 @@ Government Max Expenses determined by Primary Surplus Target Fiscal rule
 	v[6]=v[5]/v[4];
 	v[7]=VL("Government_Total_Taxes",1);
 	v[8]=V("Government_Surplus_Rate_Target");
-	v[9]=v[6]*(v[7]-v[8]*v[0]);
+	v[9]=(1+v[3])*(v[7]-v[8]*v[0]);
 	v[10]=fmod((double) t,v[4]);
 	if(v[10]==0)
 		v[11]=v[9];
@@ -226,66 +226,36 @@ Maximum Government expenses imposed by the fiscal rule.
 Fiscal rules can be two types: primary surplus target or expenses ceiling (or both).
 Depend on the policy parameter.
 */
-v[0]=V("begin_surplus_target_rule");                           //define when surplus target rule begins
-v[1]=V("begin_expenses_ceiling_rule");                         //define when expenses ceiling begins
-v[2]=V("annual_frequency");
-v[3]= fmod((double) t,v[2]);                                   //divides the time period by government adjustment period (adjust annualy)
-if(v[3]==0)                                                    //if the rest of the division is zero (adjust maximum expenses)
-{                                                              //adjust fiscal rules maximum expenses
-		v[4]=VL("Country_GDP", 1);                                      //GDP lagged 1
-		v[5]=VL("Country_GDP", v[2]+1);                                   //GDP lagged government period (4)
-		v[6]=V("government_expectations");                              //government expectation parameter 
-		if(v[5]!=0)                                                   	//if last semiannual GDP is not zero
-			v[7]=1+v[6]*(v[4]-v[5])/v[5];                               //expected growth of gdp
-		else                                                          	//if last semiannual GDP is zero
-			v[7]=1;                                                     //use one for the expected growth
-		v[8]=VL("Government_Total_Taxes",1);                            //total taxes in the last period
-		v[9]=V("Government_Surplus_Rate_Target");                     	//government surplus target rate
-		v[10]=v[7]*v[8]-(v[7]*v[4]*v[9]);                               //maximum expenses will be total taxes multiplyed by expected growth minus the surplus target
-	
-		v[11]=VL("Government_Effective_Expenses", 1);                   //last period government expeneses
-		v[12]=VL("Country_Consumer_Price_Index",1);                     //consumer price index lagged 1
-		v[13]=VL("Country_Consumer_Price_Index", v[2]+1);                 //consumer price index lagged government period (4)
-		if(v[13]!=0)                                                    //if consumer price index is not zero
-			v[14]=1+((v[12]-v[13])/v[13]);                              //calculate inflation
-		else                                                            //if consumer price index is zero
-			v[14]=1;												    //use 1
-		v[15]=v[11]*v[14];												//maximum expenses if ceiling rule is active
-	
-	if((t>=v[0]&&v[0]!=-1)&&(t>=v[1]&&v[1]!=-1))                        //if both rules are active
-		v[16]=min(v[10],v[15]);                                         //effective maximum is the minimum between both rules
-	else if ((t>=v[0]&&v[0]!=-1)&&(t<v[1]||v[1]==-1))                   //if only surplus target is active
-		v[16]=v[10];
-	else if ((t>=v[1]&&v[1]!=-1)&&(t<v[0]||v[0]==-1))                   //if only expenses ceiling is active
-		v[16]=v[15];
-	else													            //if none of the rules are active
-		v[16]=-1; 											            //no maximum expenses
-}
-else	                                                                //if it is not adjustment period
-	v[16]=CURRENT;											            //use last period's maximum
-	
+v[0]=V("annual_frequency");
+v[1]=V("begin_surplus_target_rule");                           //define when surplus target rule begins
+v[2]=V("begin_expenses_ceiling_rule");                         //define when expenses ceiling begins
+v[3]=V("begin_debt_target_rule"); 							   //define when debt rule begins
+v[4]= fmod((double) t,v[0]);                  				   //divides the time period by government adjustment period (adjust annualy)
+if(v[4]==0)                                                    //if the rest of the division is zero (adjust maximum expenses)
+{                                                              //adjust fiscal rules maximum expenses			
 	v[20]=V("Government_Max_Expenses_Surplus");
 	v[21]=V("Government_Max_Expenses_Ceiling");
-	v[23]=V("begin_debt_target_rule"); 
 	v[24]=V("Government_Max_Expenses_Debt");
 	
-	if((t>=v[0]&&v[0]!=-1)&&(t>=v[1]&&v[1]!=-1)&&(t>=v[23]&&v[23]!=-1))
-		v[17]=min(min(v[20],v[21]),v[24]);//three rules
-	else if ((t<v[0]||v[0]==-1)&&(t>=v[1]&&v[1]!=-1)&&(t>=v[23]&&v[23]!=-1))
-		v[17]=min(v[21],v[24]);//debt rule and celing rule
-	else if ((t>=v[0]&&v[0]!=-1)&&(t<v[1]||v[1]==-1)&&(t>=v[23]&&v[23]!=-1))
-		v[17]=min(v[20],v[24]);//debt rule and surplus rule
-	else if ((t>=v[0]&&v[0]!=-1)&&(t>=v[1]&&v[1]!=-1)&&(t<v[23]||v[23]==-1))
-		v[17]=min(v[20],v[21]);//surplus rule and ceiling rule
-	else if ((t>=v[0]&&v[0]!=-1)&&(t<v[1]||v[1]==-1)&&(t<v[23]||v[23]==-1))
-		v[17]=v[20];//only surplus rule
-	else if ((t<v[0]||v[0]==-1)&&(t>=v[1]&&v[1]!=-1)&&(t<v[23]||v[23]==1))
-		v[17]=v[21];//only ceiling rule
-	else if ((t<v[0]||v[0]==-1)&&(t<v[1]||v[1]==-1)&&(t>=v[23]&&v[23]!=-1))
-		v[17]=v[24];//only debt rule
+	if((t>=v[1]&&v[1]!=-1)&&(t>=v[2]&&v[2]!=-1)&&(t>=v[3]&&v[3]!=-1))
+		v[17]=min(min(v[20],v[21]),v[24]);										//three rules
+	else if ((t<v[1]||v[1]==-1)&&(t>=v[2]&&v[2]!=-1)&&(t>=v[3]&&v[3]!=-1))
+		v[17]=min(v[21],v[24]);													//debt rule and celing rule
+	else if ((t>=v[1]&&v[1]!=-1)&&(t<v[2]||v[2]==-1)&&(t>=v[3]&&v[3]!=-1))
+		v[17]=min(v[20],v[24]);													//debt rule and surplus rule
+	else if ((t>=v[1]&&v[1]!=-1)&&(t>=v[2]&&v[2]!=-1)&&(t<v[3]||v[3]==-1))
+		v[17]=min(v[20],v[21]);													//surplus rule and ceiling rule
+	else if ((t>=v[1]&&v[1]!=-1)&&(t<v[2]||v[2]==-1)&&(t<v[3]||v[3]==-1))
+		v[17]=v[20];															//only surplus rule
+	else if ((t<v[1]||v[1]==-1)&&(t>=v[2]&&v[2]!=-1)&&(t<v[3]||v[3]==1))
+		v[17]=v[21];															//only ceiling rule
+	else if ((t<v[1]||v[1]==-1)&&(t<v[2]||v[2]==-1)&&(t>=v[3]&&v[3]!=-1))
+		v[17]=v[24];															//only debt rule
 	else
-		v[17]=-1;//no rule
-	
+		v[17]=-1;																//no rule															
+}
+else	                                                                //if it is not adjustment period
+	v[17]=CURRENT;											            //use last period's maximum	
 RESULT(v[17])
 
 
@@ -314,11 +284,6 @@ v[3]=V("Government_Desired_Consumption");
 v[4]=V("Government_Desired_Investment");
 v[5]=V("Government_Desired_Inputs");
 
-v[14]=V("government_initial_share_consumption");
-v[15]=V("government_initial_share_capital");
-v[16]=V("government_initial_share_input");
-v[17]=v[14]+v[15]+v[16];
-
 if(v[0]==-1)                                               //no fiscal rule
 {
 	v[8]=v[1];											   //government wages equal desired wages
@@ -341,6 +306,7 @@ WRITE("Government_Effective_Unemployment_Benefits",  max(0,v[9]));
 WRITE("Government_Effective_Consumption",  max(0,v[10]));
 WRITE("Government_Effective_Investment",  max(0,v[12]));
 WRITE("Government_Effective_Inputs",  max(0,v[11]));
+WRITE("Government_Desired_Expenses",  v[1]+v[2]+v[3]+v[4]+v[5]);
 v[13]=max(0,(v[8]+v[9]+v[10]+v[11]+v[12]));
 RESULT(v[13])
 
@@ -349,7 +315,7 @@ EQUATION_DUMMY("Government_Effective_Unemployment_Benefits","Government_Effectiv
 EQUATION_DUMMY("Government_Effective_Consumption","Government_Effective_Expenses")
 EQUATION_DUMMY("Government_Effective_Investment","Government_Effective_Expenses")
 EQUATION_DUMMY("Government_Effective_Inputs","Government_Effective_Expenses")
-
+EQUATION_DUMMY("Government_Desired_Expenses","Government_Effective_Expenses")
 
 /*****GOVERNMENT RESULT VARIABLES*****/
 
@@ -377,7 +343,14 @@ RESULT(CURRENT-V("Government_Nominal_Result"))
 
 EQUATION("Government_Debt_GDP_Ratio")
 	v[1]=V("Government_Debt");
-	v[2]=LAG_SUM(country,"Country_GDP",V("annual_frequency"));
+	//v[2]=LAG_SUM(country,"Country_GDP",V("annual_frequency"));
+	v[2]=V("Country_GDP");
+	v[3]= v[2]!=0? v[1]/v[2] : 0;
+RESULT(v[3])
+
+EQUATION("Government_Surplus_GDP_Ratio")
+	v[1]=V("Government_Primary_Result");
+	v[2]=V("Country_GDP");
 	v[3]= v[2]!=0? v[1]/v[2] : 0;
 RESULT(v[3])
 

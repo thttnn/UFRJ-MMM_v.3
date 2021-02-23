@@ -71,7 +71,7 @@ v[100]=(((v[20]*v[22]/v[21])+(v[30]*v[32]/v[31])+(v[10]*v[12]/v[11]))*v[23])/v[1
 	LOG("\nNominal GDP is %f.",v[100]);
 	
 	//GOVERNMENT INTERMEDIATE CALCULATION
-	v[101]=v[100]*v[0]*v[60];							//government debt
+	v[101]=v[100]*v[60];								//government debt
 	v[102]=pow((1+v[50]+v[70]),(1/v[0]))-1;				//quarterly basic interest rate
 	v[103]=v[102]*v[101];								//government interest payment
 	v[104]=v[2]*v[100];									//government expenses
@@ -357,8 +357,20 @@ v[219]+=v[181];														//total nominal capital
 	v[231]=v[218]+v[223];											//total distributed profits
 	v[232]=v[230]+v[231];											//total households gross income	
 	v[233]=v[105]-v[210];											//total income taxation
-	v[234]=v[233]/v[232];											//average direct tax rate
 	v[235]=v[124]-v[212];											//total imported consumption expenses
+	
+	if(V("switch_class_tax_structure")==0)							    //taxation structure = no tax
+		v[234]=0;														//average direct tax rate							   				   				//class total tax
+	if(V("switch_class_tax_structure")==1)								//taxation structure = only wages
+		v[234]=v[233]/v[230];											//average direct tax rate
+	if(V("switch_class_tax_structure")==2)								//taxation structure = only profits
+		v[234]=v[233]/v[231];											//average direct tax rate
+	if(V("switch_class_tax_structure")==3)								//taxation structure = profits and wages 
+		v[234]=v[233]/v[232];											//average direct tax rate
+	if(V("switch_class_tax_structure")==4)								//taxation structure = profits, wages and interest
+		v[234]=v[233]/(v[232]+max(0,v[102]-v[52])*v[225]);				//average direct tax rate
+	
+
 		
 		//WRITTING ON LOG 
 		LOG("\nTotal Wages is %f.",v[230]);
@@ -373,11 +385,22 @@ v[219]+=v[181];														//total nominal capital
 		v[241]=VS(cur, "class_profit_share");
 		v[242]=VS(cur, "class_wage_share");
 		
-		v[243]=v[230]*v[242]+v[231]*v[241];							//class gross income
-		v[244]=v[243]*v[234];										//class taxation (same tax rate)
+		v[243]=v[230]*v[242]+v[231]*v[241]+max(0,v[102]-v[52])*v[225]*v[241]; //class gross income
+		
+		if(V("switch_class_tax_structure")==0)							    	//taxation structure = no tax
+			v[244]=0;															//average direct tax rate							   				   				//class total tax
+		if(V("switch_class_tax_structure")==1)									//taxation structure = only wages
+			v[244]=v[234]*(v[230]*v[242]);										//average direct tax rate
+		if(V("switch_class_tax_structure")==2)									//taxation structure = only profits
+			v[244]=v[234]*(v[231]*v[241]);										//average direct tax rate
+		if(V("switch_class_tax_structure")==3)									//taxation structure = profits and wages 
+			v[244]=v[234]*(v[230]*v[242]+v[231]*v[241]);						//average direct tax rate
+		if(V("switch_class_tax_structure")==4)									//taxation structure = profits, wages and interest
+			v[244]=v[234]*v[243];												//average direct tax rate
+		
 		v[245]=v[243]-v[244];										//class disposable income
 		v[246]=v[245]*v[240];										//class induced expenses
-		v[247]=v[235]/3;											//class nominal imports
+		v[247]=v[235]*v[241];										//class nominal imports
 		v[248]=v[247]/v[246];										//class import share
 		v[249]=v[246]-v[247];										//class induced domestic consumption
 		v[250]=v[245]-v[246];										//class induced savings
@@ -386,6 +409,7 @@ v[219]+=v[181];														//total nominal capital
 		
 		WRITES(cur, "class_direct_tax", v[234]);//same tax rate 
 		WRITES(cur, "class_initial_imports_share", v[248]);
+		WRITELLS(cur, "Class_Stock_Deposits", v[225]*v[241], 0, 1);
 		WRITELLS(cur, "Class_Liquidity_Preference", 0, 0, 1);//olhar depois
 		WRITELLS(cur, "Class_Max_Debt_Rate", 1, 0, 1);//olhar depois
 		WRITELLS(cur, "Class_Stock_Loans", 0, 0, 1);
@@ -400,18 +424,8 @@ v[219]+=v[181];														//total nominal capital
 	
 	v[253]=v[140]-v[251];//total autonomous consumption
 	CYCLE(cur, "CLASSES")
-	{
-		v[254]=VS(cur, "class_propensity_to_spend");
-		v[255]=VS(cur, "class_profit_share");
-		v[256]=VS(cur, "class_wage_share");
-		v[257]=VS(cur, "class_direct_tax");
-		v[258]=(v[230]*v[256]+v[231]*v[255])*(1-v[257])*(1-v[254]);
-		v[259]=v[258]/v[252];
-		v[260]=v[253]*v[259];
-		v[261]=v[225]*v[259];
-		WRITELLS(cur, "Class_Real_Autonomous_Consumption", v[260]/v[13], 0, 1);
-		WRITELLS(cur, "Class_Stock_Deposits", v[261], 0, 1);
-	}
+		WRITELLS(cur, "Class_Real_Autonomous_Consumption", v[253]*VS(cur, "class_profit_share")/v[13], 0, 1);
+
 	
 v[270]=WHTAVE("sector_initial_price", "sector_initial_demand")/SUM("sector_initial_demand");
 v[271]=WHTAVE("sector_initial_productivity", "sector_initial_demand")/SUM("sector_initial_demand");

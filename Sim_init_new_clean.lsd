@@ -254,6 +254,8 @@ Label Root
 			Var: Government_Primary_Result
 			Var: Government_Surplus_Rate_Target
 			Var: Government_Total_Taxes
+			Var: Government_Desired_Expenses
+			Var: Government_Surplus_GDP_Ratio
 
 		}
 
@@ -896,8 +898,8 @@ Param: fs_profits_distribution_rate 0 n + n n	0.9
 Param: fs_risk_premium_class 0 n + n n	0
 Param: fs_risk_premium_long_term 0 n + n n	0
 Param: fs_risk_premium_short_term 0 n + n n	0
-Param: fs_sensitivity_debt_rate 0 n + n n	1
-Param: fs_sensitivity_default 0 n + n n	1
+Param: fs_sensitivity_debt_rate 0 n + n n	0.5
+Param: fs_sensitivity_default 0 n + n n	0.5
 Param: fs_spread_deposits 0 n + n n	1
 Param: fs_spread_long_term 0 n + n n	0.05
 Param: fs_spread_long_term_adjustment 0 n + n n	0
@@ -973,7 +975,7 @@ Var: Bank_Retained_Profits 0 n + n n
 Var: Bank_Effective_Capital_Ratio 0 n + n n
 
 Object: CENTRAL_BANK C	1
-Param: cb_annual_real_interest_rate 0 n + n n	0.02
+Param: cb_annual_real_interest_rate 0 n + n n	0.01
 Param: cb_interest_rate_adjustment 0 n + n n	0.001
 Param: cb_minimum_capital_ratio 0 n + n n	0.05
 Param: cb_sensitivity_capacity 0 n + n n	0.1
@@ -992,10 +994,10 @@ Param: interest_shock_size 0 n + n n	0
 Var: Central_Bank_Basic_Interest_Rate 1 s + n n	0
 
 Object: GOVERNMENT C	1
-Param: government_benefit_rate 0 n + n n	0
-Param: government_expectations 0 n + n n	1.5
+Param: government_benefit_rate 0 n + n n	0.5
+Param: government_expectations 0 n + n n	2
 Param: government_inflation_passtrought 0 n + n n	1
-Param: government_initial_debt_gdp_ratio 0 n + n n	1
+Param: government_initial_debt_gdp_ratio 0 n + n n	2
 Param: government_initial_share_capital 0 n + n n	0.3
 Param: government_initial_share_consumption 0 n + n n	0.1
 Param: government_initial_share_input 0 n + n n	0.1
@@ -1027,6 +1029,8 @@ Var: Government_Nominal_Result 0 s + n n
 Var: Government_Primary_Result 0 s + n n
 Var: Government_Surplus_Rate_Target 1 s + n n	0
 Var: Government_Total_Taxes 1 s + n n	0
+Var: Government_Desired_Expenses 0 n + n n
+Var: Government_Surplus_GDP_Ratio 0 s + n n
 
 Object: SECTORS C	3
 Param: id_capital_goods_sector 0 n + n n	0	1	0
@@ -2926,7 +2930,7 @@ END_DESCRIPTION
 Parameter_cb_annual_real_interest_rate
 (no description available)
 _INIT_
-All 1 instances equal to 0.02.
+All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Parameter_cb_interest_rate_adjustment
@@ -3034,13 +3038,13 @@ END_DESCRIPTION
 Parameter_government_benefit_rate
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Parameter_government_expectations
 (no description available)
 _INIT_
-All 1 instances equal to 1.5.
+All 1 instances equal to 2.
 END_DESCRIPTION
 
 Parameter_government_inflation_passtrought
@@ -3052,7 +3056,7 @@ END_DESCRIPTION
 Parameter_government_initial_debt_gdp_ratio
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 2.
 END_DESCRIPTION
 
 Parameter_government_initial_share_capital
@@ -3267,6 +3271,18 @@ All 1 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Government_Total_Taxes
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Government_Desired_Expenses
+****GOVERNMENT RESULT VARIABLES********GOVERNMENT RESULT VARIABLES****
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Government_Surplus_GDP_Ratio
 (no description available)
 _INIT_
 
