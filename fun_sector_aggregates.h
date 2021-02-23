@@ -189,28 +189,6 @@ Sum up firm's employment, given by firm's effective production over firm's avg p
 RESULT(v[0])
 
 
-EQUATION("Sector_Idle_Capacity")
-/*
-Unemployment, calculated as the difference between effective employment and potential employment of the sector, in percentage value
-*/
-	v[0]=V("Sector_Effective_Production");
-	v[1]=V("Sector_Productive_Capacity");
-	if (v[1]!=0)
-	{
-		v[2]=max(0,((v[1]-v[0])/v[1]));
-		v[3]=v[0]/v[1];
-	}
-	else
-	{
-		v[2]=0;
-		v[3]=0;
-	}
-	WRITE("Sector_Capacity_Utilization", v[3]);
-RESULT(v[2])
-
-EQUATION_DUMMY("Sector_Capacity_Utilization", "Sector_Idle_Capacity")
-
-
 
 /*****SECTOR AVERAGES, SD AND MAX*****/
 
@@ -305,3 +283,10 @@ RESULT(WHTAVE("Firm_Internal_Finance_Rate", "Firm_Market_Share"))
 
 EQUATION("Sector_Avg_External_Finance_Rate")
 RESULT(WHTAVE("Firm_External_Finance_Rate", "Firm_Market_Share"))
+
+EQUATION("Sector_Capacity_Utilization")
+RESULT(WHTAVE("Firm_Capacity_Utilization", "Firm_Market_Share"))
+
+EQUATION("Sector_Idle_Capacity")
+RESULT(1-V("Sector_Capacity_Utilization"))
+

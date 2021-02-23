@@ -5,7 +5,7 @@ EQUATION("Firm_Frontier_Productivity")
 /*
 The new productivity is the maximum among the previous one and the ones possibly obtained imitation and innovation.  
 */
-	v[0]=VL("Firm_Frontier_Productivity", 1);       //frontier productivity of the firm in the last period
+	v[0]=CURRENT;       							//frontier productivity of the firm in the last period
 	v[1]=V("Firm_Imitation_Productivity");          //productivity achievied with imitation in that period
 	v[2]=V("Firm_Innovation_Productivity");         //productivity achievied with innovation in that period
 	v[3]=max(v[0],max(v[1],v[2]));             		//current frontier productivity is the maximum between the three
@@ -16,7 +16,7 @@ EQUATION("Firm_Quality")
 /*
 The new quality is the maximum among the previous one and the ones possibly obtained imitation and innovation. 
 */
-	v[0]=VL("Firm_Quality", 1);       				//frontier quality of the firm in the last period
+	v[0]=CURRENT;       							//frontier quality of the firm in the last period
 	v[1]=V("Firm_Imitation_Quality");          		//quality achievied with imitation in that period
 	v[2]=V("Firm_Innovation_Quality");         		//quality achievied with innovation in that period
 	v[3]=max(v[0],max(v[1],v[2]));        			//current frontier quality is the maximum between the three

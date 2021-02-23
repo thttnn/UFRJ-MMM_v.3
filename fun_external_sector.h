@@ -12,12 +12,9 @@ Nominal value of external income.
 		{
 		v[3]=V("external_income_growth");						//fixed external income growth
 		v[4]=V("external_income_sd");							//fixed external income sd
-		
-		v[5]=VL("Country_GDP", 1);	
-		v[6]=VL("Country_GDP", v[1]+1);	
-		v[14] = v[6]!=0? (v[5]-v[6])/v[6] : 0;
+		v[5]=LAG_GROWTH(country, "Country_GDP", v[1], 1);
 		v[7]=V("external_income_adjustmnent");                  //exogenous parameter that amplifies external growth based on domestic growth
-		v[8]=1+norm((v[3]+v[14]*v[7]), v[4]);					//random draw from a normal distribution with average equals to past growth and standard deviation equals to past growth in absolute value
+		v[8]=1+norm((v[3]+v[5]*v[7]), v[4]);					//random draw from a normal distribution with average equals to past growth and standard deviation equals to past growth in absolute value
 		
 		v[9]=V("external_shock_begin");          				//defines when the shock happens
 		v[10]=V("external_shock_duration");       				//defines how long the shock lasts
@@ -37,25 +34,25 @@ RESULT(max(0,v[13]))
 EQUATION("Country_Capital_Flows")
 	v[0]=V("External_Income");
 	v[1]=V("Central_Bank_Basic_Interest_Rate");
-	
 	v[2]=V("external_interest_rate");
 	v[5]=pow(1+v[2],1/V("annual_frequency"))-1;
 	v[3]=V("external_capital_flow_adjustment");
 	v[4]=(v[1]-v[5])*v[0]*v[3];
 RESULT(v[4])
 
+
 EQUATION("Country_Trade_Balance")
 RESULT(V("Country_Nominal_Exports")-V("Country_Nominal_Imports"))
+
 
 EQUATION("Country_International_Reserves")
 RESULT(CURRENT+V("Country_Trade_Balance")+V("Country_Capital_Flows");)
 
+
 EQUATION("Country_International_Reserves_GDP_Ratio")
 	v[0]=V("annual_frequency");
 	v[1]=V("Country_International_Reserves");
-	v[2]=0;
-	for(i=0; i<=v[0]-1; i++)
-		v[2]=v[2]+VL("Country_GDP",i);
+	v[2]=LAG_SUM(country, "Country_GDP", v[0]);
 	v[3]= v[2]!=0? v[1]/v[2] : 0;
 RESULT(v[3])
 

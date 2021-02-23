@@ -1,4 +1,4 @@
-/*****PUBLIC SECTOR*****/
+/*****GOVERNMENT DECISION VARIABLES*****/
 
 EQUATION("Government_Desired_Wages")
 /*
@@ -11,16 +11,14 @@ v[1]= fmod((double) t,v[0]);                                   //divides the tim
 v[2]=CURRENT;
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust government wages)
 {
-	v[3]=VLS(consumption, "Sector_Avg_Price",1);                         
-	v[4]=VLS(consumption, "Sector_Avg_Price", v[0]+1);       
-	v[5]= v[4]!=0? (v[3]-v[4])/v[4] : 0;
-	v[6]=V("government_inflation_passtrought");			   		//inflation passtrough to public wages
-	v[7]=V("government_real_growth");
-	v[8]=v[2]*(1+v[6]*v[5]+v[7]);                 				//desired adjusted government wages with no restriction
+	v[3]= LAG_GROWTH(consumption, "Sector_Avg_Price", v[0], 1);
+	v[4]=V("government_inflation_passtrought");			   		//inflation passtrough to public wages
+	v[5]=V("government_real_growth");
+	v[6]=v[2]*(1+v[4]*v[3]+v[5]);                 				//desired adjusted government wages with no restriction
 }
 else                                                          	 //if it is not adjustment period
-	v[8]=v[2];                                                	//use last period's
-RESULT(max(0,v[8]))
+	v[6]=v[2];                                                	//use last period's
+RESULT(max(0,v[6]))
 
 
 EQUATION("Government_Desired_Unemployment_Benefits")
@@ -63,15 +61,13 @@ v[1]= fmod((double) t,v[0]);                                   //divides the tim
 v[2]=CURRENT;
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
 {
-	v[3]=V("government_real_growth");
-	v[5]=VLS(capital, "Sector_Avg_Price",1);                         
-	v[6]=VLS(capital, "Sector_Avg_Price", v[0]+1);                  		
-	v[7]= v[6]!=0? (v[5]-v[6])/v[6] : 0;
-	v[8]=v[2]*(1+v[3]+v[7]);
+	v[3]=V("government_real_growth");		
+	v[4]= LAG_GROWTH(capital, "Sector_Avg_Price", v[0], 1);
+	v[5]=v[2]*(1+v[3]+v[4]);
 }
 else
-	v[8]=v[2];
-RESULT(max(0,v[8]))
+	v[5]=v[2];
+RESULT(max(0,v[5]))
 
 
 EQUATION("Government_Desired_Consumption")
@@ -84,15 +80,13 @@ v[1]= fmod((double) t,v[0]);                                   //divides the tim
 v[2]=CURRENT;
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
 {
-	v[3]=V("government_real_growth");
-	v[5]=VLS(consumption, "Sector_Avg_Price",1);                         
-	v[6]=VLS(consumption, "Sector_Avg_Price", v[0]+1);       
-	v[7]= v[6]!=0? (v[5]-v[6])/v[6] : 0;
-	v[8]=v[2]*(1+v[3]+v[7]);
+	v[3]=V("government_real_growth");   
+	v[4]= LAG_GROWTH(consumption, "Sector_Avg_Price", v[0], 1);
+	v[5]=v[2]*(1+v[3]+v[4]);
 }
 else
-	v[8]=v[2];
-RESULT(max(0,v[8]))
+	v[5]=v[2];
+RESULT(max(0,v[5]))
 
 
 EQUATION("Government_Desired_Inputs")
@@ -105,15 +99,16 @@ v[1]= fmod((double) t,v[0]);                                   //divides the tim
 v[2]=CURRENT;
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
 {
-	v[3]=V("government_real_growth");
-	v[5]=VLS(input, "Sector_Avg_Price",1);                         
-	v[6]=VLS(input, "Sector_Avg_Price", v[0]+1);       
-	v[7]= v[6]!=0? (v[5]-v[6])/v[6] : 0;
-	v[8]=v[2]*(1+v[3]+v[7]);
+	v[3]=V("government_real_growth");      
+	v[4]= LAG_GROWTH(input, "Sector_Avg_Price", v[0], 1);
+	v[5]=v[2]*(1+v[3]+v[4]);
 }
 else
-	v[8]=v[2];
-RESULT(max(0,v[8]))
+	v[5]=v[2];
+RESULT(max(0,v[5]))
+
+
+/*****FISCAL RULES VARIABLES*****/
 
 
 EQUATION("Government_Surplus_Rate_Target")
@@ -127,12 +122,13 @@ if(v[1]==0)                                                    //if the rest of 
 {
 	v[3]=VL("Government_Debt_GDP_Ratio",1);                    //current debt to gdp ratio
 	v[8]=VL("Government_Debt_GDP_Ratio",v[0]+1);
-	v[4]=V("government_max_debt_ratio");                             //maximum debt to gdp accepted, parameter
-	v[5]=V("government_min_debt_ratio");                             //minimum debt to gdp accepted, parameter
+	v[4]=V("government_max_debt_ratio");                       //maximum debt to gdp accepted, parameter
+	v[5]=V("government_min_debt_ratio");                       //minimum debt to gdp accepted, parameter
 	v[6]=V("government_surplus_target_adjustment");			   //adjustment parameter
-	if(v[3]>v[4]&&v[3]>v[8])                                   //if debt to gdp is higher than accepted and growing
+	v[9]=V("begin_flexible_surplus_target");
+	if(v[3]>v[4]&&v[3]>v[8]&&t>v[9])                           //if debt to gdp is higher than accepted and growing
 		v[7]=v[2]+v[6];										   //increase surplus target
-	else if (v[3]<v[5]&&v[3]<v[8])                             //if debt to gdp is lower than accepted and decreasing
+	else if (v[3]<v[5]&&v[3]<v[8]&&t>v[9])                     //if debt to gdp is lower than accepted and decreasing
 		v[7]=v[2]-v[6];										   //deacrease surplus target
 	else                                                       //if current debt to gdp is between accepted band
 		v[7]=v[2];                                             //do not change surplus taget
@@ -181,6 +177,7 @@ Government Max Expenses determined by Debt Rate Target Fiscal rule
 		v[15]=CURRENT;
 RESULT(v[15])
 
+
 EQUATION("Government_Max_Expenses_Surplus")
 /*
 Government Max Expenses determined by Primary Surplus Target Fiscal rule
@@ -203,6 +200,7 @@ Government Max Expenses determined by Primary Surplus Target Fiscal rule
 	else	
 		v[11]=CURRENT;
 RESULT(v[11])
+
 
 EQUATION("Government_Max_Expenses_Ceiling")
 /*
@@ -353,6 +351,9 @@ EQUATION_DUMMY("Government_Effective_Investment","Government_Effective_Expenses"
 EQUATION_DUMMY("Government_Effective_Inputs","Government_Effective_Expenses")
 
 
+/*****GOVERNMENT RESULT VARIABLES*****/
+
+
 EQUATION("Government_Income_Taxes")
 RESULT(SUMS(country,"Class_Taxation"))
 
@@ -375,11 +376,8 @@ EQUATION("Government_Debt")
 RESULT(CURRENT-V("Government_Nominal_Result"))
 
 EQUATION("Government_Debt_GDP_Ratio")
-	v[0]=V("annual_frequency");
 	v[1]=V("Government_Debt");
-	v[2]=0;
-	for(i=0; i<=v[0]-1; i++)
-		v[2]=v[2]+VL("Country_GDP",i);
+	v[2]=LAG_SUM(country,"Country_GDP",V("annual_frequency"));
 	v[3]= v[2]!=0? v[1]/v[2] : 0;
 RESULT(v[3])
 

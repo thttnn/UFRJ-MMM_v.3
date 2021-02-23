@@ -26,14 +26,14 @@ LAG_SUM(obj, "lab", lag1, lag2)
 This MACRO returns the sum of lagged values of a specifed variable named "lab". 
 The first lag defines how many lags to sum. The secong lag defines from which lag it will start summing. By default, the second lag is 1.
 WARNING: make sure there are specified lagged values for the variable "lab".
-EXAMPLE 1: LAG_SUM(p, "X", 4) will return VL("X",1) + VL("X",2) + VL("X",3) + VL("X",4).
-EXAMPLE 2: LAG_SUM(p, "X", 3, 2) will return VL("X",3) + VL("X",4) + VL("X",5).
+EXAMPLE 1: LAG_SUM(p, "X", 4) will return VL("X",0) + VL("X",1) + VL("X",2) + VL("X",3).
+EXAMPLE 2: LAG_SUM(p, "X", 3, 2) will return VL("X",2) + VL("X",3) + VL("X",4).
 */
 double LAG_SUM( object *obj , const char *var , int lag = 0, int lag2 = 0)
 {
 	double x = 0;
 	int i;
-	for(i=lag2+1; i<=lag2+lag; i++)
+	for(i=lag2; i<=lag2+lag-1; i++)
 		x = x + VLS( obj, var, i);
 	return x;
 }
@@ -42,14 +42,14 @@ double LAG_SUM( object *obj , const char *var , int lag = 0, int lag2 = 0)
 LAG_AVE(obj, "lab", lag1, lag2)
 Same as LAG_SUM but this MACRO returns the average for the lag1 periods.
 WARNING: make sure there are specified lagged values for the variable "lab".
-EXAMPLE 1: LAG_AVE(p, "X", 4) will return (VL("X",1) + VL("X",2) + VL("X",3) + VL("X",4))/4.
-EXAMPLE 2: LAG_AVE(p, "X", 3, 2) will return (VL("X",3) + VL("X",4) + VL("X",5))/3.
+EXAMPLE 1: LAG_AVE(p, "X", 4) will return (VL("X",0) + VL("X",1) + VL("X",2) + VL("X",3))/4.
+EXAMPLE 2: LAG_AVE(p, "X", 3, 2) will return (VL("X",2) + VL("X",3) + VL("X",4))/3.
 */
 double LAG_AVE( object *obj , const char *var , int lag = 0, int lag2 = 0)
 {
 	double x = 0;
 	int i;
-	for(i=lag2+1; i<=lag2+lag; i++)
+	for(i=lag2; i<=lag2+lag-1; i++)
 		x = x + VLS( obj, var, i);
 	return x/lag;
 }

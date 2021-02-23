@@ -219,7 +219,6 @@ CYCLE(cur, "SECTORS")
 	cur1=SEARCHS(cur, "FIRMS");																	
 	WRITES(cur1, "firm_date_birth", 0);   
 	WRITELLS(cur1, "Firm_Effective_Market_Share", 1/v[152], 0, 1);
-	WRITELLS(cur1, "Firm_Avg_Market_Share", 1/v[152], 0, 1);
 	WRITELLS(cur1, "Firm_Avg_Productivity", v[159], 0, 1);
 	WRITELLS(cur1, "Firm_Price", v[153], 0, 1);
 	WRITELLS(cur1, "Firm_Quality", v[167], 0, 1);
@@ -229,10 +228,8 @@ CYCLE(cur, "SECTORS")
 	WRITELLS(cur1, "Firm_Stock_Deposits", v[182]/v[152], 0, 1);
 	WRITELLS(cur1, "Firm_Wage", v[188], 0, 1);
 	WRITELLS(cur1, "Firm_Desired_Markup", v[190], 0, 1);
-	WRITELLS(cur1, "Firm_Avg_Potential_Markup", v[190], 0, 1);
 	WRITELLS(cur1, "Firm_Avg_Debt_Rate", v[162], 0, 1);
 	WRITELLS(cur1, "Firm_Max_Debt_Rate", 2*v[162], 0, 1);
-	WRITELLS(cur1, "Firm_Desired_Market_Share", 2/v[152], 0, 1);
 	WRITELLS(cur1, "Firm_Stock_Inputs", v[150]*v[154]/v[152], 0, 1);
 	WRITELLS(cur1, "Firm_Liquidity_Preference", v[163], 0, 1);
 	WRITELLS(cur1, "Firm_Capital", v[181]/v[152], 0, 1);
@@ -257,8 +254,6 @@ CYCLE(cur, "SECTORS")
 		WRITELLS(cur1, "Firm_Effective_Orders", v[150]/v[152], 0, i);
 	for(i=1;i<=v[169];i++) 
 		WRITELLS(cur1, "Firm_Market_Share", 1/v[152], 0, i);
-	for(i=1;i<=v[169];i++) 
-		WRITELLS(cur1, "Firm_Potential_Markup", v[190], 0, i);
 	for(i=1;i<=v[0]+1;i++) 
 		WRITELLS(cur1, "Firm_Avg_Productivity", v[159], 0, i);
 	

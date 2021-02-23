@@ -11,7 +11,7 @@ Might impact effective loans
 */
 	v[0]=VL("Bank_Accumulated_Profits",1);								//bank's accumulated profits (net worth) in the last period
 	v[1]=V("cb_minimum_capital_ratio");									//minimum capital ratio defined by the regulatory rule
-	v[2]=V("fs_sensitivity_debt_rate");								//bank's sensitivity to overall indebtedness of the economy
+	v[2]=V("fs_sensitivity_debt_rate");									//bank's sensitivity to overall indebtedness of the economy
 	v[3]=VL("Country_Debt_Rate_Firms",1);								//average debt rate of firms of the economy
 	v[4]=VL("Bank_Default_Share",1);									//bank's share of accumulated defaulted loans over total loans
 	v[5]=V("fs_sensitivity_default");									//bank's sensitivity to its own default ratio
@@ -70,7 +70,7 @@ Effective Loans is the minimum between demanded loans and max loans.
 	v[6]=V("begin_credit_rationing");
 	if(t>v[6]&&v[6]!=-1&&v[5]!=1&&v[1]!=-1)
 		v[7]=min(v[0],v[4]);
-	else										//no credit rationing, all demand met
+	else										
 		v[7]=v[0];
 RESULT(max(0,v[7]))
 
@@ -137,7 +137,7 @@ Bank Variable
 	v[0]=VL("Bank_Desired_Long_Term_Spread",1);                            //bank desired spread in the last period 
   	v[1]=VL("Bank_Competitiveness",1);                                     //bank's competitiveness in the last period
   	v[2]=VL("Financial_Sector_Avg_Competitiveness",1);                     //sector's average competitiveness in the last period
-  	v[3]=V("fs_spread_long_term_adjustment");								   //determines how much desired spread is adjusted
+  	v[3]=V("fs_spread_long_term_adjustment");							   //determines how much desired spread is adjusted
 	if (v[2]!=0)
   		v[4]=(v[1]-v[2])/v[2];                                             //diference between bank's competitiveness and sector's average competitiveness 
   	else
@@ -150,9 +150,9 @@ EQUATION("Bank_Desired_Interest_Rate_Long_Term")
 /*
 Bank desired interest rate on loans is the current base interest rate with a bank desired spread
 */
-	v[0]=V("Bank_Desired_Long_Term_Spread");                         //bank's desired spread
+	v[0]=V("Bank_Desired_Long_Term_Spread");                        			 //bank's desired spread
 	v[1]=V("Central_Bank_Basic_Interest_Rate");                          		 //central bank interest rate
-	v[2]=v[0]+v[1];                                  	         	 //bank's desired interest rate
+	v[2]=v[0]+v[1];                                  	         				 //bank's desired interest rate
 RESULT(v[2])
 
 
@@ -162,13 +162,13 @@ Bank's effective interest rate on loans is a average between the desired interes
 */
 	v[0]=VL("Bank_Interest_Rate_Long_Term",1);                                 //bank's interest rate on loans in the last period
 	v[1]=V("Bank_Desired_Interest_Rate_Long_Term");                            //bank's desired interest rate on loans
-	v[2]=V("fs_price_strategy_long_term");                                        //weight parameter for long term interest rates
-	v[3]=VL("Financial_Sector_Avg_Interest_Rate_Long_Term", 1);                                 //sector average interest rate on loans in the last period
-	v[4]=V("Central_Bank_Basic_Interest_Rate");                          		 	 	   //central bank interest rate
+	v[2]=V("fs_price_strategy_long_term");                                     //weight parameter for long term interest rates
+	v[3]=VL("Financial_Sector_Avg_Interest_Rate_Long_Term", 1);                //sector average interest rate on loans in the last period
+	v[4]=V("Central_Bank_Basic_Interest_Rate");                          	   //central bank interest rate
 	v[5]=v[2]*(v[1])+(1-v[2])*(v[3]);                                      	   //bank's interest rate is a average between the desired and the sector average 
 	v[6]=V("id_public_bank");
 	if(v[6]==1)
-		v[8]=(V("fs_spread_long_term_public")+v[4]);                              //public bank's interest rate
+		v[8]=(V("fs_spread_long_term_public")+v[4]);                           //public bank's interest rate
 	else
 		v[8]=v[5];
 RESULT(max(0,v[8]))
@@ -181,7 +181,7 @@ Bank Variable
 	v[0]=VL("Bank_Desired_Short_Term_Spread",1);                           //bank desired spread in the last period 
   	v[1]=VL("Bank_Competitiveness",1);                                     //bank's competitiveness in the last period
   	v[2]=VL("Financial_Sector_Avg_Competitiveness",1);                     //sector's average competitiveness in the last period
-  	v[3]=V("fs_spread_short_term_adjustment");								   //determines how much desired spread is adjusted
+  	v[3]=V("fs_spread_short_term_adjustment");							   //determines how much desired spread is adjusted
 	if (v[2]!=0)
   		v[4]=(v[1]-v[2])/v[2];                                             //diference between bank's competitiveness and sector's average competitiveness 
   	else
@@ -194,7 +194,7 @@ EQUATION("Bank_Desired_Interest_Rate_Short_Term")
 /*
 Bank desired interest rate on loans is the current base interest rate with a bank desired spread
 */
-	v[0]=V("Bank_Desired_Short_Term_Spread");                        //bank's desired spread
+	v[0]=V("Bank_Desired_Short_Term_Spread");                       			 //bank's desired spread
 	v[1]=V("Central_Bank_Basic_Interest_Rate");                          		 //central bank interest rate
 	v[2]=v[0]+v[1];
 RESULT(max(0,v[2]))
@@ -206,9 +206,9 @@ Bank's effective interest rate on loans is a average between the desired interes
 */
 	v[0]=VL("Bank_Interest_Rate_Short_Term",1);                                 //bank's interest rate on loans in the last period
 	v[1]=V("Bank_Desired_Interest_Rate_Short_Term");                            //bank's desired interest rate on loans
-	v[2]=V("fs_price_strategy_short_term");                                        //weight parameter for short term interest rates
-	v[3]=VL("Financial_Sector_Avg_Interest_Rate_Short_Term", 1);                                 //sector average interest rate on loans in the last period
-	v[4]=V("Central_Bank_Basic_Interest_Rate");                          		 	 		//central bank interest rate
+	v[2]=V("fs_price_strategy_short_term");                                     //weight parameter for short term interest rates
+	v[3]=VL("Financial_Sector_Avg_Interest_Rate_Short_Term", 1);                //sector average interest rate on loans in the last period
+	v[4]=V("Central_Bank_Basic_Interest_Rate");                          		//central bank interest rate
 	v[5]=v[2]*(v[1])+(1-v[2])*(v[3]);                                      		//bank's interest rate is a average between the desired and the sector average 
 	v[6]=V("id_public_bank");
 	if(v[6]==1)
@@ -468,7 +468,6 @@ v[6]=v[4]*v[5];
 RESULT(v[3]+v[6])
 
 
-
 EQUATION("Bank_Distributed_Profits")
 
 v[0]=V("Bank_Profits");
@@ -491,8 +490,8 @@ else
 	v[3]=VL("Bank_Accumulated_Profits",1);
 	v[4]=V("Bank_Total_Stock_Loans");
 	v[5]=V("cb_minimum_capital_ratio");									//minimum capital ratio defined by the regulatory rule
-	v[6]=V("fs_sensitivity_debt_rate");								//bank's sensitivity to overall indebtedness of the economy
-	v[7]=V("Country_Debt_Rate_Firms");										//average debt rate of firms of the economy
+	v[6]=V("fs_sensitivity_debt_rate");									//bank's sensitivity to overall indebtedness of the economy
+	v[7]=V("Country_Debt_Rate_Firms");									//average debt rate of firms of the economy
 	v[8]=V("Bank_Default_Share");										//bank's share of accumulated defaulted loans over total loans
 	v[9]=V("fs_sensitivity_default");									//bank's sensitivity to its own default ratio
 	v[10]=(v[5]+v[9]*v[8]+v[6]*v[7]);
@@ -555,10 +554,7 @@ Share of short term loans over total loans
 */
 	v[0]=V("Bank_Stock_Loans_Short_Term");
 	v[1]=V("Bank_Total_Stock_Loans");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -566,12 +562,9 @@ EQUATION("Bank_Leverage")
 /*
 Total Stock of loans over total stock of deposits
 */
-v[0]=V("Bank_Total_Stock_Loans");
-v[1]=V("Bank_Stock_Deposits");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
+	v[0]=V("Bank_Total_Stock_Loans");
+	v[1]=V("Bank_Stock_Deposits");
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -579,12 +572,9 @@ EQUATION("Bank_Default_Share");
 /*
 Current bank defaulted loans over stock of long term loans
 */
-v[0]=V("Bank_Accumulated_Defaulted_Loans");
-v[1]=V("Bank_Stock_Loans_Long_Term");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
+	v[0]=V("Bank_Accumulated_Defaulted_Loans");
+	v[1]=V("Bank_Stock_Loans_Long_Term");
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(min(1,v[2]))
 
 
@@ -592,12 +582,9 @@ EQUATION("Bank_Effective_Capital_Ratio");
 /*
 Current bank accumulated profits over stock of loans
 */
-v[0]=V("Bank_Accumulated_Profits");
-v[1]=V("Bank_Total_Stock_Loans");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
+	v[0]=V("Bank_Accumulated_Profits");
+	v[1]=V("Bank_Total_Stock_Loans");
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 
@@ -607,10 +594,7 @@ Effective profit rate on total loans
 */
 	v[0]=V("Bank_Profits");
 	v[1]=V("Bank_Total_Stock_Loans");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 

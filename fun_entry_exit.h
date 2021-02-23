@@ -304,8 +304,6 @@ In this variable a new firm enters if there is market space available and the en
 			  WRITES(cur, "firm_bank", v[19]);										//firm's bank identifier
               WRITELS(cur, "Firm_Market_Share",v[2], t);								//firm's market share
               WRITELS(cur, "Firm_Effective_Market_Share",v[2], t);						//firm's effective market share
-              WRITELS(cur, "Firm_Desired_Market_Share",v[2], t);						//firm's desired market share
-              WRITELS(cur, "Firm_Avg_Market_Share",v[2], t);							//firm's avg market share
               WRITELS(cur, "Firm_Effective_Orders",(v[2]*v[20]), t);					//firm's effective orders
               WRITELS(cur, "Firm_Stock_Inventories",(v[2]*v[20]*v[23]), t);				//firm's inventories
               WRITELS(cur, "Firm_Price",v[36], t);										//firm's price

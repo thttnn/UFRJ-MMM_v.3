@@ -26,43 +26,66 @@ V("Class_Avg_Debt_Rate");
 V("Class_Interest_Rate");   
 V("Bank_Max_Total_Loans"); 
 
-/*****EXPORTS (AUTONOMOUS) AND PRICE SETTING*****/     
+/*****PRICE SETTING*****/     
 V("Country_Annual_Inflation");  
-V("Country_Annual_CPI_Inflation");                           
+V("Country_Annual_CPI_Inflation"); 
+V("Firm_Competitiveness");                                  
+V("Firm_Market_Share");                          
 V("Firm_Wage");                                      	   	                                  		
 V("Firm_Input_Cost");                                       
-V("Firm_Variable_Cost");                                    
-V("Firm_Desired_Market_Share");                             
+V("Firm_Variable_Cost");                                                             
 V("Firm_Desired_Markup");                                  
 V("Firm_Desired_Price");                                    
 V("Firm_Price");                                            
-V("Sector_Avg_Price");  
-V("External_Income");                                  		
-V("Sector_External_Price");                                 
+V("Sector_Avg_Price"); 
+V("Sector_External_Price");
+V("Country_Capital_Goods_Price");  
+
+/*****EXPORTS*****/  
+V("External_Income");                                  		                          
 V("Country_Exchange_Rate");                                     
 V("Sector_Real_Exports");   
-V("Country_Capital_Goods_Price");                                 		
 
+/*****GOVERNMENT*****/  
+V("Government_Desired_Wages");                                  		                          
+V("Government_Desired_Unemployment_Benefits");                                     
+V("Government_Desired_Investment");   
+V("Government_Desired_Consumption");  
+V("Government_Desired_Inputs");  
+V("Government_Surplus_Rate_Target");  
+V("Government_Max_Expenses_Surplus");  
+V("Government_Max_Expenses_Debt");  
+V("Government_Max_Expenses_Ceiling");  
+V("Government_Max_Expenses");  
+V("Government_Effective_Expenses");  
+V("Government_Effective_Wages");  
+V("Government_Effective_Unemployment_Benefits");  
+V("Government_Effective_Consumption");  
+V("Government_Effective_Investment"); 
+V("Government_Effective_Inputs"); 
+                		
 /*****CAPITAL GOODS DEMAND*****/
 V("Firm_Demand_Capital_Goods");                             
 V("Country_Domestic_Capital_Goods_Demand");                          		                  		
 V("Firm_Effective_Orders_Capital_Goods");              		
 
 /*****PLANNED PRODUCTION*****/
-V("Firm_Expected_Sales");                                   
+V("Firm_Expected_Demand");                                   
 V("Firm_Planned_Production");                              
 
 /*****EFFECTIVE PRODUCTION AND INPUT DEMAND*****/
 V("Firm_Available_Inputs_Ratio");                       	
-V("Capital_Good_Productivity");                        		
-V("Firm_Competitiveness");                                  
-V("Firm_Market_Share");                                     
-
+V("Capital_Good_Productivity");                        		                                     
 V("Firm_Required_Inputs");                                  
 V("Firm_Input_Demand_Next_Period");                         
 V("Country_Domestic_Intermediate_Demand");                     		                        		                    		
-V("Firm_Effective_Production");                             
-V("Firm_Capacity_Utilization");								
+V("Firm_Effective_Production");   
+V("Sector_Effective_Production");                           
+V("Capital_Good_Production");                           	
+V("Firm_Avg_Productivity"); 
+V("Firm_Capacity_Utilization");	
+V("Sector_Capacity_Utilization");		
+V("Country_Capacity_Utilization");							
 
 /*****CONSUMPTION DEMAND AND IMPORTS*****/
 V("Class_Avg_Real_Income");
@@ -166,9 +189,7 @@ V("Firm_Stock_Deposits");
 V("Firm_Debt_Rate");  
 V("Firm_Financial_Position");                                      
 
-/*****ENTRY & EXIT*****/
-V("Capital_Good_Production");                           	
-V("Firm_Avg_Productivity");                             	
+/*****ENTRY & EXIT*****/                            	
 V("Sector_Avg_Productivity");                           	
 V("Sector_Avg_Quality");                         			
 V("Sector_Max_Quality"); 
