@@ -6,15 +6,24 @@ EQUATION("Sector_External_Price")
 External price of the sector's goods. 
 */
 	v[0]=CURRENT;
-	v[1]=VL("Sector_Avg_Price",1);
-	v[2]=VL("Sector_Avg_Price",2);	
+	v[1]=VL("Sector_Avg_Price",0);
+	v[2]=VL("Sector_Avg_Price",1);	
 	v[3]=V("sector_external_price_growth");						
 	v[4]=V("sector_external_price_sd");							
 	v[5]=V("sector_external_price_competitiveness");	
-	v[6]=(v[1]-v[2])/v[2];										
-	v[7]=1+norm((v[3]+v[5]*v[6]), v[4]);					
-	v[8]=v[0]*v[7];	
-RESULT(v[8])
+	//v[6]=(v[1]-v[2])/v[2];		
+	v[6]=LAG_GROWTH(p, "Sector_Avg_Price", 1);
+	v[7]=1+norm((v[3]+v[5]*v[6]), v[4]);			
+
+	v[8]=V("sector_external_price_shock_begin");          				//defines when the shock happens
+	v[9]=V("sector_external_price_shock_duration");       				//defines how long the shock lasts
+	v[10]=V("sector_external_price_shock_size");           			//defines the size, in percentage, of the shock
+		if(t>=v[8]&&t<v[8]+v[9])
+			v[11]=v[7]*(1+v[10]);
+		else
+			v[11]=v[7];
+	v[12]=v[0]*v[11];	
+RESULT(v[12])
 
 
 EQUATION("Sector_Real_Exports")
@@ -27,7 +36,7 @@ Exports are defined for each sector based on the application of an export coeffi
 	v[3]=V("Sector_External_Price");
 	v[4]=V("sector_exports_elasticity_income");
 	v[5]=V("sector_exports_elasticity_price");
-	v[6]=V("Exchange_Rate");
+	v[6]=V("Country_Exchange_Rate");
 	v[7]=v[1]*pow((v[3]*v[6])/v[2],v[5])*pow(v[0],v[4]);
 	v[8]=v[7]/v[2];
 RESULT(v[8])

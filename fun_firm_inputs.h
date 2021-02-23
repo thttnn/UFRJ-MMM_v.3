@@ -55,7 +55,13 @@ The intermediate goods sectors demand exactly the amount they will need to produ
 		v[14]=(v[0]*v[1])*(v[8]);                     		//gives the amount of imputs necessary for the next period, multiplying the current planned production by the exptected growth rate and by the imput techinical relanshionship
 	
 	v[15]=max(v[14],0);                               		//the demand of imputs for the next period can never be negative
-RESULT(v[15])
+	v[16]=V("sector_input_import_share");
+	v[17]=v[15]*(1-v[16]);
+	v[18]=v[15]*v[16];
+	WRITE("Firm_Input_Imports",v[18]);
+RESULT(v[17])
+
+EQUATION_DUMMY("Firm_Input_Imports", "Firm_Input_Demand_Next_Period")
 
 
 EQUATION("Firm_Stock_Inputs")
@@ -66,10 +72,11 @@ The stock of inputs of each firm at the end of the period is calculated by summi
 	v[2]=VS(input,"Sector_Demand_Met");                     //percentage of the total demand met by the sector                
 	v[3]=VS(input,"Sector_Demand_Met_By_Imports");          //identifies if firms were capable of inporting the amount not mey by the domestic production
 	v[4]=v[2]+(1-v[2])*v[3];                              //percentage of the demand met by the domestic production and by the external producers                     
+	v[10]=V("Firm_Input_Imports");
 	v[5]=V("sector_input_tech_coefficient");              //input technical coefficient               			 
 	v[6]=V("Firm_Effective_Production");                  //firm's effective production   
 	v[7]=VL("Firm_Stock_Inputs", 1);	                  //firm's stock of inputs in the last period
-	v[8]=v[7]+v[1]*v[4]-(v[5]*v[6]);                      //the current stock of inputs is the stock in the last period plus the amount of the demand for the next period that was effetivly met, minus the amount used in effective production                 
+	v[8]=v[7]+v[1]*v[4]+v[10]-(v[5]*v[6]);                      //the current stock of inputs is the stock in the last period plus the amount of the demand for the next period that was effetivly met, minus the amount used in effective production                 
 	v[9]=max(v[8],0);                                     //the current stock can never be negative
 RESULT(v[9])
 
@@ -78,13 +85,12 @@ EQUATION("Firm_Input_Cost")
 /*
 Unitary costs of the inputs. It's given by the domestic input price plus the external input price, weighted by the proportion of the demand met by domestic and external sectors
 */
+	v[0]=V("sector_input_import_share");
 	v[1]=VLS(input,"Sector_Avg_Price",1);                 //intermediate sector average price
-	v[2]=VS(input,"Sector_External_Price");               //sector external price
+	v[2]=VLS(input,"Sector_External_Price",1);               //sector external price
 	v[3]=V("sector_input_tech_coefficient");              //input technical relationship 
-	v[5]=V("Exchange_Rate");                              //exchange rate
-	v[6]=VLS(input,"Sector_Demand_Met",1);                //demand for inputs met by the domestic production in the last period
-	v[7]=VLS(input,"Sector_Demand_Met_By_Imports", 1);
-	v[8]=v[1]*v[3]*v[6]+(1-v[6])*v[7]*v[3]*v[2]*v[5];     //input cost will be the amount demanded domesticaly multiplied by domestic price plus the amount demanded externally miltiplied by the external price
+	v[5]=V("Country_Exchange_Rate");                              //exchange rate
+	v[8]=v[1]*v[3]*(1-v[0])+v[3]*v[0]*v[2]*v[5];     //input cost will be the amount demanded domesticaly multiplied by domestic price plus the amount demanded externally miltiplied by the external price
 RESULT(v[8])
 
 

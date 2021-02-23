@@ -267,8 +267,8 @@ RESULT(WHTAVE("Firm_Avg_Productivity", "Firm_Market_Share"))
 EQUATION("Sector_Avg_Debt_Rate")
 RESULT(WHTAVE("Firm_Debt_Rate", "Firm_Market_Share"))
 
-EQUATION("Sector_Avg_Desired_Debt_Rate")
-RESULT(WHTAVE("Firm_Desired_Debt_Rate", "Firm_Market_Share"))
+EQUATION("Sector_Avg_Max_Debt_Rate")
+RESULT(WHTAVE("Firm_Max_Debt_Rate", "Firm_Market_Share"))
 
 EQUATION("Sector_Avg_Liquidity_Rate")
 RESULT(WHTAVE("Firm_Liquidity_Rate", "Firm_Market_Share"))

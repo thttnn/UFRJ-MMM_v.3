@@ -6,7 +6,7 @@ This variable writes for each firm, if it is price adjustment period or not, ass
 */
 	v[0]=V("sector_price_frequency");						//sector price period parameter
 	v[1]=fmod((t+v[0]),v[0]);								//devides the current time step by the price period and takes the rest
-	v[2]=V("id_firm_number");								//firm number
+	v[2]=V("firm_id");								//firm number
 	v[3]=fmod((v[2]+v[0]),v[0]);							//divides the firm number by the price period and takes the rest
 	if (v[3]==v[1])											//if the firm number rest matches the time step rest
 		v[4]=1;												//mark as price period for the firm	
@@ -63,7 +63,7 @@ Nominal Wage of the firm. It increases year by year depending on inflation and f
 */
 	v[0]=VL("Firm_Wage",1);                                                          	 //firm wage in the last period
 	v[11]=V("annual_frequency");
-	v[1]= fmod((double) t,v[11]);                                                        //divide the time period by the annual period parameter
+	v[1]= fmod((double) t-1,v[11]);                                                      //divide the time period by the annual period parameter
 	if(v[1]==0)                                                                      	 //if the rest of the above division is zero (beggining of the year, adjust wages)
 		{
 		v[2]=VL("Firm_Avg_Productivity", 1);                                           	 //firm average productivity in the last period
@@ -86,13 +86,13 @@ Nominal Wage of the firm. It increases year by year depending on inflation and f
 		v[18]=v[16]-v[17]>0?1:0;
 		v[19]=V("sector_passthrough_capacity");
 		v[20]=v[18]>0?1:0;
-		v[21]=VS(financial, "target_inflation");
+		v[21]=VS(financial, "cb_target_annual_inflation");
 		v[22]=VLS(country, "Country_Annual_CPI_Inflation", 1);
 		if(V("switch_cb_credibility")==1)
 			v[23]=v[21];
 		else
 			v[23]=v[22];
-		v[10]=v[0]*(1+v[23]+v[5]*v[4]+v[9]*(v[22]-v[21])+v[15]*v[20]+v[18]*v[19]);                      //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
+		v[10]=v[0]*(1+v[23]+v[5]*v[4]+v[9]*(max(0,v[22]-v[21]))+v[15]*v[20]+v[18]*v[19]);                      //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
 		}
 	else                                                                             	 //if the rest of the division is not zero, do not adjust wages
 		v[10]=v[0];                                                                      //current wages will be the last period's
@@ -105,7 +105,8 @@ Variable unit cost is the wage cost (nominal wages over productivity) plus inter
 */
 	v[4]=VLS(input, "Sector_Avg_Price",1);
 	v[5]=V("sector_input_tech_coefficient");
-	v[0]=v[4]*v[5];
+	//v[0]=v[4]*v[5];
+	v[0]=V("Firm_Input_Cost");
 	v[1]=V("Firm_Wage");
 	v[2]=VL("Firm_Avg_Productivity",1);
 	v[3]= v[2]!=0? (v[1]/v[2])+v[0] : v[0];
@@ -132,7 +133,7 @@ Financial costs include interest payment and debt payment. Unit financial cost i
 	v[5]=v[4]/v[0];
 	
 	v[7]=VL("Firm_Debt_Rate",1);
-	v[8]=VL("Firm_Desired_Debt_Rate",1);
+	v[8]=VL("Firm_Max_Debt_Rate",1);
 	if(v[7]>v[8])
 		v[9]=v[5];
 	else

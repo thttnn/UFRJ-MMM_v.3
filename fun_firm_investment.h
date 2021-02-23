@@ -5,7 +5,7 @@ This variable writes for each firm, if it is investment period or not, assuming 
 */
 	v[0]=V("sector_investment_frequency");						//sector investment period parameter
 	v[1]=fmod((t+v[0]),v[0]);								//devides the current time step by the investment period and takes the rest
-	v[2]=V("id_firm_number");								//firm number
+	v[2]=V("firm_id");								//firm number
 	v[3]=fmod((v[2]+v[0]),v[0]);							//divides the firm number by the investment period and takes the rest
 	if (v[3]==v[1])											//if the firm number rest matches the time step rest
 		v[4]=1;												//mark as investment period for the firm	
@@ -105,7 +105,7 @@ Nominal value of derired new capital goods for modernization replacement
 	if(v[30]==0)//no interest
 	v[31]=0;
 	if(v[30]==1)//use basic interest
-	v[31]=V("Basic_Interest_Rate");
+	v[31]=V("Central_Bank_Basic_Interest_Rate");
 	if(v[30]==2)//use firm interest
 	v[31]=V("Firm_Interest_Rate_Long_Term");
   				
@@ -206,7 +206,7 @@ New productive capacity in aquisition of new equipment to replace obsolete ones.
 	if(v[30]==0)//no interest
 	v[31]=0;
 	if(v[30]==1)//use basic interest
-	v[31]=V("Basic_Interest_Rate");
+	v[31]=V("Central_Bank_Basic_Interest_Rate");
 	if(v[30]==2)//use firm interest
 	v[31]=V("Firm_Interest_Rate_Long_Term");
   				
@@ -367,8 +367,8 @@ Taker's risk is already included in the firm specific interest rate.
 	v[0]=V("sector_capital_duration");
 	v[1]=V("Firm_Profit_Rate");
 	v[2]=V("Firm_Interest_Rate_Long_Term");
-	v[3]=V("Basic_Interest_Rate");
-	v[4]=V("Interest_Rate_Deposits");
+	v[3]=V("Central_Bank_Basic_Interest_Rate");
+	v[4]=V("Financial_Sector_Interest_Rate_Deposits");
 	v[5]=V("switch_discount_rate");
 	v[6]=V("Country_Capital_Goods_Price");
 	v[7]=V("sector_capital_duration");

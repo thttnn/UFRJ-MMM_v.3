@@ -33,7 +33,7 @@ v[0]=V("annual_frequency");
 v[1]= fmod((double) t,v[0]);                                   //divides the time period by government adjustment period (adjust annualy)
 if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
 {
-	v[2]=V("government_benefit");
+	v[2]=V("government_benefit_rate");
 	v[3]=0;
 	CYCLES(country, cur, "SECTORS")
 	{
@@ -127,8 +127,8 @@ if(v[1]==0)                                                    //if the rest of 
 {
 	v[3]=VL("Government_Debt_GDP_Ratio",1);                    //current debt to gdp ratio
 	v[8]=VL("Government_Debt_GDP_Ratio",v[0]+1);
-	v[4]=V("government_max_debt");                             //maximum debt to gdp accepted, parameter
-	v[5]=V("government_min_debt");                             //minimum debt to gdp accepted, parameter
+	v[4]=V("government_max_debt_ratio");                             //maximum debt to gdp accepted, parameter
+	v[5]=V("government_min_debt_ratio");                             //minimum debt to gdp accepted, parameter
 	v[6]=V("government_surplus_target_adjustment");			   //adjustment parameter
 	if(v[3]>v[4]&&v[3]>v[8])                                   //if debt to gdp is higher than accepted and growing
 		v[7]=v[2]+v[6];										   //increase surplus target
@@ -141,27 +141,8 @@ else                                                           //if it is not ad
 	v[7]=v[2];                                                 //do not change surplus taget
 RESULT(v[7])
 
-
-
-EQUATION("Government_Max_Expenses_DEBT")
-/*
-Government Max Expenses determined by Debt Rate Target Fiscal rule
-*/
-	v[0]=V("government_expectations");
-	v[1]=VL("Country_GDP",1);
-	v[2]=VL("Country_GDP",2);
-	v[3]=VL("Country_GDP",3);
-	v[4]= v[2]!=0? v[0]*(v[1]-v[2])/v[2] : 0;
 	
-	v[5]=V("government_max_debt");
-	v[6]=VL("Government_Debt",1);
-	v[7]=VL("Government_Total_Taxes",1);
-	v[8]=VS(financial, "Basic_Interest_Rate");
-	
-	v[9]=v[5]*(v[1]*(2+v[4])+v[2]+v[3]) - v[6]*(1+v[8]) + v[7]*(1+v[4]);
-RESULT(v[9])
-	
-EQUATION("Government_Max_Expenses_DEBT_2")
+EQUATION("Government_Max_Expenses_Debt")
 /*
 Government Max Expenses determined by Debt Rate Target Fiscal rule
 */
@@ -170,10 +151,10 @@ Government Max Expenses determined by Debt Rate Target Fiscal rule
 	v[2]=VL("Country_GDP",2);
 	v[3]= v[2]!=0? v[0]*(v[1]-v[2])/v[2] : 0; //expected growth
 	
-	v[5]=V("government_max_debt");
+	v[5]=V("government_max_debt_ratio");
 	v[6]=VL("Government_Debt",1);
 	v[7]=VL("Government_Total_Taxes",1);
-	v[8]=VS(financial, "Basic_Interest_Rate");
+	v[8]=VS(financial, "Central_Bank_Basic_Interest_Rate");
 	v[9]=V("annual_frequency");
 	
 	v[10]=0;
@@ -288,7 +269,7 @@ else	                                                                //if it is 
 	v[20]=V("Government_Max_Expenses_Surplus");
 	v[21]=V("Government_Max_Expenses_Ceiling");
 	v[23]=V("begin_debt_target_rule"); 
-	v[24]=V("Government_Max_Expenses_DEBT_2");
+	v[24]=V("Government_Max_Expenses_Debt");
 	
 	if((t>=v[0]&&v[0]!=-1)&&(t>=v[1]&&v[1]!=-1)&&(t>=v[23]&&v[23]!=-1))
 		v[17]=min(min(v[20],v[21]),v[24]);//three rules
@@ -335,9 +316,9 @@ v[3]=V("Government_Desired_Consumption");
 v[4]=V("Government_Desired_Investment");
 v[5]=V("Government_Desired_Inputs");
 
-v[14]=V("government_initial_consumption_share");
-v[15]=V("government_initial_capital_share");
-v[16]=V("government_initial_input_share");
+v[14]=V("government_initial_share_consumption");
+v[15]=V("government_initial_share_capital");
+v[16]=V("government_initial_share_input");
 v[17]=v[14]+v[15]+v[16];
 
 if(v[0]==-1)                                               //no fiscal rule
@@ -345,23 +326,23 @@ if(v[0]==-1)                                               //no fiscal rule
 	v[8]=v[1];											   //government wages equal desired wages
 	v[9]=v[2];    										   //government unemployment benefits equal 0
 	v[10]=v[3];                                            //government consumption equal desired
-	v[11]=v[4];                                            //government investment equal desired
-	v[12]=v[5];                                            //government intermediate demand equals desired
+	v[11]=v[5];                                            //government intermediate equal desired
+	v[12]=v[4];                                            //government investment demand equals desired
 }
 else
 {
 	v[8]=min(v[0],v[1]);								   //government wages is desired limited by maximum expenses
 	v[9]=min(v[2],(v[0]-v[8]));    						   //government unemployment benefits is desired limited by maximum expenses minus wages
 	v[10]=min(v[3],(v[0]-v[8]-v[9]));       			   //government consumption is desired limited by maximum expenses minus wages and benefits
-	v[11]=min(v[4],(v[0]-v[8]-v[9]-v[10]));        		   //government investment is desired limited by maximum expenses minus wages and benefits
-	v[12]=min(v[5],(v[0]-v[8]-v[9]-v[10]-v[11]));          //government intermediate is desired limited by maximum expenses minus wages and benefits
+	v[11]=min(v[5],(v[0]-v[8]-v[9]-v[10]));        		   //government intermediate is desired limited by maximum expenses minus wages and benefits
+	v[12]=min(v[4],(v[0]-v[8]-v[9]-v[10]-v[11]));          //government investment is desired limited by maximum expenses minus wages and benefits
 }
 
 WRITE("Government_Effective_Wages", max(0,v[8]));
 WRITE("Government_Effective_Unemployment_Benefits",  max(0,v[9]));
 WRITE("Government_Effective_Consumption",  max(0,v[10]));
-WRITE("Government_Effective_Investment",  max(0,v[11]));
-WRITE("Government_Effective_Inputs",  max(0,v[12]));
+WRITE("Government_Effective_Investment",  max(0,v[12]));
+WRITE("Government_Effective_Inputs",  max(0,v[11]));
 v[13]=max(0,(v[8]+v[9]+v[10]+v[11]+v[12]));
 RESULT(v[13])
 
@@ -385,7 +366,7 @@ EQUATION("Government_Primary_Result")
 RESULT(V("Government_Total_Taxes")-V("Government_Effective_Expenses"))
 
 EQUATION("Government_Interest_Payment")
-RESULT(V("Basic_Interest_Rate")*max(0,VL("Government_Debt",1)))
+RESULT(V("Central_Bank_Basic_Interest_Rate")*max(0,VL("Government_Debt",1)))
 
 EQUATION("Government_Nominal_Result")
 RESULT(V("Government_Primary_Result")-V("Government_Interest_Payment"))

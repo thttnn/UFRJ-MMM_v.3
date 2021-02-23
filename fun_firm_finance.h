@@ -16,10 +16,10 @@ EQUATION("Firm_Interest_Rate_Short_Term")
 /*
 Interest rate paid by the firm depends on a individual spread over basic interest rate. The firm's spread is based on the average debt rate of the firm.
 */
-	v[0]=V("risk_premium_short_term");
+	v[0]=V("fs_risk_premium_short_term");
 	v[1]=V("Firm_Avg_Debt_Rate");
-	v[2]=V("id_firm_bank");
-	cur=SEARCH_CNDS(financial, "id_bank", v[2]);
+	v[2]=V("firm_bank");
+	cur=SEARCH_CNDS(financial, "bank_id", v[2]);
 	v[3]=VS(cur, "Bank_Interest_Rate_Short_Term");
 	v[4]=(1+v[1]*v[0])*v[3];	
 RESULT(v[4])
@@ -29,10 +29,10 @@ EQUATION("Firm_Interest_Rate_Long_Term")
 /*
 Interest rate paid by the firm depends on a individual spread over basic interest rate. The firm's spread is based on the average debt rate of the firm.
 */
-	v[0]=V("risk_premium_long_term");
+	v[0]=V("fs_risk_premium_long_term");
 	v[1]=V("Firm_Avg_Debt_Rate");
-	v[2]=V("id_firm_bank");
-	cur=SEARCH_CNDS(financial, "id_bank", v[2]);
+	v[2]=V("firm_bank");
+	cur=SEARCH_CNDS(financial, "bank_id", v[2]);
 	v[3]=VS(cur, "Bank_Interest_Rate_Long_Term");
 	v[4]=(1+v[1]*v[0])*v[3];	
 RESULT(v[4])
@@ -54,7 +54,7 @@ Evolves based on average debt rate and profit growth.
 	else
 		v[4]=0;
 	v[5]=V("Firm_Avg_Debt_Rate");
-	v[6]=V("Firm_Desired_Debt_Rate");
+	v[6]=V("Firm_Max_Debt_Rate");
 	v[7]=VL("Firm_Liquidity_Preference",1);
 	v[8]=V("sector_liquidity_preference_adjustment");
 	
@@ -104,7 +104,7 @@ Can be negative, if retained profits is negative (in that case, no retained liqu
 RESULT(v[4])
 
 
-EQUATION("Firm_Desired_Debt_Rate")
+EQUATION("Firm_Max_Debt_Rate")
 /*
 Firm's desired debt rate as a proportion to total capital. 
 Formulation proposed by Moreira (2010) 
@@ -120,7 +120,7 @@ Evolves based on capacity utilization and profit growth.
 		v[4]=0;
 		
 	v[9]=V("sector_desired_degree_capacity_utilization");
-	v[10]=VL("Firm_Desired_Debt_Rate",1);
+	v[10]=VL("Firm_Max_Debt_Rate",1);
 	v[11]=V("sector_debt_rate_adjustment");
 	
 	if(v[1]==1)
@@ -143,7 +143,7 @@ Firm available debt depends on the difference between desired stock of debt and 
 If current stock of debt is greater than desired, the firm must repay some debt reducing the amount of external funds for investment. 
 If the current amount is smaller than desired, that difference is available to the firm as external finance, but that does not mean that the class will increase effective debt by this amount.
 */
-	v[0]=V("Firm_Desired_Debt_Rate");
+	v[0]=V("Firm_Max_Debt_Rate");
 	v[1]=VL("Firm_Stock_Loans",1);
 	v[2]=VL("Firm_Stock_Deposits",1);
 	v[3]=VL("Firm_Capital",1);

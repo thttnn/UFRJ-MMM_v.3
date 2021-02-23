@@ -18,7 +18,7 @@ v[12]=SUM("Class_Demand_Loans");
 CYCLE(cur, "BANKS")
 {
 	v[1]=VS(cur, "Bank_Effective_Loans");
-	v[2]=VS(cur, "id_bank");
+	v[2]=VS(cur, "bank_id");
 	v[13]=VS(cur, "Bank_Market_Share");
 	v[14]=v[13]*v[12];
 	v[10]=0;
@@ -42,7 +42,7 @@ CYCLE(cur, "BANKS")
 				SORTS(root, "FIRMS", "firm_date_birth", "DOWN");
 			CYCLES(cur1, cur2, "FIRMS")
 			{
-				v[6]=VS(cur2, "id_firm_bank");
+				v[6]=VS(cur2, "firm_bank");
 					if (v[6]==v[2])
 					{
 						v[7]=VS(cur2, "Firm_Demand_Loans");
@@ -135,11 +135,16 @@ Average Price of the consumption goods sector
 */
 	v[0]=VS(consumption, "Sector_Avg_Price");
 	v[1]=VS(consumption, "Sector_External_Price");
-	v[2]=VS(external, "Exchange_Rate");
-	v[3]=SUM("Class_Effective_Real_Domestic_Consumption");
-	v[4]=SUM("Class_Effective_Real_Imported_Consumption");
-	v[5]=(v[0]*v[3] + v[1]*v[2]*v[4])/(v[3]+v[4]);
-RESULT(v[0])
+	v[2]=VS(external, "Country_Exchange_Rate");
+	v[3]=0;
+	CYCLE(cur, "CLASSES")
+	{
+		v[5]=VS(cur, "Class_Imports_Share");
+		v[6]=VLS(cur, "Class_Income_Share",1);
+		v[3]=v[3]+v[5]*v[6];		
+	}
+	v[4]=v[0]*(1-v[3])+v[1]*v[2]*v[3];
+RESULT(v[4])
 
 
 EQUATION("Country_Annual_Inflation")
@@ -158,8 +163,8 @@ EQUATION("Country_Annual_CPI_Inflation")
 Annual growth of the consumer price index
 */
 	v[0]=V("annual_frequency");
-	v[1]=VL("Country_Consumer_Price_Index",1);
-	v[2]=VL("Country_Consumer_Price_Index",(v[0]+1));
+	v[1]=VLS(consumption,"Sector_Avg_Price",1);
+	v[2]=VLS(consumption,"Sector_Avg_Price",(v[0]+1));
 	v[3]=(v[1]/v[2])-1;
 RESULT(v[3])
 
@@ -315,7 +320,7 @@ Nominal quarterly GDP is calculated summing up profits, wages and indirect taxes
 	v[2]=V("Government_Indirect_Taxes");
 	v[3]=v[0]+v[1]+v[2];
 	v[4]=V("Country_GDP_Demand");
-RESULT(v[4])
+RESULT(v[0])
 
 
 EQUATION("Country_Real_GDP")
@@ -473,24 +478,32 @@ Total imports in nominal value are obtained from the sum of imports of all secto
 */
 	v[0]=WHTAVE("Sector_Extra_Imports", "Sector_External_Price");
 	v[1]=SUM("Class_Effective_Real_Imported_Consumption");
-	v[2]=VS(external,"Exchange_Rate");
-	v[4]=VLS(consumption, "Sector_External_Price", 1);
+	v[2]=VS(external,"Country_Exchange_Rate");
+	v[4]=VS(consumption, "Sector_External_Price");
 	v[3]=(v[0]+v[1]*v[4])*v[2];
-RESULT(v[3])
+	v[5]=0;
+	CYCLE(cur, "SECTORS")
+		v[5]=v[5]+SUMS(cur, "Firm_Input_Imports");
+	v[6]=VS(input, "Sector_External_Price");
+	v[7]=(v[0]+v[1]*v[4]+v[5]*v[6])*v[2];
+RESULT(v[7])
 
 
 EQUATION("Country_GDP_Demand")
 /*
 GDP calculated by the demand perspective
 */
-	v[0]=V("Country_Total_Classes_Expenses");
-	v[1]=V("Government_Effective_Expenses");
-	v[2]=V("Country_Nominal_Exports");
-	v[3]=V("Country_Nominal_Imports");
-	v[4]=V("Country_Inventories_Variation");
-	v[6]=V("Country_Total_Investment_Expenses");
-	v[7]=v[0]+v[1]+v[2]-v[3]+v[6];
-RESULT(v[7])
+	v[0]=SUM("Class_Effective_Real_Domestic_Consumption");
+	v[1]=VS(consumption,"Sector_Real_Exports");
+	v[2]=VS(capital,"Sector_Real_Exports");
+	v[3]=VS(consumption,"Sector_Avg_Price");
+	v[4]=VS(capital,"Sector_Avg_Price");
+	v[5]=V("Country_Total_Investment_Expenses");
+	v[6]=V("Government_Effective_Consumption");
+	v[7]=V("Government_Effective_Investment");
+	v[8]=V("Government_Effective_Wages");
+	v[9]=v[0]*v[3]+v[1]*v[3]+v[2]*v[4]+v[5]+v[6]+v[7]+v[8];
+RESULT(v[9])
 
 
 EQUATION("Country_Real_GDP_Demand")

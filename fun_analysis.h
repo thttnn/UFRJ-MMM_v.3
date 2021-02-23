@@ -156,16 +156,16 @@ EQUATION("HEDGE")//Share of Firms in Hedge position
 RESULT(VS(country, "Country_Hedge_Share")) 
 
 EQUATION("IR")//Basic Interest Rate
-RESULT(VS(financial, "Basic_Interest_Rate"))     
+RESULT(VS(financial, "Central_Bank_Basic_Interest_Rate"))     
 
 EQUATION("IR_DEP")//Interest Rate on Deposits
-RESULT(VS(financial, "Interest_Rate_Deposits"))  
+RESULT(VS(financial, "Financial_Sector_Interest_Rate_Deposits"))  
 
 EQUATION("IR_ST")//Interest Rate on Short Term Loans
-RESULT(VS(financial, "Avg_Interest_Rate_Short_Term"))  
+RESULT(VS(financial, "Financial_Sector_Avg_Interest_Rate_Short_Term"))  
 
 EQUATION("IR_LT")//Interest Rate on Long Term Loans
-RESULT(VS(financial, "Avg_Interest_Rate_Long_Term"))   
+RESULT(VS(financial, "Financial_Sector_Avg_Interest_Rate_Long_Term"))   
 
 EQUATION("BKR")//Number of Bankrupt Events
 RESULT(VS(country, "Exit_Bankruptcy_Events")) 
@@ -175,27 +175,27 @@ RESULT(VS(country, "Exit_Bankruptcy_Share"))
 
 /*****CLASS STATS*****/
 EQUATION("YSH_A")
-cur=SEARCH_CNDS(country, "id_class", 1);
+cur=SEARCH_CNDS(country, "class_id", 1);
 RESULT(VS(cur, "Class_Income_Share"))
 
 EQUATION("YSH_B")
-cur=SEARCH_CNDS(country, "id_class", 2);
+cur=SEARCH_CNDS(country, "class_id", 2);
 RESULT(VS(cur, "Class_Income_Share"))
 
 EQUATION("YSH_C")
-cur=SEARCH_CNDS(country, "id_class", 3);
+cur=SEARCH_CNDS(country, "class_id", 3);
 RESULT(VS(cur, "Class_Income_Share"))
 
 EQUATION("WSH_A")
-cur=SEARCH_CNDS(country, "id_class", 1);
+cur=SEARCH_CNDS(country, "class_id", 1);
 RESULT(VS(cur, "Class_Wealth_Share"))
 
 EQUATION("WSH_B")
-cur=SEARCH_CNDS(country, "id_class", 2);
+cur=SEARCH_CNDS(country, "class_id", 2);
 RESULT(VS(cur, "Class_Wealth_Share"))
 
 EQUATION("WSH_C")
-cur=SEARCH_CNDS(country, "id_class", 3);
+cur=SEARCH_CNDS(country, "class_id", 3);
 RESULT(VS(cur, "Class_Wealth_Share"))
 
 

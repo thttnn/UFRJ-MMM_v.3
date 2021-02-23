@@ -6,7 +6,7 @@ Revenue depends on sales and price
 	v[0]=V("Firm_Sales");                                             //firm's sales 
 	v[1]=V("Sector_Real_Exports");                                    //sector exports
 	v[2]=V("Firm_Price");                                             //firm's price
-	v[4]=V("Exchange_Rate");                                          //exchange rate
+	v[4]=V("Country_Exchange_Rate");                                          //exchange rate
 	v[5]=V("Firm_Effective_Market_Share");                            //firm's effective market share
 	v[6]=v[2]*(v[0]-v[5]*v[1])+v[5]*v[1]*v[2]/v[4];                   //revenue is given by firm's price multiplied by domestic sales plus exports (weighted by firm's market share) multiplied by firm's price over the exchange rate
 RESULT(v[6])
@@ -95,7 +95,7 @@ EQUATION("Firm_Deposits_Return")
 Firm interest receivment on deposits
 */
 	v[0]=VL("Firm_Stock_Deposits",1);
-	v[1]=V("Interest_Rate_Deposits");
+	v[1]=V("Financial_Sector_Interest_Rate_Deposits");
 	v[2]=v[0]*v[1];
 RESULT(v[2])
 
