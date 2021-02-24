@@ -6,19 +6,13 @@ Priority expenses.
 If there are no maximum expenses, it is adjusted by average productivity growth and inflation.
 */
 
-v[0]=V("annual_frequency");
-v[1]= fmod((double) t,v[0]);                                   //divides the time period by government adjustment period (adjust annualy)
-v[2]=CURRENT;
-if(v[1]==0)                                                    //if the rest of the division is zero (adjust government wages)
-{
-	v[3]= LAG_GROWTH(consumption, "Sector_Avg_Price", v[0], 1);
+                                           
+	v[3]= LAG_GROWTH(consumption, "Sector_Avg_Price", 1, 1);
 	v[4]=V("government_inflation_passtrought");			   		//inflation passtrough to public wages
 	v[5]=V("government_real_growth");
-	v[6]=v[2]*(1+v[4]*v[3]+v[5]);                 				//desired adjusted government wages with no restriction
-}
-else                                                          	 //if it is not adjustment period
-	v[6]=v[2];                                                	//use last period's
-RESULT(max(0,v[6]))
+	v[9]=CURRENT*(1+v[4]*v[3]+v[5]);
+	
+RESULT(max(0,v[9]))
 
 
 EQUATION("Government_Desired_Unemployment_Benefits")
@@ -27,10 +21,7 @@ Counter-cyclical Expenses
 Benefit is a share of average wage. 
 The amount depends on current unemployment.
 */
-v[0]=V("annual_frequency");
-v[1]= fmod((double) t,v[0]);                                   //divides the time period by government adjustment period (adjust annualy)
-if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
-{
+
 	v[2]=V("government_benefit_rate");
 	v[3]=0;
 	CYCLES(country, cur, "SECTORS")
@@ -45,9 +36,7 @@ if(v[1]==0)                                                    //if the rest of 
 		v[11]=v[8]*(v[2]*v[10]/v[9]);
 		v[3]=v[3]+v[11];
 	}
-}
-else
-	v[3]=CURRENT;
+
 RESULT(max(0,v[3]))
 
 
@@ -56,17 +45,11 @@ EQUATION("Government_Desired_Investment")
 Desired Investment Expenses
 Adjusted by a desired real growth rate and avg capital price growth
 */
-v[0]=V("annual_frequency");
-v[1]= fmod((double) t,v[0]);                                   //divides the time period by government adjustment period (adjust annualy)
-v[2]=CURRENT;
-if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
-{
+
 	v[3]=V("government_real_growth");		
-	v[4]= LAG_GROWTH(capital, "Sector_Avg_Price", v[0], 1);
-	v[5]=v[2]*(1+v[3]+v[4]);
-}
-else
-	v[5]=v[2];
+	v[4]= LAG_GROWTH(capital, "Sector_Avg_Price", 1, 1);
+	v[5]=CURRENT*(1+v[3]+v[4]);
+
 RESULT(max(0,v[5]))
 
 
@@ -75,17 +58,11 @@ EQUATION("Government_Desired_Consumption")
 Desired Consumption Expenses
 Adjusted by a desired real growth rate and avg consumption price growth
 */
-v[0]=V("annual_frequency");
-v[1]= fmod((double) t,v[0]);                                   //divides the time period by government adjustment period (adjust annualy)
-v[2]=CURRENT;
-if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
-{
+
 	v[3]=V("government_real_growth");   
-	v[4]= LAG_GROWTH(consumption, "Sector_Avg_Price", v[0], 1);
-	v[5]=v[2]*(1+v[3]+v[4]);
-}
-else
-	v[5]=v[2];
+	v[4]= LAG_GROWTH(consumption, "Sector_Avg_Price", 1, 1);
+	v[5]=CURRENT*(1+v[3]+v[4]);
+
 RESULT(max(0,v[5]))
 
 
@@ -94,17 +71,11 @@ EQUATION("Government_Desired_Inputs")
 Desired Intermediate Expenses
 Adjusted by a desired real growth rate and avg input price growth
 */
-v[0]=V("annual_frequency");
-v[1]= fmod((double) t,v[0]);                                   //divides the time period by government adjustment period (adjust annualy)
-v[2]=CURRENT;
-if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
-{
+
 	v[3]=V("government_real_growth");      
-	v[4]= LAG_GROWTH(input, "Sector_Avg_Price", v[0], 1);
-	v[5]=v[2]*(1+v[3]+v[4]);
-}
-else
-	v[5]=v[2];
+	v[4]= LAG_GROWTH(input, "Sector_Avg_Price", 1, 1);
+	v[5]=CURRENT*(1+v[3]+v[4]);
+
 RESULT(max(0,v[5]))
 
 
@@ -118,8 +89,7 @@ Adjusts government surplus target based on debt to gdp evolution
 v[0]=V("annual_frequency");
 v[1]= fmod((double) t,v[0]);                                   //divides the time period by government adjustment period (adjust annualy)
 v[2]=CURRENT;                   							   //last period's target
-if(v[1]==0)                                                    //if the rest of the division is zero (adjust unemployment benefits)
-{
+
 	v[3]=VL("Government_Debt_GDP_Ratio",1);                    //current debt to gdp ratio
 	v[8]=VL("Government_Debt_GDP_Ratio",v[0]+1);
 	v[4]=V("government_max_debt_ratio");                       //maximum debt to gdp accepted, parameter
@@ -132,9 +102,7 @@ if(v[1]==0)                                                    //if the rest of 
 		v[7]=v[2]-v[6];										   //deacrease surplus target
 	else                                                       //if current debt to gdp is between accepted band
 		v[7]=v[2];                                             //do not change surplus taget
-}
-else                                                           //if it is not adjustment period
-	v[7]=v[2];                                                 //do not change surplus taget
+                                              
 RESULT(v[7])
 
 	
@@ -175,7 +143,7 @@ Government Max Expenses determined by Debt Rate Target Fiscal rule
 		v[15]=v[13];
 	else
 		v[15]=CURRENT;
-RESULT(v[15])
+RESULT(v[13])
 
 
 EQUATION("Government_Max_Expenses_Surplus")
@@ -199,7 +167,7 @@ Government Max Expenses determined by Primary Surplus Target Fiscal rule
 		v[11]=v[9];
 	else	
 		v[11]=CURRENT;
-RESULT(v[11])
+RESULT(v[9])
 
 
 EQUATION("Government_Max_Expenses_Ceiling")
@@ -217,7 +185,7 @@ Government Max Expenses determined by Expenses Ceiling Target Fiscal rule
 		v[5]=v[3];
 	else
 		v[5]=CURRENT;
-RESULT(v[5])
+RESULT(v[3])
 
 
 EQUATION("Government_Max_Expenses")
@@ -230,9 +198,7 @@ v[0]=V("annual_frequency");
 v[1]=V("begin_surplus_target_rule");                           //define when surplus target rule begins
 v[2]=V("begin_expenses_ceiling_rule");                         //define when expenses ceiling begins
 v[3]=V("begin_debt_target_rule"); 							   //define when debt rule begins
-v[4]= fmod((double) t,v[0]);                  				   //divides the time period by government adjustment period (adjust annualy)
-if(v[4]==0)                                                    //if the rest of the division is zero (adjust maximum expenses)
-{                                                              //adjust fiscal rules maximum expenses			
+                                                             //adjust fiscal rules maximum expenses			
 	v[20]=V("Government_Max_Expenses_Surplus");
 	v[21]=V("Government_Max_Expenses_Ceiling");
 	v[24]=V("Government_Max_Expenses_Debt");
@@ -253,9 +219,7 @@ if(v[4]==0)                                                    //if the rest of 
 		v[17]=v[24];															//only debt rule
 	else
 		v[17]=-1;																//no rule															
-}
-else	                                                                //if it is not adjustment period
-	v[17]=CURRENT;											            //use last period's maximum	
+										            //use last period's maximum	
 RESULT(v[17])
 
 

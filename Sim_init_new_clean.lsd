@@ -864,12 +864,12 @@ Param: class_loan_total_amount 0 n + n n	0	0	0
 
 Object: EXTERNAL_SECTOR C	1
 Param: exchange_rate_adjustment 0 n + n n	0.001
-Param: exchange_rate_growth 0 n + n n	0
+Param: exchange_rate_growth 0 n + n n	1
 Param: external_capital_flow_adjustment 0 n + n n	0
 Param: external_income_adjustmnent 0 n + n n	0
 Param: external_income_growth 0 n + n n	0.03
 Param: external_income_sd 0 n + n n	0
-Param: external_interest_rate 0 n + n n	0.04
+Param: external_interest_rate 0 n + n n	0.03
 Param: external_shock_begin 0 n + n n	200
 Param: external_shock_duration 0 n + n n	20
 Param: external_shock_size 0 n + n n	0
@@ -995,16 +995,16 @@ Var: Central_Bank_Basic_Interest_Rate 1 s + n n	0
 
 Object: GOVERNMENT C	1
 Param: government_benefit_rate 0 n + n n	0.5
-Param: government_expectations 0 n + n n	2
+Param: government_expectations 0 n + n n	0
 Param: government_inflation_passtrought 0 n + n n	1
-Param: government_initial_debt_gdp_ratio 0 n + n n	2
+Param: government_initial_debt_gdp_ratio 0 n + n n	1
 Param: government_initial_share_capital 0 n + n n	0.3
 Param: government_initial_share_consumption 0 n + n n	0.1
 Param: government_initial_share_input 0 n + n n	0.1
 Param: government_max_debt_ratio 0 n + n n	0.9
 Param: government_min_debt_ratio 0 n + n n	0.5
-Param: government_real_growth 0 n + n n	0.01
-Param: government_surplus_target_adjustment 0 n + n n	0
+Param: government_real_growth 0 n + n n	0.0025
+Param: government_surplus_target_adjustment 0 n + n n	0.001
 Var: Government_Debt 5 s + n n	0	0	0	0	0
 Var: Government_Debt_GDP_Ratio 5 s + n n	0	0	0	0	0
 Var: Government_Desired_Consumption 1 s + n n	0
@@ -2262,7 +2262,7 @@ END_DESCRIPTION
 Parameter_exchange_rate_growth
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_external_capital_flow_adjustment
@@ -3044,7 +3044,7 @@ END_DESCRIPTION
 Parameter_government_expectations
 (no description available)
 _INIT_
-All 1 instances equal to 2.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_government_inflation_passtrought
@@ -3056,7 +3056,7 @@ END_DESCRIPTION
 Parameter_government_initial_debt_gdp_ratio
 (no description available)
 _INIT_
-All 1 instances equal to 2.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_government_initial_share_capital
@@ -3092,13 +3092,13 @@ END_DESCRIPTION
 Parameter_government_real_growth
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.0025.
 END_DESCRIPTION
 
 Parameter_government_surplus_target_adjustment
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.001.
 END_DESCRIPTION
 
 Variable_Government_Debt
