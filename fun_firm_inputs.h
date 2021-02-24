@@ -1,28 +1,19 @@
 /*****INPUTS VARIABLES*****/
 
-
-EQUATION("Firm_Required_Inputs")
-/*
-The demand for inputs for each period depends on planned production for that period and the technical relationship.
-*/
-	v[1]=V("Firm_Planned_Production");                      
-	v[2]=V("sector_input_tech_coefficient");     								
-	v[3]=v[1]*v[2];                             
-RESULT(v[3])
-
-
 EQUATION("Firm_Available_Inputs_Ratio")
 /*
 This variable defines the ratio between available inputs and inputs demanded for each sector in order to fulfil desired production.
 */
-	v[0]=V("Firm_Required_Inputs");                        	//total amount of imputs to required to fulfil planned production
-	v[1]=VL("Firm_Stock_Inputs",1);                   		//stock of remaining imputs from the last period	
-	if(v[0]>0)                                         		//if required imputs is a positive value
-		v[2]=v[1]/v[0];                                  	//gives the ratio between necessary imputs and available imputs
+	v[0]=V("Firm_Planned_Production");                      
+	v[1]=V("sector_input_tech_coefficient");	
+	v[2]=v[0]*v[1];                        					//total amount of imputs to required to fulfil planned production
+	v[3]=VL("Firm_Stock_Inputs",1);                   		//stock of remaining imputs from the last period	
+	if(v[2]>0)                                         		//if required imputs is a positive value
+		v[4]=v[3]/v[2];                                  	//gives the ratio between necessary imputs and available imputs
 	else                                               		//if required imputs is not a positive value
-		v[2]=1;                                          	//the ratio between necessary imputs and available imputs equals 1
-	v[3]=min(1,v[2]);                                  		//the ratio can never be smaller then 1
-RESULT(v[3])
+		v[4]=1;                                          	//the ratio between necessary imputs and available imputs equals 1
+	v[5]=min(1,v[4]);                                  		//the ratio can never be smaller then 1
+RESULT(v[5])
 
 
 EQUATION("Firm_Input_Demand_Next_Period")
@@ -72,13 +63,13 @@ The stock of inputs of each firm at the end of the period is calculated by summi
 	v[2]=VS(input,"Sector_Demand_Met");                   //percentage of the total demand met by the sector                
 	v[3]=VS(input,"Sector_Demand_Met_By_Imports");        //identifies if firms were capable of inporting the amount not mey by the domestic production
 	v[4]=v[2]+(1-v[2])*v[3];                              //percentage of the demand met by the domestic production and by the external producers                     
-	v[10]=V("Firm_Input_Imports");
-	v[5]=V("sector_input_tech_coefficient");              //input technical coefficient               			 
-	v[6]=V("Firm_Effective_Production");                  //firm's effective production   
-	v[7]=VL("Firm_Stock_Inputs", 1);	                  //firm's stock of inputs in the last period
-	v[8]=v[7]+v[1]*v[4]+v[10]-(v[5]*v[6]);                //the current stock of inputs is the stock in the last period plus the amount of the demand for the next period that was effetivly met, minus the amount used in effective production                 
-	v[9]=max(v[8],0);                                     //the current stock can never be negative
-RESULT(v[9])
+	v[5]=V("Firm_Input_Imports");
+	v[6]=V("sector_input_tech_coefficient");              //input technical coefficient               			 
+	v[7]=V("Firm_Effective_Production");                  //firm's effective production   
+	v[8]=VL("Firm_Stock_Inputs", 1);	                  //firm's stock of inputs in the last period
+	v[9]=v[8]+v[1]*v[4]+v[5]-(v[6]*v[7]);                 //the current stock of inputs is the stock in the last period plus the amount of the demand for the next period that was effetivly met, minus the amount used in effective production                 
+	v[10]=max(v[9],0);                                    //the current stock can never be negative
+RESULT(v[10])
 
 
 

@@ -383,10 +383,10 @@ EQUATION("Class_Deposits_Return")
 Net return on class deposits
 */
 	v[0]=V("Class_Available_Deposits");
-	v[3]=V("Class_Retained_Deposits");
-	v[1]=VS(financial,"Financial_Sector_Interest_Rate_Deposits");  
-	v[2]=(v[0]+v[3])*v[1];	
-RESULT(v[2])
+	v[1]=V("Class_Retained_Deposits");
+	v[2]=VS(financial,"Financial_Sector_Interest_Rate_Deposits");  
+	v[3]=(v[0]+v[1])*v[2];	
+RESULT(v[3])
 
 
 EQUATION("Class_Nominal_Disposable_Income")
@@ -482,10 +482,7 @@ Class share of nominal income
 */
 	v[0]=V("Class_Nominal_Disposable_Income");
 	v[1]=SUMS(PARENT,"Class_Nominal_Disposable_Income");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1]: 0;
 RESULT(v[2])
 
 
@@ -495,10 +492,7 @@ Class share of nominal income
 */
 	v[0]=V("Class_Stock_Deposits");
 	v[1]=SUMS(PARENT,"Class_Stock_Deposits");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1]: 0;
 RESULT(v[2])
 
 

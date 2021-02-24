@@ -20,14 +20,15 @@ Label Root
 			Param: class_autonomous_consumption_adjustment
 			Param: class_debt_rate_adjustment
 			Param: class_direct_tax
+			Param: class_id
 			Param: class_import_elasticity_price
+			Param: class_initial_imports_share
 			Param: class_liquidity_preference_adjustment
 			Param: class_population_share
 			Param: class_profit_share
 			Param: class_propensity_to_spend
 			Param: class_wage_share
 			Param: class_wealth_tax
-			Param: class_id
 			Var: Class_Available_Deposits
 			Var: Class_Avg_Debt_Rate
 			Var: Class_Avg_Nominal_Income
@@ -36,7 +37,6 @@ Label Root
 			Var: Class_Debt_Rate
 			Var: Class_Demand_Loans
 			Var: Class_Deposits_Return
-			Var: Class_Max_Debt_Rate
 			Var: Class_Desired_Expenses
 			Var: Class_Effective_Expenses
 			Var: Class_Effective_Loans
@@ -50,6 +50,7 @@ Label Root
 			Var: Class_Interest_Rate
 			Var: Class_Internal_Funds
 			Var: Class_Liquidity_Preference
+			Var: Class_Max_Debt_Rate
 			Var: Class_Max_Loans
 			Var: Class_Maximum_Expenses
 			Var: Class_Nominal_Disposable_Income
@@ -65,7 +66,6 @@ Label Root
 			Var: Class_Stock_Loans
 			Var: Class_Taxation
 			Var: Class_Wealth_Share
-			Param: class_initial_imports_share
 
 		}
 
@@ -381,7 +381,6 @@ Label Root
 				Var: Firm_Quality
 				Var: Firm_RND_Expenses
 				Var: Firm_Replacement_Expenses
-				Var: Firm_Required_Inputs
 				Var: Firm_Retained_Deposits
 				Var: Firm_Retained_Profits
 				Var: Firm_Revenue
@@ -699,10 +698,8 @@ Label Root
 	Param: switch_creditworthness
 	Param: switch_discount_rate
 	Param: switch_entry
-	Param: switch_expansion_investment
 	Param: switch_interest_investment
 	Param: switch_interest_payment
-	Param: switch_replacement_investment
 	Param: switch_fixed_bank_distribution
 	Param: switch_monetary_policy
 	Param: switch_extra_imports
@@ -726,14 +723,12 @@ Param: switch_class_tax_structure 0 n + n n	3
 Param: switch_creditworthness 0 n + n n	0
 Param: switch_discount_rate 0 n + n n	3
 Param: switch_entry 0 n + n n	1
-Param: switch_expansion_investment 0 n + n n	1
 Param: switch_interest_investment 0 n + n n	0
 Param: switch_interest_payment 0 n + n n	0
-Param: switch_replacement_investment 0 n + n n	1
 Param: switch_fixed_bank_distribution 0 n + n n	0
 Param: switch_monetary_policy 0 n + n n	1
 Param: switch_extra_imports 0 n + n n	0
-Param: begin_debt_target_rule 0 n + n n	-1
+Param: begin_debt_target_rule 0 n + n n	0
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
 Param: begin_surplus_target_rule 0 n + n n	0
 Param: begin_monetary_policy 0 n + n n	0
@@ -809,14 +804,15 @@ Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
 Param: class_debt_rate_adjustment 0 n + n n	0	0	0
 Param: class_direct_tax 0 n + n n	0	0.3	0.3
+Param: class_id 0 n + n n	1	2	3
 Param: class_import_elasticity_price 0 n + n n	1	1	1
+Param: class_initial_imports_share 0 n + n n	0	0	0
 Param: class_liquidity_preference_adjustment 0 n + n n	0	0	0
 Param: class_population_share 0 n + n n	0.01	0.01	0.01
 Param: class_profit_share 0 n + n n	0.6	0.3	0.1
 Param: class_propensity_to_spend 0 n + n n	0.5	0.7	0.9
 Param: class_wage_share 0 n + n n	0.1	0.3	0.6
 Param: class_wealth_tax 0 n + n n	0	0	0
-Param: class_id 0 n + n n	1	2	3
 Var: Class_Available_Deposits 0 s + n n
 Var: Class_Avg_Debt_Rate 0 n + n n
 Var: Class_Avg_Nominal_Income 1 n + n n	0	0	0
@@ -825,7 +821,6 @@ Var: Class_Debt_Payment 0 s + n n
 Var: Class_Debt_Rate 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Class_Demand_Loans 0 s + n n
 Var: Class_Deposits_Return 0 s + n n
-Var: Class_Max_Debt_Rate 1 s + n n	0	0	0
 Var: Class_Desired_Expenses 0 s + n n
 Var: Class_Effective_Expenses 0 s + n n
 Var: Class_Effective_Loans 0 n + n n
@@ -839,6 +834,7 @@ Var: Class_Interest_Payment 0 s + n n
 Var: Class_Interest_Rate 0 n + n n
 Var: Class_Internal_Funds 0 s + n n
 Var: Class_Liquidity_Preference 1 s + n n	0	0	0
+Var: Class_Max_Debt_Rate 1 s + n n	0	0	0
 Var: Class_Max_Loans 0 s + n n
 Var: Class_Maximum_Expenses 0 s + n n
 Var: Class_Nominal_Disposable_Income 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
@@ -854,7 +850,6 @@ Var: Class_Stock_Deposits 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Class_Stock_Loans 1 s + n n	0	0	0
 Var: Class_Taxation 0 s + n n
 Var: Class_Wealth_Share 0 s + n n
-Param: class_initial_imports_share 0 n + n n	0	0	0
 
 Object: CLASS_LOANS C	1	1	1
 Param: class_loan_fixed_amortization 0 n + n n	0	0	0
@@ -865,7 +860,7 @@ Param: class_loan_total_amount 0 n + n n	0	0	0
 Object: EXTERNAL_SECTOR C	1
 Param: exchange_rate_adjustment 0 n + n n	0.001
 Param: exchange_rate_growth 0 n + n n	1
-Param: external_capital_flow_adjustment 0 n + n n	0
+Param: external_capital_flow_adjustment 0 n + n n	1
 Param: external_income_adjustmnent 0 n + n n	0
 Param: external_income_growth 0 n + n n	0.03
 Param: external_income_sd 0 n + n n	0
@@ -1237,7 +1232,6 @@ Var: Firm_Profits 0 n + n n
 Var: Firm_Quality 1 n + n n	1	1	1
 Var: Firm_RND_Expenses 0 n + n n
 Var: Firm_Replacement_Expenses 0 n + n n
-Var: Firm_Required_Inputs 0 n + n n
 Var: Firm_Retained_Deposits 0 n + n n
 Var: Firm_Retained_Profits 0 n + n n
 Var: Firm_Revenue 1 n + n n	10	10	10
@@ -1433,12 +1427,6 @@ _INIT_
 All 1 instances equal to 1.
 END_DESCRIPTION
 
-Parameter_switch_expansion_investment
-(no description available)
-_INIT_
-All 1 instances equal to 1.
-END_DESCRIPTION
-
 Parameter_switch_interest_investment
 (no description available)
 _INIT_
@@ -1449,12 +1437,6 @@ Parameter_switch_interest_payment
 (no description available)
 _INIT_
 All 1 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_switch_replacement_investment
-(no description available)
-_INIT_
-All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_switch_fixed_bank_distribution
@@ -1478,7 +1460,7 @@ END_DESCRIPTION
 Parameter_begin_debt_target_rule
 (no description available)
 _INIT_
-All 1 instances equal to -1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_begin_expenses_ceiling_rule
@@ -1921,10 +1903,22 @@ _INIT_
 All 3 instances equal to 0.3.
 END_DESCRIPTION
 
+Parameter_class_id
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
 Parameter_class_import_elasticity_price
 (no description available)
 _INIT_
 All 3 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_class_initial_imports_share
+(no description available)
+_INIT_
+All 3 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_class_liquidity_preference_adjustment
@@ -1961,12 +1955,6 @@ Parameter_class_wealth_tax
 (no description available)
 _INIT_
 All 3 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_class_id
-(no description available)
-_INIT_
-
 END_DESCRIPTION
 
 Variable_Class_Available_Deposits
@@ -2020,14 +2008,6 @@ Variable_Class_Deposits_Return
 (no description available)
 _INIT_
 
-END_DESCRIPTION
-
-Variable_Class_Max_Debt_Rate
-Class desired debt rate. 
-Formulation proposed by Moreira (2010) 
-Evolves based on nominal income growth.
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Class_Desired_Expenses
@@ -2109,6 +2089,14 @@ Class' desired deposits to be kept as liquid assets.
 Inspired by Moreira (2010)
 Proportion of average nominal income capital. 
 Evolves based on average debt rate and income growth.
+_INIT_
+All 3 instances equal to 0.
+END_DESCRIPTION
+
+Variable_Class_Max_Debt_Rate
+Class desired debt rate. 
+Formulation proposed by Moreira (2010) 
+Evolves based on nominal income growth.
 _INIT_
 All 3 instances equal to 0.
 END_DESCRIPTION
@@ -2209,12 +2197,6 @@ Class share of nominal income
 Class share of nominal income
 _INIT_
 
-END_DESCRIPTION
-
-Parameter_class_initial_imports_share
-(no description available)
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Object_CLASS_LOANS
@@ -3080,7 +3062,7 @@ END_DESCRIPTION
 Parameter_government_max_debt_ratio
 (no description available)
 _INIT_
-All 1 instances equal to 0.5.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_government_min_debt_ratio
@@ -4552,12 +4534,6 @@ _INIT_
 END_DESCRIPTION
 
 Variable_Firm_Replacement_Expenses
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_Firm_Required_Inputs
 (no description available)
 _INIT_
 

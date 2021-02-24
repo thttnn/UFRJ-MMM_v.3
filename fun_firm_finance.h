@@ -4,12 +4,7 @@ EQUATION("Firm_Avg_Debt_Rate")
 /*
 Firm's avg debt rate of the last investment period
 */
-	v[0]=V("sector_investment_frequency");
-	v[3]=0;																				//initializes the sum
-	for (i=1; i<=v[0]; i++)																//from 0 to investment period-1 lags
-		v[3]=v[3]+VL("Firm_Debt_Rate", i);												//sum up firm's lagged effective oders
-	v[4]=v[3]/v[0];																		//average firm's debt rate of the last investment period
-RESULT(v[4])
+RESULT(LAG_AVE(p, "Firm_Debt_Rate", V("sector_investment_frequency"), 1))
 
 
 EQUATION("Firm_Interest_Rate_Short_Term")
@@ -53,6 +48,7 @@ Evolves based on average debt rate and profit growth.
 		v[4]=(v[2]-v[3])/v[3];
 	else
 		v[4]=0;
+	v[4]=LAG_GROWTH(p, "Firm_Net_Profits", v[0]);
 	v[5]=V("Firm_Avg_Debt_Rate");
 	v[6]=V("Firm_Max_Debt_Rate");
 	v[7]=VL("Firm_Liquidity_Preference",1);
@@ -118,7 +114,7 @@ Evolves based on capacity utilization and profit growth.
 		v[4]=(v[2]-v[3])/v[3];
 	else
 		v[4]=0;
-		
+	v[4]=LAG_GROWTH(p, "Firm_Net_Profits", v[0]);
 	v[9]=V("sector_desired_degree_capacity_utilization");
 	v[10]=VL("Firm_Max_Debt_Rate",1);
 	v[11]=V("sector_debt_rate_adjustment");
@@ -222,9 +218,9 @@ EQUATION("Firm_Credit_Rationing")
 Ex post variable for analysis.
 Ratio between effective and demanded loans.
 */
-v[0]=V("Firm_Effective_Loans");
-v[1]=V("Firm_Demand_Loans");
-v[2]= v[1]!=0? v[0]/v[1] : 0;
+	v[0]=V("Firm_Effective_Loans");
+	v[1]=V("Firm_Demand_Loans");
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
 
 

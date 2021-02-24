@@ -81,10 +81,7 @@ Share of demand for new loans met
 */
 	v[0]=V("Bank_Effective_Loans");
 	v[1]=V("Bank_Demand_Loans");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=1;
+	v[2]= v[1]!=0? v[0]/v[1] : 1;
 RESULT(v[2])
 
 
@@ -123,10 +120,7 @@ Bank Market Share evolves based on the bank competitiveness and sector average c
 	v[0]=VL("Bank_Market_Share", 1);                										//bank's market share in the last period
 	v[1]=V("Financial_Sector_Avg_Competitiveness"); 										//sector average competitiveness
 	v[3]=V("Bank_Competitiveness");                 										//bank's competitiveness
-	if(v[1]!=0)                                    											//if the sector average competitiveness is not zero
-		v[4]=v[0]+v[0]*((v[3]/v[1])-1);             										//bank's market share will be the last period's inscresed by the adjustment paramter times the ratio between firm's competitiveness and sector average competitiveness
-	else                                            										//if the sector average competitiveness is zero
-		v[4]=0;                                     										//bank's market share will be zero 
+	v[4]= v[1]!=0? v[0]+v[0]*((v[3]/v[1])-1) : 0;             								//bank's market share will be the last period's inscresed by the adjustment paramter times the ratio between firm's competitiveness and sector average competitiveness
 RESULT(v[4])
 
 
@@ -138,10 +132,7 @@ Bank Variable
   	v[1]=VL("Bank_Competitiveness",1);                                     //bank's competitiveness in the last period
   	v[2]=VL("Financial_Sector_Avg_Competitiveness",1);                     //sector's average competitiveness in the last period
   	v[3]=V("fs_spread_long_term_adjustment");							   //determines how much desired spread is adjusted
-	if (v[2]!=0)
-  		v[4]=(v[1]-v[2])/v[2];                                             //diference between bank's competitiveness and sector's average competitiveness 
-  	else
-  		v[4]=0;
+	v[4]= v[2]!=0? (v[1]-v[2])/v[2] : 0;                                   //diference between bank's competitiveness and sector's average competitiveness 
   	v[5]=v[0]*(1+v[3]*v[4]);	
 RESULT(max(0,v[5])) 
 
@@ -182,10 +173,7 @@ Bank Variable
   	v[1]=VL("Bank_Competitiveness",1);                                     //bank's competitiveness in the last period
   	v[2]=VL("Financial_Sector_Avg_Competitiveness",1);                     //sector's average competitiveness in the last period
   	v[3]=V("fs_spread_short_term_adjustment");							   //determines how much desired spread is adjusted
-	if (v[2]!=0)
-  		v[4]=(v[1]-v[2])/v[2];                                             //diference between bank's competitiveness and sector's average competitiveness 
-  	else
-  		v[4]=0;
+	v[4]=v[2]!=0? (v[1]-v[2])/v[2] : 0;                                    //diference between bank's competitiveness and sector's average competitiveness 
   	v[5]=v[0]*(1+v[3]*v[4]);	
 RESULT(max(0,v[5])) 
 
@@ -439,8 +427,8 @@ EQUATION("Bank_Defaulted_Loans");
 /*
 Current bank defaulted loans 
 */
-v[0]=V("bank_defaulted_loans_temporary");
-WRITE("bank_defaulted_loans_temporary", 0);
+	v[0]=V("bank_defaulted_loans_temporary");
+	WRITE("bank_defaulted_loans_temporary", 0);
 RESULT(v[0])
 
 
@@ -448,9 +436,9 @@ EQUATION("Bank_Accumulated_Defaulted_Loans");
 /*
 Current bank defaulted loans 
 */
-v[0]=VL("Bank_Accumulated_Defaulted_Loans",1);
-v[1]=V("Bank_Defaulted_Loans");
-v[2]=v[0]+v[1];
+	v[0]=VL("Bank_Accumulated_Defaulted_Loans",1);
+	v[1]=V("Bank_Defaulted_Loans");
+	v[2]=v[0]+v[1];
 RESULT(v[2])
 
 
@@ -458,13 +446,13 @@ EQUATION("Bank_Profits")
 /*
 Current bank profits is the difference between Interest Return and Interest Payment, minus defaulted loans. can be negative
 */
-v[0]=V("Bank_Interest_Receivment");
-v[1]=V("Bank_Interest_Payment");
-v[2]=V("Bank_Defaulted_Loans");
-v[3]=v[0]-v[1]-v[2];
-v[4]=V("Government_Interest_Payment");
-v[5]=V("Bank_Market_Share");
-v[6]=v[4]*v[5];
+	v[0]=V("Bank_Interest_Receivment");
+	v[1]=V("Bank_Interest_Payment");
+	v[2]=V("Bank_Defaulted_Loans");
+	v[3]=v[0]-v[1]-v[2];
+	v[4]=V("Government_Interest_Payment");
+	v[5]=V("Bank_Market_Share");
+	v[6]=v[4]*v[5];
 RESULT(v[3]+v[6])
 
 

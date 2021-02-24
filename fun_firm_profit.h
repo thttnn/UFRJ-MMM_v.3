@@ -1,8 +1,5 @@
 
 EQUATION("Firm_Revenue")
-/*
-Revenue depends on sales and price
-*/
 RESULT(V("Firm_Sales")*V("Firm_Price"))
 
 

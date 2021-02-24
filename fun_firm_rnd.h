@@ -31,7 +31,6 @@ Imitation process. The sucess depends on the amount of recources alocated to imi
 	v[1]=V("sector_innovation_proportion");    		//firm's share of RND expenses destinated to innovation
 	v[2]=(v[0]*(1-v[1]));                           //amount of recources for imitation
 	v[3]=1-exp(-v[2]);                   			//probability of success of the imitation depends on amount of recources available
-	
 	if(RND<v[3])                              		//draws a random number. if it is lower then imitation probability
      	v[4]=VL("Sector_Max_Productivity", 1);  	//imitation has succeded and the firm can copy the maximum probability of the sector in the last perio
   	else                                      		//if the random number is not lower than imitation probability
@@ -47,18 +46,17 @@ Innovation process. The sucess depends on the amount ou recources alocated to in
 	v[1]=V("sector_innovation_proportion");    			//firm's share of RND expenses destinated to innovation
 	v[2]=(v[0]*v[1]);                           		//amount of recources for innovation
 	v[3]=1-exp(-v[2]);                     				//probability of success of the innovation depends on the parameter and the amount of recources available  
-	
 	if(RND<v[3])                                		//draws a random nuumber. if it is lower then innovation probability 
 		{
 		v[4]=V("sector_std_dev_innovation");           	//innovation standard deviation
 		v[5]=V("sector_initial_productivity");			//initial frontier productivity
-		v[7]=V("sector_tech_opportunity_productivity"); //sector technological opportunity for process innovation
-		v[8]=log(v[5])+(double)t*(v[7]);        		//the average of the innovation distribution will be the initial frontier productivity plus the opportunity parameter times the time period
-		v[10]=exp(norm(v[8],v[4]));             		//the innovation productivity will be a draw from a normal distribution with average depending of the tech regime and std. dev fixed
+		v[6]=V("sector_tech_opportunity_productivity"); //sector technological opportunity for process innovation
+		v[7]=log(v[5])+(double)t*(v[6]);        		//the average of the innovation distribution will be the initial frontier productivity plus the opportunity parameter times the time period
+		v[8]=exp(norm(v[7],v[4]));             			//the innovation productivity will be a draw from a normal distribution with average depending of the tech regime and std. dev fixed
 		}
 	else                                        		//if the random number is not lower then  the innovation probability
-		v[10]=0;                                		//innovation failed and the productivity is zero
-RESULT(v[10])
+		v[8]=0;                                			//innovation failed and the productivity is zero
+RESULT(v[8])
 
 
 EQUATION("Firm_Imitation_Quality")
@@ -69,7 +67,6 @@ Imitation process. The sucess depends on the amount of recources alocated to imi
 	v[1]=V("sector_innovation_proportion");    			//firm's share of RND expenses destinated to innovation
 	v[2]=(v[0]*(1-v[1]));                           	//amount of recources for imitation
 	v[3]=1-exp(-v[2]);                   				//probability of success of the imitation depends on amount of recources available
-	
 	if(RND<v[3])                              			//draws a random number. if it is lower then imitation probability
      	v[5]=VL("Sector_Max_Quality", 1);				//imitation has succeded and the firm can copy the maximum quality of the sector in the last period
   	else                                      			//if the random number is not lower than imitation probability
@@ -85,18 +82,17 @@ Innovation process. The sucess depends on the amount ou recources alocated to in
 	v[1]=V("sector_innovation_proportion");    			//firm's share of RND expenses destinated to innovation
 	v[2]=(v[0]*v[1]);                           		//amount of recources for innovation
 	v[3]=1-exp(-v[2]);                     				//probability of success of the innovation depends on the parameter and the amount of recources available  
-	
 	if(RND<v[3])                                		//draws a random nuumber. if it is lower then innovation probability 
 		{
 		v[4]=V("sector_std_dev_innovation");           	//innovation standard deviation
-		v[6]=V("sector_initial_quality");				//initial quality
-		v[7]=V("sector_tech_opportunity_quality");      //sector technological opportunity for product innovation
-		v[9]=log(v[6])+(double)t*(v[7]);        		//the average of the innovation distribution will be the initial quality plus the opportunity parameter times the time period
-		v[10]=exp(norm(v[9],v[4]));						//the innovation quality will be a draw from a normal distribution with average depending of the tech regime and std. dev fixed
+		v[5]=V("sector_initial_quality");				//initial quality
+		v[6]=V("sector_tech_opportunity_quality");      //sector technological opportunity for product innovation
+		v[7]=log(v[5])+(double)t*(v[6]);        		//the average of the innovation distribution will be the initial quality plus the opportunity parameter times the time period
+		v[8]=exp(norm(v[7],v[4]));						//the innovation quality will be a draw from a normal distribution with average depending of the tech regime and std. dev fixed
 		}
 	else                                        		//if the random number is not lower then the innovation probability
-		v[10]=0;										//innovation failed and the quality is zero
-RESULT(v[10])
+		v[8]=0;											//innovation failed and the quality is zero
+RESULT(v[8])
 
 
 
