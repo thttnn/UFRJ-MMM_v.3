@@ -688,6 +688,8 @@ Label Root
 		Var: Exit_Deposits_Distributed
 		Var: Exit_Productive_Capacity
 		Var: Loans_Distribution_Firms
+		Var: Country_Annual_GDP
+		Var: Country_Annual_Real_GDP
 
 	}
 
@@ -709,6 +711,7 @@ Label Root
 	Param: begin_monetary_policy
 	Param: begin_credit_rationing
 	Param: begin_flexible_surplus_target
+	Param: switch_extra_gov_expenses
 
 }
 
@@ -727,13 +730,14 @@ Param: switch_interest_investment 0 n + n n	0
 Param: switch_interest_payment 0 n + n n	0
 Param: switch_fixed_bank_distribution 0 n + n n	0
 Param: switch_monetary_policy 0 n + n n	1
-Param: switch_extra_imports 0 n + n n	0
+Param: switch_extra_imports 0 n + n n	1
 Param: begin_debt_target_rule 0 n + n n	0
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
 Param: begin_surplus_target_rule 0 n + n n	0
 Param: begin_monetary_policy 0 n + n n	0
 Param: begin_credit_rationing 0 n + n n	0
 Param: begin_flexible_surplus_target 0 n + n n	0
+Param: switch_extra_gov_expenses 0 n + n n	1
 
 Object: COUNTRY C	1
 Param: annual_frequency 0 n + n n	4
@@ -799,6 +803,8 @@ Var: Exit_Defaulted_Loans 0 s + n n
 Var: Exit_Deposits_Distributed 0 s + n n
 Var: Exit_Productive_Capacity 0 n + n n
 Var: Loans_Distribution_Firms 0 n + n n
+Var: Country_Annual_GDP 0 s + n n
+Var: Country_Annual_Real_GDP 0 s + n n
 
 Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
@@ -1454,7 +1460,7 @@ END_DESCRIPTION
 Parameter_switch_extra_imports
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_begin_debt_target_rule
@@ -1491,6 +1497,12 @@ Parameter_begin_flexible_surplus_target
 (no description available)
 _INIT_
 All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_switch_extra_gov_expenses
+(no description available)
+_INIT_
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Object_COUNTRY
@@ -1877,6 +1889,18 @@ Distributed effective loans to firms if there is credit rationing
 Distributed effective loans to firms if there is credit rationing
 _INIT_
 All 1 instances equal to 0.
+END_DESCRIPTION
+
+Variable_Country_Annual_GDP
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_Country_Annual_Real_GDP
+(no description available)
+_INIT_
+
 END_DESCRIPTION
 
 Object_CLASSES

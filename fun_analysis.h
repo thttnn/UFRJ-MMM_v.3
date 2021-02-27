@@ -2,8 +2,8 @@
 
 /*****COUNTRY STATS*****/
 
-EQUATION("GDP")//Nominal GDP
-RESULT(VS(country, "Country_GDP_Demand"))
+EQUATION("GDP")//Quarterly Nominal GDP
+RESULT(VS(country, "Country_GDP"))
 
 EQUATION("P")//Price Index
 RESULT(VS(country, "Country_Price_Index"))
@@ -11,10 +11,10 @@ RESULT(VS(country, "Country_Price_Index"))
 EQUATION("CPI")//Price Index
 RESULT(VS(country, "Country_Consumer_Price_Index"))
 
-EQUATION("P_G")//Inflation
+EQUATION("P_G")//Annual Inflation
 RESULT(VS(country, "Country_Annual_Inflation"))
 
-EQUATION("CPI_G")//Inflation
+EQUATION("CPI_G")//Annual CPI Inflation
 RESULT(VS(country, "Country_Annual_CPI_Inflation"))
 
 EQUATION("U")//Unemployment
@@ -23,10 +23,10 @@ RESULT(VS(country, "Country_Idle_Capacity"))
 EQUATION("EMP")//Employment
 RESULT(SUMS(country, "Sector_Employment"))
 
-EQUATION("GDP_G")//GDP real growth rate
+EQUATION("GDP_G")//GDP real annual growth rate
 RESULT(VS(country, "Country_Annual_Real_Growth"))
 
-EQUATION("G_n")//GDP nominal growth rate
+EQUATION("G_n")//GDP nominal annual growth rate
 RESULT(VS(country, "Country_Annual_Growth"))
 
 EQUATION("Cri")//Crisis counters
@@ -66,7 +66,7 @@ RESULT(VS(country,"Country_Wage_Share"))
 /*****REAL STATS*****/
 
 EQUATION("GDP_r")//Real GDP
-RESULT(VS(country, "Country_Real_GDP_Demand"))
+RESULT(VS(country, "Country_Real_GDP"))
 
 EQUATION("C_r")//Quarterly Real Consumption
 RESULT(VS(country, "Country_Nominal_Consumption_Production")/V("P"))
@@ -258,300 +258,83 @@ RESULT(VS(input, "Sector_Normalized_HHI"))
 
 /*****COUNTRY GROWTH STATS*****/
 
-EQUATION("EMP_G")
-/*
-Quarterly Employment Growth rate
-*/
-v[0]=V("EMP");
-v[1]=VL("EMP", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("EMP_G")//Quarterly Employment Growth rate
+RESULT(LAG_GROWTH(p,"EMP",1))
 
-EQUATION("CON_G")
-/*
-Quarterly Real Consumption Growth rate
-*/
-v[0]=V("C_r");
-v[1]=VL("C_r", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("CON_G")//Quarterly Real Consumption Growth rate
+RESULT(LAG_GROWTH(p,"C_r",1))
 
-EQUATION("INV_G")
-/*
-Quarterly Real Investment Growth rate
-*/
-v[0]=V("I_r");
-v[1]=VL("I_r", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("INV_G")//Quarterly Real Investment Growth rate
+RESULT(LAG_GROWTH(p,"I_r",1))
 
-EQUATION("PROD_G")
-/*
-Average Productivity Growth
-*/
-v[0]=V("PROD");
-v[1]=VL("PROD", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("PROD_G")//Average Productivity Growth
+RESULT(LAG_GROWTH(p,"PROD",1))
 
-EQUATION("MK_G")
-/*
-Average Markup Growth
-*/
-v[0]=V("MK");
-v[1]=VL("MK", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("MK_G")//Average Markup Growth
+RESULT(LAG_GROWTH(p,"MK",1))
 
-EQUATION("INVE_G")
-/*
-Real Aggregate Inventories Growth
-*/
-v[0]=V("INVE_r");
-v[1]=VL("INVE_r", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("INVE_G")//Real Aggregate Inventories Growth
+RESULT(LAG_GROWTH(p,"INVE_r",1))
 
-EQUATION("K_G")
-/*
-Real Stock of Capital Growth
-*/
-v[0]=V("K_r");
-v[1]=VL("K_r", 1);
-if (v[1]!=0)
-v[2]=(v[0]-v[1])/v[1];
-else
-v[2]=0;
-RESULT(v[2])
+EQUATION("K_G")//Real Stock of Capital Growth
+RESULT(LAG_GROWTH(p,"K_r",1))
 
-EQUATION("PROFITS_G")
-/*
-Real Profits Growth rate
-*/
-v[0]=V("PROFITS");
-v[1]=VL("PROFITS", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("PROFITS_G")//Real Profits Growth rate
+RESULT(LAG_GROWTH(p,"PROFITS",1))
 
-EQUATION("WAGE_G")
-/*
-Real Wages growth rate
-*/
-v[0]=V("WAGE");
-v[1]=VL("WAGE", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("WAGE_G")//Real Wages growth rate
+RESULT(LAG_GROWTH(p,"WAGE",1))
 
-EQUATION("GOV_G")
-/*
-Quarterly Real Government Expenses Growth rate
-*/
-v[0]=V("G_r");
-v[1]=VL("G_r", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("GOV_G")//Quarterly Real Government Expenses Growth rate
+RESULT(LAG_GROWTH(p,"G_r",1))
 
-EQUATION("PDEBT_G")
-/*
-Public Debt Growth rate
-*/
-v[0]=V("PDEBT");
-v[1]=VL("PDEBT", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("PDEBT_G")//Public Debt Growth rate
+RESULT(LAG_GROWTH(p,"PDEBT",1))
 
-EQUATION("M_G")
-/*
-Quarterly Real Imports Growth rate
-*/
-v[0]=V("M_r");
-v[1]=VL("M_r", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("M_G")//Quarterly Real Imports Growth rate
+RESULT(LAG_GROWTH(p,"M_r",1))
 
-EQUATION("X_G")
-/*
-Quarterly Real Exports Growth rate
-*/
-v[0]=V("X_r");
-v[1]=VL("X_r", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("X_G")//Quarterly Real Exports Growth rate
+RESULT(LAG_GROWTH(p,"X_r",1))
 
-EQUATION("NX_G")
-/*
-Quarterly Real Net Exports Growth rate
-*/
-v[0]=V("NX_r");
-v[1]=VL("NX_r", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("NX_G")//Quarterly Real Net Exports Growth rate
+RESULT(LAG_GROWTH(p,"NX_r",1))
 
 
 /*****MACRO SHARE STATS*****/
 
-
 EQUATION("CGDP")
-/*
-Real Consumption share of GDP
-*/
-v[0]=V("C_r");
-v[1]=VS(country,"Country_Real_GDP");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+RESULT(V("Country_Total_Classes_Expenses")/V("Country_GDP_Demand"))
 
 EQUATION("IGDP")
-/*
-Real Investment share of GDP
-*/
-v[0]=V("I_r");
-v[1]=VS(country,"Country_Real_GDP");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+RESULT(V("Country_Total_Investment_Expenses")/V("Country_GDP_Demand"))
 
 EQUATION("GGDP")
-/*
-Real Government Expenses share of GDP
-*/
-v[0]=V("G_r");
-v[1]=VS(country,"Country_Real_GDP");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+RESULT(V("Government_Effective_Expenses")/V("Country_GDP_Demand"))
 
 EQUATION("NXGDP")
-/*
-Real net exports share of GDP
-*/
-v[0]=V("NX_r");
-v[1]=VS(country,"Country_Real_GDP");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+RESULT((V("Country_Nominal_Exports")-V("Country_Nominal_Imports"))/V("Country_GDP_Demand"))
 
 EQUATION("INVGDP")
-/*
-Real inventories share of GDP
-*/
-v[0]=V("INVE_r");
-v[1]=VS(country,"Country_Real_GDP");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+RESULT(V("Country_Inventories")/V("Country_GDP_Demand"))
 
 EQUATION("KGDP")
-/*
-Real stock of capital share of GDP, or capital-output ratio
-*/
-v[0]=V("K_r");
-v[1]=VS(country,"Country_Real_GDP");
-if(v[1]!=0)
-	v[2]=v[0]/v[1];
-else
-	v[2]=0;
-RESULT(v[2]) 
+RESULT(V("Country_Capital_Stock")/V("Country_GDP_Demand")) 
 
 
 /*****FINANCIAL GROWTH STATS*****/
 
-EQUATION("DEBT_FS_ST_G")
-/*
-Stock of short term debt growth in the financial sector
-*/
-v[0]=V("DEBT_FS_ST");
-v[1]=VL("DEBT_FS_ST", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("DEBT_FS_ST_G")//Stock of short term debt growth in the financial sector
+RESULT(LAG_GROWTH(p,"DEBT_FS_ST",1))
 
-EQUATION("DEBT_FS_LT_G")
-/*
-Stock of long term debt growth in the financial sector
-*/
-v[0]=V("DEBT_FS_LT");
-v[1]=VL("DEBT_FS_LT", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("DEBT_FS_LT_G")//Stock of long term debt growth in the financial sector
+RESULT(LAG_GROWTH(p,"DEBT_FS_LT",1))
 
-EQUATION("DEBT_FS_G")
-/*
-Stock of total debt growth in the financial sector
-*/
-v[0]=V("DEBT_FS");
-v[1]=VL("DEBT_FS", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("DEBT_FS_G")//Stock of total debt growth in the financial sector
+RESULT(LAG_GROWTH(p,"DEBT_FS",1))
 
-EQUATION("DEP_FS_G")
-/*
-Stock of total deposits growth in the financial sector
-*/
-v[0]=V("DEP_FS");
-v[1]=VL("DEP_FS", 1);
-if (v[1]!=0)
-	v[2]=(v[0]-v[1])/v[1];
-else
-	v[2]=0;
-RESULT(v[2])
+EQUATION("DEP_FS_G")//Stock of total deposits growth in the financial sector
+RESULT(LAG_GROWTH(p,"DEP_FS",1))
 
 
 

@@ -314,7 +314,15 @@ Nominal quarterly GDP is calculated summing up profits, wages and indirect taxes
 	v[2]=V("Government_Indirect_Taxes");
 	v[3]=v[0]+v[1]+v[2];
 	v[4]=V("Country_GDP_Demand");
-RESULT(v[0])
+RESULT(v[4])
+
+
+EQUATION("Country_Annual_GDP")
+RESULT(LAG_SUM(p, "Country_GDP", V("annual_frequency")))
+
+
+EQUATION("Country_Annual_Real_GDP")
+RESULT(LAG_SUM(p, "Country_Real_GDP", V("annual_frequency")))
 
 
 EQUATION("Country_Real_GDP")
@@ -455,17 +463,13 @@ EQUATION("Country_GDP_Demand")
 /*
 GDP calculated by the demand perspective
 */
-	v[0]=SUM("Class_Effective_Real_Domestic_Consumption");
-	v[1]=VS(consumption,"Sector_Real_Exports");
-	v[2]=VS(capital,"Sector_Real_Exports");
-	v[3]=VS(consumption,"Sector_Avg_Price");
-	v[4]=VS(capital,"Sector_Avg_Price");
-	v[5]=V("Country_Total_Investment_Expenses");
-	v[6]=V("Government_Effective_Consumption");
-	v[7]=V("Government_Effective_Investment");
-	v[8]=V("Government_Effective_Wages");
-	v[9]=v[0]*v[3]+v[1]*v[3]+v[2]*v[4]+v[5]+v[6]+v[7]+v[8];
-RESULT(v[9])
+	v[0]=V("Country_Total_Classes_Expenses");
+	v[1]=V("Country_Total_Investment_Expenses");
+	v[2]=V("Government_Effective_Expenses");
+	v[3]=V("Country_Nominal_Exports");
+	v[4]=V("Country_Nominal_Imports");
+	v[5]=v[0]+v[1]+v[2]+v[3]-v[4];
+RESULT(v[5])
 
 
 EQUATION("Country_Real_GDP_Demand")
@@ -558,7 +562,7 @@ Sum up the nominal value of effective expansion investment of all firms
 */
 	v[0]=0;
 	CYCLE(cur, "SECTORS")
-		v[0]=v[0]+=SUMS(cur, "Firm_Effective_Expansion_Investment_Expenses");
+		v[0]=v[0]+SUMS(cur, "Firm_Effective_Expansion_Investment_Expenses");
 RESULT(v[0])
 
 

@@ -205,15 +205,19 @@ else
 	v[10]=min(v[3],(v[0]-v[8]-v[9]));       			   //government consumption is desired limited by maximum expenses minus wages and benefits
 	v[11]=min(v[5],(v[0]-v[8]-v[9]-v[10]));        		   //government intermediate is desired limited by maximum expenses minus wages and benefits
 	v[12]=min(v[4],(v[0]-v[8]-v[9]-v[10]-v[11]));          //government investment is desired limited by maximum expenses minus wages and benefits
+	v[14]=max(0,(v[0]-(v[8]+v[9]+v[10]+v[11]+v[12])));
+	if(V("switch_extra_gov_expenses")==1)
+		v[15]=v[8]+v[14];
+	else
+		v[15]=v[8];
 }
-
-WRITE("Government_Effective_Wages", max(0,v[8]));
+WRITE("Government_Effective_Wages", max(0,v[15]));
 WRITE("Government_Effective_Unemployment_Benefits",  max(0,v[9]));
 WRITE("Government_Effective_Consumption",  max(0,v[10]));
 WRITE("Government_Effective_Investment",  max(0,v[12]));
 WRITE("Government_Effective_Inputs",  max(0,v[11]));
 WRITE("Government_Desired_Expenses",  v[1]+v[2]+v[3]+v[4]+v[5]);
-v[13]=max(0,(v[8]+v[9]+v[10]+v[11]+v[12]));
+v[13]=max(0,(v[15]+v[9]+v[10]+v[11]+v[12]));
 RESULT(v[13])
 
 EQUATION_DUMMY("Government_Effective_Wages","Government_Effective_Expenses")

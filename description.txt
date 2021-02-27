@@ -1,4 +1,4 @@
-MICRO-MACRO MULTISECTORAL MODEL (ver. 3.8)
+MICRO-MACRO MULTISECTORAL MODEL (ver. 3.9)
 
 *********************************************************************************************************************************************
 
@@ -6,12 +6,11 @@ This is a (preliminary) new version of the model created by Dweck (2006) and use
 Coded and copyright by Matheus Vianna.
 
 ************
-Version 3.8:
+Version 3.9:
 ************
 --Introduction of Complex Governement
----Four Types of government expenses composition.
----Four types of taxation structure.
----Two(Three) types of fiscal rules.
+---Inverse Calibration Procedure
+---Exchange Rate, Monetary, Fiscal and Taxation Policies.
 
 ****************************
 CONTROLS AND CONFIGURATIONS

@@ -370,8 +370,6 @@ v[219]+=v[181];														//total nominal capital
 	if(V("switch_class_tax_structure")==4)								//taxation structure = profits, wages and interest
 		v[234]=v[233]/(v[232]+max(0,v[102]-v[52])*v[225]);				//average direct tax rate
 	
-
-		
 		//WRITTING ON LOG 
 		LOG("\nTotal Wages is %f.",v[230]);
 		LOG("\nTotal Distributed Profits is %f.",v[231]);
