@@ -4,7 +4,7 @@
 Interest Rates
 *******************************************************************************/
 
-EQUATION("Basic_Interest_Rate")
+EQUATION("Central_Bank_Basic_Interest_Rate")
 /*
 Nominal Interest rate is set by the central bank following a (possible) dual mandate Taylor Rule, considering the inflation and unemployment gaps.
 "switch_monetary_policy":
@@ -17,137 +17,113 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 6--> 	   pasinetti rule
 7-->       kansas city rule
 
-"interest_rate_adjustment": absolute increase
+"cb_interest_rate_adjustment": absolute increase
 
 */
 	
-	v[0]=V("real_interest_rate");
-	v[24]=V("begin_monetary_policy");	
+	v[0]=V("cb_annual_real_interest_rate");
 	
-	v[1]=V("target_inflation");
-	v[2]=V("target_capacity");
-	v[3]=V("target_credit_growth");
-	v[4]=V("target_debt_rate");
+	v[1]=V("cb_target_annual_inflation");
+	v[2]=V("cb_target_capacity");
+	v[3]=V("cb_target_credit_growth");
+	v[4]=V("cb_target_debt_rate");
 	
 	v[5]=VL("Country_Annual_CPI_Inflation",1);
 	v[6]=VL("Country_Idle_Capacity",1);
-	v[7]=VL("Total_Stock_Loans_Growth",1);
+	v[7]=VL("Financial_Sector_Total_Stock_Loans_Growth",1);
 	v[8]=VL("Country_Debt_Rate_Firms",1);
 	
-	v[9]=VL("Country_Avg_Productivity",1);                              //avg productivity lagged 1
-	v[10]=VL("Country_Avg_Productivity",2);                         	//avg productivity lagged 2
-	if(v[10]!=0)                                                //if productivity is not zero
-		v[11]=(v[9]-v[10])/v[10];                               //calculate productivity growth
-	else                                                        //if productivity is zero
-		v[11]=0;												//use 1
+	v[11]=LAG_GROWTH(country, "Country_Avg_Productivity", 1,1);
 		
-	v[21]=VL("Country_Consumer_Price_Index",1);                             		//avg price lagged 1
-	v[22]=VL("Country_Consumer_Price_Index",2);                         			//avg price lagged 2
-	if(v[22]!=0)                                                //if price is not zero
-		v[23]=(v[21]-v[22])/v[22];                              //calculate price growth
-	else                                                        //if price is zero
-		v[23]=0;												//use 1
-	
-	v[18]=V("interest_rate_adjustment");
-	v[19]=VL("Basic_Interest_Rate", 1);
+	v[18]=V("cb_interest_rate_adjustment");
+	v[19]=pow(1+CURRENT,V("annual_frequency"))-1;					//annual basic interest
 	
 	v[12]=V("switch_monetary_policy");
 	
-	if(v[12]==0)      											//no monetary policy rule, fixed nominal interest rate set by "real_interest_rate" parameter
-		v[20]=v[0];
+	if(v[12]==0)      											//no monetary policy rule, fixed nominal interest rate set by "cb_annual_real_interest_rate" parameter
+		v[20]=v[0]+v[1];
 	
 	if(v[12]==1||v[12]==2||v[12]==3||v[12]==4)					//taylor rule
 	{
 		if(v[12]==1)											//single mandate taylor rule
 		{
-		v[13]=V("sensitivity_inflation");
+		v[13]=V("cb_sensitivity_inflation");
 		v[14]=0;
 		v[15]=0;
 		v[16]=0;
 		}
 		if(v[12]==2)											//dual mandate taylor rule
 		{
-		v[13]=V("sensitivity_inflation");
-		v[14]=V("sensitivity_capacity");
+		v[13]=V("cb_sensitivity_inflation");
+		v[14]=V("cb_sensitivity_capacity");
 		v[15]=0;
 		v[16]=0;
 		}
 		if(v[12]==3)											//triple mandate taylor rule with credit growth target
 		{
-		v[13]=V("sensitivity_inflation");
-		v[14]=V("sensitivity_capacity");
-		v[15]=V("sensitivity_credit_growth");
+		v[13]=V("cb_sensitivity_inflation");
+		v[14]=V("cb_sensitivity_capacity");
+		v[15]=V("cb_sensitivity_credit_growth");
 		v[16]=0;
 		}
 		if(v[12]==4)											//triple mandate taylor rule with debt rate target
 		{
-		v[13]=V("sensitivity_inflation");
-		v[14]=V("sensitivity_capacity");
+		v[13]=V("cb_sensitivity_inflation");
+		v[14]=V("cb_sensitivity_capacity");
 		v[15]=0;
-		v[16]=V("sensitivity_debt_rate");
+		v[16]=V("cb_sensitivity_debt_rate");
 		}
+		v[30]=pow(1+VS(external, "Basic_Interest_Rate_Min"),V("annual_frequency"))-1;
+		v[31]=V("switch_reserves_target");
 		
-		v[34]=V("sensitivity_reserves");
-		v[35]=V("Basic_Interest_Rate_Min");
-	
-		v[17]=max(v[0]+v[5]+v[13]*(v[5]-v[1])+v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4]))),v[34]*v[35]);
-		if(abs(v[17]-v[19])>v[18])
+		v[17]=v[0]+v[5]+v[13]*(v[5]-v[1])+v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4])));
+		
+		if(v[31]==1)
+			v[32]=max(v[30],v[17]);
+		else
+			v[32]=v[17];
+		
+		if(abs(v[32]-v[19])>v[18])
 		{
-			if(v[17]>v[19])
+			if(v[32]>v[19])
 				v[20]=v[19]+v[18];
-			else if(v[17]<v[19])
+			else if(v[32]<v[19])
 				v[20]=v[19]-v[18];
 			else
 				v[20]=v[19];
 		}
 		else
-			v[20]=v[17];
+			v[20]=v[32];
 
 	}
 	
-	if(v[12]==5)
-		{												//smithin rule
-		v[20]=v[5];	
-		//WRITE("target_inflation", v[5]);
-		}
+	if(v[12]==5)		//smithin rule
+	v[20]=v[5];	
 	
-	
-	if(v[12]==6)		
-		{										//pasinetti rule
-		v[20]=v[5]+v[11];
-		//WRITE("target_inflation", v[5]);
-		}
-	
-	
-	if(v[12]==7)
-	{												//kansas city rule.
-		v[20]=0;
-		//WRITE("target_inflation", v[5]);
-	}
+	if(v[12]==6)		//pasinetti rule
+	v[20]=v[5]+v[11];
+
+	if(v[12]==7)		//kansas city rule.
+	v[20]=0;
+
 		
-	
+	v[24]=V("begin_monetary_policy");
 	if(t>v[24]&&v[24]!=-1)
 		v[25]=v[20];
 	else
 		v[25]=v[19];
 	
-	v[30]=V("interest_shock_begin");          //defines when the shock happens
-	v[31]=V("interest_shock_duration");       //defines how long the shock lasts
-	v[32]=V("interest_shock_size");           //defines the size, in percentage, of the shock
-	if(t>=v[30]&&t<v[30]+v[31])
-		v[33]=v[25]*(1+v[32]);
-	else
-		v[33]=v[25];
-		
-RESULT(max(0,v[33]))
+	v[29]=pow(1+v[25],1/V("annual_frequency"))-1;
+	
+RESULT(max(0,v[29]))
 
 
-EQUATION("Interest_Rate_Deposits")
+EQUATION("Financial_Sector_Interest_Rate_Deposits")
 /*
 Interest Rate on Bank deposits is a negative spreaded base interest rate
 */
-v[0]=V("Basic_Interest_Rate");
-v[1]=V("spread_deposits");
+v[0]=V("Central_Bank_Basic_Interest_Rate");
+v[1]=V("fs_spread_deposits");
 v[2]=max(0,(v[0]-v[1]));
 RESULT(v[2])
 
@@ -156,7 +132,7 @@ RESULT(v[2])
 Financial Sector Aggregates and Averages
 *******************************************************************************/
 
-EQUATION("Avg_Competitiveness_Financial_Sector")
+EQUATION("Financial_Sector_Avg_Competitiveness")
 /*
 Average competitiveness, weighted by firm's market share
 */
@@ -169,10 +145,10 @@ Average competitiveness, weighted by firm's market share
 	}
 RESULT(v[0])
 
-EQUATION("Avg_Interest_Rate_Long_Term")
+EQUATION("Financial_Sector_Avg_Interest_Rate_Long_Term")
 RESULT(WHTAVE("Bank_Interest_Rate_Long_Term", "Bank_Market_Share"))
 
-EQUATION("Avg_Interest_Rate_Short_Term")
+EQUATION("Financial_Sector_Avg_Interest_Rate_Short_Term")
 RESULT(WHTAVE("Bank_Interest_Rate_Short_Term", "Bank_Market_Share"))
 
 EQUATION("Financial_Sector_Stock_Loans_Short_Term")
@@ -320,7 +296,7 @@ Financial Sector Variable for Analysis
 RESULT(v[0])
 
 
-EQUATION("Total_Stock_Loans_Growth")
+EQUATION("Financial_Sector_Total_Stock_Loans_Growth")
 /*
 Total credit growth
 */

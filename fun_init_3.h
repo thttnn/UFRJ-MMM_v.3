@@ -25,8 +25,8 @@ v[5]=VS(capital, "sector_investment_frequency");
 v[6]=VS(input, "sector_investment_frequency");
 
 //v[7]=VS(country, "investment_share_GDP");
-//v[8]=VS(country, "exports_share_GDP");
-//v[9]=VS(country, "government_share_GDP");
+//v[8]=VS(country, "country_initial_exports_share_GDP");
+//v[9]=VS(country, "country_initial_government_share_GDP");
 v[7]=0.1;
 v[8]=0.1;
 v[9]=0.2;
@@ -52,7 +52,7 @@ v[21]=VS(government, "initial_government_debt_share_GDP");
 v[22]=VS(country, "annual_frequency");
 v[23]=v[20]*v[21]*v[22];//government debt
 	LOG("\nGovernment Debt is %f.",v[23]);
-v[24]=VS(financial, "real_interest_rate")+VS(centralbank, "target_inflation");
+v[24]=VS(financial, "cb_annual_real_interest_rate")+VS(centralbank, "cb_target_annual_inflation");
 v[25]=v[24]*v[23];//government interest payment
 	LOG("\nGovernment Interest Payment is %f.",v[25]);
 v[26]=v[9]*v[20];//government total expenses
@@ -84,7 +84,7 @@ WRITELLS(government,"Government_Surplus_Rate_Target", v[169], 0, 1);
 for (i=1 ; i<=V("annual_frequency")+1 ; i++)		              													//for (government_period) lags	
 {
 	WRITELLS(government,"Government_Debt", V("initial_debt_gdp")*V("annual_frequency")*v[150], 0, i);                  									//no debt initially																	//base interest rate parameter
-	WRITELLS(government,"Government_Debt_GDP_Ratio", V("initial_debt_gdp"), 0, i);
+	WRITELLS(government,"government_initial_debt_gdp_ratio", V("initial_debt_gdp"), 0, i);
 	WRITELLS(government,"Government_Effective_Expenses", v[25]/v[20], 0, i);
 }
 	
@@ -161,16 +161,16 @@ v[69]=ROUND(v[68]*v[67], "UP");
 v[70]=v[66]/v[69];//effective capacity utilization
 	LOG("\nInput Sector Effective Capaicty Utilization is %f.",v[70]);
 	
-v[71]=VS(financial, "spread_long_term");
-v[72]=VS(financial, "risk_premium_long_term");
-v[73]=VS(financial, "spread_deposits");
+v[71]=VS(financial, "fs_spread_long_term");
+v[72]=VS(financial, "fs_risk_premium_long_term");
+v[73]=VS(financial, "fs_spread_deposits");
 
 v[124]=v[125]=v[126]=v[127]=v[128]=v[129]=v[135]=v[139]=v[140]=v[142]=v[144]=0;
 CYCLE(cur, "SECTORS")
 {
 	v[100]=VS(cur, "sector_initial_demand");
 	v[101]=VS(cur, "sector_initial_debt_ratio");
-	v[102]=VS(cur, "sector_liquidity_preference");
+	v[102]=VS(cur, "sector_initial_liquidity_preference");
 	v[103]=VS(cur, "sector_capital_output_ratio");
 	v[104]=VS(cur, "sector_desired_degree_capacity_utilization");
 	v[105]=VS(cur, "sector_initial_price");
@@ -307,7 +307,7 @@ CYCLE(cur, "SECTORS")
 		WRITELLS(cur1, "Firm_Stock_Deposits", 0, 0, 1);											//no financial assets initially
 	  	WRITELLS(cur1, "Firm_Stock_Loans", v[159]*(v[219]*v[102]), 0, 1);                       //no debt initially
 	  	WRITELLS(cur1, "Firm_Avg_Debt_Rate", v[159], 0, 1);                       				//no debt initially
-	  	WRITELLS(cur1, "Firm_Desired_Debt_Rate", v[152], 0, 1);                       			//no debt initially
+	  	WRITELLS(cur1, "Firm_Max_Debt_Rate", v[152], 0, 1);                       			//no debt initially
 	  	WRITELLS(cur1, "Firm_Liquidity_Preference", v[153], 0, 1);                       		//no debt initially
 	
 	
@@ -339,7 +339,7 @@ CYCLE(cur, "SECTORS")
 v[160]-0;
 v[161]=(v[142]+v[34]/(v[144]/v[142]))/(1-v[160]);
 	LOG("\nTotal Population is %f.", ROUND(v[161], "UP"));
-v[162]=VS(financial, "number_object_banks");
+v[162]=VS(financial, "fs_number_object_banks");
 v[163]=SUM("sector_number_object_firms");
 v[164]=v[162]+v[163]+ROUND(v[142]+v[34]/(v[144]/v[142]),"UP");
 
@@ -360,39 +360,39 @@ v[155]=v[37]/(v[51]+v[37]);
 	LOG("\nHouseholds Imports Rate is %f.",v[155]);
 	LOG("\nTotal Consumpion Expenses is %f.",v[51]+v[28]+v[38]);
 	
-cur1=SEARCH_CND("id_class", 1);
-cur2=SEARCH_CND("id_class", 2);
-cur3=SEARCH_CND("id_class", 3);
+cur1=SEARCH_CND("class_id", 1);
+cur2=SEARCH_CND("class_id", 2);
+cur3=SEARCH_CND("class_id", 3);
 	
 CYCLE(cur, "CLASSES")
 {
-	if(VS(cur,"id_class")==1)
+	if(VS(cur,"class_id")==1)
 	{
 		v[170]=v[125]-v[124]+v[25];
 		v[171]=v[162];
 	}
-	if(VS(cur,"id_class")==2)
+	if(VS(cur,"class_id")==2)
 	{
 		v[170]=v[139];
 		v[171]=v[163];
 	}
-	if(VS(cur,"id_class")==3)
+	if(VS(cur,"class_id")==3)
 	{
 		v[170]=v[126]+v[34];
 		v[171]=ROUND(v[142]+v[34]/(v[144]/v[142]),"UP");
 	}
 	v[172]=v[171]/v[164];
 	v[173]=v[170]/v[150];
-		LOG("\nClass %.0f ",VS(cur,"id_class")); LOG("Income is %f.",v[170]);
-		LOG("\nClass %.0f ",VS(cur,"id_class")); LOG("Population is %f.",v[171]);
-		LOG("\nClass %.0f ",VS(cur,"id_class")); LOG("Income Share is %f.",v[173]);
-		LOG("\nClass %.0f ",VS(cur,"id_class")); LOG("Population Share is %f.",v[172]);
+		LOG("\nClass %.0f ",VS(cur,"class_id")); LOG("Income is %f.",v[170]);
+		LOG("\nClass %.0f ",VS(cur,"class_id")); LOG("Population is %f.",v[171]);
+		LOG("\nClass %.0f ",VS(cur,"class_id")); LOG("Income Share is %f.",v[173]);
+		LOG("\nClass %.0f ",VS(cur,"class_id")); LOG("Population Share is %f.",v[172]);
 		WRITES(cur, "class_population_share", v[172]);
 		WRITES(cur, "class_income_share", v[173]);
 	v[174]=v[154]*v[170];
-		LOG("\nClass %.0f ",VS(cur,"id_class")); LOG("Taxation is %f.",v[174]);
+		LOG("\nClass %.0f ",VS(cur,"class_id")); LOG("Taxation is %f.",v[174]);
 	v[175]=(1-v[154])*v[170];
-		LOG("\nClass %.0f ",VS(cur,"id_class")); LOG("Disposable Income is %f.",v[175]);
+		LOG("\nClass %.0f ",VS(cur,"class_id")); LOG("Disposable Income is %f.",v[175]);
 		WRITES(cur, "class_disposable_income", v[175]);
 }		
 	v[176]=VS(cur3, "class_disposable_income");
@@ -406,27 +406,27 @@ CYCLE(cur, "CLASSES")
 
 CYCLE(cur, "CLASSES")
 {
-	if(VS(cur,"id_class")==3)
+	if(VS(cur,"class_id")==3)
 	{
 		v[182]=v[176];
 		v[183]=0;
 	}
-	if(VS(cur,"id_class")==2)
+	if(VS(cur,"class_id")==2)
 	{
 		v[182]=v[178];
 		v[183]=v[179];
 	}
-	if(VS(cur,"id_class")==1)
+	if(VS(cur,"class_id")==1)
 	{
 		v[182]=v[180];
 		v[183]=v[181];
 	}
-		LOG("\nClass %.0f ",VS(cur,"id_class")); LOG("Domestic Consumption is %f.",v[182]);
-		LOG("\nClass %.0f ",VS(cur,"id_class")); LOG("Imported Consumption is %f.",v[183]);
+		LOG("\nClass %.0f ",VS(cur,"class_id")); LOG("Domestic Consumption is %f.",v[182]);
+		LOG("\nClass %.0f ",VS(cur,"class_id")); LOG("Imported Consumption is %f.",v[183]);
 	v[184]=v[183]/(v[182]+v[183]);
-		LOG("\nClass %.0f ",VS(cur,"id_class")); LOG("Imported Share is %f.",v[184]);
+		LOG("\nClass %.0f ",VS(cur,"class_id")); LOG("Imported Share is %f.",v[184]);
 	v[185]=(v[182]+v[183])/VS(cur, "class_disposable_income");
-		LOG("\nClass %f ",VS(cur,"id_class")); LOG("Propensity to Spend is %f.",v[185]);
+		LOG("\nClass %f ",VS(cur,"class_id")); LOG("Propensity to Spend is %f.",v[185]);
 
 
 	for (i=1 ; i<=V("annual_frequency") ; i++)                          										//for (class_period) lags
@@ -438,7 +438,7 @@ CYCLE(cur, "CLASSES")
 			WRITELLS(cur, "Class_Avg_Real_Income", VS(cur, "class_disposable_income")/v[10], 0, 1);
 			WRITELLS(cur, "Class_Real_Autonomous_Consumption", 0, 0, 1);         			//write class' autonomous consumption
 			WRITELLS(cur, "Class_Liquidity_Preference", 0, 0, 1);
-			WRITELLS(cur, "Class_Desired_Debt_Rate", 0, 0, 1);
+			WRITELLS(cur, "Class_Max_Debt_Rate", 0, 0, 1);
 			WRITELLS(cur, "Class_Debt_Rate", 0, 0, 1);                              			//0, no debt initially
 			WRITELLS(cur, "Class_Stock_Deposits", 0, 0, 1);
 
@@ -475,11 +475,11 @@ v[198]=WHTAVE("sector_initial_price","sector_initial_demand")/SUM("sector_initia
 		WRITELLS(country,"Country_Real_GDP", (v[20]/v[198]), 0, i);                  						//Real GDP will be equal to nominal GDP because price index always begins as 1
 		}
 
-WRITES(external, "Trade_Balance", 0);
-WRITES(external, "Capital_Flows", 0);
+WRITES(external, "Country_Trade_Balance", 0);
+WRITES(external, "Country_Capital_Flows", 0);
 WRITELLS(external, "External_Income",  v[20], 0, 1);
 WRITELLS(external, "External_Income",  v[20], 0, 2);
-WRITELLS(external, "International_Reserves",  v[20]*V("annual_frequency"), 0, 1);	
+WRITELLS(external, "Country_International_Reserves",  v[20]*V("annual_frequency"), 0, 1);	
 
 CYCLE(cur, "SECTORS")
 {
@@ -580,7 +580,7 @@ CYCLE(cur, "SECTORS")
 		WRITELLS(cur1, "Firm_Stock_Deposits", 0, 0, 1);											//no financial assets initially
 	  	WRITELLS(cur1, "Firm_Stock_Loans", v[159]*(v[219]*v[102]), 0, 1);                       //no debt initially
 	  	WRITELLS(cur1, "Firm_Avg_Debt_Rate", v[159], 0, 1);                       				//no debt initially
-	  	WRITELLS(cur1, "Firm_Desired_Debt_Rate", v[152], 0, 1);                       			//no debt initially
+	  	WRITELLS(cur1, "Firm_Max_Debt_Rate", v[152], 0, 1);                       			//no debt initially
 	  	WRITELLS(cur1, "Firm_Liquidity_Preference", v[153], 0, 1);                       		//no debt initially
 		
 	  		//Begin writting Capital Goods Variables and parameters
@@ -598,15 +598,15 @@ CYCLE(cur, "SECTORS")
 	 	CYCLES(cur, cur1, "FIRMS")                                                 				//CYCLE trough all firms
 			{
 			v[230]=SEARCH_INSTS(cur, cur1);														//search current firm position in the total economy
-			WRITES(cur1, "id_firm_number", v[230]);                         					//write the firm number as the current position (only initial difference between firms)
-			//WRITES(cur1, "id_firm_bank",(uniform_int(1, v[40])));								//firm's bank identifier
+			WRITES(cur1, "firm_id", v[230]);                         					//write the firm number as the current position (only initial difference between firms)
+			//WRITES(cur1, "firm_bank",(uniform_int(1, v[40])));								//firm's bank identifier
 			v[225]=v[230]/(v[212]/v[40]);
 			v[226]=round(v[225]);
 			if(v[226]<v[225])
 				v[227]=v[226]+1;
 			else
 				v[227]=v[226];
-			WRITES(cur1, "id_firm_bank", v[227]);
+			WRITES(cur1, "firm_bank", v[227]);
 			v[231]=fmod((double) (v[230]+v[0]), v[0]);                                 			//divide the firm's number plus investment period by the investment period and takes the rest (possible results if investment period =6 are 0, 5, 4, 3, 2, 1)
 			
 			//Begin creating capital goods and writting "capital_good_date_birth"		

@@ -18,7 +18,7 @@ v[12]=SUM("Class_Demand_Loans");
 CYCLE(cur, "BANKS")
 {
 	v[1]=VS(cur, "Bank_Effective_Loans");
-	v[2]=VS(cur, "id_bank");
+	v[2]=VS(cur, "bank_id");
 	v[13]=VS(cur, "Bank_Market_Share");
 	v[14]=v[13]*v[12];
 	v[10]=0;
@@ -42,7 +42,7 @@ CYCLE(cur, "BANKS")
 				SORTS(root, "FIRMS", "firm_date_birth", "DOWN");
 			CYCLES(cur1, cur2, "FIRMS")
 			{
-				v[6]=VS(cur2, "id_firm_bank");
+				v[6]=VS(cur2, "firm_bank");
 					if (v[6]==v[2])
 					{
 						v[7]=VS(cur2, "Firm_Demand_Loans");
@@ -76,7 +76,7 @@ Must be called by the sectors.
 	v[2]=0;                                                      		//initializes the value for thr CYCLE
 	CYCLE(cur, "SECTORS")                                        		//CYCLE trought all sectors
 		v[2]=v[2]+SUMS(cur, "Firm_Input_Demand_Next_Period");           //sums up the demand for imputs of all setors
-	v[0]=VLS(input, "Sector_Avg_Price", 1);
+	v[0]=VS(input, "Sector_Avg_Price");
 	v[1]=V("Government_Effective_Inputs");
 	v[5]=v[0]!=0? v[1]/v[0] : 0;
 	v[6]=v[2]+v[5];
@@ -89,7 +89,7 @@ Calculates the domestic demand for consumption goods.
 Must be called by the sector.
 */
 	v[0]=SUM("Class_Real_Domestic_Consumption_Demand");
-	v[1]=VLS(consumption, "Sector_Avg_Price", 1);
+	v[1]=VS(consumption, "Sector_Avg_Price");
 	v[2]=V("Government_Effective_Consumption");
 	v[3]= v[1]!=0? v[2]/v[1] : 0;
 	v[4]=v[0]+v[3];
@@ -108,7 +108,7 @@ Must be called by the sectors.
 		v[11]=SUMLS(cur, "Firm_Demand_Capital_Goods_Replacement",1);
 		v[1]=v[1]+v[10]+v[11];                                       	//sums up all firm's capital goods demand
 	}
-	v[4]=VLS(capital, "Sector_Avg_Price", 1);
+	v[4]=VS(capital, "Sector_Avg_Price");
 	v[5]=V("Government_Effective_Investment");
 	v[6]= v[4]!=0? v[5]/v[4] : 0;
 	v[7]=v[1]+v[6];
@@ -116,7 +116,7 @@ RESULT(v[7])
 
 
 EQUATION("Country_Capital_Goods_Price")
-RESULT(VLS(capital, "Sector_Avg_Price", 1))
+RESULT(VS(capital, "Sector_Avg_Price"))
 
 
 EQUATION("Country_Price_Index")
@@ -135,33 +135,32 @@ Average Price of the consumption goods sector
 */
 	v[0]=VS(consumption, "Sector_Avg_Price");
 	v[1]=VS(consumption, "Sector_External_Price");
-	v[2]=VS(external, "Exchange_Rate");
-	v[3]=SUM("Class_Effective_Real_Domestic_Consumption");
-	v[4]=SUM("Class_Effective_Real_Imported_Consumption");
-	v[5]=(v[0]*v[3] + v[1]*v[2]*v[4])/(v[3]+v[4]);
-RESULT(v[0])
+	v[2]=VS(external, "Country_Exchange_Rate");
+	v[3]=0;
+	CYCLE(cur, "CLASSES")
+	{
+		v[5]=VS(cur, "Class_Imports_Share");
+		v[6]=VLS(cur, "Class_Income_Share",1);
+		v[3]=v[3]+v[5]*v[6];		
+	}
+	v[4]=v[0]*(1-v[3])+v[1]*v[2]*v[3];
+RESULT(v[4])
 
 
 EQUATION("Country_Annual_Inflation")
 /*
-Annual growth of the overall price index
+Annual growth of the overall price index.
+Uses support function
 */
-	v[0]=V("annual_frequency");
-	v[1]=VL("Country_Price_Index",1);
-	v[2]=VL("Country_Price_Index",(v[0]+1));
-	v[3]=(v[1]/v[2])-1;
-RESULT(v[3])
+RESULT(LAG_GROWTH(p, "Country_Price_Index", V("annual_frequency"), 1))
 
 
 EQUATION("Country_Annual_CPI_Inflation")
 /*
 Annual growth of the consumer price index
+Uses support function
 */
-	v[0]=V("annual_frequency");
-	v[1]=VL("Country_Consumer_Price_Index",1);
-	v[2]=VL("Country_Consumer_Price_Index",(v[0]+1));
-	v[3]=(v[1]/v[2])-1;
-RESULT(v[3])
+RESULT(LAG_GROWTH(consumption, "Sector_Avg_Price", V("annual_frequency"), 1))
 
 
 EQUATION("Country_Distributed_Profits")
@@ -173,7 +172,7 @@ Total amount of distributed profits by the firms. Will be used to determine the 
 		v[0]=v[0]+SUMS(cur, "Firm_Distributed_Profits");    //sums up the value of distributed profits of all sectors
 	v[3]=V("Financial_Sector_Distributed_Profits");
 	v[4]=v[0]+v[3];
-RESULT(v[0])
+RESULT(v[4])
 
 
 EQUATION("Country_Total_Profits")
@@ -200,11 +199,10 @@ The total wage is calculated by the sum of the wages paid by the sectors with go
 		{
 			v[2]=VS(cur1, "Firm_Wage");                             //firm's wage
 			v[3]=VS(cur1, "Firm_Effective_Production");             //firm's effective production
-			v[4]=VLS(cur1, "Firm_Avg_Productivity", 1);            	//firm's productivity in the last period
-			v[5]=VS(cur1, "Firm_RND_Expenses");                     //firm's rnd expeses, returned as salary to researchers
-			v[8]=VS(cur1, "Firm_Overhead_Costs");				
+			v[4]=VS(cur1, "Firm_Avg_Productivity");            		//firm's productivity in the last period
+			v[5]=VS(cur1, "Firm_RND_Expenses");                     //firm's rnd expeses, returned as salary to researchers		
 			if(v[4]!=0)
-				v[1]=v[1]+v[3]*(v[2]/v[4])+v[5]+v[8];               //sums up all firms' wage, determined by a unitary wage (sectorial wage divided by firm's productivity) multiplied by firm's effective production plus RND expenses
+				v[1]=v[1]+v[3]*(v[2]/v[4])+v[5];               		//sums up all firms' wage, determined by a unitary wage (sectorial wage divided by firm's productivity) multiplied by firm's effective production plus RND expenses
 			else
 				v[1]=v[1];
 		}
@@ -221,10 +219,8 @@ Aggeregate Investment Expenses is calculated summing up the demand of capital go
 */
 	v[0]=0;
 	CYCLE(cur, "SECTORS")
-		v[0]=v[0]+SUMS(cur, "Firm_Demand_Capital_Goods");
-	v[2]=VS(capital, "Sector_Avg_Price");
-	v[3]=v[0]*v[2];
-RESULT(v[3])
+		v[0]=v[0]+SUMS(cur, "Firm_Effective_Investment_Expenses");
+RESULT(v[0])
 
 
 EQUATION("Country_Profit_Share")
@@ -314,7 +310,16 @@ Nominal quarterly GDP is calculated summing up profits, wages and indirect taxes
 	v[1]=V("Country_Total_Wages");
 	v[2]=V("Government_Indirect_Taxes");
 	v[3]=v[0]+v[1]+v[2];
+	v[4]=V("Country_GDP_Demand");
 RESULT(v[3])
+
+
+EQUATION("Country_Annual_GDP")
+RESULT(LAG_SUM(p, "Country_GDP", V("annual_frequency")))
+
+
+EQUATION("Country_Annual_Real_GDP")
+RESULT(LAG_SUM(p, "Country_Real_GDP", V("annual_frequency")))
 
 
 EQUATION("Country_Real_GDP")
@@ -331,15 +336,8 @@ EQUATION("Country_Annual_Growth")
 /*
 Annual Nominal GDP growth rate.
 */
-	v[0]=V("annual_frequency");
-	v[1]=0;
-	for (i=0; i<=(v[0]-1); i++)
-		v[1]=v[1]+VL("Country_GDP", i);
-
-	v[2]=0;
-	for (i=v[0]; i<=(2*v[0]-1); i++)
-		v[2]=v[2]+VL("Country_GDP", i);
-
+	v[1]=LAG_SUM(p, "Country_GDP", V("annual_frequency"));
+	v[2]=LAG_SUM(p, "Country_GDP", V("annual_frequency"), V("annual_frequency") );
 	v[3]= v[2]!=0? (v[1]-v[2])/v[2] : 0;
 RESULT(v[3])
 
@@ -348,15 +346,8 @@ EQUATION("Country_Annual_Real_Growth")
 /*
 Annual Real GDP Growth rate.
 */
-	v[0]=V("annual_frequency");
-	v[1]=0;
-	for (i=0; i<=(v[0]-1); i++)
-		v[1]=v[1]+VL("Country_Real_GDP", i);
-
-	v[2]=0;
-	for (i=v[0]; i<=(2*v[0]-1); i++)
-		v[2]=v[2]+VL("Country_Real_GDP", i);
-
+	v[1]=LAG_SUM(p, "Country_Real_GDP", V("annual_frequency"));
+	v[2]=LAG_SUM(p, "Country_Real_GDP", V("annual_frequency"), V("annual_frequency") );
 	v[3]= v[2]!=0? (v[1]-v[2])/v[2] : 0;
 RESULT(v[3])
 
@@ -370,8 +361,7 @@ Counts the number of crisis ocurrances.
 	if(v[0]==0)                        		 	//if the rest of the above division is zero (begenning of the year)
 		{
 		v[1]=V("Country_Annual_Real_Growth");   //real growth rate
-		v[2]=V("crisis_threshold");       		//parameter that defines crisis
-		if(v[1]<v[2])                     		//if the real growth rate is lower the the crisis threshold
+		if(v[1]<0)                     			//if the real growth rate is lower the the crisis threshold
 			v[3]=1;                         	//counts a crisis
 		else                              		//if the real growth rate is not lower the the crisis threshold
 			v[3]=0;                         	//do not count a crisis
@@ -396,26 +386,17 @@ RESULT(VS(input, "Sector_Sales")*VS(input, "Sector_Avg_Price"))
 EQUATION("Country_Total_Nominal_Production")
 RESULT(WHTAVE("Sector_Avg_Price","Sector_Sales"))
 
-
 EQUATION("Country_Capacity_Utilization")
 /*
 Sum up sector's effective production over productive capacity, weighted by sector's nominal value of production over total gross value of production
 */
-	v[0]=0;                                                		//initializes the CYCLE
-	CYCLE(cur, "SECTORS")                                  		//CYCLE trough all sectors                         
-	{
-		v[1]=VLS(cur,"Sector_Productive_Capacity",1);        	//sector productive capacity in the last period
-		v[2]=VS(cur,"Sector_Effective_Production");          	//sector effective production
-		v[3]=V("Country_Total_Nominal_Production");             //gross value of production
-		v[4]=VS(cur,"Sector_Sales");                         	//sector sales
-		v[5]=VS(cur,"Sector_Avg_Price");                        //sector average price
-		if  (v[1]!=0&&v[3]!=0)
- 			v[0]=v[0]+((v[4]*v[5]/v[3])*(v[2]/v[1]));           //calculates and sums up rate of capacity utilization of all sectors. The rate of capacity utilization is given by sales multiplyed by the price and divided by the gross value of production, multiplyed by the ratio between effective production and productive capacit
- 		else
- 			v[0]=0;
- 	}
-RESULT(v[0])
+	v[0]=WHTAVE("Sector_Capacity_Utilization", "Sector_Effective_Production");
+	v[1]=SUM("Sector_Effective_Production");
+	v[2]= v[1]!=0? v[0]/v[1]: 0;
+RESULT(v[2])
 
+EQUATION("Country_Idle_Capacity")
+RESULT(1-V("Country_Capacity_Utilization"))
 
 EQUATION("Country_Inventories")
 RESULT(WHTAVE("Sector_Avg_Price","Sector_Inventories"))
@@ -441,56 +422,17 @@ Average Productivity of the economy weighted by the employment of each sector
 RESULT(v[2])
 
 
-EQUATION("Country_Idle_Capacity")
-/*
-Unemployment rate, in percentage value
-*/
-	v[0]=SUM("Sector_Productive_Capacity");
-	v[1]=SUM("Sector_Effective_Production");
-	v[2]= v[0]!=0? (v[0]-v[1])/v[0] : 0;
-RESULT(max(0,v[2]))
-
-
-EQUATION("Country_Nominal_Exports")
-/*
-The total exports of the economy in nominal value are defined by the sum of the exports of each sector multiplied by the price charged in the period.
-*/
-	v[0]=0;
-	CYCLE(cur, "SECTORS")
-	{
-		v[1]=VS(cur, "Sector_Real_Exports");
-		v[2]=VS(cur, "Sector_Avg_Price");
-		v[3]=VS(cur, "Sector_Demand_Met");
-		v[4]=v[1]*v[2]*v[3];
-		v[0]=v[0]+v[4];
-	}
-RESULT(v[0])
-
-
-EQUATION("Country_Nominal_Imports")
-/*
-Total imports in nominal value are obtained from the sum of imports of all sectors multiplied by the respective international prices, and converted to national currency by the exchange rate.
-*/
-	v[0]=WHTAVE("Sector_Extra_Imports", "Sector_External_Price");
-	v[1]=SUM("Class_Effective_Real_Imported_Consumption");
-	v[2]=VS(external,"Exchange_Rate");
-	v[4]=VLS(consumption, "Sector_External_Price", 1);
-	v[3]=(v[0]+v[1]*v[4])*v[2];
-RESULT(v[3])
-
-
 EQUATION("Country_GDP_Demand")
 /*
 GDP calculated by the demand perspective
 */
 	v[0]=V("Country_Total_Classes_Expenses");
-	v[1]=V("Government_Effective_Expenses");
-	v[2]=V("Country_Nominal_Exports");
-	v[3]=V("Country_Nominal_Imports");
-	v[4]=V("Country_Inventories_Variation");
-	v[6]=V("Country_Total_Investment_Expenses");
-	v[7]=v[0]+v[1]+v[2]-v[3]+v[6];
-RESULT(v[7])
+	v[1]=V("Country_Total_Investment_Expenses");
+	v[2]=V("Government_Effective_Expenses");
+	v[3]=V("Country_Nominal_Exports");
+	v[4]=V("Country_Nominal_Imports");
+	v[5]=v[0]+v[1]+v[2]+v[3]-v[4];
+RESULT(v[5])
 
 
 EQUATION("Country_Real_GDP_Demand")
@@ -583,7 +525,7 @@ Sum up the nominal value of effective expansion investment of all firms
 */
 	v[0]=0;
 	CYCLE(cur, "SECTORS")
-		v[0]=v[0]+=SUMS(cur, "Firm_Effective_Expansion_Investment_Expenses");
+		v[0]=v[0]+SUMS(cur, "Firm_Effective_Expansion_Investment_Expenses");
 RESULT(v[0])
 
 

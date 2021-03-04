@@ -2,10 +2,10 @@
 
 
 EQUATION("Class_Avg_Real_Income")
-RESULT(LAG_AVE(p, "Class_Real_Disposable_Income", V("annual_frequency")))
+RESULT(LAG_AVE(p, "Class_Real_Disposable_Income", V("annual_frequency"),1))
 
 EQUATION("Class_Avg_Nominal_Income")
-RESULT(LAG_AVE(p, "Class_Nominal_Disposable_Income", V("annual_frequency")))
+RESULT(LAG_AVE(p, "Class_Nominal_Disposable_Income", V("annual_frequency"),1))
 
 
 EQUATION("Class_Real_Autonomous_Consumption")
@@ -13,34 +13,30 @@ EQUATION("Class_Real_Autonomous_Consumption")
 Class autonomous consumption depends on the average quality growth of the consumption goods sector
 */
 v[0]=CURRENT;                 										//class autonomous consumption in the last period
-v[1]=V("annual_frequency");										    	//defines the class adjustment period 
+v[1]=V("annual_frequency");										    //defines the class adjustment period 
 v[2]= fmod((double) t,v[1]);										//divides time period by the class period and takes the rest
 if (v[2]==0)														//if it is class adjustment period 	
 	{
-	v[3]=VLS(consumption, "Sector_Avg_Quality",1);     				//sector average quality in the last period                        
-	v[4]=VLS(consumption, "Sector_Avg_Quality",(v[1]+1)); 			//sector average quality in the last adjustment period                          
-	v[5]= v[4]!=0? (v[3]-v[4])/v[4] : 0;          					//quality growth                                                  			
-    
-   v[6]=V("class_autonomous_consumption_adjustment");				//autonomous consumption adjustment parameter
-		if(v[5]>0) 													//if quality growth was positive
-			v[7]=v[0]*(1+v[6]*v[5]); 								//increase autonomous consumption by the adjustment parameter
-		if(v[5]==0)													//if quality grwoth was zero
-			v[7]=v[0];												//use last period autonomous consumption
-		if(v[5]<0)													//if quality growth was negative
-			v[7]=v[0]*(1+v[6]*v[5]);							 	//decrease autonomous consumption by the adjustment parameter
+	v[3]=LAG_GROWTH(consumption, "Sector_Avg_Quality", v[1], 1);
+	v[4]=V("class_autonomous_consumption_adjustment");				//autonomous consumption adjustment parameter
+		if(v[3]>0) 													//if quality growth was positive
+			v[5]=v[0]*(1+v[4]*v[3]); 								//increase autonomous consumption by the adjustment parameter
+		if(v[3]==0)													//if quality grwoth was zero
+			v[5]=v[0];												//use last period autonomous consumption
+		if(v[3]<0)													//if quality growth was negative
+			v[5]=v[0]*(1+v[4]*v[3]);							 	//decrease autonomous consumption by the adjustment parameter
   }
 else																//if it is not class adjustment period
-	v[7]=v[0]; 														//use last period autonomous consumption                                                                       		
-RESULT(max(0,v[7]))
+	v[5]=v[0]; 														//use last period autonomous consumption                                                                       		
+RESULT(max(0,v[5]))
 
 
 EQUATION("Class_Imports_Share")
-	
-	v[1]=CURRENT;													//class propensity to import
+	v[1]=V("class_initial_imports_share");							//class propensity to import
 	v[3]=VS(consumption, "Sector_Avg_Price");                       //consumption sector average price
 	v[4]=VS(consumption, "Sector_External_Price");                  //consumption sector external price
-	v[5]=VS(external,"Exchange_Rate");								//exchange rate
-	v[6]=V("class_import_share_adjustment");
+	v[5]=VS(external,"Country_Exchange_Rate");						//exchange rate
+	v[6]=V("class_import_elasticity_price");
 	v[7]=v[1]*pow((v[3]/(v[4]*v[5])),v[6]);
 	v[8]=max(0,min(v[7],1));
 RESULT(v[8])
@@ -51,25 +47,20 @@ EQUATION("Class_Real_Desired_Domestic_Consumption")
 Class real domestic conumption is based on average past real disposable income from profits and wages and on the class' propensity to consume, plus autonomous consumption
 */
 	v[0]=V("Class_Avg_Real_Income");
-	v[1]=V("class_propensity_to_consume");          				//class propensity to consume on income
-  	v[2]=V("Class_Real_Autonomous_Consumption");    				//class autonomous consumption
+	v[1]=V("class_propensity_to_spend");          				//class propensity to consume on income
+  	v[2]=V("Class_Real_Autonomous_Consumption");    			//class autonomous consumption
 	v[4]=V("Class_Imports_Share");
-  	v[3]=v[0]*v[1]*(1-v[4])+v[2];                            				//class real desired consumption
+  	v[3]=v[0]*v[1]*(1-v[4])+v[2];                            	//class real desired consumption
 RESULT(v[3])
 
 
 EQUATION("Class_Real_Desired_Imported_Consumption")
 	
 	v[0]=V("Class_Avg_Real_Income");
-	v[1]=V("class_propensity_to_consume");							//class propensity to import
+	v[1]=V("class_propensity_to_spend");						//class propensity to import
 	v[2]=V("Class_Imports_Share");
-	v[3]=VS(consumption, "Sector_Avg_Price");                       //consumption sector average price
-	v[4]=VS(consumption, "Sector_External_Price");                  //consumption sector external price
-	v[5]=VS(external,"Exchange_Rate");								//exchange rate
-	v[6]=V("class_import_elasticity_price");
-	v[7]=v[0]*v[1]*pow((v[3]/(v[4]*v[5])),v[6]);
-	v[8]=v[0]*v[1]*v[2];
-RESULT(v[8])
+	v[3]=v[0]*v[1]*v[2];
+RESULT(v[3])
 	
 
 EQUATION("Class_Desired_Expenses")
@@ -78,7 +69,7 @@ Class' nominal desired expenses depends on effective domestic consumption times 
 */
 	v[0]=V("Class_Real_Desired_Domestic_Consumption");              // class desired domestic consumption
 	v[1]=V("Class_Real_Desired_Imported_Consumption");              // class desired external consumption
-	v[2]=VS(external,"Exchange_Rate");                              //exchange rate
+	v[2]=VS(external,"Country_Exchange_Rate");                      //exchange rate
 	v[3]=VS(consumption, "Sector_Avg_Price");                       //sector average price
 	v[4]=VS(consumption, "Sector_External_Price");                  //sector external price
 	v[5]=v[0]*v[3] + v[1]*v[2]*v[4];     					 		//total nominal expenses                  	
@@ -89,12 +80,7 @@ EQUATION("Class_Avg_Debt_Rate")
 /*
 Class avg debt rate of the last class period (equal to annual period)
 */
-	v[0]=V("annual_frequency");
-	v[1]=0;															//initializes the sum
-	for (i=1; i<=v[0]; i++)											//from 0 to investment period-1 lags
-		v[1]=v[1]+VL("Class_Debt_Rate", i);							//sum up class lagged debt rate
-	v[3]=v[1]/v[0];													//average class debt rate of the last class period
-RESULT(v[3])
+RESULT(LAG_AVE(p, "Class_Debt_Rate", V("annual_frequency"),1))
 
 
 EQUATION("Class_Interest_Rate")
@@ -102,9 +88,9 @@ EQUATION("Class_Interest_Rate")
 Interest rate paid by the class depends on a specific spread over basic interest rate, based on the average debt rate of the class.
 If risk premium is zero, the interest rate will be the same for all classes
 */
-	v[0]=VS(financial,"risk_premium_class");						//class risk premium defined by the banks							
-	v[1]=V("Class_Avg_Debt_Rate");									//class avvg debt rate											
-	v[2]=VS(financial,"Avg_Interest_Rate_Short_Term");				//avg base interest rate on short term loans
+	v[0]=VS(financial,"fs_risk_premium_class");										//class risk premium defined by the banks							
+	v[1]=V("Class_Avg_Debt_Rate");													//class avg debt rate											
+	v[2]=VS(financial,"Financial_Sector_Avg_Interest_Rate_Short_Term");				//avg base interest rate on short term loans
 	v[3]=(1+v[1]*v[0])*v[2];
 RESULT(v[3])
 
@@ -177,15 +163,10 @@ Evolves based on average debt rate and income growth.
 */
 	v[0]=V("annual_frequency");
 	v[1]=fmod((double)t,v[0]);
-	v[2]=VL("Class_Nominal_Disposable_Income",1);
-	v[3]=VL("Class_Nominal_Disposable_Income",v[0]);
-	if(v[3]!=0)
-		v[4]=(v[2]-v[3])/v[3];
-	else
-		v[4]=0;
+	v[4]=LAG_GROWTH(p, "Class_Nominal_Disposable_Income", v[0], 1);
 	v[5]=VL("Class_Debt_Rate",1);
-	v[6]=V("class_desired_debt_rate");
-	v[7]=VL("Class_Liquidity_Preference",1);
+	v[6]=V("Class_Max_Debt_Rate");
+	v[7]=CURRENT;
 	v[8]=V("class_liquidity_preference_adjustment");
 	
 	if(v[1]==1)
@@ -196,7 +177,6 @@ Evolves based on average debt rate and income growth.
 			v[9]=v[7]-v[8];
 		else
 			v[9]=v[7];
-		
 	}
 	else
 			v[9]=v[7];
@@ -234,7 +214,7 @@ Total available funds for class expenses in the current period
 RESULT(v[3])
 
 
-EQUATION("Class_Desired_Debt_Rate")
+EQUATION("Class_Max_Debt_Rate")
 /*
 Class desired debt rate. 
 Formulation proposed by Moreira (2010) 
@@ -242,13 +222,8 @@ Evolves based on nominal income growth.
 */
 	v[0]=V("annual_frequency");
 	v[1]=fmod((double)t,v[0]);
-	v[2]=VL("Class_Nominal_Disposable_Income",1);
-	v[3]=VL("Class_Nominal_Disposable_Income",v[0]);
-	if(v[3]!=0)
-		v[4]=(v[2]-v[3])/v[3];
-	else
-		v[4]=0;
-	v[5]=VL("Class_Desired_Debt_Rate",1);
+	v[4]=LAG_GROWTH(p, "Class_Nominal_Disposable_Income", v[0], 1);
+	v[5]=CURRENT;
 	v[6]=V("class_debt_rate_adjustment");	
 	if(v[1]==1)
 	{
@@ -271,7 +246,7 @@ Class available debt depends on the difference between desired stock of debt and
 If current stock of debt is greater than desired, the class must repay some debt reducing the amount of external funds for investment. 
 If the currest amount is smaller than desired, that difference is available to the class as external finance, but that does not mean that the class will increase effective debt by this amount.
 */
-	v[0]=V("Class_Desired_Debt_Rate");
+	v[0]=V("Class_Max_Debt_Rate");
 	v[1]=VL("Class_Stock_Loans",1);
 	v[2]=VL("Class_Stock_Deposits",1);
 	v[3]=VL("Class_Avg_Nominal_Income",1);
@@ -288,14 +263,8 @@ Class demand for loans is the amount that internal funds (already discounted req
 	v[1]=V("Class_Internal_Funds");
 	v[2]=V("Class_Max_Loans");
 	v[3]=v[0]-v[1];															//will demand loans for the amount of desired expenses that internal funds can not pay for
-
-		if(v[2]>0)															//if there is available debt 
-			v[4]=min(v[3],v[2]);											//demand will be the minimum between amount needed and amount available
-		else																//if there is no available debt
-			v[4]=0;															//no demand for debt
-
-	v[5]=max(0,v[4]);														//demand for new loans can not be negative
-RESULT(v[5])
+	v[4]=max(0,min(v[3],v[2]));												//demand for new loans can not be negative
+RESULT(v[4])
 
 
 EQUATION("Class_Effective_Loans")
@@ -330,10 +299,7 @@ Nominal value of possible expenses, restricted to the amount of funds available.
 */
 	v[0]=V("Class_Desired_Expenses");
 	v[1]=V("Class_Funds");
-	if(v[1]<=0)													//if no available funds
-		v[2]=0;													//class effective expenses are zero
-	else														//if there are funds available
-		v[2]=min(v[0],v[1]);
+	v[2]=max(0,min(v[0],v[1]));
 RESULT(v[2])
 
 
@@ -359,7 +325,7 @@ Class effective external domestic consumption, depending on desired level of imp
 	v[3]=V("Class_Real_Domestic_Consumption_Demand");           //real effetive demand for domestic consumption gooods
 	v[4]=v[3]*v[1];												//nominal effective expenses with domestic caital goods
 	v[5]=max(0, (v[0]-v[4]));									//effective amount that can be spended with external consumption goods
-	v[6]=VS(external,"Exchange_Rate");
+	v[6]=VS(external,"Country_Exchange_Rate");
 	v[7]=v[5]/(v[2]*v[6]);										//effective real demand for imported consumption goods
 	v[8]=V("Class_Real_Desired_Imported_Consumption");
 	v[9]=min(v[7],v[8]);
@@ -395,7 +361,7 @@ Class effective expenses is the sum of effective domestic consumption and effect
 */
 	v[0]=VS(consumption,"Sector_Avg_Price");                     //domestic price of consumption goods
 	v[1]=VS(consumption,"Sector_External_Price");                //external price of consumption goods
-	v[2]=VS(external,"Exchange_Rate");																					 
+	v[2]=VS(external,"Country_Exchange_Rate");																					 
 	v[3]=V("Class_Effective_Real_Domestic_Consumption");		 //effective real domestic consumption
 	v[4]=V("Class_Effective_Real_Imported_Consumption"); 	     //effective real imports
 	v[5]=v[0]*v[3] + v[1]*v[2]*v[4];							 //effective nominal expenses		
@@ -408,9 +374,8 @@ Class available deposits after expenses and financial obligations
 */
 	v[0]=V("Class_Funds");					//class total funds
 	v[1]=V("Class_Effective_Expenses");		//class effective expenses, already limited by total funds
-	v[2]=v[0]-v[1];							//if effective expenses were lower than total funds, there are available deposits
-	v[3]=max(0, v[2]);                                                                                                 				                          
-RESULT(v[3])
+	v[2]=max(0, v[0]-v[1]);                                                                                                 				                          
+RESULT(v[2])
 
 
 EQUATION("Class_Deposits_Return")
@@ -418,10 +383,10 @@ EQUATION("Class_Deposits_Return")
 Net return on class deposits
 */
 	v[0]=V("Class_Available_Deposits");
-	v[3]=V("Class_Retained_Deposits");
-	v[1]=VS(financial,"Interest_Rate_Deposits");  
-	v[2]=(v[0]+v[3])*v[1];	
-RESULT(v[2])
+	v[1]=V("Class_Retained_Deposits");
+	v[2]=VS(financial,"Financial_Sector_Interest_Rate_Deposits");  
+	v[3]=(v[0]+v[1])*v[2];	
+RESULT(v[3])
 
 
 EQUATION("Class_Nominal_Disposable_Income")
@@ -441,23 +406,21 @@ switch_unemployment_benefits
 1--> Distributed to lowest income class only 
 
 */
-	v[30]=VS(financial, "Financial_Sector_Distributed_Profits");
-	v[31]=V("class_financial_share");
 	v[0]=VS(country,"Country_Distributed_Profits");                     //total distributed profits
-	v[1]=VS(country,"Country_Total_Wages");                                	  //total wages
-	v[2]=V("class_profit_share");                          		      //profit share of each class
-	v[3]=V("class_wage_share");                            			  //wage share of each class
-	v[4]=V("Class_Deposits_Return");                                  //interest receivment
-	v[5]=VS(government,"Government_Effective_Unemployment_Benefits"); //unemployment benefits (never taxed)
+	v[1]=VS(country,"Country_Total_Wages");                             //total wages
+	v[2]=V("class_profit_share");                          		      	//profit share of each class
+	v[3]=V("class_wage_share");                            			  	//wage share of each class
+	v[4]=V("Class_Deposits_Return");                                  	//interest receivment
+	v[5]=VS(government,"Government_Effective_Unemployment_Benefits"); 	//unemployment benefits (never taxed)
 
-		v[17]=MAXS(PARENT, "class_wage_share");				 		 //search the lowest value of nominal income in the last period
+		v[17]=MAXS(PARENT, "class_wage_share");				 		 	//search the lowest value of nominal income in the last period
 		cur=SEARCH_CNDS(PARENT, "class_wage_share", v[17] );  			//search the class with nominal income equal to the lowest value
-		v[18]=VS(cur,"id_class");									  //identify lowest income class
-		v[16]=V("id_class");                                          //current object id
-		if(v[16]==v[18])                                              //if current object is the one with minimum income
-			v[6]=v[0]*v[2]+v[30]*v[31]+v[1]*v[3]+v[4]+v[5];     		          //class' gross total income, including unemployment benefits
-		else                                                          //if it is not
-			v[6]=v[0]*v[2]+v[30]*v[31]+v[1]*v[3]+v[4];                            //class' gross total income excluding unemployment benefits
+		v[18]=VS(cur,"class_id");									 	//identify lowest income class
+		v[16]=V("class_id");                                          	//current object id
+		if(v[16]==v[18])                                              	//if current object is the one with minimum income
+			v[6]=v[0]*v[2]+v[1]*v[3]+v[4]+v[5];     		          	//class' gross total income, including unemployment benefits
+		else                                                          	//if it is not
+			v[6]=v[0]*v[2]+v[1]*v[3]+v[4];                            	//class' gross total income excluding unemployment benefits
 	
 	v[7]=V("switch_class_tax_structure");                 			 	//defines taxation structure
 	v[8]=V("class_direct_tax");                            				//class tax rate
@@ -466,59 +429,25 @@ switch_unemployment_benefits
 	if(v[7]==1)											   				//taxation structure = only wages
 		v[9]=(v[1]*v[3])*v[8];                  		   				//class total tax
 	if(v[7]==2)											   				//taxation structure = only profits
-		v[9]=(v[0]*v[2]+v[30]*v[31])*v[8];              			   				//class total tax
+		v[9]=(v[0]*v[2])*v[8];              			   				//class total tax
 	if(v[7]==3)											   				//taxation structure = profits and wages 
-		v[9]=(v[0]*v[2]+v[30]*v[31]+v[1]*v[3])*v[8];              	   				//class total tax
+		v[9]=(v[0]*v[2]+v[1]*v[3])*v[8];              	   				//class total tax
 	if(v[7]==4)											   				//taxation structure = profits, wages and interest
-		v[9]=(v[0]*v[2]+v[30]*v[31]+v[1]*v[3]+v[4])*v[8];              				//class total tax
-	if(v[7]==5)
-	{
-		v[10]=VL("Class_Stock_Deposits",1);                				//class stock of deposits in the last period
-		v[11]=V("class_wealth_tax");                       				//tax rate on stock of wealth
-		v[12]=v[10]*v[11];                                 				//amount of tax on wealth
-		v[9]=(v[0]*v[2]+v[30]*v[31]+v[1]*v[3]+v[4])*v[8]+v[12];        				//class total tax
-	}
+		v[9]=(v[0]*v[2]+v[1]*v[3]+v[4])*v[8];              				//class total tax
+	
 	v[19]=VS(country,"Country_Consumer_Price_Index");
 	
 	WRITE("Class_Taxation",v[9]);                          				//write class taxation equation_dummy
 	WRITE("Class_Nominal_Gross_Income",v[6]);              				//write class gross income equation_dummy
-	WRITE("Class_Real_Disposable_Income",(v[6]-v[9])/v[19]); 		   				//write class real income equation_dummy
-	
-	if(v[7]==2||v[7]==3||v[7]==4||v[7]==5)
-		v[20]=(v[0]*v[2]+v[30]*v[31]*(1-v[8]))/v[19];
-	else
-		v[20]=(v[0]*v[2]+v[30]*v[31])/v[19];
-	WRITE("Class_Real_Disposable_Profits",v[20]);                          
-	
-	if(v[7]==1||v[7]==3||v[7]==4||v[7]==5)
-		v[21]=(v[1]*v[3]*(1-v[8]))/v[19];
-	else
-		v[21]=(v[1]*v[3]*(1-v[8]))/v[19];
-	WRITE("Class_Real_Disposable_Wages",v[21]);
-	
-	if(v[7]==4||v[7]==5)
-		v[2]=(v[4]*(1-v[8]))/v[19];
-	else
-		v[22]=(v[4])/v[19];
-	WRITE("Class_Real_Disposable_Interest",v[22]);
-	
+	WRITE("Class_Real_Disposable_Income",(v[6]-v[9])/v[19]); 		   	//write class real income equation_dummy
 RESULT(v[6]-v[9])
 
 EQUATION_DUMMY("Class_Taxation","Class_Nominal_Disposable_Income")
 EQUATION_DUMMY("Class_Nominal_Gross_Income","Class_Nominal_Disposable_Income")
 EQUATION_DUMMY("Class_Real_Disposable_Income","Class_Nominal_Disposable_Income")
-EQUATION_DUMMY("Class_Real_Disposable_Profits","Class_Nominal_Disposable_Income")
-EQUATION_DUMMY("Class_Real_Disposable_Wages","Class_Nominal_Disposable_Income")
-EQUATION_DUMMY("Class_Real_Disposable_Interest","Class_Nominal_Disposable_Income")
-
-
 
 EQUATION("Class_Stock_Loans")
-/*
-Class Stock of Debt
-*/
 RESULT(SUM("class_loan_total_amount"))
-
 
 EQUATION("Class_Stock_Deposits")
 /*
@@ -553,10 +482,7 @@ Class share of nominal income
 */
 	v[0]=V("Class_Nominal_Disposable_Income");
 	v[1]=SUMS(PARENT,"Class_Nominal_Disposable_Income");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1]: 0;
 RESULT(v[2])
 
 
@@ -566,10 +492,7 @@ Class share of nominal income
 */
 	v[0]=V("Class_Stock_Deposits");
 	v[1]=SUMS(PARENT,"Class_Stock_Deposits");
-	if(v[1]!=0)
-		v[2]=v[0]/v[1];
-	else
-		v[2]=0;
+	v[2]= v[1]!=0? v[0]/v[1]: 0;
 RESULT(v[2])
 
 

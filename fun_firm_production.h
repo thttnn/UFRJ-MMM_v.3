@@ -1,20 +1,16 @@
 
-EQUATION("Firm_Expected_Sales")
+EQUATION("Firm_Expected_Demand")
 /*
 Firm's expected sales are calculated from an average of effective sales from the two previous periods, applying a expected growth rate. This expected growth rate is obtained from comparing the average of the two previous periods with the average of the two before that, adjusted by an expectation parameter.
 */
 	v[1]=VL("Firm_Effective_Orders", 1);                    //firm's effective orders lagged 1
 	v[2]=VL("Firm_Effective_Orders", 2);                    //firm's effective orders lagged 2
 	v[3]=V("sector_expectations");                          //firm expectations
-
 	if(v[2]!=0)                                           	//if firm's effective orders lagged 2 is not zero
-		{
 		v[4]=v[1]*(1+v[3]*((v[1]-v[2])/v[2]));              //expected sales will be the effective orders in the last period multiplied by the growth rate between the two periods adjusted by the expectations parameter
-		v[5]=max(0,v[4]);                                   //expected sales can never be negative
-		}
 	else                                                  	//if firm's effective orders lagged 2 is zero 
-		v[5]=v[1];                                          //expected sales will be equal to effective orders of the last period
-RESULT(v[5])
+		v[4]=v[1];                                          //expected sales will be equal to effective orders of the last period
+RESULT(max(0,v[4]))
 
 
 EQUATION("Firm_Planned_Production")
@@ -24,11 +20,10 @@ For the capital goods sector, program production is defined by effective orders.
 Programed Production is subjected to a existing capactity restriction, but it is possible to increase production by incrising extra hours of labor, in any sector.
 */
 	v[0]=V("id_capital_goods_sector");                    	//identifies the capital goods sector      
-	v[1]=V("Firm_Expected_Sales");                          //calls the firm's expected sales
+	v[1]=V("Firm_Expected_Demand");                         //calls the firm's expected sales
 	v[2]=VL("Firm_Productive_Capacity", 1);                 //calls the firm's productive capacity of the last period
 	v[5]=V("sector_desired_inventories_proportion");        //calls the firm's desired inventories ratio as a proportion of sales
 	v[6]=VL("Firm_Stock_Inventories",1);                    //calls the firm's stock of inventories in the last period
-
 	if(v[0]==0)                                           	//if it is not capital goods sector
 		v[7]=v[1]*(1+v[5])-v[6];                            //planned production will be expected sales plus the desired proportion of investories minus the existing stock of inventories
 	else                                                  	//if it is a capital goods sector
@@ -42,7 +37,7 @@ Programed Production is subjected to a existing capactity restriction, but it is
 			v[7]=v[7]+v[12];
 			}
 		}
-	v[8]=max(0, min(v[2],v[7]));                          	//planned production can never be more then the maximum productive capacity and can never be negative
+	v[8]=max(0, v[7]);                          			//planned production can never be more then the maximum productive capacity and can never be negative
 RESULT(v[8])
 
 
@@ -53,7 +48,6 @@ The actual production of each sector will be determined by the constraint impose
 	v[0]=V("Firm_Planned_Production");                                                              //firm's planned production
 	v[1]=V("Firm_Available_Inputs_Ratio");
 	v[2]=v[1]*v[0];                                                                            		//effective planned production, constrained by the ratio of available inputs
-	
 	SORT("CAPITALS", "Capital_Good_Productivity", "DOWN");                                        	//rule for the use of capital goods, sorts firm's capital goods by productivity in a decreasing order
 	v[3]=0;                                                                                      	//initializes the CYCLE
 	CYCLE(cur, "CAPITALS")                                                                        	//CYCLE trought the capital goods of the firm
@@ -66,4 +60,34 @@ The actual production of each sector will be determined by the constraint impose
 	}
 RESULT(v[3])
 
+
 EQUATION_DUMMY("Capital_Good_Production", "Firm_Effective_Production")
+
+
+EQUATION("Firm_Avg_Productivity")
+/*
+Firm's productivity will be an average of each capital good productivity weighted by their repective production	
+*/
+	v[0]=V("Firm_Effective_Production");                                		//firm's effective production
+	v[1]=VL("Firm_Avg_Productivity", 1);                           				//firm's average productivity in the last period
+	v[2]=0;                                                        				//initializes the CYCLE
+	v[3]=0;                                                        				//initializes the CYCLE
+	CYCLE(cur, "CAPITALS")                                          			//CYCLE trought firm's capital goods
+	{
+		v[4]=VS(cur, "Capital_Good_Productivity");                   			//capital good productivity
+		v[5]=VS(cur, "Capital_Good_Production");                    			//capital good production
+		v[2]=v[2]+v[4]*v[5];                                        			//sums up the product of each capital good productivity and production
+		v[3]=v[3]+v[5];                                             			//sums up the production of each capital good
+	}
+	v[6]= v[3]!=0? v[2]/v[3] : v[1];                                            //firm's average productivity will be the average of each capital good productivity weighted by its respective production
+RESULT(v[6])
+
+
+EQUATION("Firm_Capacity_Utilization")
+/*
+Firm effective production over firm productive capacity
+*/
+	v[0]=V("Firm_Effective_Production");
+	v[1]=VL("Firm_Productive_Capacity",1);
+	v[2]= v[1]!=0? v[0]/v[1] : 0;
+RESULT(v[2])

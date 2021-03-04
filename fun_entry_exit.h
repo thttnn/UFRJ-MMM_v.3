@@ -24,8 +24,8 @@ CYCLE(cur1, "SECTORS")
      v[6]=VS(cur, "Firm_Stock_Loans");
      v[7]=VS(cur, "Firm_Stock_Deposits");
      v[8]=VS(cur, "Firm_Capital");
-     v[9]=VS(cur, "id_firm_bank");
-	 cur2=SEARCH_CNDS(root, "id_bank", v[9]);
+     v[9]=VS(cur, "firm_bank");
+	 cur2=SEARCH_CNDS(root, "bank_id", v[9]);
 	 
      if ( v[1] <= 0.001 && i > 1 && t>(v[0]+v[3]))				//if firm's market share is near zero
      {
@@ -125,8 +125,10 @@ Can only be 0 or 1, if all enter conditions are met.
 	v[6]=v[2]-v[5];
 	v[7]=(v[2]-v[3])/v[3];
 	v[8]=(v[3]-v[4])/v[4];
+	v[10]=V("Sector_Profit_Rate");
+	v[11]=VS(financial, "Financial_Sector_Interest_Rate_Deposits");
   
-    if(v[0]==1 & v[6]>0 && v[7]>0 && v[8]>0)
+    if(v[0]==1 & v[6]>0 && v[7]>0 && v[8]>0 &&v[10]>v[11])
 		v[9]=1;
     else
 		v[9]=0;
@@ -188,7 +190,7 @@ CYCLE(cur6, "SECTORS")
 			}
 			
 		cur1=RNDDRAWS(root, "BANKS", "Bank_Market_Share");		//choose a random bank
-		v[19]=VS(cur1, "id_bank");								//identify the chosen bank
+		v[19]=VS(cur1, "bank_id");								//identify the chosen bank
 		v[20]=VS(cur1, "Bank_Interest_Rate_Long_Term");
 		
 		v[21]=VS(cur6, "sector_capital_output_ratio");
@@ -197,8 +199,8 @@ CYCLE(cur6, "SECTORS")
 		
 		cur2=ADDOBJ_EXS(cur6,"FIRMS",cur);							//create new firm
 		WRITES(cur2, "firm_date_birth", t);
-		WRITES(cur2, "id_firm_number",t);	
-		WRITES(cur2, "id_firm_bank", v[19]);
+		WRITES(cur2, "firm_id",t);	
+		WRITES(cur2, "firm_bank", v[19]);
 		WRITELS(cur2, "Firm_Stock_Deposits",0,t);
 		WRITELS(cur2, "Firm_Stock_Loans",v[18],t);
 		WRITELS(cur2, "Firm_Demand_Capital_Goods_Expansion", v[15]*v[21], t);
@@ -295,17 +297,15 @@ In this variable a new firm enters if there is market space available and the en
 		v[63]=v[7]*v[25];												//cost of initial capital
 		
 			cur6=RNDDRAWS(root, "BANKS", "Bank_Market_Share");
-			v[19]=VS(cur6, "id_bank");
+			v[19]=VS(cur6, "bank_id");
 		
               cur=ADDOBJ_EX("FIRMS",cur5);								//add new firm using as exemple the firm with closest market share to the average
               //begin writting some lagged variables and parameters           
               WRITES(cur, "firm_date_birth", t);										//firm's date of birth
-              WRITES(cur, "id_firm_number",t);											//firm's number
-			  WRITES(cur, "id_firm_bank", v[19]);										//firm's bank identifier
+              WRITES(cur, "firm_id",t);											//firm's number
+			  WRITES(cur, "firm_bank", v[19]);										//firm's bank identifier
               WRITELS(cur, "Firm_Market_Share",v[2], t);								//firm's market share
               WRITELS(cur, "Firm_Effective_Market_Share",v[2], t);						//firm's effective market share
-              WRITELS(cur, "Firm_Desired_Market_Share",v[2], t);						//firm's desired market share
-              WRITELS(cur, "Firm_Avg_Market_Share",v[2], t);							//firm's avg market share
               WRITELS(cur, "Firm_Effective_Orders",(v[2]*v[20]), t);					//firm's effective orders
               WRITELS(cur, "Firm_Stock_Inventories",(v[2]*v[20]*v[23]), t);				//firm's inventories
               WRITELS(cur, "Firm_Price",v[36], t);										//firm's price
@@ -366,7 +366,6 @@ In this variable a new firm enters if there is market space available and the en
 	WRITES(cur, "Firm_Market_Share", (v[61]/v[60]));							//divide firm's market share by the sum of market shares
 	}
 RESULT(v[4])
-
 
 EQUATION_DUMMY("Sector_Entry_Deposits_Needed", "Sector_Productive_Capacity_Entry")
 

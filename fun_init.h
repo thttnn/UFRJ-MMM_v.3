@@ -32,7 +32,7 @@ CYCLE(cur, "CLASSES")
 {
 	v[26]=VS(cur, "class_profit_share");
 	v[27]=VS(cur, "class_wage_share");
-	v[28]=VS(cur, "class_propensity_to_consume");
+	v[28]=VS(cur, "class_propensity_to_spend");
 	v[29]=VS(cur, "class_propensity_to_import");
 	v[30]=VS(cur, "class_direct_tax");
 	
@@ -49,7 +49,7 @@ cur1=SEARCH_CND("id_consumption_goods_sector",1);
 cur2=SEARCH_CND("id_capital_goods_sector",1);
 cur3=SEARCH_CND("id_intermediate_goods_sector",1);
 
-v[40]=V("number_object_banks");																			//sector control parameter
+v[40]=V("fs_number_object_banks");																			//sector control parameter
 
 v[41]=VS(consumption, "sector_number_object_firms");													//sector control parameter
 v[42]=VS(capital, "sector_number_object_firms");														//sector control parameter
@@ -195,18 +195,18 @@ CYCLE(cur, "CLASSES")
 			WRITELLS(cur, "Class_Avg_Real_Income", (v[164]/v[101]), 0, 1);
 			WRITELLS(cur, "Class_Real_Autonomous_Consumption", v[165], 0, 1);         			//write class' autonomous consumption
 			WRITELLS(cur, "Class_Liquidity_Preference", v[156], 0, 1);
-			WRITELLS(cur, "Class_Desired_Debt_Rate", v[155], 0, 1);
+			WRITELLS(cur, "Class_Max_Debt_Rate", v[155], 0, 1);
 			WRITELLS(cur, "Class_Debt_Rate", 0, 0, 1);                              			//0, no debt initially
 			WRITELLS(cur, "Class_Stock_Deposits", 0, 0, 1);
 }
 v[167]=COUNT("CLASSES");
 
 //Begin Writing External Variables
-WRITES(external, "Trade_Balance", 0);
-WRITES(external, "Capital_Flows", 0);
+WRITES(external, "Country_Trade_Balance", 0);
+WRITES(external, "Country_Capital_Flows", 0);
 WRITELLS(external, "External_Income",  v[150], 0, 1);
 WRITELLS(external, "External_Income",  v[150], 0, 2);
-WRITELLS(external, "International_Reserves",  v[150]*V("annual_frequency"), 0, 1);											//writes initial external income equal to domestic GDP
+WRITELLS(external, "Country_International_Reserves",  v[150]*V("annual_frequency"), 0, 1);											//writes initial external income equal to domestic GDP
 
 //Begin Writing Government Variables																
 v[168]=VS(government, "switch_government_composition");
@@ -229,7 +229,7 @@ WRITELLS(government,"Government_Surplus_Rate_Target", v[169], 0, 1);
 for (i=1 ; i<=V("annual_frequency")+1 ; i++)		              													//for (government_period) lags	
 {
 	WRITELLS(government,"Government_Debt", V("initial_debt_gdp")*V("annual_frequency")*v[150], 0, i);                  									//no debt initially																	//base interest rate parameter
-	WRITELLS(government,"Government_Debt_GDP_Ratio", V("initial_debt_gdp"), 0, i);
+	WRITELLS(government,"government_initial_debt_gdp_ratio", V("initial_debt_gdp"), 0, i);
 	WRITELLS(government,"Government_Effective_Expenses", v[144], 0, i);
 }
 
@@ -357,7 +357,7 @@ CYCLE(cur, "SECTORS")
 		WRITELLS(cur1, "Firm_Stock_Deposits", 0, 0, 1);											//no financial assets initially
 	  	WRITELLS(cur1, "Firm_Stock_Loans", v[159]*(v[219]*v[102]), 0, 1);                       //no debt initially
 	  	WRITELLS(cur1, "Firm_Avg_Debt_Rate", v[159], 0, 1);                       				//no debt initially
-	  	WRITELLS(cur1, "Firm_Desired_Debt_Rate", v[152], 0, 1);                       			//no debt initially
+	  	WRITELLS(cur1, "Firm_Max_Debt_Rate", v[152], 0, 1);                       			//no debt initially
 	  	WRITELLS(cur1, "Firm_Liquidity_Preference", v[153], 0, 1);                       		//no debt initially
 		
 	  		//Begin writting Capital Goods Variables and parameters
@@ -375,15 +375,15 @@ CYCLE(cur, "SECTORS")
 	 	CYCLES(cur, cur1, "FIRMS")                                                 				//CYCLE trough all firms
 			{
 			v[230]=SEARCH_INSTS(cur, cur1);														//search current firm position in the total economy
-			WRITES(cur1, "id_firm_number", v[230]);                         					//write the firm number as the current position (only initial difference between firms)
-			//WRITES(cur1, "id_firm_bank",(uniform_int(1, v[40])));								//firm's bank identifier
+			WRITES(cur1, "firm_id", v[230]);                         					//write the firm number as the current position (only initial difference between firms)
+			//WRITES(cur1, "firm_bank",(uniform_int(1, v[40])));								//firm's bank identifier
 			v[225]=v[230]/(v[212]/v[40]);
 			v[226]=round(v[225]);
 			if(v[226]<v[225])
 				v[227]=v[226]+1;
 			else
 				v[227]=v[226];
-			WRITES(cur1, "id_firm_bank", v[227]);
+			WRITES(cur1, "firm_bank", v[227]);
 			v[231]=fmod((double) (v[230]+v[0]), v[0]);                                 			//divide the firm's number plus investment period by the investment period and takes the rest (possible results if investment period =6 are 0, 5, 4, 3, 2, 1)
 			
 			//Begin creating capital goods and writting "capital_good_date_birth"		
@@ -405,16 +405,16 @@ CYCLE(cur, "SECTORS")
 }
 
 //Begin Writting Bank Variables
-	v[250]=VS(financial, "real_interest_rate");
-	v[251]=VS(financial, "spread_deposits");
-	v[252]=VS(financial, "spread_short_term");
-	v[253]=VS(financial, "spread_long_term");
-	v[254]=VS(financial, "target_inflation");
+	v[250]=VS(financial, "cb_annual_real_interest_rate");
+	v[251]=VS(financial, "fs_spread_deposits");
+	v[252]=VS(financial, "fs_spread_short_term");
+	v[253]=VS(financial, "fs_spread_long_term");
+	v[254]=VS(financial, "cb_target_annual_inflation");
 
-	WRITELLS(financial, "Basic_Interest_Rate", v[250]+v[254], 0, 1);
-	WRITELLS(financial, "Avg_Competitiveness_Financial_Sector", 1, 0, 1);
-	WRITELLS(financial, "Avg_Interest_Rate_Long_Term", (v[253]+v[250]+v[254]), 0, 1);
-	WRITELLS(financial, "Avg_Interest_Rate_Short_Term", (v[252]+v[250]+v[254]), 0, 1);
+	WRITELLS(financial, "Central_Bank_Basic_Interest_Rate", v[250]+v[254], 0, 1);
+	WRITELLS(financial, "Financial_Sector_Avg_Competitiveness", 1, 0, 1);
+	WRITELLS(financial, "Financial_Sector_Avg_Interest_Rate_Long_Term", (v[253]+v[250]+v[254]), 0, 1);
+	WRITELLS(financial, "Financial_Sector_Avg_Interest_Rate_Short_Term", (v[252]+v[250]+v[254]), 0, 1);
 	
 	cur1=SEARCHS(financial, "BANKS");
 	for(i=1; i<=(v[40]-1); i++)																//for the number of firms of each sector (defined by the parameter)
@@ -422,7 +422,7 @@ CYCLE(cur, "SECTORS")
 	CYCLES(financial, cur1, "BANKS")                                                 				//CYCLE trough all firms
 		{
 		v[255]=SEARCH_INSTS(root, cur1);													//search current firm position in the total economy
-		WRITES(cur1, "id_bank", v[255]); 
+		WRITES(cur1, "bank_id", v[255]); 
 		if(v[255]==1)
 			WRITES(cur1, "id_public_bank", 0);
 		else

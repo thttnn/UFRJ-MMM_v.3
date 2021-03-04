@@ -10,15 +10,16 @@ Sector Variable for Analysis
 	v[0]=0;                           		//initializes the CYCLE    
 	CYCLE(cur, "FIRMS")               		//CYCLE trought all firms of the sector
 	{
-		v[1]=VS(cur, "Firm_Net_Profits");  	//firm's profits
-		v[2]=VS(cur, "Firm_Capital");		//firm's capital
+		v[1]=VS(cur, "Firm_Net_Profits");  
+		v[2]=VLS(cur, "Firm_Capital",1);		
+		v[5]=VS(cur, "Firm_Deposits_Return");
 		if(v[2]!=0)
-			v[0]=v[0]+(v[1]/v[2]);          //sums up firm's profit rate
+			v[0]=v[0]+(v[1]-v[5])/v[2];          
 		else
 			v[0]=v[0];
 	}
 	v[3]=COUNT("FIRMS");
-	v[4]= v[3]!=1? v[0]/v[3] : 0;
+	v[4]= v[3]!=0? v[0]/v[3] : 0;
 RESULT(v[4])
 
 
@@ -189,28 +190,6 @@ Sum up firm's employment, given by firm's effective production over firm's avg p
 RESULT(v[0])
 
 
-EQUATION("Sector_Idle_Capacity")
-/*
-Unemployment, calculated as the difference between effective employment and potential employment of the sector, in percentage value
-*/
-	v[0]=V("Sector_Effective_Production");
-	v[1]=V("Sector_Productive_Capacity");
-	if (v[1]!=0)
-	{
-		v[2]=max(0,((v[1]-v[0])/v[1]));
-		v[3]=v[0]/v[1];
-	}
-	else
-	{
-		v[2]=0;
-		v[3]=0;
-	}
-	WRITE("Sector_Capacity_Utilization", v[3]);
-RESULT(v[2])
-
-EQUATION_DUMMY("Sector_Capacity_Utilization", "Sector_Idle_Capacity")
-
-
 
 /*****SECTOR AVERAGES, SD AND MAX*****/
 
@@ -267,8 +246,8 @@ RESULT(WHTAVE("Firm_Avg_Productivity", "Firm_Market_Share"))
 EQUATION("Sector_Avg_Debt_Rate")
 RESULT(WHTAVE("Firm_Debt_Rate", "Firm_Market_Share"))
 
-EQUATION("Sector_Avg_Desired_Debt_Rate")
-RESULT(WHTAVE("Firm_Desired_Debt_Rate", "Firm_Market_Share"))
+EQUATION("Sector_Avg_Max_Debt_Rate")
+RESULT(WHTAVE("Firm_Max_Debt_Rate", "Firm_Market_Share"))
 
 EQUATION("Sector_Avg_Liquidity_Rate")
 RESULT(WHTAVE("Firm_Liquidity_Rate", "Firm_Market_Share"))
@@ -294,14 +273,15 @@ RESULT(WHTAVE("Firm_Investment_Constraint_Rate", "Firm_Market_Share"))
 EQUATION("Sector_SD_Investment_Rate")
 RESULT(SD("Firm_Investment_Rate"))
 
-EQUATION("Sector_Avg_Capital_Demand_Price_Internal")
-RESULT(WHTAVE("Firm_Capital_Demand_Price_Internal", "Firm_Market_Share"))
-
-EQUATION("Sector_Avg_Capital_Demand_Price_External")
-RESULT(WHTAVE("Firm_Capital_Demand_Price_External", "Firm_Market_Share"))
-
 EQUATION("Sector_Avg_Internal_Finance_Rate")
 RESULT(WHTAVE("Firm_Internal_Finance_Rate", "Firm_Market_Share"))
 
 EQUATION("Sector_Avg_External_Finance_Rate")
 RESULT(WHTAVE("Firm_External_Finance_Rate", "Firm_Market_Share"))
+
+EQUATION("Sector_Capacity_Utilization")
+RESULT(WHTAVE("Firm_Capacity_Utilization", "Firm_Market_Share"))
+
+EQUATION("Sector_Idle_Capacity")
+RESULT(1-V("Sector_Capacity_Utilization"))
+
