@@ -962,10 +962,10 @@ Param: cb_sensitivity_capacity 0 n + n n	0.1
 Param: cb_sensitivity_credit_growth 0 n + n n	1.1
 Param: cb_sensitivity_debt_rate 0 n + n n	1.1
 Param: cb_sensitivity_inflation 0 n + n n	1.1
-Param: cb_target_annual_inflation 0 s + n n	0.02
-Param: cb_target_capacity 0 s + n n	0.15
-Param: cb_target_credit_growth 0 s + n n	0.01
-Param: cb_target_debt_rate 0 s + n n	0.5
+Param: cb_target_annual_inflation 0 n + n n	0.02
+Param: cb_target_capacity 0 n + n n	0.15
+Param: cb_target_credit_growth 0 n + n n	0.01
+Param: cb_target_debt_rate 0 n + n n	0.5
 Var: Central_Bank_Basic_Interest_Rate 1 s + n n	0
 Param: cb_target_reserves 0 n + n n	0.5
 
@@ -1024,7 +1024,7 @@ Param: sector_elascitity_delay 0 n + n n	0.25	0.25	0.25
 Param: sector_elasticity_price 0 n + n n	1	1	1
 Param: sector_elasticity_quality 0 n + n n	0.5	0.5	0.5
 Param: sector_expectations 0 n + n n	0.3	0.3	0.3
-Param: sector_exports_coefficient 0 s + n n	0	0	0
+Param: sector_exports_coefficient 0 n + n n	0	0	0
 Param: sector_exports_elasticity_income 0 n + n n	1	1	1
 Param: sector_exports_elasticity_price 0 n + n n	1	1	1
 Param: sector_external_price_competitiveness 0 n + n n	1	1	1
@@ -1054,7 +1054,7 @@ Param: sector_liquidity_preference_adjustment 0 n + n n	0	0	0
 Param: sector_markup_adjustment 0 n + n n	1	1	1
 Param: sector_number_object_firms 0 n + n n	20	8	12
 Param: sector_passthrough_inflation 0 n + n n	1	1	1
-Param: sector_passthrough_productivity 0 s + n n	0.8	0.8	0.8
+Param: sector_passthrough_productivity 0 n + n n	0.8	0.8	0.8
 Param: sector_payback_period 0 n + n n	30	30	30
 Param: sector_price_frequency 0 n + n n	1	1	1
 Param: sector_profits_distribution_rate 0 n + n n	0.8	0.8	0.8
@@ -1191,7 +1191,7 @@ Var: Firm_Investment_Period 0 n + n n
 Var: Firm_Investment_Rate 0 n + n n
 Var: Firm_Liquidity_Preference 1 n + n n	0.05	0.05	0.05
 Var: Firm_Liquidity_Rate 0 n + n n
-Var: Firm_Market_Share 7 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Market_Share 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Firm_Max_Productivity 6 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
 Var: Firm_Modernization_Rate 0 n + n n
 Var: Firm_Net_Profits 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
@@ -2253,7 +2253,7 @@ END_DESCRIPTION
 Parameter_external_interest_rate
 determines the external annual nominal interest rate to be compared with domestic and determine capital flows
 _INIT_
-
+All 1 instances equal to 0.03.
 END_DESCRIPTION
 
 Parameter_external_shock_begin
