@@ -10,7 +10,7 @@ Real value of external income.
 	v[4]=V("external_income_sd");							//fixed external income sd
 	v[5]=LAG_GROWTH(country, "Country_Real_GDP", 1, 1);
 	v[7]=V("external_income_adjustmnent");                  //exogenous parameter that amplifies external growth based on domestic growth
-	v[8]=1+norm((v[3]+v[5]*v[7]), v[4]);					//random draw from a normal distribution with average equals to past growth and standard deviation equals to past growth in absolute value	
+	v[8]=norm((v[3]+v[5]*v[7]), v[4]);						//random draw from a normal distribution with average equals to past growth and standard deviation equals to past growth in absolute value	
 	v[9]=V("external_shock_begin");          				//defines when the shock happens
 	v[10]=V("external_shock_duration");       				//defines how long the shock lasts
 	v[11]=V("external_shock_size");           				//defines the size, in percentage, of the shock
@@ -19,7 +19,7 @@ Real value of external income.
 	else
 		v[12]=v[8];
 
-	v[13]=v[12]*v[0];
+	v[13]=(1+v[12])*v[0];
 RESULT(max(0,v[13]))
 
 

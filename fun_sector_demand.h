@@ -18,7 +18,7 @@ User can also define a external price shock:
 	v[2]=V("sector_external_price_sd");										
 	v[3]=V("sector_external_price_competitiveness");			
 	v[4]=LAG_GROWTH(p, "Sector_Avg_Price", 1);
-	v[5]=1+norm((v[1]+v[3]*v[4]), v[2]);			
+	v[5]=norm((v[1]+v[3]*v[4]), v[2]);			
 
 	v[6]=V("sector_external_price_shock_begin");          				
 	v[7]=V("sector_external_price_shock_duration");       				
@@ -27,7 +27,7 @@ User can also define a external price shock:
 			v[9]=v[5]*(1+v[8]);
 		else
 			v[9]=v[5];
-	v[10]=v[0]*v[9];	
+	v[10]=v[0]*(1+v[9]);	
 RESULT(v[10])
 
 
