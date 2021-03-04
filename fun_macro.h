@@ -200,10 +200,9 @@ The total wage is calculated by the sum of the wages paid by the sectors with go
 			v[2]=VS(cur1, "Firm_Wage");                             //firm's wage
 			v[3]=VS(cur1, "Firm_Effective_Production");             //firm's effective production
 			v[4]=VS(cur1, "Firm_Avg_Productivity");            		//firm's productivity in the last period
-			v[5]=VS(cur1, "Firm_RND_Expenses");                     //firm's rnd expeses, returned as salary to researchers
-			v[8]=VS(cur1, "Firm_Overhead_Costs");				
+			v[5]=VS(cur1, "Firm_RND_Expenses");                     //firm's rnd expeses, returned as salary to researchers		
 			if(v[4]!=0)
-				v[1]=v[1]+v[3]*(v[2]/v[4])+v[5]+v[8];               //sums up all firms' wage, determined by a unitary wage (sectorial wage divided by firm's productivity) multiplied by firm's effective production plus RND expenses
+				v[1]=v[1]+v[3]*(v[2]/v[4])+v[5];               		//sums up all firms' wage, determined by a unitary wage (sectorial wage divided by firm's productivity) multiplied by firm's effective production plus RND expenses
 			else
 				v[1]=v[1];
 		}
@@ -220,10 +219,8 @@ Aggeregate Investment Expenses is calculated summing up the demand of capital go
 */
 	v[0]=0;
 	CYCLE(cur, "SECTORS")
-		v[0]=v[0]+SUMS(cur, "Firm_Demand_Capital_Goods");
-	v[2]=VS(capital, "Sector_Avg_Price");
-	v[3]=v[0]*v[2];
-RESULT(v[3])
+		v[0]=v[0]+SUMS(cur, "Firm_Effective_Investment_Expenses");
+RESULT(v[0])
 
 
 EQUATION("Country_Profit_Share")
@@ -314,7 +311,7 @@ Nominal quarterly GDP is calculated summing up profits, wages and indirect taxes
 	v[2]=V("Government_Indirect_Taxes");
 	v[3]=v[0]+v[1]+v[2];
 	v[4]=V("Country_GDP_Demand");
-RESULT(v[4])
+RESULT(v[3])
 
 
 EQUATION("Country_Annual_GDP")
@@ -389,7 +386,6 @@ RESULT(VS(input, "Sector_Sales")*VS(input, "Sector_Avg_Price"))
 EQUATION("Country_Total_Nominal_Production")
 RESULT(WHTAVE("Sector_Avg_Price","Sector_Sales"))
 
-
 EQUATION("Country_Capacity_Utilization")
 /*
 Sum up sector's effective production over productive capacity, weighted by sector's nominal value of production over total gross value of production
@@ -424,39 +420,6 @@ Average Productivity of the economy weighted by the employment of each sector
 	v[1]=SUM("Sector_Employment");
 	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
-
-
-EQUATION("Country_Nominal_Exports")
-/*
-The total exports of the economy in nominal value are defined by the sum of the exports of each sector multiplied by the price charged in the period.
-*/
-	v[0]=0;
-	CYCLE(cur, "SECTORS")
-	{
-		v[1]=VS(cur, "Sector_Real_Exports");
-		v[2]=VS(cur, "Sector_Avg_Price");
-		v[3]=VS(cur, "Sector_Demand_Met");
-		v[4]=v[1]*v[2]*v[3];
-		v[0]=v[0]+v[4];
-	}
-RESULT(v[0])
-
-
-EQUATION("Country_Nominal_Imports")
-/*
-Total imports in nominal value are obtained from the sum of imports of all sectors multiplied by the respective international prices, and converted to national currency by the exchange rate.
-*/
-	v[0]=WHTAVE("Sector_Extra_Imports", "Sector_External_Price");
-	v[1]=SUM("Class_Effective_Real_Imported_Consumption");
-	v[2]=VS(external,"Country_Exchange_Rate");
-	v[4]=VS(consumption, "Sector_External_Price");
-	v[3]=(v[0]+v[1]*v[4])*v[2];
-	v[5]=0;
-	CYCLE(cur, "SECTORS")
-		v[5]=v[5]+SUMS(cur, "Firm_Input_Imports");
-	v[6]=VS(input, "Sector_External_Price");
-	v[7]=(v[0]+v[1]*v[4]+v[5]*v[6])*v[2];
-RESULT(v[7])
 
 
 EQUATION("Country_GDP_Demand")

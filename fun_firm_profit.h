@@ -104,11 +104,7 @@ Firm profit, including
 	v[4]=V("sector_rnd_revenue_proportion");						  //share of net profits to allocate in R&D
 	v[5]=v[0]*v[4];													  //R&d expenses
 	
-	v[6]=V("sector_productive_capacity_cost");                        //firm's capacity cost
-	v[7]=VL("Firm_Productive_Capacity",1);                            //firm's productive capacity in the last period
-	v[8]=v[6]*v[7];													  //overhead costs
-	
-	v[9]=v[0]-v[3]-v[5]-v[8];										  //firm profits
+	v[9]=v[0]-v[3]-v[5];										  	  //firm profits
 	
 	v[10]=V("Firm_Interest_Payment");							 	  //firm's financial obligations
 	v[11]=V("Firm_Deposits_Return");								  //firm's financial revenue
@@ -134,12 +130,11 @@ Firm profit, including
 	
 	v[17]=VL("Firm_Capital",1);
 	if(v[17]!=0)
-		v[18]=v[12]/v[17];
+		v[18]=(v[12]-v[11])/v[17];
 	else
 		v[18]=0;
 	
 	WRITE("Firm_RND_Expenses", v[5]);
-	WRITE("Firm_Overhead_Costs", v[8]);
 	WRITE("Firm_Profits", v[9]);
 	WRITE("Firm_Liquidity_Rate", v[16]);
 	WRITE("Firm_Distributed_Profits", v[14]);
@@ -148,7 +143,6 @@ Firm profit, including
 RESULT(v[12])
 
 EQUATION_DUMMY("Firm_RND_Expenses", "Firm_Net_Profits" )
-EQUATION_DUMMY("Firm_Overhead_Costs", "Firm_Net_Profits" )
 EQUATION_DUMMY("Firm_Profits", "Firm_Net_Profits" )
 EQUATION_DUMMY("Firm_Liquidity_Rate", "Firm_Net_Profits" )
 EQUATION_DUMMY("Firm_Distributed_Profits", "Firm_Net_Profits" )

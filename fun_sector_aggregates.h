@@ -10,15 +10,16 @@ Sector Variable for Analysis
 	v[0]=0;                           		//initializes the CYCLE    
 	CYCLE(cur, "FIRMS")               		//CYCLE trought all firms of the sector
 	{
-		v[1]=VS(cur, "Firm_Net_Profits");  	//firm's profits
-		v[2]=VS(cur, "Firm_Capital");		//firm's capital
+		v[1]=VS(cur, "Firm_Net_Profits");  
+		v[2]=VLS(cur, "Firm_Capital",1);		
+		v[5]=VS(cur, "Firm_Deposits_Return");
 		if(v[2]!=0)
-			v[0]=v[0]+(v[1]/v[2]);          //sums up firm's profit rate
+			v[0]=v[0]+(v[1]-v[5])/v[2];          
 		else
 			v[0]=v[0];
 	}
 	v[3]=COUNT("FIRMS");
-	v[4]= v[3]!=1? v[0]/v[3] : 0;
+	v[4]= v[3]!=0? v[0]/v[3] : 0;
 RESULT(v[4])
 
 
@@ -271,12 +272,6 @@ RESULT(WHTAVE("Firm_Investment_Constraint_Rate", "Firm_Market_Share"))
 
 EQUATION("Sector_SD_Investment_Rate")
 RESULT(SD("Firm_Investment_Rate"))
-
-EQUATION("Sector_Avg_Capital_Demand_Price_Internal")
-RESULT(WHTAVE("Firm_Capital_Demand_Price_Internal", "Firm_Market_Share"))
-
-EQUATION("Sector_Avg_Capital_Demand_Price_External")
-RESULT(WHTAVE("Firm_Capital_Demand_Price_External", "Firm_Market_Share"))
 
 EQUATION("Sector_Avg_Internal_Finance_Rate")
 RESULT(WHTAVE("Firm_Internal_Finance_Rate", "Firm_Market_Share"))

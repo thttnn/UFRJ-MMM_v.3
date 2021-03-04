@@ -165,8 +165,8 @@ Firm demand for loans is the amount that internal funds can not pay
 	
 	if(v[0]!=0)
 	{
-		v[6]=v[1]/v[0];
-		v[7]=v[3]/v[0];
+		v[6]=(v[0]-v[5])/v[0];
+		v[7]=v[5]/v[0];
 	}
 	else
 	{

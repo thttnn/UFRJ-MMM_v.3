@@ -19,42 +19,21 @@ EQUATION("Firm_Wage")
 /*
 Nominal Wage of the firm. It increases year by year depending on inflation and firm's avg productivity. Passtrough parameters are sectorial.
 */
-	v[0]=VL("Firm_Wage",1);                                                          	 //firm wage in the last period
-	v[11]=V("annual_frequency");
-	v[1]= fmod((double) t-1,v[11]);                                                      //divide the time period by the annual period parameter
-	if(v[1]==0)                                                                      	 //if the rest of the above division is zero (beggining of the year, adjust wages)
+	v[0]=CURRENT;                                                          	 			 //firm wage in the last period
+	v[1]=V("annual_frequency");
+	v[2]= fmod((double) t-1,v[1]);                                                      //divide the time period by the annual period parameter
+	if(v[2]==0)                                                                      	 //if the rest of the above division is zero (beggining of the year, adjust wages)
 		{
-		v[2]=VL("Firm_Avg_Productivity", 1);                                           	 //firm average productivity in the last period
-		v[3]=VL("Firm_Avg_Productivity", (v[11]+1));                                     //firm average productivity five periods befor
-		v[4]=(v[2]-v[3])/v[3];                                                           //annual growth of sector average productivity
-		v[5]=V("sector_passthrough_productivity");                                       //pass through of productivity to wages
-		v[6]=VLS(GRANDPARENT, "Country_Consumer_Price_Index", 1);                        //price index in the last period
-		v[7]=VLS(GRANDPARENT, "Country_Consumer_Price_Index", (v[11]+1));                //price index five periods before
-		v[8]=max(0,((v[6]-v[7])/v[7])-v[21]);                                            //annual growth of price index (annual inflation)
-		v[9]=V("sector_passthrough_inflation");                                          //pass through of inflation to wages   	
-		v[12]=VL("Sector_Employment", 1);                                				 //sector employment in the last period
-		v[13]=VL("Sector_Employment", (v[11]+1));                        				 //sector employment five periods before
-		if(v[13]!=0)
-			v[14]=(v[12]-v[13])/v[13];                                                   //annual growth of sector employment
-		else
-			v[14]=0;
-		v[15]=V("sector_passthrough_employment");
-		v[16]=VL("Sector_Capacity_Utilization", 1);
-		v[17]=V("sector_desired_degree_capacity_utilization");
-		v[18]=v[16]-v[17]>0?1:0;
-		v[19]=V("sector_passthrough_capacity");
-		v[20]=v[18]>0?1:0;
-		v[21]=VS(financial, "cb_target_annual_inflation");
-		v[22]=VLS(country, "Country_Annual_CPI_Inflation", 1);
-		if(V("switch_cb_credibility")==1)
-			v[23]=v[21];
-		else
-			v[23]=v[22];
-		v[10]=v[0]*(1+v[23]+v[5]*v[4]+v[9]*(max(0,v[22]-v[21]))+v[15]*v[20]+v[18]*v[19]);                      //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
+		v[4]=LAG_GROWTH(p, "Firm_Avg_Productivity", v[1], 1);
+		v[5]=V("sector_passthrough_productivity");                                       
+		v[6]=VL("Country_Annual_CPI_Inflation", 1);
+		v[7]=V("sector_passthrough_inflation");
+		v[8]=VS(financial, "cb_target_annual_inflation");
+		v[9]=v[0]*(1+v[8]+v[5]*v[4]+v[7]*(max(0,v[6]-v[8])));                           //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
 		}
 	else                                                                             	 //if the rest of the division is not zero, do not adjust wages
-		v[10]=v[0];                                                                      //current wages will be the last period's
-RESULT(v[10])
+		v[9]=v[0];                                                                      //current wages will be the last period's
+RESULT(v[9])
 
 
 EQUATION("Firm_Input_Cost")

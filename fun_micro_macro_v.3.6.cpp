@@ -14,9 +14,11 @@ object *consumption;
 object *capital;
 object *input;
 object *centralbank;
+object *aclass;
+object *bclass;
+object *cclass;
 
 MODELBEGIN
-
 
 /*****EQUATION FILES*****/
 

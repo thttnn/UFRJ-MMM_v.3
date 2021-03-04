@@ -13,9 +13,9 @@ User can also define a external price shock:
 -"sector_external_price_shock_duration" defines how many perio the shock will last
 -"sector_external_price_shock_size" defines the intensity and the direction of the shock. For instance, if this parameter is 1, the external price will grow twice as much as the "normal" growth.
 */
-	v[0]=CURRENT;
-	v[1]=V("sector_external_price_growth");						
-	v[2]=V("sector_external_price_sd");							
+	v[0]=CURRENT;											
+	v[1]=V("sector_external_price_growth");									
+	v[2]=V("sector_external_price_sd");										
 	v[3]=V("sector_external_price_competitiveness");			
 	v[4]=LAG_GROWTH(p, "Sector_Avg_Price", 1);
 	v[5]=1+norm((v[1]+v[3]*v[4]), v[2]);			
@@ -39,7 +39,7 @@ The amount of exports will also depend on sector specific elasticities on relati
 The division by price observed in the past period allows to transform the value of exports into units of exported products.
 Both sector average price and external price must be calculated before.
 */
-	v[0]=V("External_Income");
+	v[0]=V("External_Real_Income");
 	v[1]=V("sector_exports_coefficient");
 	v[2]=V("Sector_Avg_Price");
 	v[3]=V("Sector_External_Price");
@@ -48,7 +48,7 @@ Both sector average price and external price must be calculated before.
 	v[6]=V("Country_Exchange_Rate");
 	v[7]=v[1]*pow((v[3]*v[6])/v[2],v[5])*pow(v[0],v[4]);
 	v[8]=v[7]/v[2];
-RESULT(v[8])
+RESULT(v[7])
 
 
 EQUATION("Sector_Effective_Orders")
@@ -65,10 +65,12 @@ This variable also writes an analysis variable that evaluates the relative weigh
 	if(V("id_capital_goods_sector")==1)
 		v[0]=V("Country_Domestic_Capital_Goods_Demand");                                                    
 	v[1]=V("Sector_Real_Exports");                                                              
-	v[2]=v[0]+v[1];                                                                             
-	v[3]= v[2]!=0? v[1]/v[2] : 0;
+	v[2]=v[0]+v[1];   
+	v[4]=V("sector_initial_demand");
+	v[5]=max(v[2],v[4]);
+	v[3]= v[5]!=0? v[1]/v[5] : 0;
 	WRITE("Sector_Exports_Share", v[3]);
-RESULT(max(0,v[2]))
+RESULT(max(0,v[5]))
 
 EQUATION_DUMMY("Sector_Exports_Share", "Sector_Effective_Orders")
 

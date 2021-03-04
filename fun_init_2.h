@@ -9,6 +9,9 @@ financial=SEARCH("FINANCIAL");
 external=SEARCH("EXTERNAL_SECTOR");
 country=SEARCH("COUNTRY");
 centralbank=SEARCH("CENTRAL_BANK");
+aclass=SEARCH_CND("class_id",1);
+bclass=SEARCH_CND("class_id",2);
+cclass=SEARCH_CND("class_id",3);
 
 //COUNTRY PARAMETERS
 v[0]=VS(country, "annual_frequency");
@@ -66,13 +69,22 @@ v[62]=VS(government, "government_initial_share_capital");
 v[63]=VS(government, "government_initial_share_input");
 //CENTRAL BANK PARAMETERS
 v[70]=VS(centralbank, "cb_target_annual_inflation");
+	
+	if(V("switch_monetary_policy")==5)			//smithin rule
+		v[71]=v[70];	
+	else if(V("switch_monetary_policy")==6)		//pasinetti rule
+		v[71]=v[70];
+	else if(V("switch_monetary_policy")==7)		//kansas city rule.
+		v[71]=0;
+	else					//taylor rule or fixed monetary policy
+		v[71]=v[50]+v[70];	
 
-v[100]=(((v[20]*v[22]/v[21])+(v[30]*v[32]/v[31])+(v[10]*v[12]/v[11]))*v[23])/v[1];				//nominal GDP
+	v[100]=(((v[20]*v[22]/v[21])+(v[30]*v[32]/v[31])+(v[10]*v[12]/v[11]))*v[23])/v[1];				//nominal GDP
 	LOG("\nNominal GDP is %f.",v[100]);
 	
 	//GOVERNMENT INTERMEDIATE CALCULATION
 	v[101]=v[100]*v[60];								//government debt
-	v[102]=pow((1+v[50]+v[70]),(1/v[0]))-1;				//quarterly basic interest rate
+	v[102]=pow((1+v[71]),(1/v[0]))-1;					//quarterly basic interest rate
 	v[103]=v[102]*v[101];								//government interest payment
 	v[104]=v[2]*v[100];									//government expenses
 	v[105]=v[103]+v[104];								//government total taxes
@@ -105,8 +117,8 @@ v[100]=(((v[20]*v[22]/v[21])+(v[30]*v[32]/v[31])+(v[10]*v[12]/v[11]))*v[23])/v[1
 
 	//EXTERNAL INTERMEDIATE CALCULATION
 	v[120]=v[41]*v[100];								//external nominal income
-	v[121]=v[120]*v[42]*(v[50]+v[70]-v[40]);			//capital flows
-	v[122]=v[43]*v[100]*v[0];							//international reserves
+	v[121]=v[120]*v[42]*(v[71]-v[40]);					//capital flows
+	v[122]=v[43]*v[100];								//international reserves
 	v[123]=v[100]*v[3];									//country nominal exports
 	v[124]=v[123]+v[121];								//country nominal imports
 	v[125]=v[123]*v[16];								//country nominal consuption exports
@@ -117,8 +129,10 @@ v[100]=(((v[20]*v[22]/v[21])+(v[30]*v[32]/v[31])+(v[10]*v[12]/v[11]))*v[23])/v[1
 	v[130]=v[127]/v[33];								//country real input exports
 
 	//WRITTING EXTERNAL SECTOR LAGGED VALUES
-	WRITELLS(external, "External_Income", v[120], 0, 1);
-	WRITELLS(external, "External_Income", v[120], 0, 2);
+	WRITELLS(external, "External_Real_Income", v[120], 0, 1);
+	WRITELLS(external, "External_Real_Income", v[120], 0, 2);
+	WRITELLS(external, "Country_Nominal_Exports", v[123], 0, 1);
+	WRITELLS(external, "Country_Nominal_Imports", v[124], 0, 1);
 	WRITELLS(external, "Country_International_Reserves", v[122], 0, 1);
 	WRITELLS(external, "Country_Trade_Balance", v[123]-v[124], 0, 1);
 	WRITELLS(external, "Country_Capital_Flows", v[121], 0, 1);
@@ -186,7 +200,7 @@ CYCLE(cur, "SECTORS")
 	v[196]=v[195]/v[176];											//sector profit distribution rate
 	v[197]=v[180]*v[158];											//sector productive capacity
 	v[198]=v[150]/v[197];											//sector capacity utilization
-	v[199]=VS(cur,"sector_initial_exports_share")*v[123]/(pow((v[157]*v[44]/v[153]),VS(cur,"sector_exports_elasticity_income"))*pow(v[120],VS(cur,"sector_exports_elasticity_income")));
+	v[199]=(VS(cur,"sector_initial_exports_share")*v[123]/v[153])/(pow((v[157]*v[44]/v[153]),VS(cur,"sector_exports_elasticity_income"))*pow(v[120],VS(cur,"sector_exports_elasticity_income")));
 
 	//WRITTING SECTOR LAGGED VALUES
 	WRITES(cur, "sector_exports_coefficient", v[199]);
@@ -229,7 +243,7 @@ CYCLE(cur, "SECTORS")
 	WRITELLS(cur1, "Firm_Wage", v[188], 0, 1);
 	WRITELLS(cur1, "Firm_Desired_Markup", v[190], 0, 1);
 	WRITELLS(cur1, "Firm_Avg_Debt_Rate", v[162], 0, 1);
-	WRITELLS(cur1, "Firm_Max_Debt_Rate", 2*v[162], 0, 1);
+	WRITELLS(cur1, "Firm_Max_Debt_Rate", 3*v[162], 0, 1);
 	WRITELLS(cur1, "Firm_Stock_Inputs", v[150]*v[154]/v[152], 0, 1);
 	WRITELLS(cur1, "Firm_Liquidity_Preference", v[163], 0, 1);
 	WRITELLS(cur1, "Firm_Capital", v[181]/v[152], 0, 1);
@@ -317,7 +331,7 @@ v[219]+=v[181];														//total nominal capital
 
 	v[220]=v[214]/(v[213]+v[219]);									//average debt rate
 	v[221]=v[214]/v[57];											//bank stock of debt
-	v[222]=v[221]/(v[58]+v[59]*v[220]);								//bank initial accumulated profits
+	v[222]=v[221]*(v[58]+v[59]*v[220]);								//bank initial accumulated profits
 	v[223]=v[215]-v[216]+v[103];									//financial sector profits
 	v[224]=v[214]/v[51];											//total stock deposits
 	v[225]=v[224]-v[213];											//total class stock deposits
@@ -352,7 +366,7 @@ v[219]+=v[181];														//total nominal capital
 		WRITELLS(cur1, "Bank_Accumulated_Profits", v[222], 0, 1);
 		}
 		
-	//AGGREGATE INTERMEDIATE VARIABBLES
+	//AGGREGATE INTERMEDIATE VARIABLES
 	v[230]=v[211]+v[217]+v[112];									//total wages
 	v[231]=v[218]+v[223];											//total distributed profits
 	v[232]=v[230]+v[231];											//total households gross income	
@@ -434,17 +448,15 @@ WRITELLS(country, "Country_Debt_Rate_Firms", v[220], 0, 1);
 WRITELLS(country, "Country_Idle_Capacity", 1-v[272], 0, 1);
 WRITELLS(country, "Country_Avg_Productivity", v[271], 0, 1);
 WRITELLS(country, "Country_Avg_Productivity", v[271], 0, 2);
-WRITELLS(country, "Country_Nominal_Exports", v[123], 0, 1);
-WRITELLS(country, "Country_Nominal_Imports", v[124], 0, 1);
 WRITELLS(country, "Country_Annual_CPI_Inflation", v[70], 0, 1);
 for(i=1;i<=v[0]+1;i++)
 	WRITELLS(country, "Country_Price_Index", v[270], 0, i);
 for(i=1;i<=v[0]+1;i++)
 	WRITELLS(country, "Country_Consumer_Price_Index", v[13], 0, i);
 for(i=1;i<=2*v[0]+1;i++)
-	WRITELLS(country, "Country_GDP", v[100], 0, 1);
+	WRITELLS(country, "Country_GDP", v[100], 0, i);
 for(i=1;i<=2*v[0]+1;i++)
-	WRITELLS(country, "Country_Real_GDP", v[100]/v[270], 0, 1);
+	WRITELLS(country, "Country_Real_GDP", v[100]/v[270], 0, i);
 for(i=1;i<=v[0];i++)
 	WRITELLS(country, "Country_Capital_Goods_Price", v[23], 0, i);
 

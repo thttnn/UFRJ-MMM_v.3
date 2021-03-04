@@ -42,7 +42,7 @@ V("Sector_External_Price");
 V("Country_Capital_Goods_Price");  
 
 /*****EXPORTS*****/  
-V("External_Income");                                  		                          
+V("External_Real_Income");                                  		                          
 V("Country_Exchange_Rate");                                     
 V("Sector_Real_Exports");   
 
@@ -128,9 +128,7 @@ V("Firm_Net_Profits");
 V("Firm_RND_Expenses");                                      
 V("Firm_Retained_Profits");                                 
 V("Firm_Distributed_Profits");                             
-V("Firm_Profit_Rate");	
-
-/*****INCOME GENERATION*****/                           		                                   		                                 		
+V("Firm_Profit_Rate");	                     		                                   		                                 		
 V("Sector_Demand_Met");                                		
 V("Sector_Extra_Imports");                                     
 V("Sector_Demand_Met_By_Imports");                            		

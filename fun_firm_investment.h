@@ -82,16 +82,14 @@ EQUATION("Firm_Productive_Capacity")
 In this variable, the firm receive the new capital goods ordered in the last investment period, including the ones for modernization and the ones for expansion. Then, it counts the total productive capacity of old and new capital goods.
 */
 	USE_ZERO_INSTANCE
-	v[0]=V("sector_investment_frequency");											//investment period
+	v[0]=V("sector_investment_frequency");										//investment period
 	v[1]=VL("Firm_Frontier_Productivity",v[0]);									//available technology when the capital good was ordered
 	v[2]=V("Firm_Effective_Capital_Goods_Expansion");	
 	v[3]=V("Firm_Effective_Capital_Goods_Replacement");	
-	v[4]=v[2]+v[3];	
 	v[5]=V("sector_capital_output_ratio");										//amount of Capital Goods bought
-	v[7]=V("Firm_Investment_Period");											//if it is investment period for the firm
-	v[8]=V("sector_capital_duration");
-	v[9]=VL("Country_Capital_Goods_Price",v[0]);
-	if(v[7]==1 && v[2]>0)
+	v[8]=uniform_int(30, 50);
+	
+	if(v[2]>0)
 		{
 		for(i=0; i<=v[2]; i++)													//for the amount of new capital goods bought
 			{
@@ -107,7 +105,7 @@ In this variable, the firm receive the new capital goods ordered in the last inv
 			}																																		//end the CYCLE for modernization
 		}
 		
-	if(v[7]==1&&v[3]>0)
+	if(v[3]>0)
 		{
 		SORT("CAPITALS","Capital_Good_Productivity","UP");
 		CYCLE(cur, "CAPITALS")																																					// CYCLE trought capital goods
@@ -485,42 +483,7 @@ Percentage of productive capacity that is replaced for modernization at each tim
 RESULT(v[2])
 
 
-EQUATION("Firm_Capital_Demand_Price_Internal")
-/*
-Demand price of a single capital good of the firm. Equivalent to the internal rate of return
-Sum of profit rate over interest rate on deposits.
-Formulation proposed by Moreira (2010)
-Taker's risk is already included in the firm specific interest rate.
-*/
-	v[0]=V("sector_capital_duration");
-	v[1]=V("Firm_Profit_Rate");
-	v[2]=V("Firm_Interest_Rate_Long_Term");
-	v[3]=V("Central_Bank_Basic_Interest_Rate");
-	v[4]=V("Financial_Sector_Interest_Rate_Deposits");
-	v[5]=V("switch_discount_rate");
-	v[6]=V("Country_Capital_Goods_Price");
-	v[7]=V("sector_capital_duration");
-	v[8]=v[2]*v[6] + v[6]/v[7];
-	
-	if(v[5]==1)//use firm specific rate
-	{
-		v[9]=(v[1]*v[0])/(1+v[2]);
-		v[10]=(v[1]*v[0]-v[8])/(1+v[2]);
-	}
-	if(v[5]==2)//use basic rate
-	{
-		v[9]=(v[1]*v[0])/(1+v[3]);
-		v[10]=(v[1]*v[0]-v[8])/(1+v[3]);
-	}
-	if(v[5]==3)//use deposits rate
-	{
-		v[9]=(v[1]*v[0])/(1+v[4]);
-		v[10]=(v[1]*v[0]-v[8])/(1+v[4]);
-	}
-WRITE("Firm_Capital_Demand_Price_External", v[10]);
-RESULT(v[9])
 
-EQUATION_DUMMY("Firm_Capital_Demand_Price_External", "Firm_Capital_Demand_Price_Internal")
 
 
 

@@ -18,21 +18,21 @@ Counter-cyclical Expenses
 Benefit is a share of average wage. 
 The amount depends on current unemployment.
 */
-	v[2]=V("government_benefit_rate");
-	v[3]=0;
+	v[0]=V("government_benefit_rate");
+	v[1]=0;
 	CYCLES(country, cur, "SECTORS")
 	{
-		v[4]=VS(cur, "sector_desired_degree_capacity_utilization");
-		v[5]=VLS(cur, "Sector_Idle_Capacity", 1);
-		v[6]=v[5]-(1-v[4]);
-		v[7]=VLS(cur, "Sector_Productive_Capacity", 1);
-		v[8]=v[6]*v[7];
-		v[9]=VLS(cur, "Sector_Avg_Productivity", 1);
-		v[10]=VLS(cur, "Sector_Avg_Wage", 1);
-		v[11]=v[8]*(v[2]*v[10]/v[9]);
-		v[3]=v[3]+v[11];
+		v[2]=VS(cur, "sector_desired_degree_capacity_utilization");
+		v[3]=VLS(cur, "Sector_Idle_Capacity", 1);
+		v[4]=v[3]-(1-v[2]);
+		v[5]=VLS(cur, "Sector_Productive_Capacity", 1);
+		v[6]=v[4]*v[5];
+		v[7]=VLS(cur, "Sector_Avg_Productivity", 1);
+		v[8]=VLS(cur, "Sector_Avg_Wage", 1);
+		v[9]=v[6]*(v[0]*v[8]/v[7]);
+		v[1]=v[1]+v[9];
 	}
-RESULT(max(0,v[3]))
+RESULT(max(0,v[1]))
 
 
 EQUATION("Government_Desired_Investment")
@@ -137,7 +137,7 @@ Maximum Government expenses imposed by the fiscal rule.
 Fiscal rules can be two types: primary surplus target or expenses ceiling (or both).
 Depend on the policy parameter.
 */
-v[0]=V("annual_frequency");
+
 v[1]=V("begin_surplus_target_rule");                           //define when surplus target rule begins
 v[2]=V("begin_expenses_ceiling_rule");                         //define when expenses ceiling begins
 v[3]=V("begin_debt_target_rule"); 							   //define when debt rule begins
@@ -249,11 +249,10 @@ EQUATION("Government_Nominal_Result")
 RESULT(V("Government_Primary_Result")-V("Government_Interest_Payment"))
 
 EQUATION("Government_Debt")
-RESULT(CURRENT-V("Government_Nominal_Result"))
+RESULT(CURRENT-V("Government_Nominal_Result")+VS(financial, "Financial_Sector_Rescue"))
 
 EQUATION("Government_Debt_GDP_Ratio")
 	v[1]=V("Government_Debt");
-	//v[2]=LAG_SUM(country,"Country_GDP",V("annual_frequency"));
 	v[2]=V("Country_GDP");
 	v[3]= v[2]!=0? v[1]/v[2] : 0;
 RESULT(v[3])

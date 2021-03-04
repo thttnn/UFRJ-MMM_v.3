@@ -125,8 +125,10 @@ Can only be 0 or 1, if all enter conditions are met.
 	v[6]=v[2]-v[5];
 	v[7]=(v[2]-v[3])/v[3];
 	v[8]=(v[3]-v[4])/v[4];
+	v[10]=V("Sector_Profit_Rate");
+	v[11]=VS(financial, "Financial_Sector_Interest_Rate_Deposits");
   
-    if(v[0]==1 & v[6]>0 && v[7]>0 && v[8]>0)
+    if(v[0]==1 & v[6]>0 && v[7]>0 && v[8]>0 &&v[10]>v[11])
 		v[9]=1;
     else
 		v[9]=0;
@@ -364,7 +366,6 @@ In this variable a new firm enters if there is market space available and the en
 	WRITES(cur, "Firm_Market_Share", (v[61]/v[60]));							//divide firm's market share by the sum of market shares
 	}
 RESULT(v[4])
-
 
 EQUATION_DUMMY("Sector_Entry_Deposits_Needed", "Sector_Productive_Capacity_Entry")
 

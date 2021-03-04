@@ -66,9 +66,8 @@ Effective Loans is the minimum between demanded loans and max loans.
 	v[2]=V("sector_capital_duration");
 	v[3]=VL("Bank_Total_Stock_Loans",1);
 	v[4]=max(0,(v[1]-v[3]));
-	v[5]=V("id_public_bank");
 	v[6]=V("begin_credit_rationing");
-	if(t>v[6]&&v[6]!=-1&&v[5]!=1&&v[1]!=-1)
+	if(t>v[6]&&v[6]!=-1&&v[1]!=-1)
 		v[7]=min(v[0],v[4]);
 	else										
 		v[7]=v[0];
@@ -157,12 +156,7 @@ Bank's effective interest rate on loans is a average between the desired interes
 	v[3]=VL("Financial_Sector_Avg_Interest_Rate_Long_Term", 1);                //sector average interest rate on loans in the last period
 	v[4]=V("Central_Bank_Basic_Interest_Rate");                          	   //central bank interest rate
 	v[5]=v[2]*(v[1])+(1-v[2])*(v[3]);                                      	   //bank's interest rate is a average between the desired and the sector average 
-	v[6]=V("id_public_bank");
-	if(v[6]==1)
-		v[8]=(V("fs_spread_long_term_public")+v[4]);                           //public bank's interest rate
-	else
-		v[8]=v[5];
-RESULT(max(0,v[8]))
+RESULT(max(0,v[5]))
 
 
 EQUATION("Bank_Desired_Short_Term_Spread")
@@ -198,12 +192,7 @@ Bank's effective interest rate on loans is a average between the desired interes
 	v[3]=VL("Financial_Sector_Avg_Interest_Rate_Short_Term", 1);                //sector average interest rate on loans in the last period
 	v[4]=V("Central_Bank_Basic_Interest_Rate");                          		//central bank interest rate
 	v[5]=v[2]*(v[1])+(1-v[2])*(v[3]);                                      		//bank's interest rate is a average between the desired and the sector average 
-	v[6]=V("id_public_bank");
-	if(v[6]==1)
-		v[8]=(V("fs_spread_short_term_public")+v[4]);                              //public bank's interest rate
-	else
-		v[8]=v[5];
-RESULT(max(0,v[8]))
+RESULT(max(0,v[5]))
 
 
 /**********************************************************************
@@ -466,15 +455,7 @@ if(v[0]<=0)//losses
 }
 else
 {
-	v[20]=V("switch_fixed_bank_distribution");
-	if(v[20]==1)
-	{
-	v[21]=V("fs_profits_distribution_rate");
-	v[1]=v[0]*v[21];
-	v[2]=v[0]*(1-v[21]);
-	}
-	else
-	{
+
 	v[3]=VL("Bank_Accumulated_Profits",1);
 	v[4]=V("Bank_Total_Stock_Loans");
 	v[5]=V("cb_minimum_capital_ratio");									//minimum capital ratio defined by the regulatory rule
@@ -497,7 +478,7 @@ else
 		v[2]=min(v[0],(v[14]-v[3]));									//retain the needed difference, limited to current profits
 		v[1]=v[0]-v[2];													//distribute the rest
 		}
-	}
+
 }
 WRITE("Bank_Retained_Profits", v[2]);
 RESULT(v[1])

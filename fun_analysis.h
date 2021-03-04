@@ -175,28 +175,22 @@ RESULT(VS(country, "Exit_Bankruptcy_Share"))
 
 /*****CLASS STATS*****/
 EQUATION("YSH_A")
-cur=SEARCH_CNDS(country, "class_id", 1);
-RESULT(VS(cur, "Class_Income_Share"))
+RESULT(VS(aclass, "Class_Income_Share"))
 
 EQUATION("YSH_B")
-cur=SEARCH_CNDS(country, "class_id", 2);
-RESULT(VS(cur, "Class_Income_Share"))
+RESULT(VS(bclass, "Class_Income_Share"))
 
 EQUATION("YSH_C")
-cur=SEARCH_CNDS(country, "class_id", 3);
-RESULT(VS(cur, "Class_Income_Share"))
+RESULT(VS(cclass, "Class_Income_Share"))
 
 EQUATION("WSH_A")
-cur=SEARCH_CNDS(country, "class_id", 1);
-RESULT(VS(cur, "Class_Wealth_Share"))
+RESULT(VS(aclass, "Class_Wealth_Share"))
 
 EQUATION("WSH_B")
-cur=SEARCH_CNDS(country, "class_id", 2);
-RESULT(VS(cur, "Class_Wealth_Share"))
+RESULT(VS(bclass, "Class_Wealth_Share"))
 
 EQUATION("WSH_C")
-cur=SEARCH_CNDS(country, "class_id", 3);
-RESULT(VS(cur, "Class_Wealth_Share"))
+RESULT(VS(cclass, "Class_Wealth_Share"))
 
 
 /*****SECTORAL STATS*****/
