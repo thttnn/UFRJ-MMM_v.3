@@ -610,23 +610,6 @@ Label Root
 			Var: YSH_A
 			Var: YSH_B
 			Var: YSH_C
-			Var: CF
-			Var: DT
-			Var: ER
-			Var: G
-			Var: GDPX_r
-			Var: IT
-			Var: M
-			Var: NX
-			Var: PDEBT_GDP
-			Var: PS_GDP
-			Var: PST
-			Var: RES
-			Var: RES_GDP
-			Var: T
-			Var: X
-			Var: FS_DMET
-			Var: FS_RES
 
 		}
 
@@ -708,7 +691,6 @@ Label Root
 		Param: begin_flexible_surplus_target
 		Param: switch_extra_gov_expenses
 		Param: switch_reserves_target
-		Param: switch_government_priority
 
 	}
 
@@ -777,7 +759,7 @@ Var: Country_Total_Classes_Expenses 0 n + n n
 Var: Country_Total_Investment_Expenses 0 n + n n
 Var: Country_Total_Nominal_Production 0 n + n n
 Var: Country_Total_Profits 0 s + n n
-Var: Country_Total_Wages 0 s + n n
+Var: Country_Total_Wages 0 n + n n
 Var: Country_Wage_Share 0 s + n n
 Var: Exit 0 s + n n
 Var: Exit_Bankruptcy_Events 0 s + n n
@@ -793,9 +775,9 @@ Param: switch_creditworthness 0 n + n n	0
 Param: switch_entry 0 n + n n	1
 Param: switch_interest_investment 0 n + n n	0
 Param: switch_interest_payment 0 n + n n	0
-Param: switch_monetary_policy 0 n + n n	1
+Param: switch_monetary_policy 0 n + n n	5
 Param: switch_extra_imports 0 n + n n	0
-Param: begin_debt_target_rule 0 n + n n	-1
+Param: begin_debt_target_rule 0 n + n n	0
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
 Param: begin_surplus_target_rule 0 n + n n	0
 Param: begin_monetary_policy 0 n + n n	0
@@ -803,7 +785,6 @@ Param: begin_credit_rationing 0 n + n n	0
 Param: begin_flexible_surplus_target 0 n + n n	0
 Param: switch_extra_gov_expenses 0 n + n n	1
 Param: switch_reserves_target 0 n + n n	0
-Param: switch_government_priority 0 n + n n	1
 
 Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
@@ -892,9 +873,9 @@ Param: fs_elasticity_default 0 n + n n	0
 Param: fs_elasticity_interest_long_term 0 n + n n	0
 Param: fs_elasticity_interest_short_term 0 n + n n	0
 Param: fs_elasticity_rationing 0 n + n n	0
-Param: fs_expectations 0 n + n n	0
+Param: fs_expectations 0 n + n n	1
 Param: fs_initial_leverage 0 n + n n	1
-Param: fs_number_object_banks 0 n + n n	10
+Param: fs_number_object_banks 0 n + n n	20
 Param: fs_price_strategy_long_term 0 n + n n	1
 Param: fs_price_strategy_short_term 0 n + n n	1
 Param: fs_risk_premium_class 0 n + n n	0
@@ -992,11 +973,11 @@ Object: GOVERNMENT C	1
 Param: government_benefit_rate 0 n + n n	0
 Param: government_expectations 0 n + n n	0
 Param: government_inflation_passtrought 0 n + n n	1
-Param: government_initial_debt_gdp_ratio 0 n + n n	0.5
+Param: government_initial_debt_gdp_ratio 0 n + n n	1
 Param: government_initial_share_capital 0 n + n n	0.3
 Param: government_initial_share_consumption 0 n + n n	0.1
 Param: government_initial_share_input 0 n + n n	0.1
-Param: government_max_debt_ratio 0 n + n n	1
+Param: government_max_debt_ratio 0 n + n n	0.9
 Param: government_min_debt_ratio 0 n + n n	0.5
 Param: government_real_growth 0 n + n n	0.0025
 Param: government_surplus_target_adjustment 0 n + n n	0.001
@@ -1365,23 +1346,6 @@ Var: WSH_C 0 s + n n
 Var: YSH_A 0 s + n n
 Var: YSH_B 0 s + n n
 Var: YSH_C 0 s + n n
-Var: CF 0 s + n n
-Var: DT 0 s + n n
-Var: ER 0 s + n n
-Var: G 0 s + n n
-Var: GDPX_r 0 s + n n
-Var: IT 0 s + n n
-Var: M 0 s + n n
-Var: NX 0 s + n n
-Var: PDEBT_GDP 0 s + n n
-Var: PS_GDP 0 s + n n
-Var: PST 0 s + n n
-Var: RES 0 s + n n
-Var: RES_GDP 0 s + n n
-Var: T 0 s + n n
-Var: X 0 s + n n
-Var: FS_DMET 0 s + n n
-Var: FS_RES 0 s + n n
 
 SIM_NUM 1
 SEED 1
@@ -1829,7 +1793,7 @@ END_DESCRIPTION
 Parameter_switch_monetary_policy
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 5.
 END_DESCRIPTION
 
 Parameter_switch_extra_imports
@@ -1841,7 +1805,7 @@ END_DESCRIPTION
 Parameter_begin_debt_target_rule
 (no description available)
 _INIT_
-All 1 instances equal to -1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_begin_expenses_ceiling_rule
@@ -1884,12 +1848,6 @@ Parameter_switch_reserves_target
 (no description available)
 _INIT_
 All 1 instances equal to 0.
-END_DESCRIPTION
-
-Parameter_switch_government_priority
-(no description available)
-_INIT_
-All 1 instances equal to 1.
 END_DESCRIPTION
 
 Object_CLASSES
@@ -2253,7 +2211,7 @@ END_DESCRIPTION
 Parameter_exchange_rate_adjustment
 determines how exchange rate adjusts each period based on balance of payments
 _INIT_
-All 1 instances equal to 0.001.
+
 END_DESCRIPTION
 
 Parameter_exchange_rate_max
@@ -2423,7 +2381,7 @@ END_DESCRIPTION
 Parameter_fs_expectations
 financial sector (and banks) expectation parameter
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_fs_initial_leverage
@@ -2436,7 +2394,7 @@ END_DESCRIPTION
 Parameter_fs_number_object_banks
 determines the initial number of banks
 _INIT_
-All 1 instances equal to 10.
+All 1 instances equal to 20.
 END_DESCRIPTION
 
 Parameter_fs_price_strategy_long_term
@@ -3028,40 +2986,40 @@ Parameter_government_initial_debt_gdp_ratio
 Determines the initial relation between GDP and Government Debt.
 Used in calibration.
 _INIT_
-All 1 instances equal to 0.5.
+
 END_DESCRIPTION
 
 Parameter_government_initial_share_capital
 Determines th inital participation of investment in government's budget.
 Used in calibration.
 _INIT_
-All 1 instances equal to 0.3.
+
 END_DESCRIPTION
 
 Parameter_government_initial_share_consumption
 Determines th inital participation of consumption goods in government's budget.
 Used in calibration.
 _INIT_
-All 1 instances equal to 0.1.
+
 END_DESCRIPTION
 
 Parameter_government_initial_share_input
 Determines th inital participation of intermediate goods in government's budget.
 Used in calibration.
 _INIT_
-All 1 instances equal to 0.1.
+
 END_DESCRIPTION
 
 Parameter_government_max_debt_ratio
 Determines the maximum government debt to GDP ratio accepted in fiscal policies decisions
 _INIT_
-All 1 instances equal to 2.
+
 END_DESCRIPTION
 
 Parameter_government_min_debt_ratio
 Determines the minimum government debt to GDP ratio accepted in fiscal policies decisions
 _INIT_
-All 1 instances equal to 0.5.
+
 END_DESCRIPTION
 
 Parameter_government_real_growth
@@ -3073,7 +3031,7 @@ END_DESCRIPTION
 Parameter_government_surplus_target_adjustment
 Determines how much to increase or decrease the surplus rate target each period if surplus target if flexible
 _INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Government_Debt
@@ -5367,104 +5325,6 @@ Variable_YSH_C
 (no description available)
 _INIT_
 
-END_DESCRIPTION
-
-Variable_CF
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_DT
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_ER
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_G
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_GDPX_r
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_IT
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_M
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_NX
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_PDEBT_GDP
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_PS_GDP
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_PST
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_RES
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_RES_GDP
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_T
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_X
-(no description available)
-_INIT_
-
-END_DESCRIPTION
-
-Variable_FS_DMET
-(no description available)
-END_DESCRIPTION
-
-Variable_FS_RES
-(no description available)
 END_DESCRIPTION
 
 

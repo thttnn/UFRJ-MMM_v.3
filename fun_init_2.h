@@ -146,7 +146,7 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	WRITES(capital, "sector_initial_demand", v[142]);
 	WRITES(input, "sector_initial_demand", v[143]);
 
-v[210]=v[211]=v[212]=v[213]=v[214]=v[215]=v[216]=v[217]=v[218]=v[219]=0;
+v[210]=v[211]=v[212]=v[213]=v[214]=v[215]=v[216]=v[217]=v[218]=v[219]=v[226]=0;
 CYCLE(cur, "SECTORS")
 {
 	v[150]=VS(cur, "sector_initial_demand");
@@ -327,6 +327,7 @@ v[216]+=v[186];														//total interest receivment
 v[217]+=v[187];														//total wage payment
 v[218]+=v[195];														//total distributed profits
 v[219]+=v[181];														//total nominal capital
+v[226]+=(v[193]-v[194]);											//total demand loans
 }
 
 	v[220]=v[214]/(v[213]+v[219]);									//average debt rate
@@ -359,6 +360,7 @@ v[219]+=v[181];														//total nominal capital
 		WRITELLS(cur1, "Bank_Total_Stock_Loans", v[214]/v[57], 0, 1);
 		WRITELLS(cur1, "Bank_Competitiveness", 1, 0, 1);
 		WRITELLS(cur1, "Bank_Demand_Met", 1, 0, 1);
+		WRITELLS(cur1, "Bank_Demand_Loans", v[226]/v[57], 0, 1);
 		WRITELLS(cur1, "Bank_Desired_Short_Term_Spread", v[53], 0, 1);
 		WRITELLS(cur1, "Bank_Desired_Long_Term_Spread", v[54], 0, 1);
 		WRITELLS(cur1, "Bank_Interest_Rate_Short_Term", v[102]+v[53], 0, 1);

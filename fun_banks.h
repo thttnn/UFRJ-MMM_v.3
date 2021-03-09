@@ -448,10 +448,10 @@ RESULT(v[3]+v[6])
 EQUATION("Bank_Distributed_Profits")
 
 v[0]=V("Bank_Profits");
-if(v[0]<=0)//losses
+if(v[0]<=0)																//losses
 {
-	v[1]=0;//distribution is zero
-	v[2]=v[0];//losses are fully internalized
+	v[1]=0;																//distribution is zero
+	v[2]=v[0];															//losses are fully internalized
 }
 else
 {
@@ -465,9 +465,10 @@ else
 	v[9]=V("fs_sensitivity_default");									//bank's sensitivity to its own default ratio
 	v[10]=(v[5]+v[9]*v[8]+v[6]*v[7]);
 	v[11]=v[4]*v[10];													//needed accumulated profits
-	v[12]=V("Bank_Demand_Loans");
+	v[12]=LAG_GROWTH(p,"Bank_Demand_Loans",1);
 	v[13]=V("fs_expectations");
-	v[14]=(v[4]+v[13]*v[12])*v[10];
+	v[15]=V("Bank_Demand_Loans");
+	v[14]=(v[4]+v[15]*(1+v[13]*v[12]))*v[10];
 	if(v[14]<=v[3])														//if what is needed is lower than what the bank already has
 		{
 		v[1]=v[0];														//distribute everything

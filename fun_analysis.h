@@ -44,9 +44,6 @@ RESULT(VS(country, "Country_Avg_Productivity"))
 EQUATION("MK")//Average Markup
 RESULT(VS(country, "Country_Avg_Markup"))
 
-EQUATION("PDEBT")//Public Debt
-RESULT(VS(government, "Government_Debt"))
-
 EQUATION("KL")//Capital labour ratio
 RESULT(VS(country,"Country_Capital_Labor_Ratio"))
 
@@ -142,6 +139,12 @@ RESULT(VS(financial, "Financial_Sector_Default_Rate"))
 
 EQUATION("FS_DEF")//Financial sector Default
 RESULT(VS(financial, "Financial_Sector_Defaulted_Loans"))
+
+EQUATION("FS_DMET")//Financial sector Demand Met
+RESULT(VS(financial, "Financial_Sector_Demand_Met"))
+
+EQUATION("FS_RES")//Financial sector Rescue
+RESULT(VS(financial, "Financial_Sector_Rescue"))
    
 EQUATION("FS_PR")//Financial sector profits
 RESULT(VS(financial, "Financial_Sector_Profits"))   
@@ -331,5 +334,56 @@ EQUATION("DEP_FS_G")//Stock of total deposits growth in the financial sector
 RESULT(LAG_GROWTH(p,"DEP_FS",1))
 
 
+/*****GOVERNMENT STATS*****/
 
+EQUATION("G")//Quarterly Government Expenses
+RESULT(VS(government, "Government_Effective_Expenses"))
+
+EQUATION("T")//Quarterly Total Taxes
+RESULT(VS(government, "Government_Total_Taxes"))
+
+EQUATION("DT")//Quarterly Direct Taxes
+RESULT(VS(government, "Government_Income_Taxes"))
+
+EQUATION("IT")//Quarterly Indiret Taxes
+RESULT(VS(government, "Government_Indirect_Taxes"))
+
+EQUATION("PST")//Primary Surplus Target
+RESULT(VS(government, "Government_Surplus_Rate_Target"))
+
+EQUATION("PS_GDP")//Primary Surplus to GDP
+RESULT(VS(government, "Government_Surplus_GDP_Ratio"))
+
+EQUATION("PDEBT")//Public Debt
+RESULT(VS(government, "Government_Debt"))
+
+EQUATION("PDEBT_GDP")//Public Debt to GDP
+RESULT(VS(government, "Government_Debt_GDP_Ratio"))
+
+
+/*****EXTERNAL STATS*****/
+
+EQUATION("GDPX_r")//Real External Income
+RESULT(VS(external, "External_Real_Income"))
+
+EQUATION("X")//Quarterly Nominal Exports
+RESULT(VS(external, "Country_Nominal_Exports"))
+
+EQUATION("M")//Quarterly Nominal Imports
+RESULT(VS(external, "Country_Nominal_Imports"))
+
+EQUATION("NX")//Quarterly Trade Balance
+RESULT(VS(external, "Country_Trade_Balance"))
+
+EQUATION("CF")//Quarterly Capital Flows
+RESULT(VS(external, "Country_Capital_Flows"))
+
+EQUATION("RES")//Stock of International Reserves
+RESULT(VS(external, "Country_International_Reserves"))
+
+EQUATION("RES_GDP")//Stock of International Reserves to GDP
+RESULT(VS(external, "Country_International_Reserves_GDP_Ratio"))
+
+EQUATION("ER")//Exchange Rate
+RESULT(VS(external, "Country_Exchange_Rate"))
 

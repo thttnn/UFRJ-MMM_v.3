@@ -32,6 +32,18 @@ The amount depends on current unemployment.
 		v[9]=v[6]*(v[0]*v[8]/v[7]);
 		v[1]=v[1]+v[9];
 	}
+	
+	v[1]=0;
+	CYCLES(country, cur, "SECTORS")
+	{
+		v[2]=VLS(cur, "Sector_Employment",1);
+		v[3]=VLS(cur, "Sector_Employment",2);
+		v[4]=-(v[2]-v[3]);
+		v[5]=max(0, v[4]);
+		v[8]=VLS(cur, "Sector_Avg_Wage", 1);
+		v[9]=v[5]*(v[0]*v[8]);
+		v[1]=v[1]+v[9];
+	}	
 RESULT(max(0,v[1]))
 
 
@@ -200,16 +212,29 @@ if(v[0]==-1)                                               //no fiscal rule
 }
 else
 {
-	v[8]=min(v[0],v[1]);								   //government wages is desired limited by maximum expenses
-	v[9]=min(v[2],(v[0]-v[8]));    						   //government unemployment benefits is desired limited by maximum expenses minus wages
-	v[10]=min(v[3],(v[0]-v[8]-v[9]));       			   //government consumption is desired limited by maximum expenses minus wages and benefits
-	v[11]=min(v[5],(v[0]-v[8]-v[9]-v[10]));        		   //government intermediate is desired limited by maximum expenses minus wages and benefits
-	v[12]=min(v[4],(v[0]-v[8]-v[9]-v[10]-v[11]));          //government investment is desired limited by maximum expenses minus wages and benefits
-	v[14]=max(0,(v[0]-(v[8]+v[9]+v[10]+v[11]+v[12])));
-	if(V("switch_extra_gov_expenses")==1)
-		v[15]=v[8]+v[14];
+	if(V("switch_government_priority")==1)
+		{
+		v[8]=min(v[0],v[1]);								   //government wages is desired limited by maximum expenses
+		v[9]=min(v[2],(v[0]-v[8]));    						   //government unemployment benefits is desired limited by maximum expenses minus wages
+		v[10]=min(v[3],(v[0]-v[8]-v[9]));       			   //government consumption is desired limited by maximum expenses minus wages and benefits
+		v[11]=min(v[5],(v[0]-v[8]-v[9]-v[10]));        		   //government intermediate is desired limited by maximum expenses minus wages and benefits
+		v[12]=min(v[4],(v[0]-v[8]-v[9]-v[10]-v[11]));          //government investment is desired limited by maximum expenses minus wages and benefits
+		v[14]=max(0,(v[0]-(v[8]+v[9]+v[10]+v[11]+v[12])));
+		if(V("switch_extra_gov_expenses")==1)
+			v[15]=v[8]+v[14];
+		else
+			v[15]=v[8];
+		}
 	else
-		v[15]=v[8];
+		{
+		v[16]=v[1]+v[2]+v[3]+v[4]+v[5];
+		v[15]=(v[1]/v[16])*v[0];
+		v[9]=(v[2]/v[16])*v[0];
+		v[10]=(v[3]/v[16])*v[0];
+		v[12]=(v[4]/v[16])*v[0];
+		v[11]=(v[5]/v[16])*v[0];	
+		}
+	
 }
 WRITE("Government_Effective_Wages", max(0,v[15]));
 WRITE("Government_Effective_Unemployment_Benefits",  max(0,v[9]));
