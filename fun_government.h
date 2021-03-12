@@ -94,12 +94,22 @@ Adjusts government surplus target based on debt to gdp evolution
 	v[5]=V("government_min_debt_ratio");                       //minimum debt to gdp accepted, parameter
 	v[6]=V("government_surplus_target_adjustment");			   //adjustment parameter
 	v[9]=V("begin_flexible_surplus_target");
-	if(v[3]>v[4]&&v[3]>v[8]&&t>v[9])                           //if debt to gdp is higher than accepted and growing
-		v[7]=v[2]+v[6];										   //increase surplus target
-	else if (v[3]<v[5]&&v[3]<v[8]&&t>v[9])                     //if debt to gdp is lower than accepted and decreasing
-		v[7]=v[2]-v[6];										   //deacrease surplus target
-	else                                                       //if current debt to gdp is between accepted band
-		v[7]=v[2];                                             //do not change surplus taget                                           
+	if(t>v[9])
+	{
+	if(v[3]>v[4])                           		   //if debt to gdp is higher than accepted 
+		v[7]=v[2]+v[6];							       //increase surplus target
+	else if (v[3]<v[5])                     		   //if debt to gdp is lower than accepted 
+		v[7]=v[2]-v[6];								   //deacrease surplus target
+	else											   //if debt to gdp is between acceptable band
+		{
+		if(v[3]>v[8])
+			v[7]=v[2]+v[6];							   //increase surplus target
+		else
+			v[7]=v[2];		
+		}		
+	}
+	else                                               //if flexible surplus target rule is not active
+		v[7]=v[2];                                     //do not change surplus taget                                           
 RESULT(v[7])
 
 

@@ -82,6 +82,8 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	v[100]=(((v[20]*v[22]/v[21])+(v[30]*v[32]/v[31])+(v[10]*v[12]/v[11]))*v[23])/v[1];				//nominal GDP
 	LOG("\nNominal GDP is %f.",v[100]);
 	
+	v[270]=WHTAVE("sector_initial_price", "sector_initial_demand")/SUM("sector_initial_demand");
+	
 	//GOVERNMENT INTERMEDIATE CALCULATION
 	v[101]=v[100]*v[60];								//government debt
 	v[102]=pow((1+v[71]),(1/v[0]))-1;					//quarterly basic interest rate
@@ -116,8 +118,8 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 		WRITELLS(government, "Government_Effective_Expenses", v[104], 0, i);
 
 	//EXTERNAL INTERMEDIATE CALCULATION
-	v[120]=v[41]*v[100];								//external nominal income
-	v[121]=v[120]*v[42]*(v[71]-v[40]);					//capital flows
+	v[120]=v[41]*v[100];						        //external nominal income
+	v[121]=v[100]*v[42]*(v[71]-v[40]);					//capital flows
 	v[122]=v[43]*v[100];								//international reserves
 	v[123]=v[100]*v[3];									//country nominal exports
 	v[124]=v[123]+v[121];								//country nominal imports
@@ -128,15 +130,6 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	v[129]=v[126]/v[23];								//country real capital exports
 	v[130]=v[127]/v[33];								//country real input exports
 
-	//WRITTING EXTERNAL SECTOR LAGGED VALUES
-	WRITELLS(external, "External_Real_Income", v[120], 0, 1);
-	WRITELLS(external, "External_Real_Income", v[120], 0, 2);
-	WRITELLS(external, "Country_Nominal_Exports", v[123], 0, 1);
-	WRITELLS(external, "Country_Nominal_Imports", v[124], 0, 1);
-	WRITELLS(external, "Country_International_Reserves", v[122], 0, 1);
-	WRITELLS(external, "Country_Trade_Balance", v[123]-v[124], 0, 1);
-	WRITELLS(external, "Country_Capital_Flows", v[121], 0, 1);
-	
 	//SECTORAL DEMAND CALCULATION
 	v[140]=v[100]*(1-v[1]-v[2]-v[3])-v[103];														//nominal domestic consumption
 	v[141]=(v[140]/v[13])+v[128]+v[109];															//real consumption demand
@@ -146,6 +139,17 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	WRITES(capital, "sector_initial_demand", v[142]);
 	WRITES(input, "sector_initial_demand", v[143]);
 
+	v[270]=WHTAVE("sector_initial_price", "sector_initial_demand")/SUM("sector_initial_demand");	//average price
+	
+	//WRITTING EXTERNAL SECTOR LAGGED VALUES
+	WRITELLS(external, "External_Real_Income", v[120]/v[270], 0, 1);
+	WRITELLS(external, "External_Real_Income", v[120]/v[270], 0, 2);
+	WRITELLS(external, "Country_Nominal_Exports", v[123], 0, 1);
+	WRITELLS(external, "Country_Nominal_Imports", v[124], 0, 1);
+	WRITELLS(external, "Country_International_Reserves", v[122], 0, 1);
+	WRITELLS(external, "Country_Trade_Balance", v[123]-v[124], 0, 1);
+	WRITELLS(external, "Country_Capital_Flows", v[121], 0, 1);
+	
 v[210]=v[211]=v[212]=v[213]=v[214]=v[215]=v[216]=v[217]=v[218]=v[219]=v[226]=0;
 CYCLE(cur, "SECTORS")
 {
@@ -385,11 +389,6 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 		v[234]=v[233]/v[232];											//average direct tax rate
 	if(V("switch_class_tax_structure")==4)								//taxation structure = profits, wages and interest
 		v[234]=v[233]/(v[232]+max(0,v[102]-v[52])*v[225]);				//average direct tax rate
-	
-		//WRITTING ON LOG 
-		LOG("\nTotal Wages is %f.",v[230]);
-		LOG("\nTotal Distributed Profits is %f.",v[231]);
-		LOG("\nTotal Households Gross Income is %f.",v[232]);
 		
 	//WRITTING CLASS LAGGED VALUES  
 	v[251]=v[252]=0;
@@ -425,7 +424,7 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 		WRITES(cur, "class_initial_imports_share", v[248]);
 		WRITELLS(cur, "Class_Stock_Deposits", v[225]*v[241], 0, 1);
 		WRITELLS(cur, "Class_Liquidity_Preference", 0, 0, 1);//olhar depois
-		WRITELLS(cur, "Class_Max_Debt_Rate", 1, 0, 1);//olhar depois
+		WRITELLS(cur, "Class_Max_Debt_Rate", v[241], 0, 1);//olhar depois
 		WRITELLS(cur, "Class_Stock_Loans", 0, 0, 1);
 		WRITELLS(cur, "Class_Avg_Nominal_Income", v[245], 0, 1);
 		for(i=1;i<=v[0]+1;i++)
@@ -440,8 +439,6 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 	CYCLE(cur, "CLASSES")
 		WRITELLS(cur, "Class_Real_Autonomous_Consumption", v[253]*VS(cur, "class_profit_share")/v[13], 0, 1);
 
-	
-v[270]=WHTAVE("sector_initial_price", "sector_initial_demand")/SUM("sector_initial_demand");
 v[271]=WHTAVE("sector_initial_productivity", "sector_initial_demand")/SUM("sector_initial_demand");
 v[272]=WHTAVE("sector_desired_degree_capacity_utilization", "sector_initial_demand")/SUM("sector_initial_demand");
 	
@@ -461,10 +458,6 @@ for(i=1;i<=2*v[0]+1;i++)
 	WRITELLS(country, "Country_Real_GDP", v[100]/v[270], 0, i);
 for(i=1;i<=v[0];i++)
 	WRITELLS(country, "Country_Capital_Goods_Price", v[23], 0, i);
-
-LOG("\nCountry_Annual_CPI_Inflation is %f.",v[70]);
-LOG("\nCountry_Price_Index is %f.",v[270]);
-LOG("\nCountry_Consumer_Price_Index is %f.",v[13]);
 	
 PARAMETER
 RESULT(0)

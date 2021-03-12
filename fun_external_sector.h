@@ -60,7 +60,7 @@ EQUATION("Country_Trade_Balance")
 RESULT(V("Country_Nominal_Exports")-V("Country_Nominal_Imports"))
 
 EQUATION("Country_Capital_Flows")
-	v[0]=V("External_Real_Income");
+	v[0]=VL("Country_GDP",1);
 	v[1]=V("Central_Bank_Basic_Interest_Rate");
 	v[2]=V("external_interest_rate");
 	v[5]=pow(1+v[2],1/V("annual_frequency"))-1;

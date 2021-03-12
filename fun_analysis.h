@@ -59,6 +59,9 @@ RESULT(VS(country,"Country_Profit_Share"))
 EQUATION("WSH")//Wage Share
 RESULT(VS(country,"Country_Wage_Share"))
 
+EQUATION("GINI")//Wage Share
+RESULT(VS(country,"Country_Gini_Index"))
+
 
 /*****REAL STATS*****/
 
@@ -339,7 +342,7 @@ RESULT(LAG_GROWTH(p,"DEP_FS",1))
 EQUATION("G")//Quarterly Government Expenses
 RESULT(VS(government, "Government_Effective_Expenses"))
 
-EQUATION("T")//Quarterly Total Taxes
+EQUATION("TT")//Quarterly Total Taxes
 RESULT(VS(government, "Government_Total_Taxes"))
 
 EQUATION("DT")//Quarterly Direct Taxes
