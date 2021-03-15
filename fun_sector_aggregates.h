@@ -190,6 +190,43 @@ Sum up firm's employment, given by firm's effective production over firm's avg p
 RESULT(v[0])
 
 
+EQUATION("Sector_Bargain_Power")
+	v[0]=CURRENT;                                                          	 			 //firm wage in the last period
+	v[1]=V("annual_frequency");
+	v[2]= fmod((double) t-1,v[1]);                                                      //divide the time period by the annual period parameter
+	v[3]=V("sector_passthrough_productivity");
+	v[4]=V("sector_passthrough_inflation");
+	if(v[2]==0)                                                                      	 //if the rest of the above division is zero (beggining of the year, adjust wages)
+		{
+		v[5]=LAG_GROWTH(p, "Sector_Employment", v[1], 1);
+		v[6]=V("sector_bargain_power_adjustment");
+		if(v[5]>0)
+			{
+			v[7]=v[3]*(1+v[5]*v[6]);
+			v[8]=v[4]*(1+v[5]*v[6]);
+			}
+		else if(v[5]<0)
+			{
+			v[7]=v[3]*(1+v[5]*v[6]);
+			v[8]=v[4]*(1+v[5]*v[6]);				
+			}
+		else
+			{
+			v[7]=v[3];		
+			v[8]=v[4];
+			}
+		}
+	else                                                                             	 //if the rest of the division is not zero, do not adjust wages
+		{
+		v[7]=v[3];		
+		v[8]=v[4];                                                                      //current wages will be the last period's
+		}
+	v[9]=min(1,max(v[7],0));
+	v[10]=min(1,max(v[8],0));
+	WRITE("sector_passthrough_productivity",v[9]);
+	WRITE("sector_passthrough_inflation",v[10]);
+RESULT(0)
+
 
 /*****SECTOR AVERAGES, SD AND MAX*****/
 

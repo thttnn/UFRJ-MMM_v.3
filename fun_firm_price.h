@@ -25,11 +25,12 @@ Nominal Wage of the firm. It increases year by year depending on inflation and f
 	if(v[2]==0)                                                                      	 //if the rest of the above division is zero (beggining of the year, adjust wages)
 		{
 		v[4]=LAG_GROWTH(p, "Firm_Avg_Productivity", v[1], 1);
-		v[5]=V("sector_passthrough_productivity");                                       
+		v[5]=V("sector_passthrough_productivity");
 		v[6]=VL("Country_Annual_CPI_Inflation", 1);
 		v[7]=V("sector_passthrough_inflation");
 		v[8]=VS(financial, "cb_target_annual_inflation");
-		v[9]=v[0]*(1+v[8]+v[5]*v[4]+v[7]*(max(0,v[6]-v[8])));                           //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
+		//v[9]=v[0]*(1+v[8]+v[5]*v[4]+v[7]*(max(0,v[6]-v[8])));                           //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
+		v[9]=v[0]*(1+v[7]*max(0,v[6])+v[5]*v[4]);
 		}
 	else                                                                             	 //if the rest of the division is not zero, do not adjust wages
 		v[9]=v[0];                                                                      //current wages will be the last period's
@@ -131,10 +132,11 @@ EQUATION("Firm_Price")
 /*
 Firm's effective price is a average between the desired price and the sector average price
 */
+	v[0]=VL("Sector_External_Price",1);
 	v[1]=V("Firm_Desired_Price");                                              //firm's desired price
 	v[2]=V("sector_strategic_price_weight");                                   //strategic weight parameter
 	v[3]=VL("Sector_Avg_Price", 1);                                            //sector average price in the last period
-	v[4]=v[2]*(v[1])+(1-v[2])*(v[3]);                                          //firm's price is a average between the desired price and the sector average price
+	v[4]=v[2]*(v[1])+(1-v[2])*((v[3]+v[0])/2);                                 //firm's price is a average between the desired price and the sector average price
 	v[5]=V("Firm_Price_Period");											  
 	if(v[5]==1)																    //if it is price adjustment perod for that firm
 		v[6]=v[4];																//set new price

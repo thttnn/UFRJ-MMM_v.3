@@ -81,9 +81,7 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 
 	v[100]=(((v[20]*v[22]/v[21])+(v[30]*v[32]/v[31])+(v[10]*v[12]/v[11]))*v[23])/v[1];				//nominal GDP
 	LOG("\nNominal GDP is %f.",v[100]);
-	
-	v[270]=WHTAVE("sector_initial_price", "sector_initial_demand")/SUM("sector_initial_demand");
-	
+		
 	//GOVERNMENT INTERMEDIATE CALCULATION
 	v[101]=v[100]*v[60];								//government debt
 	v[102]=pow((1+v[71]),(1/v[0]))-1;					//quarterly basic interest rate
@@ -144,6 +142,7 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	//WRITTING EXTERNAL SECTOR LAGGED VALUES
 	WRITELLS(external, "External_Real_Income", v[120]/v[270], 0, 1);
 	WRITELLS(external, "External_Real_Income", v[120]/v[270], 0, 2);
+	WRITELLS(external, "Country_Exchange_Rate", v[44], 0, 1);
 	WRITELLS(external, "Country_Nominal_Exports", v[123], 0, 1);
 	WRITELLS(external, "Country_Nominal_Imports", v[124], 0, 1);
 	WRITELLS(external, "Country_International_Reserves", v[122], 0, 1);
@@ -247,7 +246,7 @@ CYCLE(cur, "SECTORS")
 	WRITELLS(cur1, "Firm_Wage", v[188], 0, 1);
 	WRITELLS(cur1, "Firm_Desired_Markup", v[190], 0, 1);
 	WRITELLS(cur1, "Firm_Avg_Debt_Rate", v[162], 0, 1);
-	WRITELLS(cur1, "Firm_Max_Debt_Rate", 3*v[162], 0, 1);
+	WRITELLS(cur1, "Firm_Max_Debt_Rate", 2*v[162], 0, 1);
 	WRITELLS(cur1, "Firm_Stock_Inputs", v[150]*v[154]/v[152], 0, 1);
 	WRITELLS(cur1, "Firm_Liquidity_Preference", v[163], 0, 1);
 	WRITELLS(cur1, "Firm_Capital", v[181]/v[152], 0, 1);

@@ -87,6 +87,8 @@ EQUATION("Government_Surplus_Rate_Target")
 /*
 Adjusts government surplus target based on debt to gdp evolution
 */
+	v[0]=V("government_max_surplus_target");                     
+	v[1]=V("government_min_surplus_target");
 	v[2]=CURRENT;                   						   //last period's target
 	v[3]=VL("Government_Debt_GDP_Ratio",1);                    //current debt to gdp ratio
 	v[8]=VL("Government_Debt_GDP_Ratio",2);
@@ -94,7 +96,7 @@ Adjusts government surplus target based on debt to gdp evolution
 	v[5]=V("government_min_debt_ratio");                       //minimum debt to gdp accepted, parameter
 	v[6]=V("government_surplus_target_adjustment");			   //adjustment parameter
 	v[9]=V("begin_flexible_surplus_target");
-	if(t>v[9])
+	if(t>=v[9]&&v[9]!=-1)
 	{
 	if(v[3]>v[4])                           		   //if debt to gdp is higher than accepted 
 		v[7]=v[2]+v[6];							       //increase surplus target
@@ -109,8 +111,10 @@ Adjusts government surplus target based on debt to gdp evolution
 		}		
 	}
 	else                                               //if flexible surplus target rule is not active
-		v[7]=v[2];                                     //do not change surplus taget                                           
-RESULT(v[7])
+		v[7]=v[2];                                     //do not change surplus taget  
+		
+	v[8]=max(min(v[0],v[7]),v[1]);
+RESULT(v[8])
 
 
 EQUATION("Government_Max_Expenses_Debt")
@@ -231,28 +235,28 @@ else
 		v[12]=min(v[4],(v[0]-v[8]-v[9]-v[10]-v[11]));          //government investment is desired limited by maximum expenses minus wages and benefits
 		v[14]=max(0,(v[0]-(v[8]+v[9]+v[10]+v[11]+v[12])));
 		if(V("switch_extra_gov_expenses")==1)
-			v[15]=v[8]+v[14];
+			v[15]=v[12]+v[14];
 		else
-			v[15]=v[8];
+			v[15]=v[12];
 		}
 	else
 		{
 		v[16]=v[1]+v[2]+v[3]+v[4]+v[5];
-		v[15]=(v[1]/v[16])*v[0];
+		v[8]=(v[1]/v[16])*v[0];
 		v[9]=(v[2]/v[16])*v[0];
 		v[10]=(v[3]/v[16])*v[0];
-		v[12]=(v[4]/v[16])*v[0];
+		v[15]=(v[4]/v[16])*v[0];
 		v[11]=(v[5]/v[16])*v[0];	
 		}
 	
 }
-WRITE("Government_Effective_Wages", max(0,v[15]));
+WRITE("Government_Effective_Wages", max(0,v[8]));
 WRITE("Government_Effective_Unemployment_Benefits",  max(0,v[9]));
 WRITE("Government_Effective_Consumption",  max(0,v[10]));
-WRITE("Government_Effective_Investment",  max(0,v[12]));
+WRITE("Government_Effective_Investment",  max(0,v[15]));
 WRITE("Government_Effective_Inputs",  max(0,v[11]));
 WRITE("Government_Desired_Expenses",  v[1]+v[2]+v[3]+v[4]+v[5]);
-v[13]=max(0,(v[15]+v[9]+v[10]+v[11]+v[12]));
+v[13]=max(0,(v[8]+v[9]+v[10]+v[11]+v[15]));
 RESULT(v[13])
 
 EQUATION_DUMMY("Government_Effective_Wages","Government_Effective_Expenses")

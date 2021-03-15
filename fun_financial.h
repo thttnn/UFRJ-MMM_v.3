@@ -76,7 +76,7 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 		v[30]=pow(1+VS(external, "Basic_Interest_Rate_Min"),V("annual_frequency"))-1;
 		v[31]=V("switch_reserves_target");
 		
-		v[17]=v[0]+v[5]+v[13]*(v[5]-v[1])+v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4])));
+		v[17]=v[0]+v[5]+v[13]*max(0,(v[5]-v[1]))+v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4])));
 		
 		if(v[31]==1)
 			v[32]=max(v[30],v[17]);

@@ -26,7 +26,8 @@ V("Class_Avg_Debt_Rate");
 V("Class_Interest_Rate");   
 V("Bank_Max_Total_Loans"); 
 
-/*****PRICE SETTING*****/     
+/*****PRICE SETTING*****/    
+V("Sector_Bargain_Power"); 
 V("Country_Annual_Inflation");  
 V("Country_Annual_CPI_Inflation"); 
 V("Firm_Competitiveness");                                  
