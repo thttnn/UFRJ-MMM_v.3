@@ -43,40 +43,17 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	if(v[12]==0)      											//no monetary policy rule, fixed nominal interest rate set by "cb_annual_real_interest_rate" parameter
 		v[20]=v[0]+v[1];
 	
-	if(v[12]==1||v[12]==2||v[12]==3||v[12]==4)					//taylor rule
+	if(v[12]==1)												//taylor rule
 	{
-		if(v[12]==1)											//single mandate taylor rule
-		{
-		v[13]=V("cb_sensitivity_inflation");
-		v[14]=0;
-		v[15]=0;
-		v[16]=0;
-		}
-		if(v[12]==2)											//dual mandate taylor rule
-		{
-		v[13]=V("cb_sensitivity_inflation");
-		v[14]=V("cb_sensitivity_capacity");
-		v[15]=0;
-		v[16]=0;
-		}
-		if(v[12]==3)											//triple mandate taylor rule with credit growth target
-		{
 		v[13]=V("cb_sensitivity_inflation");
 		v[14]=V("cb_sensitivity_capacity");
 		v[15]=V("cb_sensitivity_credit_growth");
-		v[16]=0;
-		}
-		if(v[12]==4)											//triple mandate taylor rule with debt rate target
-		{
-		v[13]=V("cb_sensitivity_inflation");
-		v[14]=V("cb_sensitivity_capacity");
-		v[15]=0;
 		v[16]=V("cb_sensitivity_debt_rate");
-		}
+
 		v[30]=pow(1+VS(external, "Basic_Interest_Rate_Min"),V("annual_frequency"))-1;
 		v[31]=V("switch_reserves_target");
 		
-		v[17]=v[0]+v[5]+v[13]*max(0,(v[5]-v[1]))+v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4])));
+		v[17]=v[0]+v[5]+v[13]*max(0,(v[5]-v[1]))-v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4])));
 		
 		if(v[31]==1)
 			v[32]=max(v[30],v[17]);
@@ -97,13 +74,13 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 
 	}
 	
-	if(v[12]==5)		//smithin rule
+	if(v[12]==2)		//smithin rule
 	v[20]=v[5];	
 	
-	if(v[12]==6)		//pasinetti rule
+	if(v[12]==3)		//pasinetti rule
 	v[20]=v[5]+v[11];
 
-	if(v[12]==7)		//kansas city rule.
+	if(v[12]==4)		//kansas city rule.
 	v[20]=0;
 
 		
