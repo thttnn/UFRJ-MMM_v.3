@@ -27,11 +27,13 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	v[2]=V("cb_target_capacity");
 	v[3]=V("cb_target_credit_growth");
 	v[4]=V("cb_target_debt_rate");
+	v[10]=V("cb_target_reserves");
 	
 	v[5]=VL("Country_Annual_CPI_Inflation",1);
 	v[6]=VL("Country_Idle_Capacity",1);
 	v[7]=VL("Financial_Sector_Total_Stock_Loans_Growth",1);
 	v[8]=VL("Country_Debt_Rate_Firms",1);
+	v[9]=VL("Country_International_Reserves_GDP_Ratio",1);
 	
 	v[11]=LAG_GROWTH(country, "Country_Avg_Productivity", 1,1);
 		
@@ -49,28 +51,26 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 		v[14]=V("cb_sensitivity_capacity");
 		v[15]=V("cb_sensitivity_credit_growth");
 		v[16]=V("cb_sensitivity_debt_rate");
+		v[21]=V("cb_sensitivity_reserves");
 
-		v[30]=pow(1+VS(external, "Basic_Interest_Rate_Min"),V("annual_frequency"))-1;
-		v[31]=V("switch_reserves_target");
+		v[17]=v[0]+v[5]
+			 +v[13]*(v[5]-v[1])
+			 -v[14]*(v[6]-v[2])
+			 +v[15]*max(0,v[7]-v[3])
+			 +v[16]*max(0,v[8]-v[4])
+			 -v[21]*min(0,v[9]-v[10]);
 		
-		v[17]=v[0]+v[5]+v[13]*max(0,(v[5]-v[1]))-v[14]*(v[6]-v[2])+v[15]*(max(0,(v[7]-v[3])))+v[16]*(max(0,(v[8]-v[4])));
-		
-		if(v[31]==1)
-			v[32]=max(v[30],v[17]);
-		else
-			v[32]=v[17];
-		
-		if(abs(v[32]-v[19])>v[18])
+		if(abs(v[17]-v[19])>v[18]&&v[18]!=-1)
 		{
-			if(v[32]>v[19])
+			if(v[17]>v[19])
 				v[20]=v[19]+v[18];
-			else if(v[32]<v[19])
+			else if(v[17]<v[19])
 				v[20]=v[19]-v[18];
 			else
 				v[20]=v[19];
 		}
 		else
-			v[20]=v[32];
+			v[20]=v[17];
 
 	}
 	

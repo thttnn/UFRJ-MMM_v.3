@@ -148,6 +148,7 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	WRITELLS(external, "Country_International_Reserves", v[122], 0, 1);
 	WRITELLS(external, "Country_Trade_Balance", v[123]-v[124], 0, 1);
 	WRITELLS(external, "Country_Capital_Flows", v[121], 0, 1);
+	WRITELLS(external, "Country_International_Reserves_GDP_Ratio", v[43], 0, 1);
 	
 v[210]=v[211]=v[212]=v[213]=v[214]=v[215]=v[216]=v[217]=v[218]=v[219]=v[226]=0;
 CYCLE(cur, "SECTORS")

@@ -254,7 +254,8 @@ V("Country_Annual_Real_Growth");
 V("Country_Likelihood_Crisis");                                 	
 V("Sector_Employment");                                 						    	
 V("Sector_Idle_Capacity");									
-V("Country_Idle_Capacity");                                      	
+V("Country_Idle_Capacity");  
+                                    	
 
 /*****ANALYSIS*****/
 V("Class_Income_Share");

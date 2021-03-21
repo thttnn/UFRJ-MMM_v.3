@@ -868,7 +868,7 @@ Param: class_loan_total_amount 0 n + n n	0	0	0
 
 Object: EXTERNAL_SECTOR C	1
 Param: exchange_rate_adjustment 0 n + n n	0.001
-Param: exchange_rate_max 0 n + n n	2
+Param: exchange_rate_max 0 n + n n	10
 Param: exchange_rate_min 0 n + n n	0.01
 Param: external_capital_flow_adjustment 0 n + n n	1
 Param: external_income_adjustmnent 0 n + n n	0
@@ -2267,7 +2267,7 @@ END_DESCRIPTION
 Parameter_exchange_rate_max
 (no description available)
 _INIT_
-All 1 instances equal to 2.
+All 1 instances equal to 10.
 END_DESCRIPTION
 
 Parameter_exchange_rate_min

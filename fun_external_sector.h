@@ -97,30 +97,10 @@ Nominal exchange rate.
 	v[4]=V("exchange_rate_min");
 	v[5]=V("exchange_rate_max");
 	v[6]=max(min(v[3],v[5]),v[4]);	
-RESULT(max(0.01,v[6]))
+RESULT(v[6])
 
 
-EQUATION("Basic_Interest_Rate_Min")
-	v[0]=pow(1+V("external_interest_rate"),1/V("annual_frequency"))-1;
-	v[1]=VS(centralbank,"cb_target_reserves");
-	v[2]=VL("Country_GDP",1);
-	v[3]=VL("Country_GDP",2);
-	v[4]=VLS(centralbank,"Central_Bank_Basic_Interest_Rate",1);
-	v[5]=VS(government, "government_expectations");
-	v[6]=VL("Country_International_Reserves",1);
-	v[7]=VL("Country_Nominal_Exports",1);
-	v[8]=VL("Country_Nominal_Imports",1);
-	v[9]=VL("External_Real_Income",1);
-	v[10]=VL("External_Real_Income",2);
 
-	v[11]= v[3]!=0? v[5]*(v[2]-v[3])/v[3] : 0;//domestic expected growth
-	v[12]= v[10]!=0? v[5]*(v[9]-v[10])/v[10] : 0;//external exprected growth
-
-	v[13]=V("external_capital_flow_adjustment");
-
-	v[14]=v[13]*v[9]*(1+v[12]);
-	v[15]= v[14]!=0? (v[1]*v[2]*(1+v[11])-v[6]-v[7]*(1+v[12])+v[8]*(1+v[11])+v[0]*v[14])/v[14] : v[4];
-RESULT(max(0,v[15]))
 
 
 

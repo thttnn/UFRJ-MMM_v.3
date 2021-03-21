@@ -66,13 +66,13 @@ RESULT(VS(country,"Country_Gini_Index"))
 /*****REAL STATS*****/
 
 EQUATION("GDP_r")//Real GDP
-RESULT(VS(country, "Country_Real_GDP"))
+RESULT(VS(country, "Country_Real_GDP_Demand"))
 
 EQUATION("C_r")//Quarterly Real Consumption
-RESULT(VS(country, "Country_Nominal_Consumption_Production")/V("P"))
+RESULT(VS(country, "Country_Total_Classes_Expenses")/V("P"))
 
 EQUATION("I_r")//Quarterly Real Investment
-RESULT(VS(country, "Country_Nominal_Capital_Production")/V("P"))
+RESULT(VS(country, "Country_Total_Investment_Expenses")/V("P"))
 
 EQUATION("INVE_r")//Real Aggregate Inventories
 RESULT(VS(country, "Country_Inventories")/V("P"))
