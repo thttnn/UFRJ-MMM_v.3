@@ -513,7 +513,7 @@ EQUATION("Country_Avg_Profit_Rate")
 /*
 Observed Ratio, Total Profits over Stock of Capital
 */
-	v[0]=V("Country_Total_Profits");
+	v[0]=V("Country_Total_Profits")-V("Financial_Sector_Profits");
 	v[1]=V("Country_Capital_Stock");
 	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])

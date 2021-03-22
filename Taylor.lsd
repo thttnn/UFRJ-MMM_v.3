@@ -868,12 +868,12 @@ Param: class_loan_total_amount 0 n + n n	0	0	0
 
 Object: EXTERNAL_SECTOR C	1
 Param: exchange_rate_adjustment 0 n + n n	0.001
-Param: exchange_rate_max 0 n + n n	2
-Param: exchange_rate_min 0 n + n n	0.01
+Param: exchange_rate_max 0 n + n n	10
+Param: exchange_rate_min 0 n + n n	0.1
 Param: external_capital_flow_adjustment 0 n + n n	1
 Param: external_income_adjustmnent 0 n + n n	0
 Param: external_income_growth 0 n + n n	0.0025
-Param: external_income_sd 0 n + n n	0.01
+Param: external_income_sd 0 n + n n	0.001
 Param: external_interest_rate 0 n + n n	0.03
 Param: external_shock_begin 0 n + n n	400
 Param: external_shock_duration 0 n + n n	20
@@ -1055,7 +1055,7 @@ Param: sector_exports_elasticity_income 0 n + n n	1	1	1
 Param: sector_exports_elasticity_price 0 n + n n	1	1	1
 Param: sector_external_price_competitiveness 0 n + n n	0	0	0
 Param: sector_external_price_growth 0 n + n n	0.005	0.005	0.005
-Param: sector_external_price_sd 0 n + n n	0.01	0.01	0.01
+Param: sector_external_price_sd 0 n + n n	0.001	0.001	0.001
 Param: sector_external_price_shock_begin 0 n + n n	400	400	400
 Param: sector_external_price_shock_duration 0 n + n n	20	20	20
 Param: sector_external_price_shock_size 0 n + n n	0	0	0
@@ -2267,13 +2267,13 @@ END_DESCRIPTION
 Parameter_exchange_rate_max
 (no description available)
 _INIT_
-All 1 instances equal to 2.
+All 1 instances equal to 10.
 END_DESCRIPTION
 
 Parameter_exchange_rate_min
 (no description available)
 _INIT_
-All 1 instances equal to 0.01.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_external_capital_flow_adjustment
@@ -2297,7 +2297,7 @@ END_DESCRIPTION
 Parameter_external_income_sd
 determines the standard deviation of external income growth
 _INIT_
-All 1 instances equal to 0.01.
+All 1 instances equal to 0.001.
 END_DESCRIPTION
 
 Parameter_external_interest_rate
@@ -3421,7 +3421,7 @@ END_DESCRIPTION
 Parameter_sector_external_price_sd
 determines the standard deviation on sector external price growth
 _INIT_
-All 3 instances equal to 0.01.
+All 3 instances equal to 0.001.
 END_DESCRIPTION
 
 Parameter_sector_external_price_shock_begin
