@@ -41,7 +41,7 @@ EQUATION("Firm_Input_Cost")
 /*
 Unitary costs of the inputs. It's given by the domestic input price plus the external input price, weighted by the proportion of the demand met by domestic and external sectors
 */
-	v[0]=V("sector_input_import_share");
+	v[0]=VL("Sector_Propensity_Import_Inputs",1);
 	v[1]=VLS(input,"Sector_Avg_Price",1);                 //intermediate sector average price
 	v[2]=VLS(input,"Sector_External_Price",1);            //sector external price
 	v[3]=V("sector_input_tech_coefficient");              //input technical relationship 
@@ -133,16 +133,19 @@ EQUATION("Firm_Price")
 Firm's effective price is a average between the desired price and the sector average price
 */
 	v[0]=VL("Sector_External_Price",1);
-	v[1]=V("Firm_Desired_Price");                                              //firm's desired price
-	v[2]=V("sector_strategic_price_weight");                                   //strategic weight parameter
-	v[3]=VL("Sector_Avg_Price", 1);                                            //sector average price in the last period
-	v[4]=v[2]*(v[1])+(1-v[2])*((v[3]+v[0])/2);                                 //firm's price is a average between the desired price and the sector average price
-	v[5]=V("Firm_Price_Period");											  
-	if(v[5]==1)																    //if it is price adjustment perod for that firm
-		v[6]=v[4];																//set new price
+	v[1]=VL("Sector_Avg_Price", 1);                                            //sector average price in the last period
+	v[2]=V("Country_Exchange_Rate");                      					   //exchange rate
+	v[3]=VL("Sector_Exports_Share",1);
+	v[4]=(1-v[3])*v[1] + v[3]*v[2]*v[0];									   //reference price, weighted by the expoerts share
+	v[5]=V("Firm_Desired_Price");                                              //firm's desired price
+	v[6]=V("sector_strategic_price_weight");                                   //strategic weight parameter
+	v[7]=v[6]*v[5]+(1-v[6])*v[4];                            				   //firm's price is a average between the desired price and the reference price
+	v[8]=V("Firm_Price_Period");											  
+	if(v[8]==1)																    //if it is price adjustment perod for that firm
+		v[9]=v[7];																//set new price
 	else																		//if it is not price adjustment period
-		v[6]=CURRENT;															//use current price
-RESULT(v[6])
+		v[9]=CURRENT;															//use current price
+RESULT(v[9])
 
 
 EQUATION("Firm_Effective_Markup")

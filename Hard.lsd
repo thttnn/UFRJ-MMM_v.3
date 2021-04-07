@@ -906,15 +906,15 @@ Param: fs_elasticity_interest_short_term 0 n + n n	0
 Param: fs_elasticity_rationing 0 n + n n	0
 Param: fs_expectations 0 n + n n	0
 Param: fs_initial_leverage 0 n + n n	1
-Param: fs_number_object_banks 0 n + n n	10
+Param: fs_number_object_banks 0 n + n n	20
 Param: fs_price_strategy_long_term 0 n + n n	1
 Param: fs_price_strategy_short_term 0 n + n n	1
 Param: fs_risk_premium_class 0 n + n n	0
-Param: fs_risk_premium_long_term 0 n + n n	0
-Param: fs_risk_premium_short_term 0 n + n n	0
+Param: fs_risk_premium_long_term 0 n + n n	0.5
+Param: fs_risk_premium_short_term 0 n + n n	0.2
 Param: fs_sensitivity_debt_rate 0 n + n n	0.5
 Param: fs_sensitivity_default 0 n + n n	0.5
-Param: fs_spread_deposits 0 n + n n	1
+Param: fs_spread_deposits 0 n + n n	0.005
 Param: fs_spread_long_term 0 n + n n	0.05
 Param: fs_spread_long_term_adjustment 0 n + n n	0
 Param: fs_spread_short_term 0 n + n n	0.01
@@ -1077,12 +1077,12 @@ Param: sector_initial_exports_share 0 n + n n	0.2	0.6	0.2
 Param: sector_initial_external_price 0 n + n n	1	2	1
 Param: sector_initial_liquidity_preference 0 n + n n	0	0	0
 Param: sector_initial_price 0 n + n n	1	2	1
-Param: sector_initial_productivity 0 n + n n	1	2	1
-Param: sector_initial_profit_rate 0 n + n n	0.3	0.3	0.3
+Param: sector_initial_productivity 0 n + n n	1	1	1
+Param: sector_initial_profit_rate 0 n + n n	0.2	0.4	0.2
 Param: sector_initial_quality 0 n + n n	1	1	1
 Param: sector_innovation_proportion 0 n + n n	0.5	0.5	0.5
 Param: sector_input_import_share 0 n + n n	0.05	0.05	0.05
-Param: sector_input_tech_coefficient 0 n + n n	0.5	0.5	0.5
+Param: sector_input_tech_coefficient 0 n + n n	0.4	0.4	0.4
 Param: sector_investment_frequency 0 n + n n	4	4	4
 Param: sector_learning_adjustment 0 n + n n	0	0	0
 Param: sector_liquidity_preference_adjustment 0 n + n n	0	0	0
@@ -2450,13 +2450,13 @@ Parameter_fs_initial_leverage
 determines the initial relation between loans and deposits
 used in calibration
 _INIT_
-
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_fs_number_object_banks
 determines the initial number of banks
 _INIT_
-All 1 instances equal to 10.
+All 1 instances equal to 20.
 END_DESCRIPTION
 
 Parameter_fs_price_strategy_long_term
@@ -2480,13 +2480,13 @@ END_DESCRIPTION
 Parameter_fs_risk_premium_long_term
 determines the risk premium on debt rate applied to firms' long term loans
 _INIT_
-
+All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Parameter_fs_risk_premium_short_term
 determines the risk premium on debt rate applied to firms' short term loans
 _INIT_
-
+All 1 instances equal to 0.2.
 END_DESCRIPTION
 
 Parameter_fs_sensitivity_debt_rate
@@ -2504,7 +2504,7 @@ END_DESCRIPTION
 Parameter_fs_spread_deposits
 determines the spread to be subtracted from basic interest rate to define interest rate on deposits. the higher the parameter value, lower (or zero) the interest rate on deposits will be
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 0.005.
 END_DESCRIPTION
 
 Parameter_fs_spread_long_term
@@ -3556,7 +3556,7 @@ determines the input tech relationship
 used in calibration 
 very important parameter
 _INIT_
-All 3 instances equal to 0.5.
+All 3 instances equal to 0.4.
 END_DESCRIPTION
 
 Parameter_sector_investment_frequency

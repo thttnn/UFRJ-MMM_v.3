@@ -60,6 +60,9 @@ EQUATION("Country_Trade_Balance")
 RESULT(V("Country_Nominal_Exports")-V("Country_Nominal_Imports"))
 
 EQUATION("Country_Capital_Flows")
+/*
+Country net capital flows are a function of the quarterly nominal interest rate differentials and is a multiple of the domestic GDP.
+*/
 	v[0]=VL("Country_GDP",1);
 	v[1]=V("Central_Bank_Basic_Interest_Rate");
 	v[2]=V("external_interest_rate");
@@ -68,14 +71,43 @@ EQUATION("Country_Capital_Flows")
 	v[4]=(v[1]-v[5])*v[0]*v[3];
 RESULT(v[4])
 
-
 EQUATION("Country_International_Reserves")
-RESULT(CURRENT+V("Country_Trade_Balance")+V("Country_Capital_Flows");)
+	
+	v[1]=V("Country_Trade_Balance");
+	v[2]=V("Country_Capital_Flows");
+	v[3]=VL("Country_International_Reserves",1);
+	v[4]=VL("Country_External_Debt",1);
+	if(v[3]>=0)
+		v[5]=v[3]+v[1]+v[2];
+	if(v[4]>=0)
+		v[5]=v[4]-v[1]-v[2];
+	if(v[5]>=0)
+	{
+		v[6]=v[5];
+		v[7]=0;
+	}
+	else
+	{
+		v[6]=0;
+		v[7]=-v[5];
+	}
+	WRITE("Country_External_Debt", v[7]);
+RESULT(v[6])
+
+EQUATION_DUMMY("Country_External_Debt", "Country_International_Reserves")
 
 
 EQUATION("Country_International_Reserves_GDP_Ratio")
 	v[0]=V("annual_frequency");
 	v[1]=V("Country_International_Reserves");
+	v[2]=V("Country_GDP");
+	v[3]= v[2]!=0? v[1]/v[2] : 0;
+RESULT(v[3])
+
+
+EQUATION("Country_External_Debt_GDP_Ratio")
+	v[0]=V("annual_frequency");
+	v[1]=V("Country_External_Debt");
 	v[2]=V("Country_GDP");
 	v[3]= v[2]!=0? v[1]/v[2] : 0;
 RESULT(v[3])
@@ -97,7 +129,12 @@ Nominal exchange rate.
 	v[4]=V("exchange_rate_min");
 	v[5]=V("exchange_rate_max");
 	v[6]=max(min(v[3],v[5]),v[4]);	
-RESULT(v[6])
+	v[7]=V("begin_flexible_exchange_rate");
+	if(t>v[7]&&v[7]!=-1)
+		v[8]=v[6];
+	else
+		v[8]=v[0];
+RESULT(v[8])
 
 
 

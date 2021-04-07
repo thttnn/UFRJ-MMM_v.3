@@ -149,6 +149,7 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	WRITELLS(external, "Country_Trade_Balance", v[123]-v[124], 0, 1);
 	WRITELLS(external, "Country_Capital_Flows", v[121], 0, 1);
 	WRITELLS(external, "Country_International_Reserves_GDP_Ratio", v[43], 0, 1);
+	WRITELLS(external, "Country_External_Debt", 0, 0, 1);
 	
 v[210]=v[211]=v[212]=v[213]=v[214]=v[215]=v[216]=v[217]=v[218]=v[219]=v[226]=0;
 CYCLE(cur, "SECTORS")
@@ -220,6 +221,8 @@ CYCLE(cur, "SECTORS")
 	WRITELLS(cur, "Sector_Max_Productivity", v[159], 0, 1);
 	WRITELLS(cur, "Sector_Avg_Wage", v[188], 0, 1);
 	WRITELLS(cur, "Sector_Max_Quality", v[167], 0, 1);
+	WRITELLS(cur, "Sector_Propensity_Import_Inputs", v[155], 0, 1);
+	WRITELLS(cur, "Sector_Exports_Share", (VS(cur,"sector_initial_exports_share")*v[123]/v[153])/v[150], 0, 1);
 	for(i=1;i<=v[0]+1;i++) 
 		WRITELLS(cur, "Sector_Avg_Price", v[153], 0, i);
 	for(i=1;i<=v[0]+1;i++) 
@@ -232,6 +235,10 @@ CYCLE(cur, "SECTORS")
 		WRITELLS(cur, "Sector_Demand_Met_By_Imports", 1, 0, i);
 	for(i=1;i<=v[151];i++) 
 		WRITELLS(cur, "Sector_Effective_Orders", v[150], 0, i);
+	
+	LOG("\nSector %f.0",SEARCH_INST(cur));LOG(" Desired Capacity Uilization is %f.",v[198]);
+	LOG("\nSector %f.0",SEARCH_INST(cur));LOG(" Profit Distribution Rate is %f.",v[196]);
+	LOG("\nSector %f.0",SEARCH_INST(cur));LOG(" Wage Rate is %f.",v[188]);
 	
 	//WRITTING FIRM LAGGED VALUES
 	cur1=SEARCHS(cur, "FIRMS");																	
@@ -397,8 +404,11 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 		v[240]=VS(cur, "class_propensity_to_spend");
 		v[241]=VS(cur, "class_profit_share");
 		v[242]=VS(cur, "class_wage_share");
+		v[254]=VS(cur, "class_initial_max_debt_rate");
+		v[255]=VS(cur, "class_initial_liquidity_preference");
 		
-		v[243]=v[230]*v[242]+v[231]*v[241]+max(0,v[102]-v[52])*v[225]*v[241]; //class gross income
+		//v[243]=v[230]*v[242]+v[231]*v[241]+max(0,v[102]-v[52])*v[225]*v[241]; //class gross income
+		v[243]=v[230]*v[242]+v[231]*v[241];
 		
 		if(V("switch_class_tax_structure")==0)							    	//taxation structure = no tax
 			v[244]=0;															//average direct tax rate							   				   				//class total tax
@@ -410,7 +420,8 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 			v[244]=v[234]*(v[230]*v[242]+v[231]*v[241]);						//average direct tax rate
 		if(V("switch_class_tax_structure")==4)									//taxation structure = profits, wages and interest
 			v[244]=v[234]*v[243];												//average direct tax rate
-		
+		LOG("\nClass %f.0",SEARCH_INST(cur));LOG(" Tax Rate is %f.",v[234]);
+
 		v[245]=v[243]-v[244];										//class disposable income
 		v[246]=v[245]*v[240];										//class induced expenses
 		v[247]=v[235]*v[241];										//class nominal imports
@@ -423,8 +434,8 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 		WRITES(cur, "class_direct_tax", v[234]);//same tax rate 
 		WRITES(cur, "class_initial_imports_share", v[248]);
 		WRITELLS(cur, "Class_Stock_Deposits", v[225]*v[241], 0, 1);
-		WRITELLS(cur, "Class_Liquidity_Preference", 0, 0, 1);//olhar depois
-		WRITELLS(cur, "Class_Max_Debt_Rate", v[241], 0, 1);//olhar depois
+		WRITELLS(cur, "Class_Liquidity_Preference", v[255], 0, 1);//olhar depois
+		WRITELLS(cur, "Class_Max_Debt_Rate", v[254], 0, 1);//olhar depois
 		WRITELLS(cur, "Class_Stock_Loans", 0, 0, 1);
 		WRITELLS(cur, "Class_Avg_Nominal_Income", v[245], 0, 1);
 		for(i=1;i<=v[0]+1;i++)

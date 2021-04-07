@@ -66,6 +66,7 @@ Label Root
 			Var: Class_Stock_Loans
 			Var: Class_Taxation
 			Var: Class_Wealth_Share
+			Param: class_initial_max_debt_rate
 
 		}
 
@@ -86,7 +87,6 @@ Label Root
 			Param: initial_exchange_rate
 			Param: initial_external_income_scale
 			Param: initial_reserves_ratio
-			Var: Basic_Interest_Rate_Min
 			Var: Country_Capital_Flows
 			Var: Country_Exchange_Rate
 			Var: Country_International_Reserves
@@ -151,12 +151,13 @@ Label Root
 				Param: cb_sensitivity_credit_growth
 				Param: cb_sensitivity_debt_rate
 				Param: cb_sensitivity_inflation
+				Param: cb_sensitivity_reserves
 				Param: cb_target_annual_inflation
 				Param: cb_target_capacity
 				Param: cb_target_credit_growth
 				Param: cb_target_debt_rate
-				Var: Central_Bank_Basic_Interest_Rate
 				Param: cb_target_reserves
+				Var: Central_Bank_Basic_Interest_Rate
 
 			}
 
@@ -631,6 +632,15 @@ Label Root
 			Var: FS_DMET
 			Var: FS_RES
 			Var: GINI
+			Var: PX_C
+			Var: PX_I
+			Var: PX_K
+			Var: IRLT_C
+			Var: IRLT_I
+			Var: IRLT_K
+			Var: IRST_C
+			Var: IRST_I
+			Var: IRST_K
 
 		}
 
@@ -655,7 +665,6 @@ Label Root
 		Param: switch_interest_investment
 		Param: switch_interest_payment
 		Param: switch_monetary_policy
-		Param: switch_reserves_target
 		Var: Country_Annual_CPI_Inflation
 		Var: Country_Annual_GDP
 		Var: Country_Annual_Growth
@@ -714,6 +723,9 @@ Label Root
 		Var: Exit_Deposits_Distributed
 		Var: Exit_Productive_Capacity
 		Var: Loans_Distribution_Firms
+		Param: switch_class_priority
+		Param: begin_flexible_exchange_rate
+		Param: switch_class_financial_constraints
 
 	}
 
@@ -750,8 +762,7 @@ Param: switch_extra_imports 0 n + n n	0
 Param: switch_government_priority 0 n + n n	1
 Param: switch_interest_investment 0 n + n n	0
 Param: switch_interest_payment 0 n + n n	0
-Param: switch_monetary_policy 0 n + n n	2
-Param: switch_reserves_target 0 n + n n	0
+Param: switch_monetary_policy 0 n + n n	1
 Var: Country_Annual_CPI_Inflation 1 s + n n	0
 Var: Country_Annual_GDP 0 s + n n
 Var: Country_Annual_Growth 1 s + n n	0
@@ -810,6 +821,9 @@ Var: Exit_Defaulted_Loans 0 s + n n
 Var: Exit_Deposits_Distributed 0 s + n n
 Var: Exit_Productive_Capacity 0 n + n n
 Var: Loans_Distribution_Firms 0 n + n n
+Param: switch_class_priority 0 n + n n	1
+Param: begin_flexible_exchange_rate 0 n + n n	0
+Param: switch_class_financial_constraints 0 n + n n	1
 
 Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
@@ -819,10 +833,10 @@ Param: class_id 0 n + n n	1	2	3
 Param: class_import_elasticity_price 0 n + n n	0	0	0
 Param: class_initial_imports_share 0 n + n n	0	0	0
 Param: class_liquidity_preference_adjustment 0 n + n n	0	0	0
-Param: class_population_share 0 n + n n	0.01	0.09	0.9
+Param: class_population_share 0 n + n n	0.01	0.29	0.7
 Param: class_profit_share 0 n + n n	0.5	0.4	0.1
-Param: class_propensity_to_spend 0 n + n n	0.5	0.7	0.9
-Param: class_wage_share 0 n + n n	0.1	0.2	0.7
+Param: class_propensity_to_spend 0 n + n n	0.5	0.8	1
+Param: class_wage_share 0 n + n n	0.1	0.4	0.5
 Param: class_wealth_tax 0 n + n n	0	0	0
 Var: Class_Available_Deposits 0 s + n n
 Var: Class_Avg_Debt_Rate 0 n + n n
@@ -861,6 +875,7 @@ Var: Class_Stock_Deposits 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Class_Stock_Loans 1 s + n n	0	0	0
 Var: Class_Taxation 0 s + n n
 Var: Class_Wealth_Share 0 s + n n
+Param: class_initial_max_debt_rate 0 n + n n	0.75	0.5	0.25
 
 Object: CLASS_LOANS C	1	1	1
 Param: class_loan_fixed_amortization 0 n + n n	0	0	0
@@ -869,25 +884,24 @@ Param: class_loan_interest_rate 0 n + n n	0	0	0
 Param: class_loan_total_amount 0 n + n n	0	0	0
 
 Object: EXTERNAL_SECTOR C	1
-Param: exchange_rate_adjustment 0 n + n n	0.001
+Param: exchange_rate_adjustment 0 n + n n	0.01
 Param: exchange_rate_max 0 n + n n	2
-Param: exchange_rate_min 0 n + n n	0.01
-Param: external_capital_flow_adjustment 0 n + n n	1
+Param: exchange_rate_min 0 n + n n	0.5
+Param: external_capital_flow_adjustment 0 n + n n	50
 Param: external_income_adjustmnent 0 n + n n	0
 Param: external_income_growth 0 n + n n	0.0025
 Param: external_income_sd 0 n + n n	0.01
-Param: external_interest_rate 0 n + n n	0.03
+Param: external_interest_rate 0 s + n n	0.03
 Param: external_shock_begin 0 n + n n	400
 Param: external_shock_duration 0 n + n n	20
 Param: external_shock_size 0 n + n n	0
 Param: initial_exchange_rate 0 n + n n	1
 Param: initial_external_income_scale 0 n + n n	1
-Param: initial_reserves_ratio 0 n + n n	1
-Var: Basic_Interest_Rate_Min 0 s + n n
+Param: initial_reserves_ratio 0 n + n n	10
 Var: Country_Capital_Flows 1 s + n n	0
 Var: Country_Exchange_Rate 1 s + n n	1
 Var: Country_International_Reserves 1 s + n n	0
-Var: Country_International_Reserves_GDP_Ratio 0 s + n n
+Var: Country_International_Reserves_GDP_Ratio 1 s + n n	0
 Var: Country_Nominal_Exports 1 s + n n	0
 Var: Country_Nominal_Imports 1 s + n n	0
 Var: Country_Trade_Balance 1 s + n n	0
@@ -904,11 +918,11 @@ Param: fs_number_object_banks 0 n + n n	10
 Param: fs_price_strategy_long_term 0 n + n n	1
 Param: fs_price_strategy_short_term 0 n + n n	1
 Param: fs_risk_premium_class 0 n + n n	0
-Param: fs_risk_premium_long_term 0 n + n n	0
-Param: fs_risk_premium_short_term 0 n + n n	0
+Param: fs_risk_premium_long_term 0 n + n n	0.5
+Param: fs_risk_premium_short_term 0 n + n n	0.1
 Param: fs_sensitivity_debt_rate 0 n + n n	0.5
 Param: fs_sensitivity_default 0 n + n n	0.5
-Param: fs_spread_deposits 0 n + n n	1
+Param: fs_spread_deposits 0 n + n n	0.0075
 Param: fs_spread_long_term 0 n + n n	0.05
 Param: fs_spread_long_term_adjustment 0 n + n n	0
 Param: fs_spread_short_term 0 n + n n	0.01
@@ -965,7 +979,7 @@ Var: Bank_Interest_Rate_Long_Term 1 n + n n	0
 Var: Bank_Interest_Rate_Short_Term 1 n + n n	0
 Var: Bank_Interest_Receivment 0 n + n n
 Var: Bank_Leverage 1 n + n n	0
-Var: Bank_Market_Share 1 n + n n	0
+Var: Bank_Market_Share 1 s + n n	0
 Var: Bank_Max_Total_Loans 0 n + n n
 Var: Bank_Number_Clients 0 n + n n
 Var: Bank_Profits 0 n + n n
@@ -983,19 +997,20 @@ Object: CENTRAL_BANK C	1
 Param: cb_annual_real_interest_rate 0 n + n n	0.01
 Param: cb_interest_rate_adjustment 0 n + n n	0.0025
 Param: cb_minimum_capital_ratio 0 n + n n	0.05
-Param: cb_sensitivity_capacity 0 n + n n	0.2
-Param: cb_sensitivity_credit_growth 0 n + n n	1.1
-Param: cb_sensitivity_debt_rate 0 n + n n	1.1
+Param: cb_sensitivity_capacity 0 n + n n	0
+Param: cb_sensitivity_credit_growth 0 n + n n	0
+Param: cb_sensitivity_debt_rate 0 n + n n	0
 Param: cb_sensitivity_inflation 0 n + n n	1.1
+Param: cb_sensitivity_reserves 0 n + n n	0
 Param: cb_target_annual_inflation 0 n + n n	0.02
 Param: cb_target_capacity 0 n + n n	0.15
 Param: cb_target_credit_growth 0 n + n n	0.01
 Param: cb_target_debt_rate 0 n + n n	0.5
+Param: cb_target_reserves 0 n + n n	0
 Var: Central_Bank_Basic_Interest_Rate 1 s + n n	0
-Param: cb_target_reserves 0 n + n n	0.5
 
 Object: GOVERNMENT C	1
-Param: government_benefit_rate 0 n + n n	0
+Param: government_benefit_rate 0 n + n n	0.1
 Param: government_expectations 0 n + n n	0.5
 Param: government_inflation_passtrought 0 n + n n	1
 Param: government_initial_debt_gdp_ratio 0 n + n n	0.5
@@ -1052,7 +1067,7 @@ Param: sector_elascitity_delay 0 n + n n	0.25	0.25	0.25
 Param: sector_elasticity_price 0 n + n n	1	1	1
 Param: sector_elasticity_quality 0 n + n n	0.5	0.5	0.5
 Param: sector_expectations 0 n + n n	0.3	0.3	0.3
-Param: sector_exports_coefficient 0 n + n n	0	0	0
+Param: sector_exports_coefficient 0 s + n n	0	0	0
 Param: sector_exports_elasticity_income 0 n + n n	1	1	1
 Param: sector_exports_elasticity_price 0 n + n n	1	1	1
 Param: sector_external_price_competitiveness 0 n + n n	0	0	0
@@ -1070,8 +1085,8 @@ Param: sector_initial_exports_share 0 n + n n	0.2	0.6	0.2
 Param: sector_initial_external_price 0 n + n n	1	2	1
 Param: sector_initial_liquidity_preference 0 n + n n	0	0	0
 Param: sector_initial_price 0 n + n n	1	2	1
-Param: sector_initial_productivity 0 n + n n	1	1	1
-Param: sector_initial_profit_rate 0 n + n n	0.3	0.6	0.3
+Param: sector_initial_productivity 0 n + n n	1	2	1
+Param: sector_initial_profit_rate 0 n + n n	0.3	0.3	0.3
 Param: sector_initial_quality 0 n + n n	1	1	1
 Param: sector_innovation_proportion 0 n + n n	0.5	0.5	0.5
 Param: sector_input_import_share 0 n + n n	0.05	0.05	0.05
@@ -1088,7 +1103,7 @@ Param: sector_price_frequency 0 n + n n	1	1	1
 Param: sector_profits_distribution_rate 0 n + n n	0.8	0.8	0.8
 Param: sector_rnd_revenue_proportion 0 n + n n	0.05	0.05	0.05
 Param: sector_std_dev_innovation 0 n + n n	0.01	0.01	0.01
-Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0
+Param: sector_strategic_price_weight 0 n + n n	0.8	0.8	0.2
 Param: sector_tech_opportunity_productivity 0 n + n n	0.0025	0.0025	0.0025
 Param: sector_tech_opportunity_quality 0 n + n n	0.0025	0.0025	0.0025
 Var: Sector_Avg_Competitiveness 1 n + n n	1	1	1
@@ -1392,6 +1407,15 @@ Var: X 0 s + n n
 Var: FS_DMET 0 s + n n
 Var: FS_RES 0 s + n n
 Var: GINI 0 s + n n
+Var: PX_C 0 s + n n
+Var: PX_I 0 s + n n
+Var: PX_K 0 s + n n
+Var: IRLT_C 0 s + n n
+Var: IRLT_I 0 s + n n
+Var: IRLT_K 0 s + n n
+Var: IRST_C 0 s + n n
+Var: IRST_I 0 s + n n
+Var: IRST_K 0 s + n n
 
 SIM_NUM 1
 SEED 1
@@ -1549,13 +1573,7 @@ END_DESCRIPTION
 Parameter_switch_monetary_policy
 (no description available)
 _INIT_
-All 1 instances equal to 2.
-END_DESCRIPTION
-
-Parameter_switch_reserves_target
-(no description available)
-_INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Variable_Country_Annual_CPI_Inflation
@@ -1908,6 +1926,24 @@ _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
+Parameter_switch_class_priority
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_begin_flexible_exchange_rate
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
+Parameter_switch_class_financial_constraints
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
 Object_CLASSES
 (no description available)
 _INIT_
@@ -1917,7 +1953,7 @@ END_DESCRIPTION
 Parameter_class_autonomous_consumption_adjustment
 determines how class autonomous consumption grows absed on consumption sector average quality
 _INIT_
-
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_class_debt_rate_adjustment
@@ -2230,6 +2266,12 @@ _INIT_
 
 END_DESCRIPTION
 
+Parameter_class_initial_max_debt_rate
+(no description available)
+_INIT_
+All 3 instances equal to 1.
+END_DESCRIPTION
+
 Object_CLASS_LOANS
 (no description available)
 _INIT_
@@ -2269,7 +2311,7 @@ END_DESCRIPTION
 Parameter_exchange_rate_adjustment
 determines how exchange rate adjusts each period based on balance of payments
 _INIT_
-All 1 instances equal to 0.001.
+All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Parameter_exchange_rate_max
@@ -2281,13 +2323,13 @@ END_DESCRIPTION
 Parameter_exchange_rate_min
 (no description available)
 _INIT_
-All 1 instances equal to 0.01.
+All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Parameter_external_capital_flow_adjustment
 determines the intensity and scale of capital flows based on external income
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 50.
 END_DESCRIPTION
 
 Parameter_external_income_adjustmnent
@@ -2349,13 +2391,7 @@ Parameter_initial_reserves_ratio
 determines the inital stock of international reserves in relation to nominal GDP
 used in calibration
 _INIT_
-
-END_DESCRIPTION
-
-Variable_Basic_Interest_Rate_Min
-(no description available)
-_INIT_
-
+All 1 instances equal to 10.
 END_DESCRIPTION
 
 Variable_Country_Capital_Flows
@@ -2415,7 +2451,7 @@ END_DESCRIPTION
 Parameter_fs_elasticity_default
 determines the financial sector competitiveness elasticity to default rate
 _INIT_
-
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_fs_elasticity_interest_long_term
@@ -2433,7 +2469,7 @@ END_DESCRIPTION
 Parameter_fs_elasticity_rationing
 determines the financial sector competitiveness elasticity to credit rationing
 _INIT_
-
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_fs_expectations
@@ -2458,7 +2494,7 @@ END_DESCRIPTION
 Parameter_fs_price_strategy_long_term
 determines the financial sector (and banks) price strategy in long term interest rate setting.
 _INIT_
-
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_fs_price_strategy_short_term
@@ -2470,7 +2506,7 @@ END_DESCRIPTION
 Parameter_fs_risk_premium_class
 determines the risk premium on debt rate applied to class' loans
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_fs_risk_premium_long_term
@@ -2500,7 +2536,7 @@ END_DESCRIPTION
 Parameter_fs_spread_deposits
 determines the spread to be subtracted from basic interest rate to define interest rate on deposits. the higher the parameter value, lower (or zero) the interest rate on deposits will be
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 0.0075.
 END_DESCRIPTION
 
 Parameter_fs_spread_long_term
@@ -2512,7 +2548,7 @@ END_DESCRIPTION
 Parameter_fs_spread_long_term_adjustment
 determines the intensity of desired long term spreads adjustment to competitiveness
 _INIT_
-
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_fs_spread_short_term
@@ -2959,7 +2995,7 @@ END_DESCRIPTION
 Parameter_cb_sensitivity_capacity
 determines the central bank's sensitivity to capacity utilzation gaps in the taylor rule
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_cb_sensitivity_credit_growth
@@ -2971,13 +3007,19 @@ END_DESCRIPTION
 Parameter_cb_sensitivity_debt_rate
 determines the central bank's sensitivity to debt rate gaps in the taylor rule
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_cb_sensitivity_inflation
 determines the central bank's sensitivity to inflation gaps in the taylor rule
 _INIT_
+All 1 instances equal to 1.1.
+END_DESCRIPTION
 
+Parameter_cb_sensitivity_reserves
+(no description available)
+_INIT_
+All 1 instances equal to 1.1.
 END_DESCRIPTION
 
 Parameter_cb_target_annual_inflation
@@ -3001,19 +3043,19 @@ END_DESCRIPTION
 Parameter_cb_target_debt_rate
 monetary policy parameter, determines the debt rate target
 _INIT_
+All 1 instances equal to 0.5.
+END_DESCRIPTION
 
+Parameter_cb_target_reserves
+(no description available)
+_INIT_
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Central_Bank_Basic_Interest_Rate
 (no description available)
 _INIT_
 All 1 instances equal to 0.001.
-END_DESCRIPTION
-
-Parameter_cb_target_reserves
-(no description available)
-_INIT_
-All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Object_GOVERNMENT
@@ -3025,7 +3067,7 @@ END_DESCRIPTION
 Parameter_government_benefit_rate
 Share of Sectoral Avg Wage paid as unemployment benefit by the Government
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_government_expectations
@@ -3362,7 +3404,7 @@ END_DESCRIPTION
 Parameter_sector_desired_inventories_proportion
 determines the propostion of sales to be kept as inventories
 _INIT_
-A
+All 3 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_sector_desired_market_share
@@ -3411,7 +3453,7 @@ END_DESCRIPTION
 Parameter_sector_exports_elasticity_price
 determines the sector's exports elasticity to price differentials
 _INIT_
-A
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_sector_external_price_competitiveness
@@ -3546,7 +3588,7 @@ determines the input tech relationship
 used in calibration 
 very important parameter
 _INIT_
-
+All 3 instances equal to 0.5.
 END_DESCRIPTION
 
 Parameter_sector_investment_frequency
@@ -5506,6 +5548,60 @@ _INIT_
 END_DESCRIPTION
 
 Variable_GINI
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_PX_C
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_PX_I
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_PX_K
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_IRLT_C
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_IRLT_I
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_IRLT_K
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_IRST_C
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_IRST_I
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_IRST_K
 (no description available)
 _INIT_
 

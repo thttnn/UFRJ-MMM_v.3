@@ -33,10 +33,10 @@ EQUATION("Cri")//Crisis counters
 RESULT(VS(country, "Country_Likelihood_Crisis"))
 
 EQUATION("C")//Quarterly Nominal Consumption
-RESULT(VS(country, "Country_Nominal_Consumption_Production"))
+RESULT(VS(country, "Country_Total_Classes_Expenses"))
 
 EQUATION("I")//Quarterly Nominal Investment
-RESULT(VS(country, "Country_Nominal_Capital_Production"))
+RESULT(VS(country, "Country_Total_Investment_Expenses"))
 
 EQUATION("PROD")//Average Productivity
 RESULT(VS(country, "Country_Avg_Productivity"))
@@ -210,6 +210,15 @@ RESULT(VS(capital, "Sector_Avg_Price"))
 EQUATION("P_I")//Average Price of Intermediate good sector
 RESULT(VS(input, "Sector_Avg_Price"))
 
+EQUATION("PX_C")//Average External Price of Consumption good secto
+RESULT(VS(consumption, "Sector_External_Price"))
+
+EQUATION("PX_K")//Average External Price of Capital good sector
+RESULT(VS(capital, "Sector_External_Price"))
+
+EQUATION("PX_I")//Average External Price of Intermediate good sector
+RESULT(VS(input, "Sector_External_Price"))
+
 EQUATION("W_C")//Average Wage of Consumption good sector
 RESULT(VS(consumption, "Sector_Avg_Wage"))
 
@@ -255,6 +264,23 @@ RESULT(VS(capital, "Sector_Normalized_HHI"))
 EQUATION("HHI_I")//Inverse HHI of Intermediate good sector
 RESULT(VS(input, "Sector_Normalized_HHI"))
 
+EQUATION("IRST_C")//Average Short Term Interest Rate of Consumption good sector
+RESULT(VS(consumption, "Sector_Avg_Interest_Rate_Short_Term"))
+
+EQUATION("IRST_K")//Average Short Term Interest Rate of Capital good sector
+RESULT(VS(capital, "Sector_Avg_Interest_Rate_Short_Term"))
+
+EQUATION("IRST_I")//Average Short Term Interest Rate of Intermediate good sector
+RESULT(VS(input, "Sector_Avg_Interest_Rate_Short_Term"))
+
+EQUATION("IRLT_C")//Average Long Term Interest Rate of Consumption good sector
+RESULT(VS(consumption, "Sector_Avg_Interest_Rate_Long_Term"))
+
+EQUATION("IRLT_K")//Average Long Term Interest Rate of Capital good sector
+RESULT(VS(capital, "Sector_Avg_Interest_Rate_Long_Term"))
+
+EQUATION("IRLT_I")//Average Long Term Interest Rate of Intermediate good sector
+RESULT(VS(input, "Sector_Avg_Interest_Rate_Long_Term"))
 
 /*****COUNTRY GROWTH STATS*****/
 
@@ -314,6 +340,12 @@ RESULT(V("Government_Effective_Expenses")/V("Country_GDP_Demand"))
 
 EQUATION("NXGDP")
 RESULT((V("Country_Nominal_Exports")-V("Country_Nominal_Imports"))/V("Country_GDP_Demand"))
+
+EQUATION("XGDP")
+RESULT(V("Country_Nominal_Exports")/V("Country_GDP_Demand"))
+
+EQUATION("MGDP")
+RESULT(V("Country_Nominal_Imports")/V("Country_GDP_Demand"))
 
 EQUATION("INVGDP")
 RESULT(V("Country_Inventories")/V("Country_GDP_Demand"))
@@ -386,6 +418,9 @@ RESULT(VS(external, "Country_International_Reserves"))
 
 EQUATION("RES_GDP")//Stock of International Reserves to GDP
 RESULT(VS(external, "Country_International_Reserves_GDP_Ratio"))
+
+EQUATION("DX_GDP")//Stock of International Reserves to GDP
+RESULT(VS(external, "Country_External_Debt_GDP_Ratio"))
 
 EQUATION("ER")//Exchange Rate
 RESULT(VS(external, "Country_Exchange_Rate"))

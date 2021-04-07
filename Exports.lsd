@@ -66,6 +66,7 @@ Label Root
 			Var: Class_Stock_Loans
 			Var: Class_Taxation
 			Var: Class_Wealth_Share
+			Param: class_initial_max_debt_rate
 
 		}
 
@@ -722,6 +723,8 @@ Label Root
 		Var: Exit_Deposits_Distributed
 		Var: Exit_Productive_Capacity
 		Var: Loans_Distribution_Firms
+		Param: switch_class_priority
+		Param: begin_flexible_exchange_rate
 
 	}
 
@@ -817,6 +820,8 @@ Var: Exit_Defaulted_Loans 0 s + n n
 Var: Exit_Deposits_Distributed 0 s + n n
 Var: Exit_Productive_Capacity 0 n + n n
 Var: Loans_Distribution_Firms 0 n + n n
+Param: switch_class_priority 0 n + n n	1
+Param: begin_flexible_exchange_rate 0 n + n n	0
 
 Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
@@ -868,6 +873,7 @@ Var: Class_Stock_Deposits 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Class_Stock_Loans 1 s + n n	0	0	0
 Var: Class_Taxation 0 s + n n
 Var: Class_Wealth_Share 0 s + n n
+Param: class_initial_max_debt_rate 0 n + n n	5	5	5
 
 Object: CLASS_LOANS C	1	1	1
 Param: class_loan_fixed_amortization 0 n + n n	0	0	0
@@ -876,10 +882,10 @@ Param: class_loan_interest_rate 0 n + n n	0	0	0
 Param: class_loan_total_amount 0 n + n n	0	0	0
 
 Object: EXTERNAL_SECTOR C	1
-Param: exchange_rate_adjustment 0 n + n n	0.001
-Param: exchange_rate_max 0 n + n n	10
-Param: exchange_rate_min 0 n + n n	0.1
-Param: external_capital_flow_adjustment 0 n + n n	1
+Param: exchange_rate_adjustment 0 n + n n	0.01
+Param: exchange_rate_max 0 n + n n	2
+Param: exchange_rate_min 0 n + n n	0.5
+Param: external_capital_flow_adjustment 0 n + n n	50
 Param: external_income_adjustmnent 0 n + n n	0
 Param: external_income_growth 0 n + n n	0.0025
 Param: external_income_sd 0 n + n n	0.001
@@ -889,7 +895,7 @@ Param: external_shock_duration 0 n + n n	20
 Param: external_shock_size 0 n + n n	0
 Param: initial_exchange_rate 0 n + n n	1
 Param: initial_external_income_scale 0 n + n n	1
-Param: initial_reserves_ratio 0 n + n n	1
+Param: initial_reserves_ratio 0 n + n n	10
 Var: Country_Capital_Flows 1 s + n n	0
 Var: Country_Exchange_Rate 1 s + n n	1
 Var: Country_International_Reserves 1 s + n n	0
@@ -1918,6 +1924,18 @@ _INIT_
 All 1 instances equal to 0.
 END_DESCRIPTION
 
+Parameter_switch_class_priority
+(no description available)
+_INIT_
+All 1 instances equal to 1.
+END_DESCRIPTION
+
+Parameter_begin_flexible_exchange_rate
+(no description available)
+_INIT_
+All 1 instances equal to 0.
+END_DESCRIPTION
+
 Object_CLASSES
 (no description available)
 _INIT_
@@ -2240,6 +2258,12 @@ _INIT_
 
 END_DESCRIPTION
 
+Parameter_class_initial_max_debt_rate
+(no description available)
+_INIT_
+All 3 instances equal to 5.
+END_DESCRIPTION
+
 Object_CLASS_LOANS
 (no description available)
 _INIT_
@@ -2279,25 +2303,25 @@ END_DESCRIPTION
 Parameter_exchange_rate_adjustment
 determines how exchange rate adjusts each period based on balance of payments
 _INIT_
-All 1 instances equal to 0.001.
+All 1 instances equal to 0.01.
 END_DESCRIPTION
 
 Parameter_exchange_rate_max
 (no description available)
 _INIT_
-All 1 instances equal to 10.
+All 1 instances equal to 2.
 END_DESCRIPTION
 
 Parameter_exchange_rate_min
 (no description available)
 _INIT_
-All 1 instances equal to 0.1.
+All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Parameter_external_capital_flow_adjustment
 determines the intensity and scale of capital flows based on external income
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 50.
 END_DESCRIPTION
 
 Parameter_external_income_adjustmnent
@@ -2359,7 +2383,7 @@ Parameter_initial_reserves_ratio
 determines the inital stock of international reserves in relation to nominal GDP
 used in calibration
 _INIT_
-
+All 1 instances equal to 10.
 END_DESCRIPTION
 
 Variable_Country_Capital_Flows
@@ -3421,7 +3445,7 @@ END_DESCRIPTION
 Parameter_sector_exports_elasticity_price
 determines the sector's exports elasticity to price differentials
 _INIT_
-A
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_sector_external_price_competitiveness

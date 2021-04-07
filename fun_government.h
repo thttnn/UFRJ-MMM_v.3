@@ -96,7 +96,9 @@ Adjusts government surplus target based on debt to gdp evolution
 	v[5]=V("government_min_debt_ratio");                       //minimum debt to gdp accepted, parameter
 	v[6]=V("government_surplus_target_adjustment");			   //adjustment parameter
 	v[9]=V("begin_flexible_surplus_target");
-	if(t>=v[9]&&v[9]!=-1)
+	v[10]=V("annual_frequency");
+	v[11]= fmod((double) t-1,v[10]);
+	if(t>=v[9]&&v[9]!=-1&&v[11]==0)
 	{
 	if(v[3]>v[4])                           		   //if debt to gdp is higher than accepted 
 		v[7]=v[2]+v[6];							       //increase surplus target

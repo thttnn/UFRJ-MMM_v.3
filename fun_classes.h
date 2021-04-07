@@ -237,7 +237,7 @@ Evolves based on nominal income growth.
 	else
 		v[7]=v[5];
 	v[8]=max(0,(min(1,v[7])));
-RESULT(v[8])
+RESULT(v[7])
 
 
 EQUATION("Class_Max_Loans")
@@ -252,7 +252,12 @@ If the currest amount is smaller than desired, that difference is available to t
 	v[3]=VL("Class_Avg_Nominal_Income",1);
 	v[4]=v[0]*(v[2]+v[3])-v[1];
 	v[5]=max(0,v[4]);
-RESULT(v[5])
+	v[6]=V("switch_class_financial_constraints");
+	if(v[6]==1)
+		v[7]=v[5];
+	else
+		v[7]=-1;
+RESULT(v[7])
 
 
 EQUATION("Class_Demand_Loans")
@@ -263,7 +268,10 @@ Class demand for loans is the amount that internal funds (already discounted req
 	v[1]=V("Class_Internal_Funds");
 	v[2]=V("Class_Max_Loans");
 	v[3]=v[0]-v[1];															//will demand loans for the amount of desired expenses that internal funds can not pay for
-	v[4]=max(0,min(v[3],v[2]));												//demand for new loans can not be negative
+	if(v[2]!=-1)
+		v[4]=max(0,min(v[3],v[2]));												//demand for new loans can not be negative
+	else
+		v[4]=max(0,v[3]);
 RESULT(v[4])
 
 
@@ -302,34 +310,58 @@ Nominal value of possible expenses, restricted to the amount of funds available.
 	v[2]=max(0,min(v[0],v[1]));
 RESULT(v[2])
 
-
-EQUATION("Class_Real_Domestic_Consumption_Demand")
 /*
+EQUATION("Class_Real_Domestic_Consumption_Demand")
+
 Class effective domestic consumption goods demand. There is a priority between domestic and imported, in which the first is preferible. The effective real demand will be the minimum between the desired and the possible amount.
-*/
+
 	v[0]=V("Class_Maximum_Expenses");
 	v[1]=VS(consumption, "Sector_Avg_Price"); 					 //consumption goods price
 	v[2]=v[0]/v[1];												 //real effective consumption demand possible																																		 
 	v[3]=V("Class_Real_Desired_Domestic_Consumption");           //real desired consumption demand desired
 	v[4]=min(v[2],v[3]);
 RESULT(v[4])
+*/
 
 
-EQUATION("Class_Real_Imported_Consumption_Demand")
+EQUATION("Class_Real_Domestic_Consumption_Demand")
 /*
 Class effective external domestic consumption, depending on desired level of imports plus the demand not met by the domestic production
 */
 	v[0]=V("Class_Maximum_Expenses");
 	v[1]=VS(consumption, "Sector_Avg_Price"); 					//consumption goods price
 	v[2]=VS(consumption, "Sector_External_Price");				//consumption goods external price
-	v[3]=V("Class_Real_Domestic_Consumption_Demand");           //real effetive demand for domestic consumption gooods
-	v[4]=v[3]*v[1];												//nominal effective expenses with domestic caital goods
-	v[5]=max(0, (v[0]-v[4]));									//effective amount that can be spended with external consumption goods
-	v[6]=VS(external,"Country_Exchange_Rate");
-	v[7]=v[5]/(v[2]*v[6]);										//effective real demand for imported consumption goods
-	v[8]=V("Class_Real_Desired_Imported_Consumption");
-	v[9]=min(v[7],v[8]);
+	v[3]=V("Class_Real_Desired_Domestic_Consumption");          //real desired demand for domestic consumption gooods
+	v[4]=V("Class_Real_Desired_Imported_Consumption");          //real desired demand for imported consumption gooods
+	v[5]=VS(external,"Country_Exchange_Rate");                  //exchange rate
+	v[6]=v[3]*v[1];												//nominal desired expenses in domestic consumption
+	v[7]=v[4]*v[2]*v[5];										//nominal desired expenses in imported consumption
+	if(V("switch_class_priority")==1)							//if there is priority on domestic consumption
+	{
+		v[8]=min(v[0],v[6]);									//effective domestic expenses 
+		v[9]=v[8]/v[1];											//real effective domestic consumption
+		v[10]=min(v[7],v[0]-v[8]);								//effective imported expenses
+		v[11]=v[10]/(v[2]*v[5]);								//real effective imported consumption
+	}
+	else														//if there is no priority, expenses are divided proportionally
+	{
+		v[8]=v[0]*v[6]/(v[7]+v[6]);								//effective domestic expenses 
+		v[9]=v[8]/v[1];											//real effective domestic consumption
+		v[10]=v[0]*v[7]/(v[7]+v[6]);							//effective imported expenses
+		v[11]=v[10]/(v[2]*v[5]);								//real effective imported consumption		
+	}
+	WRITE("Class_Real_Imported_Consumption_Demand", v[11]);
 RESULT(v[9])
+
+EQUATION_DUMMY("Class_Real_Imported_Consumption_Demand", "Class_Real_Domestic_Consumption_Demand")
+	
+	//v[4]=v[3]*v[1];												//nominal effective expenses with domestic caital goods
+	//v[5]=max(0, (v[0]-v[4]));									//effective amount that can be spended with external consumption goods
+	//v[6]=VS(external,"Country_Exchange_Rate");
+	//v[7]=v[5]/(v[2]*v[6]);										//effective real demand for imported consumption goods
+	//v[8]=V("Class_Real_Desired_Imported_Consumption");
+	//v[9]=min(v[7],v[8]);
+
 
 
 EQUATION("Class_Effective_Real_Domestic_Consumption")
@@ -418,9 +450,9 @@ switch_unemployment_benefits
 		v[18]=VS(cur,"class_id");									 	//identify lowest income class
 		v[16]=V("class_id");                                          	//current object id
 		if(v[16]==v[18])                                              	//if current object is the one with minimum income
-			v[6]=v[0]*v[2]+v[1]*v[3]+v[4]+v[5];     		          	//class' gross total income, including unemployment benefits
+			v[6]=v[0]*v[2]+v[1]*v[3]+v[5];     		          	//class' gross total income, including unemployment benefits
 		else                                                          	//if it is not
-			v[6]=v[0]*v[2]+v[1]*v[3]+v[4];                            	//class' gross total income excluding unemployment benefits
+			v[6]=v[0]*v[2]+v[1]*v[3];                            	//class' gross total income excluding unemployment benefits
 	
 	v[7]=V("switch_class_tax_structure");                 			 	//defines taxation structure
 	v[8]=V("class_direct_tax");                            				//class tax rate
@@ -458,7 +490,8 @@ Class stock of deposits
 	v[2]=V("class_profit_share");
 	v[3]=V("Exit_Deposits_Distributed");
 	v[4]=SUMS(country, "Sector_Entry_Deposits_Needed");
-	v[5]=v[0]+v[1]+v[2]*(v[3]-v[4]);
+	v[6]=V("Class_Deposits_Return");
+	v[5]=v[0]+v[1]+v[2]*(v[3]-v[4])+v[6];
 RESULT(v[5])
 
 

@@ -35,7 +35,7 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	v[8]=VL("Country_Debt_Rate_Firms",1);
 	v[9]=VL("Country_International_Reserves_GDP_Ratio",1);
 	
-	v[11]=LAG_GROWTH(country, "Country_Avg_Productivity", 1,1);
+	//v[11]=LAG_GROWTH(country, "Country_Avg_Productivity", 1,1);
 		
 	v[18]=V("cb_interest_rate_adjustment");
 	v[19]=pow(1+CURRENT,V("annual_frequency"))-1;					//annual basic interest
@@ -53,12 +53,11 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 		v[16]=V("cb_sensitivity_debt_rate");
 		v[21]=V("cb_sensitivity_reserves");
 
-		v[17]=v[0]+v[5]
+		v[17]=v[0]+v[1]
 			 +v[13]*(v[5]-v[1])
 			 -v[14]*(v[6]-v[2])
 			 +v[15]*max(0,v[7]-v[3])
-			 +v[16]*max(0,v[8]-v[4])
-			 -v[21]*min(0,v[9]-v[10]);
+			 +v[16]*max(0,v[8]-v[4]);
 		
 		if(abs(v[17]-v[19])>v[18]&&v[18]!=-1)
 		{

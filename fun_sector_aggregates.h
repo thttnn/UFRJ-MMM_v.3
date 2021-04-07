@@ -154,6 +154,9 @@ RESULT(SUM("Firm_Productive_Capacity"))
 EQUATION("Sector_Taxation")
 RESULT(SUM("Firm_Indirect_Tax"))
 
+EQUATION("Sector_Profits")
+RESULT(SUM("Firm_Net_Profits"))
+
 EQUATION("Sector_Stock_Loans")
 RESULT(SUM("Firm_Stock_Loans"))
 

@@ -16,6 +16,17 @@ This variable defines the ratio between available inputs and inputs demanded for
 RESULT(v[5])
 
 
+EQUATION("Sector_Propensity_Import_Inputs")
+	v[1]=V("sector_input_import_share");							//firm propensity to import
+	v[3]=VS(input, "Sector_Avg_Price");                       		//input sector average price
+	v[4]=VS(input, "Sector_External_Price");                  		//input sector external price
+	v[5]=VS(external,"Country_Exchange_Rate");						//exchange rate
+	v[6]=V("sector_input_import_elasticity_price");
+	v[7]=v[1]*pow((v[3]/(v[4]*v[5])),v[6]);
+	v[8]=max(0,min(v[7],1));
+RESULT(v[8])
+
+
 EQUATION("Firm_Input_Demand_Next_Period")
 /*
 The demand for inputs of each sector of intermediate goods, which should be produced during current period and to be used in the next period, is calculated based on the necessity of programed production, in which a expected growth rate is applied and the remaing stock is discounted. 
@@ -46,7 +57,7 @@ The intermediate goods sectors demand exactly the amount they will need to produ
 		v[14]=(v[0]*v[1])*(v[8]);                     		//gives the amount of imputs necessary for the next period, multiplying the current planned production by the exptected growth rate and by the imput techinical relanshionship
 	
 	v[15]=max(v[14],0);                               		//the demand of imputs for the next period can never be negative
-	v[16]=V("sector_input_import_share");
+	v[16]=V("Sector_Propensity_Import_Inputs");
 	v[17]=v[15]*(1-v[16]);
 	v[18]=v[15]*v[16];
 	WRITE("Firm_Input_Imports",v[18]);
