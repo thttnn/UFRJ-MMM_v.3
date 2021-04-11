@@ -136,16 +136,17 @@ Firm's effective price is a average between the desired price and the sector ave
 	v[1]=VL("Sector_Avg_Price", 1);                                            //sector average price in the last period
 	v[2]=V("Country_Exchange_Rate");                      					   //exchange rate
 	v[3]=VL("Sector_Exports_Share",1);
-	v[4]=(1-v[3])*v[1] + v[3]*v[2]*v[0];									   //reference price, weighted by the expoerts share
+	v[7]=V("sector_external_price_weight");
+	v[4]=(1-v[7]*v[3])*v[1] + v[7]*v[3]*v[2]*v[0];									   //reference price, weighted by the expoerts share
 	v[5]=V("Firm_Desired_Price");                                              //firm's desired price
 	v[6]=V("sector_strategic_price_weight");                                   //strategic weight parameter
-	v[7]=v[6]*v[5]+(1-v[6])*v[4];                            				   //firm's price is a average between the desired price and the reference price
-	v[8]=V("Firm_Price_Period");											  
-	if(v[8]==1)																    //if it is price adjustment perod for that firm
-		v[9]=v[7];																//set new price
+	v[8]=v[6]*v[5]+(1-v[6])*v[4];                            				   //firm's price is a average between the desired price and the reference price
+	v[9]=V("Firm_Price_Period");											  
+	if(v[9]==1)																    //if it is price adjustment perod for that firm
+		v[10]=v[8];																//set new price
 	else																		//if it is not price adjustment period
-		v[9]=CURRENT;															//use current price
-RESULT(v[9])
+		v[10]=CURRENT;															//use current price
+RESULT(v[10])
 
 
 EQUATION("Firm_Effective_Markup")

@@ -511,7 +511,6 @@ Label Root
 			Var: Sector_Propensity_Import_Inputs
 			Param: sector_input_import_elasticity_price
 			Var: Sector_Profits
-			Param: sector_external_price_weight
 
 		}
 
@@ -753,7 +752,7 @@ Var: Time_Step 0 n + n n
 
 Object: COUNTRY C	1
 Param: annual_frequency 0 n + n n	4
-Param: begin_credit_rationing 0 n + n n	0
+Param: begin_credit_rationing 0 n + n n	-1
 Param: begin_debt_target_rule 0 n + n n	-1
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
 Param: begin_flexible_surplus_target 0 n + n n	0
@@ -770,7 +769,7 @@ Param: switch_entry 0 n + n n	1
 Param: switch_extra_gov_expenses 0 n + n n	0
 Param: switch_extra_imports 0 n + n n	0
 Param: switch_government_priority 0 n + n n	1
-Param: switch_interest_investment 0 n + n n	2
+Param: switch_interest_investment 0 n + n n	0
 Param: switch_interest_payment 0 n + n n	0
 Param: switch_monetary_policy 0 n + n n	1
 Var: Country_Annual_CPI_Inflation 1 s + n n	0
@@ -832,15 +831,15 @@ Var: Exit_Deposits_Distributed 0 s + n n
 Var: Exit_Productive_Capacity 0 n + n n
 Var: Loans_Distribution_Firms 0 n + n n
 Param: switch_class_priority 0 n + n n	1
-Param: begin_flexible_exchange_rate 0 n + n n	0
-Param: switch_class_financial_constraints 0 n + n n	1
+Param: begin_flexible_exchange_rate 0 n + n n	-1
+Param: switch_class_financial_constraints 0 n + n n	0
 
 Object: CLASSES C	3
-Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
+Param: class_autonomous_consumption_adjustment 0 n + n n	0.1	0.1	0.1
 Param: class_debt_rate_adjustment 0 n + n n	0	0	0
 Param: class_direct_tax 0 s + n n	0	0.3	0.3
 Param: class_id 0 n + n n	1	2	3
-Param: class_import_elasticity_price 0 n + n n	1	1	1
+Param: class_import_elasticity_price 0 n + n n	0	0	0
 Param: class_initial_imports_share 0 n + n n	0	0	0
 Param: class_liquidity_preference_adjustment 0 n + n n	0	0	0
 Param: class_population_share 0 n + n n	0.01	0.29	0.7
@@ -896,8 +895,8 @@ Param: class_loan_total_amount 0 n + n n	0	0	0
 
 Object: EXTERNAL_SECTOR C	1
 Param: exchange_rate_adjustment 0 n + n n	0.01
-Param: exchange_rate_max 0 n + n n	100
-Param: exchange_rate_min 0 n + n n	0.001
+Param: exchange_rate_max 0 n + n n	2
+Param: exchange_rate_min 0 n + n n	0.5
 Param: external_capital_flow_adjustment 0 n + n n	50
 Param: external_income_adjustmnent 0 n + n n	0
 Param: external_income_growth 0 n + n n	0.0025
@@ -1008,7 +1007,7 @@ Var: Bank_Effective_Capital_Ratio 0 n + n n
 
 Object: CENTRAL_BANK C	1
 Param: cb_annual_real_interest_rate 0 n + n n	0.01
-Param: cb_interest_rate_adjustment 0 n + n n	-1
+Param: cb_interest_rate_adjustment 0 n + n n	0.0025
 Param: cb_minimum_capital_ratio 0 n + n n	0.05
 Param: cb_sensitivity_capacity 0 n + n n	0
 Param: cb_sensitivity_credit_growth 0 n + n n	0
@@ -1020,7 +1019,7 @@ Param: cb_target_capacity 0 n + n n	0.15
 Param: cb_target_credit_growth 0 n + n n	0.01
 Param: cb_target_debt_rate 0 n + n n	0.5
 Param: cb_target_reserves 0 n + n n	0
-Var: Central_Bank_Basic_Interest_Rate 1 s + d n	0
+Var: Central_Bank_Basic_Interest_Rate 1 s + n n	0
 
 Object: GOVERNMENT C	1
 Param: government_benefit_rate 0 n + n n	0.1
@@ -1083,7 +1082,7 @@ Param: sector_expectations 0 n + n n	0.3	0.3	0.3
 Param: sector_exports_coefficient 0 s + n n	0	0	0
 Param: sector_exports_elasticity_income 0 n + n n	1	1	1
 Param: sector_exports_elasticity_price 0 n + n n	1	1	1
-Param: sector_external_price_competitiveness 0 n + n n	0	0	0
+Param: sector_external_price_competitiveness 0 n + n n	0.2	0.2	0.2
 Param: sector_external_price_growth 0 n + n n	0.005	0.005	0.005
 Param: sector_external_price_sd 0 n + n n	0.01	0.01	0.01
 Param: sector_external_price_shock_begin 0 n + n n	400	400	400
@@ -1102,7 +1101,7 @@ Param: sector_initial_productivity 0 n + n n	1	1	1
 Param: sector_initial_profit_rate 0 n + n n	0.3	0.6	0.3
 Param: sector_initial_quality 0 n + n n	1	1	1
 Param: sector_innovation_proportion 0 n + n n	0.5	0.5	0.5
-Param: sector_input_import_share 0 n + n n	0.05	0.05	0.05
+Param: sector_input_import_share 0 n + n n	0	0	0
 Param: sector_input_tech_coefficient 0 n + n n	0.4	0.4	0.4
 Param: sector_investment_frequency 0 n + n n	4	4	4
 Param: sector_learning_adjustment 0 n + n n	0	0	0
@@ -1116,7 +1115,7 @@ Param: sector_price_frequency 0 n + n n	2	2	2
 Param: sector_profits_distribution_rate 0 n + n n	0.8	0.8	0.8
 Param: sector_rnd_revenue_proportion 0 n + n n	0.01	0.01	0.01
 Param: sector_std_dev_innovation 0 n + n n	0.01	0.01	0.01
-Param: sector_strategic_price_weight 0 n + n n	0.8	0.8	0.2
+Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5
 Param: sector_tech_opportunity_productivity 0 n + n n	0.0025	0.0025	0.0025
 Param: sector_tech_opportunity_quality 0 n + n n	0.0025	0.0025	0.0025
 Var: Sector_Avg_Competitiveness 1 n + n n	1	1	1
@@ -1176,9 +1175,8 @@ Var: Sector_Stock_Loans 1 s + n n	0	0	0
 Var: Sector_Taxation 0 n + n n
 Var: Sector_Turbulence 0 s + n n
 Var: Sector_Propensity_Import_Inputs 1 s + n n	0	0	0
-Param: sector_input_import_elasticity_price 0 n + n n	1	1	1
+Param: sector_input_import_elasticity_price 0 n + n n	0	0	0
 Var: Sector_Profits 0 s + n n
-Param: sector_external_price_weight 0 n + n n	1	1	1
 
 Object: FIRMS C	1	1	1
 Param: firm_bank 0 n + n n	0	0	0
@@ -1476,7 +1474,7 @@ END_DESCRIPTION
 Parameter_begin_credit_rationing
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to -1.
 END_DESCRIPTION
 
 Parameter_begin_debt_target_rule
@@ -1581,7 +1579,7 @@ END_DESCRIPTION
 Parameter_switch_interest_investment
 (no description available)
 _INIT_
-All 1 instances equal to 2.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_switch_interest_payment
@@ -1955,13 +1953,13 @@ END_DESCRIPTION
 Parameter_begin_flexible_exchange_rate
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to -1.
 END_DESCRIPTION
 
 Parameter_switch_class_financial_constraints
 (no description available)
 _INIT_
-All 1 instances equal to 1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Object_CLASSES
@@ -1973,7 +1971,7 @@ END_DESCRIPTION
 Parameter_class_autonomous_consumption_adjustment
 determines how class autonomous consumption grows absed on consumption sector average quality
 _INIT_
-All 3 instances equal to 1.
+All 3 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_class_debt_rate_adjustment
@@ -1998,7 +1996,7 @@ END_DESCRIPTION
 Parameter_class_import_elasticity_price
 deterines how class import share of consumption adjusts to price differentials
 _INIT_
-All 3 instances equal to 1.
+All 3 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_class_initial_imports_share
@@ -2343,13 +2341,13 @@ END_DESCRIPTION
 Parameter_exchange_rate_max
 (no description available)
 _INIT_
-All 1 instances equal to 100.
+All 1 instances equal to 2.
 END_DESCRIPTION
 
 Parameter_exchange_rate_min
 (no description available)
 _INIT_
-All 1 instances equal to 0.001.
+All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Parameter_external_capital_flow_adjustment
@@ -2538,7 +2536,7 @@ END_DESCRIPTION
 Parameter_fs_price_strategy_short_term
 determines the financial sector (and banks) price strategy in long term interest rate setting.
 _INIT_
-All 1 instances equal to 1.
+
 END_DESCRIPTION
 
 Parameter_fs_risk_premium_class
@@ -3021,7 +3019,7 @@ END_DESCRIPTION
 Parameter_cb_interest_rate_adjustment
 determines how much the central bank can increase or decrease the basic rate each period
 _INIT_
-All 1 instances equal to -1.
+All 1 instances equal to 0.0025.
 END_DESCRIPTION
 
 Parameter_cb_minimum_capital_ratio
@@ -3497,7 +3495,7 @@ END_DESCRIPTION
 Parameter_sector_external_price_competitiveness
 determines how domestic price growth affects external price growth
 _INIT_
-All 3 instances equal to 0.
+All 3 instances equal to 0.2.
 END_DESCRIPTION
 
 Parameter_sector_external_price_growth
@@ -3618,7 +3616,7 @@ END_DESCRIPTION
 Parameter_sector_input_import_share
 determines the initial sahre of imputs that must be imported
 _INIT_
-A
+All 3 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_sector_input_tech_coefficient
@@ -4084,19 +4082,13 @@ END_DESCRIPTION
 Parameter_sector_input_import_elasticity_price
 (no description available)
 _INIT_
-All 3 instances equal to 1.
+All 3 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Sector_Profits
 (no description available)
 _INIT_
 
-END_DESCRIPTION
-
-Parameter_sector_external_price_weight
-(no description available)
-_INIT_
-All 3 instances equal to 1.
 END_DESCRIPTION
 
 Object_FIRMS

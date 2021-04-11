@@ -1425,7 +1425,7 @@ Var: IRST_C 0 s + n n
 Var: IRST_I 0 s + n n
 Var: IRST_K 0 s + n n
 
-SIM_NUM 5
+SIM_NUM 1
 SEED 1
 MAX_STEP 600
 EQUATION fun_micro_macro_v.3.6.cpp

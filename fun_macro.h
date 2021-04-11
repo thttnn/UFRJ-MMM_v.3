@@ -160,7 +160,7 @@ EQUATION("Country_Annual_CPI_Inflation")
 Annual growth of the consumer price index
 Uses support function
 */
-RESULT(LAG_GROWTH(consumption, "Sector_Avg_Price", V("annual_frequency"), 1))
+RESULT(LAG_GROWTH(p, "Country_Consumer_Price_Index", V("annual_frequency"), 1))
 
 
 EQUATION("Country_Distributed_Profits")

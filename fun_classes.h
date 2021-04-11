@@ -310,19 +310,6 @@ Nominal value of possible expenses, restricted to the amount of funds available.
 	v[2]=max(0,min(v[0],v[1]));
 RESULT(v[2])
 
-/*
-EQUATION("Class_Real_Domestic_Consumption_Demand")
-
-Class effective domestic consumption goods demand. There is a priority between domestic and imported, in which the first is preferible. The effective real demand will be the minimum between the desired and the possible amount.
-
-	v[0]=V("Class_Maximum_Expenses");
-	v[1]=VS(consumption, "Sector_Avg_Price"); 					 //consumption goods price
-	v[2]=v[0]/v[1];												 //real effective consumption demand possible																																		 
-	v[3]=V("Class_Real_Desired_Domestic_Consumption");           //real desired consumption demand desired
-	v[4]=min(v[2],v[3]);
-RESULT(v[4])
-*/
-
 
 EQUATION("Class_Real_Domestic_Consumption_Demand")
 /*
@@ -355,14 +342,6 @@ RESULT(v[9])
 
 EQUATION_DUMMY("Class_Real_Imported_Consumption_Demand", "Class_Real_Domestic_Consumption_Demand")
 	
-	//v[4]=v[3]*v[1];												//nominal effective expenses with domestic caital goods
-	//v[5]=max(0, (v[0]-v[4]));									//effective amount that can be spended with external consumption goods
-	//v[6]=VS(external,"Country_Exchange_Rate");
-	//v[7]=v[5]/(v[2]*v[6]);										//effective real demand for imported consumption goods
-	//v[8]=V("Class_Real_Desired_Imported_Consumption");
-	//v[9]=min(v[7],v[8]);
-
-
 
 EQUATION("Class_Effective_Real_Domestic_Consumption")
 /*
