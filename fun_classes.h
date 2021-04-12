@@ -32,7 +32,7 @@ RESULT(max(0,v[5]))
 
 
 EQUATION("Class_Imports_Share")
-	v[1]=V("class_initial_imports_share");							//class propensity to import
+	v[1]=V("class_initial_propensity_import");							//class propensity to import
 	v[3]=VS(consumption, "Sector_Avg_Price");                       //consumption sector average price
 	v[4]=VS(consumption, "Sector_External_Price");                  //consumption sector external price
 	v[5]=VS(external,"Country_Exchange_Rate");						//exchange rate
@@ -252,12 +252,7 @@ If the currest amount is smaller than desired, that difference is available to t
 	v[3]=VL("Class_Avg_Nominal_Income",1);
 	v[4]=v[0]*(v[2]+v[3])-v[1];
 	v[5]=max(0,v[4]);
-	v[6]=V("switch_class_financial_constraints");
-	if(v[6]==1)
-		v[7]=v[5];
-	else
-		v[7]=-1;
-RESULT(v[7])
+RESULT(v[5])
 
 
 EQUATION("Class_Demand_Loans")
@@ -268,10 +263,7 @@ Class demand for loans is the amount that internal funds (already discounted req
 	v[1]=V("Class_Internal_Funds");
 	v[2]=V("Class_Max_Loans");
 	v[3]=v[0]-v[1];															//will demand loans for the amount of desired expenses that internal funds can not pay for
-	if(v[2]!=-1)
-		v[4]=max(0,min(v[3],v[2]));												//demand for new loans can not be negative
-	else
-		v[4]=max(0,v[3]);
+	v[4]=max(0,min(v[3],v[2]));												//demand for new loans can not be negative
 RESULT(v[4])
 
 
@@ -323,20 +315,11 @@ Class effective external domestic consumption, depending on desired level of imp
 	v[5]=VS(external,"Country_Exchange_Rate");                  //exchange rate
 	v[6]=v[3]*v[1];												//nominal desired expenses in domestic consumption
 	v[7]=v[4]*v[2]*v[5];										//nominal desired expenses in imported consumption
-	if(V("switch_class_priority")==1)							//if there is priority on domestic consumption
-	{
-		v[8]=min(v[0],v[6]);									//effective domestic expenses 
-		v[9]=v[8]/v[1];											//real effective domestic consumption
-		v[10]=min(v[7],v[0]-v[8]);								//effective imported expenses
-		v[11]=v[10]/(v[2]*v[5]);								//real effective imported consumption
-	}
-	else														//if there is no priority, expenses are divided proportionally
-	{
-		v[8]=v[0]*v[6]/(v[7]+v[6]);								//effective domestic expenses 
-		v[9]=v[8]/v[1];											//real effective domestic consumption
-		v[10]=v[0]*v[7]/(v[7]+v[6]);							//effective imported expenses
-		v[11]=v[10]/(v[2]*v[5]);								//real effective imported consumption		
-	}
+	v[8]=min(v[0],v[6]);										//effective domestic expenses 
+	v[9]=v[8]/v[1];												//real effective domestic consumption
+	v[10]=min(v[7],v[0]-v[8]);									//effective imported expenses
+	v[11]=v[10]/(v[2]*v[5]);									//real effective imported consumption
+
 	WRITE("Class_Real_Imported_Consumption_Demand", v[11]);
 RESULT(v[9])
 

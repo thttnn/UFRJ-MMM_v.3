@@ -1,11 +1,14 @@
 /*************************************************************
 
-	LSD 7.2 - December 2019
+	LSD 8.0 - March 2021
 	written by Marco Valente, Universita' dell'Aquila
 	and by Marcelo Pereira, University of Campinas
 
 	Copyright Marco Valente and Marcelo Pereira
 	LSD is distributed under the GNU General Public License
+	
+	See Readme.txt for copyright information of
+	third parties' code used in LSD
 	
  *************************************************************/
 
@@ -214,7 +217,7 @@ bool object::load_param( char *file_name, int repl, FILE *f )
 		if ( fscanf( f, "\t%d", &num ) != 1 )
 			return false;
 		cur->to_compute = to_compute;
-		cur->replicate( num, 0 );
+		cur->replicate( num );
 		for ( ; go_brother( cur ) != NULL; cur = cur->next );
 	}
 
@@ -442,7 +445,7 @@ bool load_description( char *msg, FILE *f )
 	if ( strncmp( str, "END_DESCRIPTION", 15 ) && strncmp( str, "_INIT_", 6 ) )
 		return false;
 
-	kill_trailing_newline( str1 );
+	clean_newlines( str1 );
 
 	app->text = new char[ strlen( str1 ) + 1 ];
 	strcpy( app->text, str1 );
@@ -456,7 +459,7 @@ bool load_description( char *msg, FILE *f )
 		if ( strncmp( str, "END_DESCRIPTION", 15 ) )
 			return false;
 
-		kill_trailing_newline( str1 );
+		clean_newlines( str1 );
 		app->init = new char[ strlen( str1 ) + 1 ];
 		strcpy( app->init, str1 );
 	}
@@ -541,6 +544,34 @@ void save_description( object *r, FILE *f )
 	for ( cb = r->b; cb != NULL; cb = cb->next )
 		if ( cb->head != NULL )
 			save_description( cb->head, f );
+}
+
+
+/*****************************************************************************
+RESET_BLUEPRINT
+	reset the current blueprint
+******************************************************************************/
+void reset_blueprint( object *r )
+{
+	empty_blueprint( );
+	blueprint = new object;
+	blueprint->init( NULL, "Root" );
+	set_blueprint( blueprint, r );
+}
+
+
+/*****************************************************************************
+EMPTY_BLUEPRINT
+	remove the current blueprint
+******************************************************************************/
+void empty_blueprint( void )
+{
+	if ( blueprint == NULL )
+		return;
+
+	blueprint->empty( );
+	blueprint->delete_obj( );
+	blueprint = NULL;
 }
 
 
@@ -796,12 +827,13 @@ UNLOAD_CONFIGURATION
 ******************************************************************************/
 void unload_configuration ( bool full )
 {
-	root->empty( );								// remove current model structure
-	root->init( NULL, "Root" );
+	empty_blueprint( );						// remove current model structure
 	empty_description( );
+	root->delete_obj( );
+	root = new object;
+	root->init( NULL, "Root" );
 	add_description( "Root", "Object", "(no description available)" );      
-	blueprint->empty( );
-	blueprint->init( NULL, "Root" );
+	reset_blueprint( NULL );
 
 	empty_cemetery( );							// garbage collection
 	empty_sensitivity( rsense ); 				// discard sensitivity analysis data
@@ -814,7 +846,7 @@ void unload_configuration ( bool full )
 	findexSens = 0;								// reset sensitivity serial number
 	nodesSerial = 0;							// reset network node serial number
 	
-#ifndef NO_WINDOW
+#ifndef NW
 	currObj = NULL;								// no current object pointer
 	unsaved_change( false );					// signal no unsaved change
 	cmd( "destroytop .lat" );					// remove lattice window
@@ -822,8 +854,7 @@ void unload_configuration ( bool full )
 	
 	if ( ! running )
 	{
-		cmd( "set a [ split [ winfo children . ] ]" );	// remove run-time plot windows
-		cmd( "foreach i $a { if [ string match .plt* $i ] { destroytop $i } }" );
+		cmd( "destroytop .plt" );				// remove run-time plot window
 		cmd( "if { [ file exists temp.html ] } { file delete temp.html }" );	// delete temporary files
 	}
 #endif
@@ -849,15 +880,15 @@ void unload_configuration ( bool full )
 		strcpy( lsd_eq_file, "" );				// reset other file names
 		sprintf( name_rep, "report_%s.html", simul_name );
 
-#ifndef NO_WINDOW
+#ifndef NW
 		cmd( "set path \"%s\"", path );
 		cmd( "set res \"%s\"", simul_name );
 		if ( strlen( path ) > 0 )
 			cmd( "cd \"$path\"" );
 		
 		cmd( "set listfocus 1; set itemfocus 0" ); 	// point for first var in listbox
-		strcpy( lastObj, "" );			// disable last object for reload
-		redrawRoot = true;				// force browser redraw
+		strcpy( lastObj, "" );					// disable last object for reload
+		redrawRoot = redrawStruc = true;		// force browser/structure redraw
 #endif
 	}
 }
@@ -871,7 +902,7 @@ void save_single( variable *v )
 	int i;
 	FILE *f;
 
-#ifdef PARALLEL_MODE
+#ifndef NP
 	// prevent concurrent use by more than one thread
 	lock_guard < mutex > lock( v->parallel_comp );
 #endif	
@@ -1077,23 +1108,23 @@ int load_sensitivity( FILE *f )
 	// error handling
 	error1:
 		if ( cv != NULL )
-			cmd( "tk_messageBox -parent . -title Error -icon error -type ok -message \"Invalid lag selected\" -detail \"Variable '%s' has no lags set.\"", lab );
+			cmd( "ttk::messageBox -parent . -title Error -icon error -type ok -message \"Invalid lag selected\" -detail \"Variable '%s' has no lags set.\"", lab );
 		i = 1;
 		goto error;
 	error2:
-		cmd( "tk_messageBox -parent . -title Error -icon error -type ok -message \"Invalid range\" -detail \"Element '%s' has less than two values to test.\"", lab );
+		cmd( "ttk::messageBox -parent . -title Error -icon error -type ok -message \"Invalid range\" -detail \"Element '%s' has less than two values to test.\"", lab );
 		i = 2;
 		goto error;
 	error3:
-		cmd( "tk_messageBox -parent . -title Error -icon error -type ok -message \"Invalid element type\" -detail \"Element '%s' has an invalid value set.\"", lab );
+		cmd( "ttk::messageBox -parent . -title Error -icon error -type ok -message \"Invalid element type\" -detail \"Element '%s' has an invalid value set.\"", lab );
 		i = 3;
 		goto error;
 	error4:
-		cmd( "tk_messageBox -parent . -title Error -icon error -type ok -message \"Missing separator\" -detail \"Element '%s' has no separator character (':').\"", lab );
+		cmd( "ttk::messageBox -parent . -title Error -icon error -type ok -message \"Missing separator\" -detail \"Element '%s' has no separator character (':').\"", lab );
 		i = 4;
 		goto error;
 	error5:
-		cmd( "tk_messageBox -parent . -title Error -icon error -type ok -message \"Invalid range value\" -detail \"Element '%s' has non-numeric range values.\"", lab );
+		cmd( "ttk::messageBox -parent . -title Error -icon error -type ok -message \"Invalid range value\" -detail \"Element '%s' has non-numeric range values.\"", lab );
 		i = 5;
 		goto error;
 		
@@ -1116,7 +1147,7 @@ void empty_sensitivity( sense *cs )
 	
 	if ( cs->next != NULL )	// recursively start from the end of the list
 		empty_sensitivity( cs->next );
-#ifndef NO_WINDOW
+#ifndef NW
 	else
 		NOLH_clear( );		// deallocate DoE (last object only)
 #endif

@@ -41,6 +41,8 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	v[22]=v[12]-v[2];
 	v[23]=max(0,v[13]-v[3]);
 	v[24]=max(0,v[14]-v[4]);
+	v[25]=max(0,v[15]-v[5]);
+	v[26]=min(0,v[15]-v[6]);
 	
 	
 	v[30]=V("switch_monetary_policy");
@@ -54,13 +56,15 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 		v[32]=V("cb_sensitivity_capacity");
 		v[33]=V("cb_sensitivity_credit_growth");
 		v[34]=V("cb_sensitivity_debt_rate");
-		v[35]=V("cb_sensitivity_reserves");
+		v[35]=V("cb_sensitivity_exchange");
 
 		v[40]=v[0]+v[1]
 			 +v[31]*v[21]
 			 -v[32]*v[22]
 			 +v[33]*v[23]
-			 +v[34]*v[24];
+			 +v[34]*v[24]
+			 +v[35]*v[25]
+			 +v[25]*v[26];
 	}
 	
 	if(v[30]==2)//smithin rule

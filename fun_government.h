@@ -5,11 +5,10 @@ EQUATION("Government_Desired_Wages")
 Priority expenses.
 If there are no maximum expenses, it is adjusted by average productivity growth and inflation.
 */                                     
-	v[1]= LAG_GROWTH(consumption, "Sector_Avg_Price", 1, 1);
-	v[2]=V("government_inflation_passtrought");			   		
-	v[3]=V("government_real_growth");
-	v[4]=CURRENT*(1+v[2]*v[1]+v[3]);
-RESULT(max(0,v[4]))
+	v[0]= LAG_GROWTH(consumption, "Sector_Avg_Price", 1, 1);		   		
+	v[1]=V("government_real_growth");
+	v[2]=CURRENT*(1+v[0]+v[1]);
+RESULT(max(0,v[2]))
 
 
 EQUATION("Government_Desired_Unemployment_Benefits")
@@ -119,22 +118,6 @@ Adjusts government surplus target based on debt to gdp evolution
 RESULT(v[8])
 
 
-EQUATION("Government_Max_Expenses_Debt")
-/*
-Government Max Expenses determined by Debt Rate Limit
-*/
-	v[0]=V("government_expectations");
-	v[1]=VL("Country_GDP",1);
-	v[2]=VL("Country_GDP",2);
-	v[3]= v[2]!=0? v[0]*(v[1]-v[2])/v[2] : 0; //expected growth
-	v[5]=V("government_max_debt_ratio");
-	v[6]=VL("Government_Debt",1);
-	v[7]=VL("Government_Total_Taxes",1);
-	v[8]=VS(financial, "Central_Bank_Basic_Interest_Rate");
-	v[9]=v[5]*v[1]*(1+v[3])+v[7]*(1+v[3])-v[6]*(1+v[8]);
-RESULT(v[9])
-
-
 EQUATION("Government_Max_Expenses_Surplus")
 /*
 Government Max Expenses determined by Primary Surplus Target Fiscal rule
@@ -168,29 +151,19 @@ Depend on the policy parameter.
 
 v[1]=V("begin_surplus_target_rule");                           //define when surplus target rule begins
 v[2]=V("begin_expenses_ceiling_rule");                         //define when expenses ceiling begins
-v[3]=V("begin_debt_target_rule"); 							   //define when debt rule begins
-															   //adjust fiscal rules maximum expenses			
-	v[20]=V("Government_Max_Expenses_Surplus");
-	v[21]=V("Government_Max_Expenses_Ceiling");
-	v[24]=V("Government_Max_Expenses_Debt");
-	
-	if((t>=v[1]&&v[1]!=-1)&&(t>=v[2]&&v[2]!=-1)&&(t>=v[3]&&v[3]!=-1))
-		v[17]=min(min(v[20],v[21]),v[24]);										//three rules
-	else if ((t<v[1]||v[1]==-1)&&(t>=v[2]&&v[2]!=-1)&&(t>=v[3]&&v[3]!=-1))
-		v[17]=min(v[21],v[24]);													//debt rule and celing rule
-	else if ((t>=v[1]&&v[1]!=-1)&&(t<v[2]||v[2]==-1)&&(t>=v[3]&&v[3]!=-1))
-		v[17]=min(v[20],v[24]);													//debt rule and surplus rule
-	else if ((t>=v[1]&&v[1]!=-1)&&(t>=v[2]&&v[2]!=-1)&&(t<v[3]||v[3]==-1))
-		v[17]=min(v[20],v[21]);													//surplus rule and ceiling rule
-	else if ((t>=v[1]&&v[1]!=-1)&&(t<v[2]||v[2]==-1)&&(t<v[3]||v[3]==-1))
-		v[17]=v[20];															//only surplus rule
-	else if ((t<v[1]||v[1]==-1)&&(t>=v[2]&&v[2]!=-1)&&(t<v[3]||v[3]==1))
-		v[17]=v[21];															//only ceiling rule
-	else if ((t<v[1]||v[1]==-1)&&(t<v[2]||v[2]==-1)&&(t>=v[3]&&v[3]!=-1))
-		v[17]=v[24];															//only debt rule
+																	
+v[3]=V("Government_Max_Expenses_Surplus");
+v[4]=V("Government_Max_Expenses_Ceiling");
+
+	if ((t>=v[1]&&v[1]!=-1)&&(t>=v[2]&&v[2]!=-1))
+		v[5]=min(v[3],v[4]);												//surplus rule and ceiling rule
+	else if ((t>=v[1]&&v[1]!=-1)&&(t<v[2]||v[2]==-1))
+		v[5]=v[3];															//only surplus rule
+	else if ((t<v[1]||v[1]==-1)&&(t>=v[2]&&v[2]!=-1))
+		v[5]=v[4];															//only ceiling rule
 	else
-		v[17]=-1;																//no rule															
-RESULT(v[17])
+		v[5]=-1;															//no rule															
+RESULT(v[5])
 
 
 EQUATION("Government_Effective_Expenses")
@@ -228,8 +201,6 @@ if(v[0]==-1)                                               //no fiscal rule
 }
 else
 {
-	if(V("switch_government_priority")==1)
-		{
 		v[8]=min(v[0],v[1]);								   //government wages is desired limited by maximum expenses
 		v[9]=min(v[2],(v[0]-v[8]));    						   //government unemployment benefits is desired limited by maximum expenses minus wages
 		v[10]=min(v[3],(v[0]-v[8]-v[9]));       			   //government consumption is desired limited by maximum expenses minus wages and benefits
@@ -239,18 +210,7 @@ else
 		if(V("switch_extra_gov_expenses")==1)
 			v[15]=v[12]+v[14];
 		else
-			v[15]=v[12];
-		}
-	else
-		{
-		v[16]=v[1]+v[2]+v[3]+v[4]+v[5];
-		v[8]=(v[1]/v[16])*v[0];
-		v[9]=(v[2]/v[16])*v[0];
-		v[10]=(v[3]/v[16])*v[0];
-		v[15]=(v[4]/v[16])*v[0];
-		v[11]=(v[5]/v[16])*v[0];	
-		}
-	
+			v[15]=v[12];	
 }
 WRITE("Government_Effective_Wages", max(0,v[8]));
 WRITE("Government_Effective_Unemployment_Benefits",  max(0,v[9]));

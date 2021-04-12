@@ -55,7 +55,6 @@ V("Government_Desired_Consumption");
 V("Government_Desired_Inputs");  
 V("Government_Surplus_Rate_Target");  
 V("Government_Max_Expenses_Surplus");  
-V("Government_Max_Expenses_Debt");  
 V("Government_Max_Expenses_Ceiling");  
 V("Government_Max_Expenses");  
 V("Government_Effective_Expenses");  

@@ -1,11 +1,14 @@
 /*************************************************************
 
-	LSD 7.2 - December 2019
+	LSD 8.0 - March 2021
 	written by Marco Valente, Universita' dell'Aquila
 	and by Marcelo Pereira, University of Campinas
 
 	Copyright Marco Valente and Marcelo Pereira
 	LSD is distributed under the GNU General Public License
+	
+	See Readme.txt for copyright information of
+	third parties' code used in LSD
 	
  *************************************************************/
 
@@ -86,7 +89,7 @@ The flag prevents to run a simulation if the data where not confirmed by users.
 
 The main methods of the (C++) object variable are:
 
-- int init( object *_up, char *_label, int _num_lag, double *val, int _save );
+- void init( object *_up, char *_label, int _num_lag, double *val, int _save );
 perform the initialization.
 
 - double cal( object *caller, int lag );
@@ -116,7 +119,7 @@ object::delete_obj to cancel an object.
 
 clock_t start_profile[ 100 ], end_profile[ 100 ];
 
-#ifdef PARALLEL_MODE
+#ifndef NP
 // semaphore to enable just a single parallel call at a time
 atomic < bool > parallel_ready( true );
 condition_variable update;
@@ -159,10 +162,7 @@ variable::variable( void )
 	period_range = 0;
 	up = NULL;
 	next = NULL;
-	
-#ifdef CPP11
 	eq_func = NULL;
-#endif	
 }
 
 
@@ -199,21 +199,18 @@ variable::variable( const variable &v )
 	period_range = v.period_range;
 	up = v.up;
 	next = v.next;
-	
-#ifdef CPP11
 	eq_func = v.eq_func;
-#endif	
 }
 
 
 /****************************************************
 INIT
 ****************************************************/
-int variable::init( object *_up, char const *_label, int _num_lag, double *v, int _save )
+void variable::init( object *_up, char const *_label, int _num_lag, double *v, int _save )
 {
 	int i;
 
-#ifdef PARALLEL_MODE
+#ifndef NP
 	// prevent concurrent use by more than one thread
 	lock_guard < mutex > lock( parallel_comp );
 #endif	
@@ -234,8 +231,34 @@ int variable::init( object *_up, char const *_label, int _num_lag, double *v, in
 	}
 	else
 		val = NULL;
-	
-	return 0;
+}
+
+
+/****************************************************
+EMPTY
+****************************************************/
+void variable::empty( bool no_lock ) 
+{
+#ifndef NP
+	if ( running && ! no_lock )
+	{
+		// prevent concurrent use by more than one thread
+		lock_guard < mutex > lock( parallel_comp );
+	}
+#endif
+
+	if ( running && ( label == NULL || val == NULL ) )
+	{
+		sprintf( msg, "failure while deallocating variable %s", label );
+		error_hard( msg, "internal problem in LSD", 
+					"if error persists, please contact developers", true );
+		return;
+	}
+
+	delete [ ] label;
+	delete [ ] val;
+	delete [ ] lab_tit;
+	free( data );		// use C stdlib to be able to deallocate memory for deleted objects
 }
 
 
@@ -250,15 +273,22 @@ double variable::cal( object *caller, int lag )
 	double app;
 
 	if ( param == 1 )
-		return val[ 0 ];					//it is a parameter, ignore lags
+		return val[ 0 ];				// it's a parameter, ignore lags
 	
-#ifdef PARALLEL_MODE
+#ifndef NP
 	// prepare mutex for variables and functions updated in multiple threads
 	unique_lock < mutex > guard( parallel_comp, defer_lock );
 #endif	
 
 	if ( param == 0 )					// it's a variable
 	{
+		// invalid lag or value not saved yet
+		if ( lag > num_lag && ( no_saved || ! ( save || savei ) || t - lag < start ) )
+		{
+			eff_lag = lag;
+			goto error;
+		}
+		
 		// effective lag for variables (compatible with older versions)
 		eff_lag = ( last_update < t ) ? lag - 1 : lag;
 
@@ -286,7 +316,7 @@ double variable::cal( object *caller, int lag )
 			// already calculated this time step or not to be calculated this time step
 			if ( last_update >= t || t < next_update )
 				return( val[ 0 ] );		
-#ifdef PARALLEL_MODE
+#ifndef NP
 			// prevent parallel computation of the same variable (except dummy equations)
 			if ( parallel_mode && ! dummy )
 				 guard.lock( );
@@ -306,7 +336,7 @@ double variable::cal( object *caller, int lag )
 		if ( caller == NULL )			// update or inadequate caller
 			return val[ 0 ];   
 
-#ifdef PARALLEL_MODE
+#ifndef NP
 		// prevent parallel computation of the same function (except dummy equations)
 		if ( parallel_mode && ! dummy )
 			 guard.lock( );
@@ -326,7 +356,7 @@ double variable::cal( object *caller, int lag )
 
 	under_computation = true;
 
-#ifdef PARALLEL_MODE
+#ifndef NP
 	if ( fast_mode == 0 && ! parallel_mode )
 #else
 	if ( fast_mode == 0 )
@@ -353,7 +383,7 @@ double variable::cal( object *caller, int lag )
 			return 0;
 		}
 
-#ifndef NO_WINDOW
+#ifndef NW
 		if ( stack_info >= stack && ( ! prof_obs_only || observe ) )
 			start_profile[ stack - 1 ] = pstart = clock( );
 		else
@@ -361,7 +391,7 @@ double variable::cal( object *caller, int lag )
 				pstart = clock( );				
 #endif
 	}
-#ifndef NO_WINDOW
+#ifndef NW
 	else
 		if ( prof_aggr_time )
 			pstart = clock( );				
@@ -413,13 +443,13 @@ double variable::cal( object *caller, int lag )
 			next_update += rnd_int( 0, period_range );
 	}
 
-#ifdef PARALLEL_MODE
+#ifndef NP
 	if ( fast_mode == 0 && ! parallel_mode )
 #else
 	if ( fast_mode == 0 )
 #endif	
 	{
-#ifndef NO_WINDOW
+#ifndef NW
 		if ( prof_aggr_time )
 		{
 			pend = clock( );
@@ -508,9 +538,14 @@ double variable::cal( object *caller, int lag )
 	
 	// if there is a pending deletion, try to do it now
 	if ( wait_delete != NULL )
-		wait_delete->delete_obj( );
+	{
+		if ( guard.owns_lock( ) )
+			guard.unlock( );					// release lock
+			
+		wait_delete->delete_obj( this );
+	}
 
-	return val[ 0 ];	// by default the requested value is the last one, not yet computed
+	return app;	// by default the requested value is the last one, not yet computed
 
 	error:
 	
@@ -523,7 +558,7 @@ double variable::cal( object *caller, int lag )
 }
 
 
-#ifdef PARALLEL_MODE
+#ifndef NP
 /***************************************************
 CAL_WORKER
 Multi-thread worker for parallel computation
@@ -539,7 +574,7 @@ void worker::cal_worker( void )
 		running = true;
 		
 		// update object map and register all signal handlers
-		unique_lock< mutex > lock_map( thr_ptr_lock );
+		unique_lock < mutex > lock_map( thr_ptr_lock );
 		thr_id = this_thread::get_id( );
 		thr_ptr[ thr_id ] = this;
 		lock_map.unlock( );
@@ -550,13 +585,13 @@ void worker::cal_worker( void )
 		while ( running )
 		{
 			// wait for variable calculation message
-			unique_lock< mutex > lock_worker( lock );
+			unique_lock < mutex > lock_worker( lock );
 			run.wait( lock_worker, [ this ]{ return ! free; }  );
 			
 			// exit if shutdown or continue if already updated
 			if ( running && var != NULL && var->last_update < t )
 			{	// prevent parallel computation of the same variable
-				lock_guard < mutex > lock_var( var->parallel_comp );
+				unique_lock < mutex > guard_var( var->parallel_comp );
 				
 				// recheck if not computed during lock
 				if ( var->last_update >= t )			
@@ -576,7 +611,7 @@ void worker::cal_worker( void )
 				// compute the Variable's equation
 				user_excpt = true;			// allow distinguishing among internal & user exceptions
 
-#ifndef NO_WINDOW 
+#ifndef NW 
 				if ( setjmp( env ) )		// allow recovering from signals
 					return;
 #endif			
@@ -619,7 +654,10 @@ void worker::cal_worker( void )
 				
 				// if there is a pending object deletion, try to do it now
 				if ( wait_delete != NULL )
-					wait_delete->delete_obj( );
+				{
+					guard_var.unlock( );					// release lock
+					wait_delete->delete_obj( var );
+				}
 			}
 			
 		end:
@@ -740,7 +778,7 @@ void worker::signal( int sig )
 	free = false;
 	running = false;
 	
-#ifndef NO_WINDOW 
+#ifndef NW 
 	longjmp( env, 1 );				// recover from crash on user code
 #endif
 }
@@ -989,31 +1027,3 @@ void parallel_update( variable *v, object* p, object *caller )
 	parallel_ready = true;
 }
 #endif
-
-
-/****************************************************
-EMPTY
-****************************************************/
-void variable::empty( void ) 
-{
-	if ( running )
-	{
-#ifdef PARALLEL_MODE
-		// prevent concurrent use by more than one thread
-		lock_guard < mutex > lock( parallel_comp );
-#endif	
-			
-		if ( label == NULL || val == NULL )
-		{
-			sprintf( msg, "failure while deallocating variable %s", label );
-			error_hard( msg, "internal problem in LSD", 
-						"if error persists, please contact developers", true );
-			return;
-		}
-	}
-
-	delete [ ] label;
-	delete [ ] val;
-	delete [ ] lab_tit;
-	free( data );		// use C stdlib to be able to deallocate memory for deleted objects
-}

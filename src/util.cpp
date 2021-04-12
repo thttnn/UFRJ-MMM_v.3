@@ -1,11 +1,14 @@
 /*************************************************************
 
-	LSD 7.2 - December 2019
+	LSD 8.0 - March 2021
 	written by Marco Valente, Universita' dell'Aquila
 	and by Marcelo Pereira, University of Campinas
 
 	Copyright Marco Valente and Marcelo Pereira
 	LSD is distributed under the GNU General Public License
+	
+	See Readme.txt for copyright information of
+	third parties' code used in LSD
 	
  *************************************************************/
 
@@ -28,10 +31,6 @@ require a writable string.
 
 - void plog( char *m );
 print  message string m in the Log screen.
-
-- int my_strcmp( char *a, char *b )
-It is a normal strcmp, but it catches the possibility of both strings being
-NULL
 
 - FILE *search_str( char *name, char *str )
 given a string name, returns the file corresponding to name, and the current
@@ -62,112 +61,9 @@ int fishErrCnt, studErrCnt, weibErrCnt, betaErrCnt, paretErrCnt, alaplErrCnt;
 double dimW = 0;						// lattice screen size
 double dimH = 0;
 
-#ifdef PARALLEL_MODE
+#ifndef NP
 mutex error;
 #endif	
-
-
-#ifndef NO_WINDOW
-
-/****************************************************
-CMD
-****************************************************/
-bool firstCall = true;
-
-void cmd( const char *cm, ... )
-{
-	char message[ TCL_BUFF_STR ];
-	
-	// abort if Tcl interpreter not initialized
-	if ( inter == NULL )
-	{
-		printf( "\nTcl interpreter not initialized. Quitting LSD now.\n" );
-		myexit( 24 );
-	}
-	
-#ifdef PARALLEL_MODE
-	// abort if not running in main LSD thread
-	if ( this_thread::get_id( ) != main_thread )
-		return;
-#endif
-	
-	if ( strlen( cm ) >= TCL_BUFF_STR )
-	{
-		sprintf( message, "Tcl buffer overrun. Please increase TCL_BUFF_STR in 'decl.h' to at least %lu bytes.", ( long unsigned int ) strlen( cm ) + 1 );
-		log_tcl_error( cm, message );
-		if ( tk_ok )
-			cmd( "tk_messageBox -type ok -title Error -icon error -message \"Tcl buffer overrun (memory corrupted!)\" -detail \"LSD will close immediately after pressing 'OK'.\"" );
-		myexit( 24 );
-	}
-
-	char buffer[ TCL_BUFF_STR ];
-	va_list argptr;
-	
-	va_start( argptr, cm );
-	int reqSz = vsnprintf( buffer, TCL_BUFF_STR, cm, argptr );
-	va_end( argptr );
-	
-	if ( reqSz >= TCL_BUFF_STR )
-	{
-		sprintf( message, "Tcl buffer too small. Please increase TCL_BUFF_STR in 'decl.h' to at least %d bytes.", reqSz + 1 );
-		log_tcl_error( cm, message );
-		if ( tk_ok )
-			cmd( "tk_messageBox -type ok -title Error -icon error -message \"Tcl buffer too small\" -detail \"Tcl/Tk command was canceled.\"" );
-	}
-	else
-	{
-		int code = Tcl_Eval( inter, buffer );
-
-		if ( code != TCL_OK )
-			log_tcl_error( cm, Tcl_GetStringResult( inter ) );
-	}
-}
-
-
-/****************************************************
-LOG_TCL_ERROR
-****************************************************/
-void log_tcl_error( const char *cm, const char *message )
-{
-	FILE *f;
-	char fname[ MAX_PATH_LENGTH ];
-	time_t rawtime;
-	struct tm *timeinfo;
-	char ftime[ 80 ];
-
-	if ( strlen( exec_path ) > 0 )
-		sprintf( fname, "%s/LSD.err", exec_path );
-	else
-		sprintf( fname, "LSD.err" );
-
-	f = fopen( fname,"a" );
-	if ( f == NULL )
-	{
-		plog( "\nCannot write log file to disk. Check write permissions\n" );
-		return;
-	}
-
-	time( &rawtime );
-	timeinfo = localtime( &rawtime );
-	strftime ( ftime, 80, "%x %X", timeinfo );
-
-	if ( firstCall )
-	{
-		firstCall = false;
-		fprintf( f,"\n\n====================> NEW TCL SESSION\n" );
-	}
-	fprintf( f, "\n(%s)\nCommand:\n%s\nMessage:\n%s\n-----\n", ftime, cm, message );
-	fclose( f );
-	
-	plog( "\nInternal LSD error. See file '%s'\n", "", fname );
-}
-
-#else
-
-void cmd( const char *cm, ... )
-{
-}
-#endif
 
 
 /*********************************
@@ -188,13 +84,7 @@ void plog( char const *cm, char const *tag, ... )
 		if ( ! strcmp( tag, tags[ i ] ) )
 			tag_ok = true;
 	
-	// handle the "bar" pseudo tag
-	if ( ! strcmp( tag, "bar" ) )
-		tag_ok = true;
-	else
-		on_bar = false;
-	
-#ifdef PARALLEL_MODE
+#ifndef NP
 	// abort if not running in main LSD thread
 	if ( this_thread::get_id( ) != main_thread )
 		return;
@@ -218,7 +108,7 @@ void plog( char const *cm, char const *tag, ... )
 			message[ j++ ] = buffer[ i ];
 	message[ j ] = '\0';
 
-#ifdef NO_WINDOW 
+#ifdef NW 
 	printf( "%s", message );
 	fflush( stdout );
 #else
@@ -253,7 +143,7 @@ void error_hard( const char *logText, const char *boxTitle, const char *boxText,
 	if ( quit == 2 )		// simulation already being stopped
 		return;
 		
-#ifdef PARALLEL_MODE
+#ifndef NP
 	// prevent concurrent use by more than one thread
 	lock_guard < mutex > lock( error );
 	
@@ -273,13 +163,13 @@ void error_hard( const char *logText, const char *boxTitle, const char *boxText,
 	}
 #endif	
 		
-#ifndef NO_WINDOW
+#ifndef NW
 	if ( running )			// handle running events differently
 	{
 		cmd( "if [ winfo exists .deb ] { destroytop .deb }" );
 		deb_log( false );	// close any open debug log file
-		reset_plot( cur_sim );	// allow closing run-time plot
-		set_buttons_log( false );
+		reset_plot( );		// show & disable run-time plot
+		set_buttons_run( false );
 
 		plog( "\n\nError detected at time %d", "highlight", t );
 		plog( "\n\nError: %s\nDetails: %s", "", boxTitle, logText );
@@ -287,14 +177,14 @@ void error_hard( const char *logText, const char *boxTitle, const char *boxText,
 			plog( "\nOffending code contained in the equation for variable: '%s'", "", stacklog->vs->label );
 		plog( "\nSuggestion: %s", "", boxText );
 		print_stack( );
-		cmd( "wm deiconify .log; raise .log; focus -force .log" );
-		cmd( "tk_messageBox -parent . -title Error -type ok -icon error -message \"[ string totitle {%s} ]\" -detail \"[ string totitle {%s} ].\n\nMore details are available in the Log window.\n\nSimulation cannot continue.\"", boxTitle, boxText  );
+		cmd( "focustop .log" );
+		cmd( "ttk::messageBox -parent . -title Error -type ok -icon error -message \"[ string totitle {%s} ]\" -detail \"[ string totitle {%s} ].\n\nMore details are available in the Log window.\n\nSimulation cannot continue.\"", boxTitle, boxText  );
 	}
 	else
 	{
 		plog( "\n\nError: %s\nDetails: %s", "", boxTitle, logText );
 		plog( "\nSuggestion: %s\n", "", boxText );
-		cmd( "tk_messageBox -parent . -title Error -type ok -icon error -message \"[ string totitle {%s} ]\" -detail \"[ string totitle {%s} ].\n\nMore details are available in the Log window.\"", boxTitle, boxText  );
+		cmd( "ttk::messageBox -parent . -title Error -type ok -icon error -message \"[ string totitle {%s} ]\" -detail \"[ string totitle {%s} ].\n\nMore details are available in the Log window.\"", boxTitle, boxText  );
 	}
 #endif
 
@@ -303,28 +193,27 @@ void error_hard( const char *logText, const char *boxTitle, const char *boxText,
 
 	quit = 2;				// do not continue simulation
 
-#ifndef NO_WINDOW
+#ifndef NW
 	uncover_browser( );
-	cmd( "wm deiconify .; wm deiconify .log; raise .log; focus -force .log" );
+	cmd( "focustop .log" );
 
 	cmd( "set err %d", defQuit ? 1 : 2 );
 
 	cmd( "newtop .cazzo Error" );
 
-	cmd( "frame .cazzo.t" );
-	cmd( "label .cazzo.t.l -fg red -text \"An error occurred during the simulation\"" );
+	cmd( "ttk::frame .cazzo.t" );
+	cmd( "ttk::label .cazzo.t.l -style hl.TLabel -text \"An error occurred during the simulation\"" );
 	cmd( "pack .cazzo.t.l -pady 10" );
-	cmd( "label .cazzo.t.l1 -text \"Information about the error\nis reported in the log window.\nResults are available in the LSD browser.\"" );
+	cmd( "ttk::label .cazzo.t.l1 -justify center -text \"Information about the error is reported in the log window.\nPartial results are available in the LSD browser.\"" );
 	cmd( "pack .cazzo.t.l1" );
 
-	cmd( "frame .cazzo.e" );
-	cmd( "label .cazzo.e.l -text \"Choose one option to continue\"" );
+	cmd( "ttk::frame .cazzo.e" );
+	cmd( "ttk::label .cazzo.e.l -text \"Choose one option to continue\"" );
 
-	cmd( "frame .cazzo.e.b -relief groove -bd 2" );
-	cmd( "radiobutton .cazzo.e.b.r -variable err -value 2 -text \"Return to LSD Browser to edit the model configuration\"" );
-	cmd( "radiobutton .cazzo.e.b.d -variable err -value 3 -text \"Open LSD Debugger on the offending variable and object instance\"" );
-	cmd( "radiobutton .cazzo.e.b.e -variable err -value 1 -text \"Quit LSD Browser to edit the model equations' code in LMM\"" );
-
+	cmd( "ttk::frame .cazzo.e.b -relief solid -borderwidth 1 -padding [ list $frPadX $frPadY ]" );
+	cmd( "ttk::radiobutton .cazzo.e.b.r -variable err -value 2 -text \"Return to LSD Browser to edit the model configuration\"" );
+	cmd( "ttk::radiobutton .cazzo.e.b.d -variable err -value 3 -text \"Open LSD Debugger on the offending variable and object instance\"" );
+	cmd( "ttk::radiobutton .cazzo.e.b.e -variable err -value 1 -text \"Quit LSD Browser to edit the model equations' code in LMM\"" );
 	cmd( "pack .cazzo.e.b.r .cazzo.e.b.d .cazzo.e.b.e -anchor w" );
 
 	cmd( "pack .cazzo.e.l .cazzo.e.b" );
@@ -333,7 +222,8 @@ void error_hard( const char *logText, const char *boxTitle, const char *boxText,
 
 	cmd( "okhelp .cazzo b { set choice 1 }  { LsdHelp debug.html#crash }" );
 
-	cmd( "showtop .cazzo centerS" );
+	cmd( "showtop .cazzo centerW" );
+	cmd( "mousewarpto .cazzo.b.ok" );
 	
 	if ( parallel_mode || fast_mode != 0 )
 		cmd( ".cazzo.e.b.d configure -state disabled" );
@@ -362,8 +252,7 @@ void error_hard( const char *logText, const char *boxTitle, const char *boxText,
 	if ( choice == 2 )
 	{
 		// do run( ) cleanup
-		unwind_stack( );
-		actual_steps = t;
+		empty_stack( );
 		unsavedData = true;				// flag unsaved simulation results
 		running = false;
 		
@@ -376,7 +265,7 @@ void error_hard( const char *logText, const char *boxTitle, const char *boxText,
 		root->emptyturbo( );
 		uncover_browser( );
 
-#ifdef PARALLEL_MODE
+#ifndef NP
 		// stop multi-thread workers
 		delete [ ] workers;
 		workers = NULL;
@@ -425,34 +314,14 @@ void print_stack( void )
 
 
 /****************************************************
-MSLEEP
-****************************************************/
-#ifdef _WIN32
-#include <windows.h>
-void msleep( unsigned msec )
-{
-	Sleep( msec );
-	return;
-}
-#else
-#include <unistd.h>	
-void msleep( unsigned msec )
-{
-	usleep( msec * 1000 );
-	return;
-}
-#endif
-
-
-/****************************************************
 SEARCH_STR
 ****************************************************/
-FILE *search_str( char const *name, char const *str )
+FILE *search_str( char const *fname, char const *str )
 {
 	FILE *f;
 	char got[ MAX_LINE_SIZE ];
 
-	f = fopen( name, "r" );
+	f = fopen( fname, "r" );
 	if ( f == NULL )
 		return NULL;
 
@@ -809,7 +678,7 @@ void add_description( char const *lab, char const *type, char const *text )
 }
 
 
-#ifndef NO_WINDOW
+#ifndef NW
 
 /****************************************************
 SEARCH_ALL_SOURCES
@@ -824,7 +693,7 @@ FILE *search_all_sources( char *str )
 	cmd( "set source_files [ get_source_files \"%s\" ]", exec_path );
 	cmd( "if { [ lsearch -exact $source_files \"%s\" ] == -1 } { lappend source_files \"%s\" }", equation_name, equation_name );
 	cmd( "set res [ llength $source_files ]" );
-	get_int( "res", & nfiles );
+	nfiles = get_int( "res" );
 	
 	for ( i = 0; i < nfiles; ++i )
 	{
@@ -845,6 +714,8 @@ FILE *search_all_sources( char *str )
 		
 		if ( ! strncmp( got, str, strlen( str ) ) )
 			return f;
+		
+		fclose( f );
 	}
 	
 	return NULL;
@@ -947,6 +818,7 @@ void get_var_descr( char const *lab, char *descr, int descr_len )
 	}
 	
 	if ( f != NULL )
+	{
 		while ( done != 1 )
 		{
 			fgets( str1, MAX_LINE_SIZE, f );
@@ -994,7 +866,9 @@ void get_var_descr( char const *lab, char *descr, int descr_len )
 					done = 1;
 			}
 		}
-
+		
+		fclose( f );
+	}
 	descr[ j ] = '\0';
 }
 
@@ -1037,213 +911,7 @@ void auto_document( int *choice, char const *lab, char const *which, bool append
 	}						// end of the for (desc)
 }
 
-
-/***************************************************
-GET_BOOL
-***************************************************/
-bool get_bool( const char *tcl_var, bool *var )
-{
-	int intvar;
-	sscanf( ( char * ) Tcl_GetVar( inter, tcl_var, 0 ), "%d", & intvar );
-	if ( var != NULL )
-		*var = intvar ? true : false;
-	return ( intvar ? true : false );
-}
-
-
-/***************************************************
-GET_INT
-***************************************************/
-int get_int( const char *tcl_var, int *var )
-{
-	int intvar;
-	sscanf( ( char * ) Tcl_GetVar( inter, tcl_var, 0 ), "%d", & intvar );
-	if ( var != NULL )
-		*var = intvar;
-	return intvar;
-}
-
-
-/***************************************************
-GET_LONG
-***************************************************/
-long get_long( const char *tcl_var, long *var )
-{
-	long longvar;
-	sscanf( ( char * ) Tcl_GetVar( inter, tcl_var, 0 ), "%ld", & longvar );
-	if ( var != NULL )
-		*var = longvar;
-	return longvar;
-}
-
-
-/***************************************************
-GET_DOUBLE
-***************************************************/
-double get_double( const char *tcl_var, double *var )
-{
-	double dblvar;
-	sscanf( ( char * ) Tcl_GetVar( inter, tcl_var, 0 ), "%lf", & dblvar );
-	if ( var != NULL )
-		*var = dblvar;
-	return dblvar;
-}
-
 #endif
-
-
-/***************************************************
-COLLECT_CEMETERY
-Processes variables from an object required to go to cemetery 
-***************************************************/
-void collect_cemetery( object *o )
-{
-	variable *cv, *nv;
-	
-	for ( cv = o->v; cv != NULL; cv = nv )	// scan all variables
-	{
-		nv = cv->next;						// pointer to next variable
-		
-		// need to save?
-		if ( running && ( cv->save == true || cv->savei == true ) )
-		{
-			if ( cv->savei )
-				save_single( cv );			// update file
-	
-			set_lab_tit( cv );				// update last lab_tit
-			
-			cv->end = t;					// define last period,
-			cv->data[ t - cv->start ] = cv->val[ 0 ];	// and last value
-			
-			// use C stdlib to be able to deallocate memory for deleted objects
-			cv->data = ( double * ) realloc( cv->data, ( t - cv->start + 1 ) * sizeof( double ) );
-			
-			add_cemetery( cv );				// put in cemetery (destroy cv->next)
-		}
-	}
-}
-
-
-/***************************************************
-ADD_CEMETERY
-Store the variable in a list of variables in objects deleted
-but to be used for analysis.
-***************************************************/
-void add_cemetery( variable *v )
-{
-	if ( cemetery == NULL )
-		cemetery = last_cemetery = v;
-	else
-	{
-		last_cemetery->next = v;
-		last_cemetery = v;
-	}
-	
-	last_cemetery->next = NULL;
-}
-
-
-/***************************************************
-EMPTY_CEMETERY
-***************************************************/
-void empty_cemetery( void )
-{
-	variable *cv, *cv1;
-	
-	for ( cv = cemetery; cv !=NULL ; )
-	{
-		cv1 = cv->next;
-		cv->empty( );
-		delete cv;
-		cv = cv1;
-	}
-	
-	cemetery = last_cemetery = NULL;
-}
-
-
-/****************************************************
-MY_STRCMP
-****************************************************/
-int my_strcmp( char *a, char *b )
-{
-	int res;
-	if ( a == NULL && b == NULL )
-		return 0;
-
-	res = strcmp( a, b );
-	return res;
-}
-
-
-/***************************************************
-KILL_INITIAL_NEWLINE
-***************************************************/
-void kill_initial_newline( char *s )
-{
-	char *d;
-	int i, j;
-	
-	j = strlen( s );
-
-	d = new char[ j + 1 ];
-
-	for ( i = 0; i < j; ++i )
-		if ( s[ i ] != '\n' )
-			break;
-
-	strcpy( d, s + i );
-	strcpy( s, d );
-	delete [ ] d;
-}
-
-
-/***************************************************
-KILL_TRAILING_NEWLINE
-***************************************************/
-void kill_trailing_newline( char *s )
-{
-	int i, done = 0;
-	
-	kill_initial_newline( s );
-
-	while ( done == 0 )
-	{ 
-		done = 1;
-		for ( i = 0; s[ i ] != '\0'; ++i )
-			if ( s[ i ] == '\n' && s[ i + 1 ] == '\0' )
-			{
-				s[ i ] = '\0';
-				done = 0;
-			} 
-	}
-}
-
-
-/***************************************************
-CLEAN_SPACES
-***************************************************/
-void clean_spaces( char *s )
-{
-	int i, j;
-	char app[ MAX_LINE_SIZE ];
-
-	app[ MAX_LINE_SIZE - 1 ] = '\0';
-	for ( j = 0, i = 0; s[ i ] != '\0' && i < MAX_LINE_SIZE - 1; ++i )
-		switch ( s[ i ] )
-		{
-			case ' ':
-			case '\t':
-				break;
-				
-			default: 
-				app[ j++ ] = s[ i ];
-				break;
-		}
-		
-	app[ j ] = '\0';
-	strcpy( s, app );
-}
 
 
 /****************************************************
@@ -1379,7 +1047,7 @@ void save_eqfile( FILE *f )
 }
 
 
-#ifndef NO_WINDOW
+#ifndef NW
 
 /***************************************************
 READ_EQ_FILENAME
@@ -1394,7 +1062,7 @@ void read_eq_filename( char *s )
 	
 	if ( f == NULL )
 	{
-		cmd( "tk_messageBox -parent . -title Error -icon error -type ok -message \"File not found\" -detail \"File '$MODEL_OPTIONS' missing, cannot upload the equation file.\nYou may have to recreate your model configuration.\"" );
+		cmd( "ttk::messageBox -parent . -title Error -icon error -type ok -message \"File not found\" -detail \"File '$MODEL_OPTIONS' missing, cannot upload the equation file.\nYou may have to recreate your model configuration.\"" );
 		return;
 	}
 	
@@ -1403,7 +1071,7 @@ void read_eq_filename( char *s )
 	fclose( f );
 	if ( strncmp( lab, "FUN=", 4 ) != 0 )
 	{
-		cmd( "tk_messageBox -parent . -type ok -title -title Error -icon error -message \"File corrupted\" -detail \"File '$MODEL_OPTIONS' has invalid contents, cannot upload the equation file.\nYou may have to recreate your model configuration.\"" );
+		cmd( "ttk::messageBox -parent . -type ok -title -title Error -icon error -message \"File corrupted\" -detail \"File '$MODEL_OPTIONS' has invalid contents, cannot upload the equation file.\nYou may have to recreate your model configuration.\"" );
 		return;
 	}
 
@@ -1499,12 +1167,8 @@ void result::data( object *root, int initstep, int endtstep )
 		
 		data_recursive( root, i );		// output one data line
 		
-		if ( dozip )				// and change line
-		{
-#ifdef LIBZ
+		if ( dozip )					// and change line
 			gzprintf( fz, "\n" );
-#endif
-		}
 		else
 			fprintf( f, "\n" );
 	}
@@ -1524,12 +1188,10 @@ void result::data_recursive( object *r, int i )
 			{
 				if ( dozip )
 				{
-#ifdef LIBZ
 					if ( docsv )
 						gzprintf( fz, "%s%.*G", firstCol ? "" : CSV_SEP, SIG_DIG, cv->data[ i - cv->start ] );
 					else
 						gzprintf( fz, "%.*G\t", SIG_DIG, cv->data[ i - cv->start ] );
-#endif
 				}
 				else
 				{
@@ -1543,12 +1205,10 @@ void result::data_recursive( object *r, int i )
 			{
 				if ( dozip )		// save NaN as n/a
 				{
-#ifdef LIBZ
 					if ( docsv )
 						gzprintf( fz, "%s%s", firstCol ? "" : CSV_SEP, nonavail );
 					else
 						gzprintf( fz, "%s\t", nonavail );
-#endif
 				}
 				else
 				{
@@ -1582,12 +1242,10 @@ void result::data_recursive( object *r, int i )
 			{
 				if ( dozip )
 				{
-#ifdef LIBZ
 					if ( docsv )
 						gzprintf( fz, "%s%.*G", firstCol ? "" : CSV_SEP, SIG_DIG, cv->data[ i - cv->start ] );
 					else
 						gzprintf( fz, "%.*G\t", SIG_DIG, cv->data[ i - cv->start ] );
-#endif
 				}
 				else
 				{
@@ -1601,12 +1259,10 @@ void result::data_recursive( object *r, int i )
 			{
 				if ( dozip )
 				{
-#ifdef LIBZ
 					if ( docsv )
 						gzprintf( fz, "%s%s", firstCol ? "" : CSV_SEP, nonavail );
 					else
 						gzprintf( fz, "%s\t", nonavail );
-#endif
 				}
 				else
 				{
@@ -1630,11 +1286,7 @@ void result::title( object *root, int flag )
 	title_recursive( root, flag );		// output header
 		
 	if ( dozip )						// and change line
-	{
-#ifdef LIBZ
 		gzprintf( fz, "\n" );
-#endif
-	}
 	else
 		fprintf( f, "\n" );
 }
@@ -1658,12 +1310,10 @@ void result::title_recursive( object *r, int header )
 			{
 				if ( dozip )
 				{
-#ifdef LIBZ
 					if ( docsv )
 						gzprintf( fz, "%s%s%s%s", firstCol ? "" : CSV_SEP, cv->label, single ? "" : "_", single ? "" : cv->lab_tit );
 					else
 						gzprintf( fz, "%s %s (%d %d)\t", cv->label, cv->lab_tit, cv->start, cv->end );
-#endif
 				}
 				else
 				{
@@ -1677,12 +1327,10 @@ void result::title_recursive( object *r, int header )
 			{
 				if ( dozip )
 				{
-#ifdef LIBZ
 					if ( docsv )
 						gzprintf( fz, "%s%s%s%s", firstCol ? "" : CSV_SEP, cv->label, single ? "" : "_", single ? "" : cv->lab_tit );
 					else
 						gzprintf( fz, "%s %s (-1 -1)\t", cv->label, cv->lab_tit );
-#endif
 				}
 				else
 				{
@@ -1716,12 +1364,10 @@ void result::title_recursive( object *r, int header )
 		{
 			if ( dozip )
 			{
-#ifdef LIBZ
 				if ( docsv )
 					gzprintf( fz, "%s%s%s%s", firstCol ? "" : CSV_SEP, cv->label, single ? "" : "_", single ? "" : cv->lab_tit );
 				else
 					gzprintf( fz, "%s %s (%d %d)\t", cv->label, cv->lab_tit, cv->start, cv->end );
-#endif
 			}
 			else
 			{
@@ -1739,20 +1385,15 @@ void result::title_recursive( object *r, int header )
 // open the appropriate file for saving the results (constructor)
 result::result( char const *fname, char const *fmode, bool dozip, bool docsv )
 {
-#ifndef LIBZ
-	dozip = false;				// disable zip if libraries not available
-#endif
 	this->docsv = docsv;
 	this->dozip = dozip;		// save local class flag
 	if ( dozip )
 	{
-#ifdef LIBZ
-			char *fnamez = new char[ strlen( fname ) + 4 ];	// append .gz to the file name
-			strcpy( fnamez, fname );
-			strcat( fnamez, ".gz");
-			fz = gzopen( fnamez, fmode );
-			delete [ ] fnamez;
-#endif
+		char *fnamez = new char[ strlen( fname ) + 4 ];	// append .gz to the file name
+		strcpy( fnamez, fname );
+		strcat( fnamez, ".gz");
+		fz = gzopen( fnamez, fmode );
+		delete [ ] fnamez;
 	}
 	else
 		f = fopen( fname, fmode );
@@ -1762,11 +1403,7 @@ result::result( char const *fname, char const *fmode, bool dozip, bool docsv )
 result::~result( void )
 {
 	if ( dozip )
-	{
-#ifdef LIBZ
 		gzclose( fz );
-#endif
-	}
 	else
 		fclose( f );
 }
@@ -1814,12 +1451,12 @@ double init_lattice( double pixW, double pixH, double nrow, double ncol, char co
 		for ( j = 0; j < columns; ++j )
 			lattice[ i ][ j ] = init_color;
 		
-#ifndef NO_WINDOW
+#ifndef NW
 
-	get_int( "hsizeLat", & hsize );			// 400
-	get_int( "vsizeLat", & vsize );			// 400
-	get_int( "hsizeLatMax", & hsizeMax );	// 1024
-	get_int( "vsizeLatMax", & vsizeMax );	// 1024
+	hsize = get_int( "hsizeLat" );			// 400
+	vsize = get_int( "vsizeLat" );			// 400
+	hsizeMax = get_int( "hsizeLatMax" );	// 1024
+	vsizeMax = get_int( "vsizeLatMax" );	// 1024
 
 	pixW = floor( pixW ) > 0 ? floor( pixW ) : hsize;
 	pixH = floor( pixH ) > 0 ? floor( pixH ) : vsize;
@@ -1842,14 +1479,14 @@ double init_lattice( double pixW, double pixH, double nrow, double ncol, char co
 	else
 	{
 		sprintf( init_color_string, "$c%d", init_color );		// no: use the positive RGB value
-		// create (white) pallete entry if invalid palette in init_color
-		cmd( "if { ! [ info exist c%d ] } { set c%d white }", init_color, init_color  );
+		// create (background color) pallete entry if invalid palette in init_color
+		cmd( "if { ! [ info exist c%d ] } { set c%d $colorsTheme(bg) }", init_color, init_color  );
 	}
 			
-	if ( init_color == 1001 )
-		cmd( "canvas .lat.c -height %d -width %d -bg white", ( unsigned int ) pixH, ( unsigned int ) pixW );
-	else
-		cmd( "canvas .lat.c -height %d -width %d -bg %s", ( unsigned int ) pixH, ( unsigned int ) pixW, init_color_string );
+	cmd( "ttk::canvas .lat.c -height %d -width %d -entry 0 -dark $darkTheme", ( unsigned int ) pixH, ( unsigned int ) pixW );
+	
+	if ( init_color != 1001 )
+		cmd( ".lat.c configure -background %s", init_color_string );
 
 	cmd( "pack .lat.c" );
 
@@ -1862,16 +1499,18 @@ double init_lattice( double pixW, double pixH, double nrow, double ncol, char co
 	
 	cmd( "for { set i 1 } { $i <= $rows } { incr i } { \
 			for { set j 1 } { $j <= $columns } { incr j } { \
-				set x1 [ expr ( $j - 1 ) * $dimW ]; \
-				set y1 [ expr ( $i - 1 ) * $dimH ]; \
-				set x2 [ expr $j * $dimW ]; \
-				set y2 [ expr $i * $dimH ]; \
+				set x1 [ expr { ( $j - 1 ) * $dimW } ]; \
+				set y1 [ expr { ( $i - 1 ) * $dimH } ]; \
+				set x2 [ expr { $j * $dimW } ]; \
+				set y2 [ expr { $i * $dimH } ]; \
 				.lat.c create rectangle $x1 $y1 $x2 $y2 -outline \"\" -tags c${i}_${j} \
 			} \
 		}" );
 
 	cmd( "showtop .lat centerS no no no" );
-	set_shortcuts_log( ".lat", "lattice.html" );
+	
+	cmd( "bind .lat <F1> { LsdHelp lattice.html }" );
+	set_shortcuts_run( ".lat" );
 
 #endif
 
@@ -1910,7 +1549,7 @@ void close_lattice( void )
 {
 	empty_lattice( );
 	
-#ifndef NO_WINDOW
+#ifndef NW
 	cmd( "destroytop .lat" );
 #endif
 }
@@ -1954,7 +1593,7 @@ double update_lattice( double line, double col, double val )
 		else
 			lattice[ line_int ][ col_int ] = val_int;
 	}
-#ifndef NO_WINDOW
+#ifndef NW
 
 	// avoid operation if canvas was closed
 	cmd( "if [ winfo exists .lat.c ] { set latcanv 1 } { set latcanv 0 }" );
@@ -1967,8 +1606,8 @@ double update_lattice( double line, double col, double val )
 	else
 	{
 		sprintf( val_string, "$c%d", val_int );			// no: use the predefined Tk color
-		// create (white) pallete entry if invalid palette in val
-		cmd( "if { ! [ info exist c%d ] } { set c%d white }", val_int, val_int  );
+		// create (background color) pallete entry if invalid palette in val
+		cmd( "if { ! [ info exist c%d ] } { set c%d $colorsTheme(bg) }", val_int, val_int  );
 	}
 		
 	cmd( ".lat.c itemconfigure c%d_%d -fill %s", line_int + 1, col_int + 1, val_string );
@@ -2015,7 +1654,7 @@ double save_lattice( const char *fname )
 {
 	char *latcanv;
 
-#ifndef NO_WINDOW
+#ifndef NW
 
 	// avoid operation if no canvas or no file name
 	cmd( "if [ winfo exists .lat.c ] { set latcanv \"1\" } { set latcanv \"0\" }" );
@@ -2250,6 +1889,26 @@ double paretocdf( double mu, double alpha, double x )
 
 
 /***************************************************
+BPARETOCDF
+Bounded Pareto cumulative distribution function
+***************************************************/
+double bparetocdf( double alpha, double low, double high, double x )
+{
+	if ( alpha <= 0 || low <= 0 || low >= high )
+	{
+		plog( "\nWarning: bad alpha, low or high in function: bparetocdf" );
+		return 0.0;
+	}
+	
+	if ( x < low )
+		return 0.0;
+	else
+		return ( 1 - pow( low, alpha ) * pow( x, - alpha ) ) /
+			   ( 1 - pow( low / high, alpha ) ) ;
+}
+
+
+/***************************************************
 NORMCDF
 Normal cumulative distribution function
 ***************************************************/
@@ -2434,46 +2093,24 @@ bool is_nan( double x )
 
 
 /****************************************************
-STR_UPR
-function may be missing in some compiler libraries
-****************************************************/
-char *str_upr( char *str )
-{
-	unsigned char *p = ( unsigned char * ) str;
-
-	while ( *p )
-	{
-		*p = toupper( *p );
-		++p;
-	}
-
-	return str;
-}
-
-/****************************************************
-C++11 Standard Library <random> functions
-If C++11 or higher is not available, use the old
-LSD functions
-****************************************************/
-
-#ifdef CPP11
-
-/****************************************************
 INIT_RANDOM
 Set seed to all random generators
 Pseudo-random number generator to extract draws
-ran_gen =	1 : Linear congruential in (0,1)
-ran_gen =	2 : Mersenne-Twister in (0,1)
-ran_gen =	3 : Linear congruential in [0,1)
-ran_gen =	4 : Mersenne-Twister in [0,1)
-ran_gen =	5 : Mersenne-Twister with 64 bits resolution in [0,1)
-ran_gen =	6 : Lagged fibonacci with 24 bits resolution in [0,1)
-ran_gen =	7 : Lagged fibonacci with 48 bits resolution in [0,1)
+ran_gen_id = 0 : system (not pseudo) random device in (0,1)
+ran_gen_id = 1 : Linear congruential in (0,1)
+ran_gen_id = 2 : Mersenne-Twister in (0,1)
+ran_gen_id = 3 : Linear congruential in [0,1)
+ran_gen_id = 4 : Mersenne-Twister in [0,1)
+ran_gen_id = 5 : Mersenne-Twister with 64 bits resolution in [0,1)
+ran_gen_id = 6 : Lagged fibonacci with 24 bits resolution in [0,1)
+ran_gen_id = 7 : Lagged fibonacci with 48 bits resolution in [0,1)
 ****************************************************/
-int ran_gen = 2;					// default pseudo-random number generator
+int ran_gen_id = 2;					// ID of initial generator (DO NOT CHANGE)
+long idum = 0;						// Park-Miller default seed (legacy code only)
 
-#ifdef PARALLEL_MODE
-mutex parallel_lc1;					// mutex locks for random generator operations
+#ifndef NP
+mutex parallel_rd;					// mutex locks for random generator operations
+mutex parallel_lc1;
 mutex parallel_lc2;
 mutex parallel_mt32;
 mutex parallel_mt64;
@@ -2481,6 +2118,7 @@ mutex parallel_lf24;
 mutex parallel_lf48;
 #endif	
 
+random_device rd;					// system random device
 minstd_rand lc1;					// linear congruential generator (internal)
 minstd_rand lc2;					// linear congruential generator (user)
 mt19937 mt32;						// Mersenne-Twister 32 bits generator
@@ -2490,6 +2128,7 @@ ranlux48 lf48;						// lagged fibonacci 48 bits generator
 
 void init_random( unsigned seed )
 {
+	idum = -seed;					// unused (legacy code only)
 	lc1.seed( seed );				// linear congruential (internal)
 	lc2.seed( seed );				// linear congruential (user)
 	mt32.seed( seed );				// Mersenne-Twister 32 bits
@@ -2498,9 +2137,18 @@ void init_random( unsigned seed )
 	lf48.seed( seed );				// lagged fibonacci 48 bits
 }
 
+template < class distr > double draw_rd( distr &d )
+{
+#ifndef NP
+	// prevent concurrent draw by more than one thread
+	lock_guard < mutex > lock( parallel_rd );
+#endif	
+	return d( rd );
+}
+
 template < class distr > double draw_lc1( distr &d )
 {
-#ifdef PARALLEL_MODE
+#ifndef NP
 	// prevent concurrent draw by more than one thread
 	lock_guard < mutex > lock( parallel_lc1 );
 #endif	
@@ -2509,7 +2157,7 @@ template < class distr > double draw_lc1( distr &d )
 
 template < class distr > double draw_lc2( distr &d )
 {
-#ifdef PARALLEL_MODE
+#ifndef NP
 	// prevent concurrent draw by more than one thread
 	lock_guard < mutex > lock( parallel_lc2 );
 #endif	
@@ -2518,7 +2166,7 @@ template < class distr > double draw_lc2( distr &d )
 
 template < class distr > double draw_mt32( distr &d )
 {
-#ifdef PARALLEL_MODE
+#ifndef NP
 	// prevent concurrent draw by more than one thread
 	lock_guard < mutex > lock( parallel_mt32 );
 #endif	
@@ -2527,7 +2175,7 @@ template < class distr > double draw_mt32( distr &d )
 
 template < class distr > double draw_mt64( distr &d )
 {
-#ifdef PARALLEL_MODE
+#ifndef NP
 	// prevent concurrent draw by more than one thread
 	lock_guard < mutex > lock( parallel_mt64 );
 #endif	
@@ -2536,7 +2184,7 @@ template < class distr > double draw_mt64( distr &d )
 
 template < class distr > double draw_lf24( distr &d )
 {
-#ifdef PARALLEL_MODE
+#ifndef NP
 	// prevent concurrent draw by more than one thread
 	lock_guard < mutex > lock( parallel_lf24 );
 #endif	
@@ -2545,7 +2193,7 @@ template < class distr > double draw_lf24( distr &d )
 
 template < class distr > double draw_lf48( distr &d )
 {
-#ifdef PARALLEL_MODE
+#ifndef NP
 	// prevent concurrent draw by more than one thread
 	lock_guard < mutex > lock( parallel_lf48 );
 #endif	
@@ -2553,24 +2201,16 @@ template < class distr > double draw_lf48( distr &d )
 }
 
 
-/****************************************************
-RND_INT
-****************************************************/
-int rnd_int( int min, int max )
-{
-	uniform_int_distribution< int > distr( min, max );
-	return draw_lc1( distr );
-}
-
-
 /***************************************************
-CUR_GEN
+DRAW_GEN
 Generate the draw using current generator object
 ***************************************************/
-template < class distr > double cur_gen( distr &d )
+template < class distr > double draw_gen( distr &d )
 {
-	switch ( ran_gen )
+	switch ( ran_gen_id )
 	{
+		case 0:						// system (not pseudo) random generator
+			return draw_rd( d );
 		case 1:						// linear congruential in (0,1)
 		case 3:						// linear congruential in [0,1)
 		default:
@@ -2593,8 +2233,59 @@ template < class distr > double cur_gen( distr &d )
 
 
 /***************************************************
+SET_RANDOM
+Set the generator object to be used in draws
+***************************************************/
+void *set_random( int gen )
+{
+	if ( gen >= 0 && gen <= 7 )
+	{
+		ran_gen_id = gen;
+		
+		switch ( ran_gen_id )
+		{
+			case 0:						// system (not pseudo) random generator
+				if ( ! HW_RAND_GEN )
+					plog( "\nWarning: true random generator not available\n" );
+				return ( ( void * ) & rd );
+
+			case 1:						// linear congruential in (0,1)
+			case 3:						// linear congruential in [0,1)
+				return ( ( void * ) & lc2 );
+
+			case 2:						// Mersenne-Twister 32 bits in (0,1)
+			case 4:						// Mersenne-Twister 32 bits in [0,1)
+				return ( ( void * ) & mt32 );
+
+			case 5:						// Mersenne-Twister 64 bits in [0,1)
+				return ( ( void * ) & mt64 );
+
+			case 6:						// lagged fibonacci 24 bits in [0,1)
+				return ( ( void * ) & lf24 );
+				break;
+			case 7:						// lagged fibonacci 48 bits in [0,1)
+				return ( ( void * ) & lf48 );
+		}
+	}
+	
+	return NULL;
+}
+
+
+/****************************************************
+RND_INT
+****************************************************/
+int rnd_int( int min, int max )
+{
+	uniform_int_distribution< int > distr( min, max );
+	return draw_lc1( distr );
+}
+
+
+/***************************************************
 RAN1
 Call the preset pseudo-random number generator
+Just generates numbers > 0 and < 1
 ***************************************************/
 double ran1( long *unused )
 {
@@ -2602,8 +2293,8 @@ double ran1( long *unused )
 	uniform_real_distribution< double > distr( 0, 1 );
 	
 	do
-		ran = cur_gen( distr );
-	while ( ran_gen < 3 && ran == 0.0 );
+		ran = draw_gen( distr );
+	while ( ran == 0.0 && ran_gen_id < 3 );
 
 	return ran;
 }
@@ -2615,7 +2306,7 @@ UNIFORM
 double uniform( double min, double max )
 {
 	uniform_real_distribution< double > distr( min, max );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2625,7 +2316,7 @@ UNIFORM_INT
 double uniform_int( double min, double max )
 {
 	uniform_int_distribution< int > distr( ( long ) min, ( long ) max );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2638,23 +2329,12 @@ double norm( double mean, double dev )
 	
 	if ( dev < 0 )	
 	{
-		if ( ++normErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: negative standard deviation in function 'norm'" );
-			normStopErr = false;
-		}
-		else
-			if ( ! normStopErr )
-			{
-				plog( "\nWarning: too many negative standard deviation errors in function 'norm', stop reporting...\n" );
-				normStopErr = true;
-			}
-
+		warn_distr( & normErrCnt, & normStopErr, "norm", "negative standard deviation" );
 		return mean;
 	}
 
 	normal_distribution< double > distr( mean, dev );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2668,23 +2348,12 @@ double lnorm( double mean, double dev )
 	
 	if ( dev < 0 )
 	{
-		if ( ++lnormErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: negative standard deviation in function 'lnorm'" );
-			lnormStopErr = false;
-		}
-		else
-			if ( ! lnormStopErr )
-			{
-				plog( "\nWarning: too many negative standard deviation errors in function 'lnorm', stop reporting...\n" );
-				lnormStopErr = true;
-			}
-			
+		warn_distr( & lnormErrCnt, & lnormStopErr, "lnorm", "negative standard deviation" );
 		return exp( mean );
 	}
 
 	lognormal_distribution< double > distr( mean, dev );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2697,23 +2366,12 @@ double gamma( double alpha, double beta )
 	
 	if ( alpha <= 0 || beta <= 0 )
 	{
-		if ( ++gammaErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: non-positive alpha or beta parameters in function 'gamma'" );
-			gammaStopErr = false;
-		}
-		else
-			if ( ! gammaStopErr )
-			{
-				plog( "\nWarning: too many non-positive parameter errors in function 'gamma', stop reporting...\n" );
-				gammaStopErr = true;
-			}
-			
+		warn_distr( & gammaErrCnt, & gammaStopErr, "gamma", "non-positive alpha or beta parameter" );
 		return 0.0;
 	}
 
 	gamma_distribution< double > distr( alpha, beta );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2726,17 +2384,7 @@ double bernoulli( double p )
 	
 	if ( p < 0 || p > 1 )
 	{
-		if ( ++bernoErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: probability out of [0, 1] in function 'bernoulli'" );
-			bernoStopErr = false;
-		}
-		else
-			if ( ! bernoStopErr )
-			{
-				plog( "\nWarning: too many invalid probability errors in function 'bernoulli', stop reporting...\n" );
-				bernoStopErr = true;
-			}
+		warn_distr( & bernoErrCnt, & bernoStopErr, "bernoulli", "probability out of \\[0, 1\\]" );
 			
 		if ( p < 0 )
 			return 0.0;
@@ -2745,7 +2393,7 @@ double bernoulli( double p )
 	}
 
 	bernoulli_distribution distr( p );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2758,23 +2406,12 @@ double poisson( double mean )
 	
 	if ( mean < 0 )
 	{
-		if ( ++poissErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: negative mean in function 'poisson'" );
-			poissStopErr = false;
-		}
-		else
-			if ( ! poissStopErr )
-			{
-				plog( "\nWarning: too many negative mean errors in function 'poisson', stop reporting...\n" );
-				poissStopErr = true;
-			}
-			
+		warn_distr( & poissErrCnt, & poissStopErr, "poisson", "negative mean" );
 		return 0.0;
 	}
 
 	poisson_distribution< int > distr( mean );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2787,17 +2424,7 @@ double geometric( double p )
 	
 	if ( p < 0 || p > 1 )
 	{
-		if ( ++geomErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: probability out of [0, 1] in function 'geometric'" );
-			geomStopErr = false;
-		}
-		else
-			if ( ! geomStopErr )
-			{
-				plog( "\nWarning: too many invalid probability errors in function 'geometric', stop reporting...\n" );
-				geomStopErr = true;
-			}
+		warn_distr( & geomErrCnt, & geomStopErr, "geometric", "probability out of \\[0, 1\\]" );
 			
 		if ( p < 0 )
 			return 0.0;
@@ -2806,7 +2433,7 @@ double geometric( double p )
 	}
 
 	geometric_distribution< int > distr( p );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2819,17 +2446,7 @@ double binomial( double p, double t )
 	
 	if ( p < 0 || p > 1 || t <= 0 )
 	{
-		if ( ++binomErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: invalid parameters in function 'binomial'" );
-			binomStopErr = false;
-		}
-		else
-			if ( ! binomStopErr )
-			{
-				plog( "\nWarning: too many invalid parameter errors in function 'binomial', stop reporting...\n" );
-				binomStopErr = true;
-			}
+		warn_distr( & binomErrCnt, & binomStopErr, "binomial", "invalid parameter" );
 			
 		if ( p < 0 || t <= 0 )
 			return 0.0;
@@ -2838,7 +2455,7 @@ double binomial( double p, double t )
 	}
 
 	binomial_distribution< int > distr( t, p );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2851,23 +2468,12 @@ double cauchy( double a, double b )
 	
 	if ( b <= 0 )
 	{
-		if ( ++cauchErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: non-positive b parameter in function 'cauchy'" );
-			cauchStopErr = false;
-		}
-		else
-			if ( ! cauchStopErr )
-			{
-				plog( "\nWarning: too many non-positive parameter errors in function 'cauchy', stop reporting...\n" );
-				cauchStopErr = true;
-			}
-			
+		warn_distr( & cauchErrCnt, & cauchStopErr, "cauchy", "non-positive b parameter" );
 		return a;
 	}
 
 	cauchy_distribution< double > distr( a, b );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2880,23 +2486,12 @@ double chi_squared( double n )
 	
 	if ( n <= 0 )
 	{
-		if ( ++chisqErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: non-positive n parameter in function 'chi_squared'" );
-			chisqStopErr = false;
-		}
-		else
-			if ( ! chisqStopErr )
-			{
-				plog( "\nWarning: too many non-positive parameter errors in function 'chi_squared', stop reporting...\n" );
-				chisqStopErr = true;
-			}
-			
+		warn_distr( & chisqErrCnt, & chisqStopErr, "chi_squared", "non-positive n parameter" );
 		return 0.0;
 	}
 
 	chi_squared_distribution< double > distr( n );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2909,23 +2504,12 @@ double exponential( double lambda )
 	
 	if ( lambda <= 0 )
 	{
-		if ( ++expErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: non-positive lambda parameter in function 'exponential'" );
-			expStopErr = false;
-		}
-		else
-			if ( ! expStopErr )
-			{
-				plog( "\nWarning: too many non-positive parameter errors in function 'exponential', stop reporting...\n" );
-				expStopErr = true;
-			}
-			
+		warn_distr( & expErrCnt, & expStopErr, "exponential", "non-positive lambda parameter" );
 		return 0.0;
 	}
 
 	exponential_distribution< double > distr( lambda );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2938,23 +2522,12 @@ double fisher( double m, double n )
 	
 	if ( m <= 0 || n <= 0 )
 	{
-		if ( ++fishErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: invalid parameters in function 'fisher'" );
-			fishStopErr = false;
-		}
-		else
-			if ( ! fishStopErr )
-			{
-				plog( "\nWarning: too many invalid parameter errors in function 'fisher', stop reporting...\n" );
-				fishStopErr = true;
-			}
-			
+		warn_distr( & fishErrCnt, & fishStopErr, "fisher", "invalid parameter" );
 		return 0.0;
 	}
 
 	fisher_f_distribution< double > distr( m, n );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2967,23 +2540,12 @@ double student( double n )
 	
 	if ( n <= 0 )
 	{
-		if ( ++studErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: non-positive n parameter in function 'student'" );
-			studStopErr = false;
-		}
-		else
-			if ( ! studStopErr )
-			{
-				plog( "\nWarning: too many non-positive parameter errors in function 'student', stop reporting...\n" );
-				studStopErr = true;
-			}
-			
+		warn_distr( & studErrCnt, & studStopErr, "student", "non-positive n parameter" );
 		return 0.0;
 	}
 
 	student_t_distribution< double > distr( n );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -2996,23 +2558,12 @@ double weibull( double a, double b )
 	
 	if ( a <= 0 || b <= 0 )
 	{
-		if ( ++weibErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: non-positive a or b parameters in function 'weibull'" );
-			weibStopErr = false;
-		}
-		else
-			if ( ! weibStopErr )
-			{
-				plog( "\nWarning: too many non-positive parameter errors in function 'weibull', stop reporting...\n" );
-				weibStopErr = true;
-			}
-			
+		warn_distr( & weibErrCnt, & weibStopErr, "weibull", "non-positive a or b parameter" );
 		return 0.0;
 	}
 
 	weibull_distribution< double > distr( a, b );
-	return cur_gen( distr );
+	return draw_gen( distr );
 }
 
 
@@ -3026,17 +2577,7 @@ double beta( double alpha, double beta )
 	
 	if ( alpha <= 0 || beta <= 0 )
 	{
-		if ( ++betaErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: non-positive alpha or beta parameters in function 'beta'" );
-			betaStopErr = false;
-		}
-		else
-			if ( ! betaStopErr )
-			{
-				plog( "\nWarning: too many non-positive parameter errors in function 'beta', stop reporting...\n" );
-				betaStopErr = true;
-			}
+		warn_distr( & betaErrCnt, & betaStopErr, "beta", "non-positive alpha or beta parameter" );
 			
 		if ( alpha < beta )
 			return 0.0;
@@ -3045,710 +2586,9 @@ double beta( double alpha, double beta )
 	}
 
 	gamma_distribution< double > distr1( alpha, 1.0 ), distr2( beta, 1.0 );
-	double draw = cur_gen( distr1 );
-	return draw / ( draw + cur_gen( distr2 ) );
+	double draw = draw_gen( distr1 );
+	return draw / ( draw + draw_gen( distr2 ) );
 }
-
-#else
-
-/***************************************************
-PMRAND_OPEN
-Park-Miller pseudo-random number generator with Bays-Durham shuffling
-and Press et al. (1992) protections with period 2^31 - 1 in (0,1)
-***************************************************/
-#define IA 16807
-#define IM 2147483647
-#define AM (1.0/IM)
-#define IQ 127773
-#define IR 2836
-#define NTAB 32
-#define NDIV (1+(IM-1)/NTAB)
-#define EPS 1.2e-7
-#define RNMX (1.0-EPS)
-
-double PMRand_open( long *idum )
-{
-	int j;
-	long k;
-	static long iy = 0, iv[ NTAB ];
-	double temp;
-
-	if ( *idum <= 0 || ! iy ) 
-	{
-		if ( - ( *idum ) < 1 ) 
-			*idum = 1;
-		else 
-			*idum = - ( *idum );
-		for ( j = NTAB + 7; j >= 0; --j ) 
-		{
-			k = ( *idum ) / IQ;
-			*idum = IA * ( *idum - k * IQ ) - IR * k;
-			if ( *idum < 0 ) 
-				*idum += IM;
-			if ( j < NTAB ) 
-				iv[ j ] = *idum;
-		}
-		
-		iy = iv[ 0 ];
-	}
-	
-	k = ( *idum ) / IQ;
-	*idum = IA * ( *idum - k * IQ ) - IR * k;
-	if ( *idum < 0 ) 
-		*idum += IM;
-	
-	j = iy / NDIV;
-	iy = iv[ j ];
-	iv[ j ] = *idum;
-	if ( ( temp = AM * iy ) > RNMX ) 
-		return RNMX;
-	else 
-		return temp;
-}
-   
-
-/***************************************************
-MTRAND
-Mersenne Twister pseudo-random number generator
-with period 2^19937 - 1 with improved initialization scheme,
-modified on 2002/1/26 by Takuji Nishimura and Makoto Matsumoto.
-The generators returning floating point numbers are based on
-a version by Isaku Wada, 2002/01/09
-This version is a port from the original C-code to C++ by
-Jasper Bedaux (http://www.bedaux.net/mtrand/).
-Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
-All rights reserved.
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-notice, this list of conditions and the following disclaimer in the
-documentation and/or other materials provided with the distribution.
-3. The names of its contributors may not be used to endorse or promote
-products derived from this software without specific prior written
-permission.
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-***************************************************/
-
-class MTRand_int32 { // Mersenne Twister random number generator
-public:
-// default constructor: uses default seed only if this is the first instance
-  MTRand_int32() { if (!init) seed(5489UL); init = true; }
-// constructor with 32 bit int as seed
-  MTRand_int32(unsigned long s) { seed(s); init = true; }
-// constructor with array of size 32 bit ints as seed
-  MTRand_int32(const unsigned long* array, int size) { seed(array, size); init = true; }
-// the two seed functions
-  void seed(unsigned long); // seed with 32 bit integer
-  void seed(const unsigned long*, int size); // seed with array
-// overload operator() to make this a generator (functor)
-  unsigned long operator()() { return rand_int32(); }
-// 2007-02-11: made the destructor virtual; thanks "double more" for pointing this out
-  virtual ~MTRand_int32() {} // destructor
-protected: // used by derived classes, otherwise not accessible; use the ()-operator
-  unsigned long rand_int32(); // generate 32 bit random integer
-private:
-  static const int n = 624, m = 397; // compile time constants
-// the variables below are static (no duplicates can exist)
-  static unsigned long state[n]; // state vector array
-  static int p; // position in state array
-  static bool init; // true if init function is called
-// private functions used to generate the pseudo random numbers
-  unsigned long twiddle(unsigned long, unsigned long); // used by gen_state()
-  void gen_state(); // generate new state
-// make copy constructor and assignment operator unavailable, they don't make sense
-  MTRand_int32(const MTRand_int32&); // copy constructor not defined
-  void operator=(const MTRand_int32&); // assignment operator not defined
-};
-
-// inline for speed, must therefore reside in header file
-inline unsigned long MTRand_int32::twiddle(unsigned long u, unsigned long v) {
-  return (((u & 0x80000000UL) | (v & 0x7FFFFFFFUL)) >> 1)
-    ^ ((v & 1UL) * 0x9908B0DFUL);
-// 2013-07-22: line above modified for performance according to http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/Ierymenko.html
-// thanks Vitaliy FEOKTISTOV for pointing this out
-}
-
-inline unsigned long MTRand_int32::rand_int32() { // generate 32 bit random int
-  if (p == n) gen_state(); // new state vector needed
-// gen_state() is split off to be non-inline, because it is only called once
-// in every 624 calls and otherwise irand() would become too big to get inlined
-  unsigned long x = state[p++];
-  x ^= (x >> 11);
-  x ^= (x << 7) & 0x9D2C5680UL;
-  x ^= (x << 15) & 0xEFC60000UL;
-  return x ^ (x >> 18);
-}
-
-// generates double floating point numbers in the half-open interval [0, 1)
-class MTRand : public MTRand_int32 {
-public:
-  MTRand() : MTRand_int32() {}
-  MTRand(unsigned long seed) : MTRand_int32(seed) {}
-  MTRand(const unsigned long* seed, int size) : MTRand_int32(seed, size) {}
-  ~MTRand() {}
-  double operator()() {
-    return static_cast<double>(rand_int32()) * (1. / 4294967296.); } // divided by 2^32
-private:
-  MTRand(const MTRand&); // copy constructor not defined
-  void operator=(const MTRand&); // assignment operator not defined
-};
-
-// generates double floating point numbers in the closed interval [0, 1]
-class MTRand_closed : public MTRand_int32 {
-public:
-  MTRand_closed() : MTRand_int32() {}
-  MTRand_closed(unsigned long seed) : MTRand_int32(seed) {}
-  MTRand_closed(const unsigned long* seed, int size) : MTRand_int32(seed, size) {}
-  ~MTRand_closed() {}
-  double operator()() {
-    return static_cast<double>(rand_int32()) * (1. / 4294967295.); } // divided by 2^32 - 1
-private:
-  MTRand_closed(const MTRand_closed&); // copy constructor not defined
-  void operator=(const MTRand_closed&); // assignment operator not defined
-};
-
-// generates double floating point numbers in the open interval (0, 1)
-class MTRand_open : public MTRand_int32 {
-public:
-  MTRand_open() : MTRand_int32() {}
-  MTRand_open(unsigned long seed) : MTRand_int32(seed) {}
-  MTRand_open(const unsigned long* seed, int size) : MTRand_int32(seed, size) {}
-  ~MTRand_open() {}
-  double operator()() {
-    return (static_cast<double>(rand_int32()) + .5) * (1. / 4294967296.); } // divided by 2^32
-private:
-  MTRand_open(const MTRand_open&); // copy constructor not defined
-  void operator=(const MTRand_open&); // assignment operator not defined
-};
-
-// generates 53 bit resolution doubles in the half-open interval [0, 1)
-class MTRand53 : public MTRand_int32 {
-public:
-  MTRand53() : MTRand_int32() {}
-  MTRand53(unsigned long seed) : MTRand_int32(seed) {}
-  MTRand53(const unsigned long* seed, int size) : MTRand_int32(seed, size) {}
-  ~MTRand53() {}
-  double operator()() {
-    return (static_cast<double>(rand_int32() >> 5) * 67108864. + 
-      static_cast<double>(rand_int32() >> 6)) * (1. / 9007199254740992.); }
-private:
-  MTRand53(const MTRand53&); // copy constructor not defined
-  void operator=(const MTRand53&); // assignment operator not defined
-};
-
-// initialization of static private members
-unsigned long MTRand_int32::state[n] = {0x0UL};
-int MTRand_int32::p = 0;
-bool MTRand_int32::init = false;
-
-void MTRand_int32::gen_state() { // generate new state vector
-  for (int i = 0; i < (n - m); ++i)
-    state[ i ] = state[i + m] ^ twiddle(state[ i ], state[i + 1]);
-  for (int i = n - m; i < (n - 1); ++i)
-    state[ i ] = state[i + m - n] ^ twiddle(state[ i ], state[i + 1]);
-  state[n - 1] = state[m - 1] ^ twiddle(state[n - 1], state[ 0 ]);
-  p = 0; // reset position
-}
-
-void MTRand_int32::seed(unsigned long s) {  // init by 32 bit seed
-  state[ 0 ] = s & 0xFFFFFFFFUL; // for > 32 bit machines
-  for (int i = 1; i < n; ++i) {
-    state[ i ] = 1812433253UL * (state[i - 1] ^ (state[i - 1] >> 30)) + i;
-// see Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier
-// in the previous versions, MSBs of the seed affect only MSBs of the array state
-// 2002/01/09 modified by Makoto Matsumoto
-    state[ i ] &= 0xFFFFFFFFUL; // for > 32 bit machines
-  }
-  p = n; // force gen_state() to be called for next random number
-}
-
-void MTRand_int32::seed(const unsigned long* array, int size) { // init by array
-  seed(19650218UL);
-  int i = 1, j = 0;
-  for (int k = ((n > size) ? n : size); k; --k) {
-    state[ i ] = (state[ i ] ^ ((state[i - 1] ^ (state[i - 1] >> 30)) * 1664525UL))
-      + array[ j ] + j; // non linear
-    state[ i ] &= 0xFFFFFFFFUL; // for > 32 bit machines
-    ++j; j %= size;
-    if ((++i) == n) { state[ 0 ] = state[n - 1]; i = 1; }
-  }
-  for (int k = n - 1; k; --k) {
-    state[ i ] = (state[ i ] ^ ((state[i - 1] ^ (state[i - 1] >> 30)) * 1566083941UL)) - i;
-    state[ i ] &= 0xFFFFFFFFUL; // for > 32 bit machines
-    if ((++i) == n) { state[ 0 ] = state[n - 1]; i = 1; }
-  }
-  state[ 0 ] = 0x80000000UL; // MSB is 1; assuring non-zero initial array
-  p = n; // force gen_state() to be called for next random number
-}
-
-
-/****************************************************
-INIT_RANDOM
-Pseudo-random number generator to extract draws
-ran_gen =	1 : Park-Miller in (0,1)
-ran_gen =	2 : Mersenne-Twister in (0,1)
-ran_gen =	3 : Mersenne-Twister in [0,1]
-ran_gen =	4 : Mersenne-Twister in [0,1)
-ran_gen =	5 : Mersenne-Twister with 53 bits resolution in [0,1)
-****************************************************/
-int ran_gen = 1;	// default pseudo-random number generator
-int dum = 0;
-long idum = 0;		// Park-Miller sequential control (default seed)
-
-MTRand_open mt2;	// Mersenne-Twister object in (0,1)
-MTRand_closed mt3;	// Mersenne-Twister object in [0,1]
-MTRand mt4; 		// Mersenne-Twister object in [0,1)
-MTRand53 mt5;		// Mersenne-Twister object with 53 bits resolution in [0,1)
-
-// Set seed to all random generators
-void init_random( unsigned seed )
-{
-	dum = 0;
-	idum = -seed;
-	PMRand_open( &idum );	// PM in (0,1)
-	mt2.seed( seed );		// MT in (0,1)
-	mt3.seed( seed );		// MT in [0,1]
-	mt4.seed( seed );		// MT in [0,1)
-	mt5.seed( seed );		// MT with 53 bits resolution in [0,1)
-}
-
-
-/***************************************************
-RAN1
-Call the preset pseudo-random number generator
-***************************************************/
-double ran1( long *idum_loc )
-{
-	// Manage default (internal) number sequence
-	// ONLY FOR PARK-MILER generator
-	if ( idum_loc == NULL )
-		idum_loc = & idum;
-
-	switch ( ran_gen )
-	{
-		case 2:
-			return mt2( );			// in (0,1)
-			break;
-		case 3:
-			return mt3( );			// in [0,1]
-			break;
-		case 4:
-			return mt4( );			// in [0,1)
-			break;
-		case 5:
-			return mt5( );			// 53 bits resolution in [0,1]
-			break;
-		case 1:
-		default:
-			return PMRand_open( idum_loc );
-	}
-}
-
-
-/****************************************************
-RND_INT
-****************************************************/
-int rnd_int( int min, int max )
-{
-	return ( floor( min + ran1( ) * ( max + 1 - min ) ) );
-}
-
-
-/****************************************************
-UNIFORM
-****************************************************/
-double uniform( double min, double max )
-{
-	if ( min > max )
-		return 0;
-	return ( min + ran1( ) * ( max - min ) );
-}
-
-
-/****************************************************
-UNIFORM_INT
-****************************************************/
-double uniform_int( double min, double max )
-{
-	if ( min > max )
-		return 0;
-	return ( floor( min + ran1( ) * ( max + 1 - min ) ) );
-}
-
-
-/****************************************************
-UNIFORM_INT_0
-reproducible source of randomness for random_shuffle
-****************************************************/
-int uniform_int_0( int max ) 
-{ 
-	return uniform_int( 0, max - 1 ); 
-}
-
-
-/***************************************************
-NORM
-***************************************************/
-double norm( double mean, double dev )
-{
-	static bool normStopErr;
-	double gasdev, R, v1, v2, fac;
-	static double gset;
-	int boh = 1;
-	
-	if ( dev < 0 )
-	{
-		if ( ++normErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: negative standard deviation in function 'norm'" );
-			normStopErr = false;
-		}
-		else
-			if ( ! normStopErr )
-			{
-				plog( "\nWarning: too many negative standard deviation errors in function 'norm', stop reporting...\n" );
-				normStopErr = true;
-			}
-
-		return mean;
-	}
-
-	if ( dum == 0 )
-	{ 
-		do
-		{ 
-			v1 = 2.0 * ran1( ) - 1;
-			boh = 1;
-			v2 = 2.0 * ran1( ) - 1;
-			R = v1 * v1 + v2 * v2;
-		}
-		while ( R >= 1 );
-		
-		fac = log( R );
-		fac = fac / R;
-		fac = fac * ( -2.0 );
-		fac = sqrt( fac );
-		gset = v1 * fac;
-		gasdev = v2 * fac;
-		dum = 1;
-	}
-	else
-	{
-		gasdev = gset;
-		dum = 0;
-	}
-	gasdev = gasdev * dev + mean;
-	
-	return gasdev;
-}
-
-
-/***************************************************
-LNORM
-Return a draw from a lognormal distribution
-***************************************************/
-double lnorm( double mean, double dev )
-{
-	static bool lnormStopErr;
-	
-	if ( dev <= 0 )
-	{
-		if ( ++lnormErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: negative standard deviation in function 'lnorm'" );
-			lnormStopErr = false;
-		}
-		else
-			if ( ! lnormStopErr )
-			{
-				plog( "\nWarning: too many negative standard deviation errors in function 'lnorm', stop reporting...\n" );
-				lnormStopErr = true;
-			}
-			
-		return exp( mean );
-	}
-
-	return exp( norm( mean, dev ) );
-}
-
-
-/****************************************************
-GAMMA
-****************************************************/
-extern int quit;
-
-// support function to gamma
-double gamdev( int ia, long *idum_loc = NULL )
-{
-	int j;
-	double am, e, s, v1, v2, x, y;
-
-	// Manage default (internal) number sequence
-	// WORKS ONLY FOR PARK-MILER generator
-	if ( idum_loc == NULL )
-		idum_loc = & idum;
-
-	if ( ia < 1 ) 
-	{
-		error_hard( "inconsistent state in gamma function",
-					"internal problem in LSD", 
-					"if error persists, please contact developers", 
-					true );
-		quit = 1;
-		return 0;
-	} 
-	if ( ia < 6 )
-	{
-		x = 1.0;
-		for ( j = 1; j <= ia; ++j )
-			x *= ran1( idum_loc );
-		x = - log( x );
-	}
-	else
-	{
-		do
-		{
-			do
-			{
-				do
-				{ 
-					v1 = ran1( idum_loc );
-					v2 = 2 * ran1( idum_loc ) - 1.0;
-				}
-				while ( v1 * v1 + v2 * v2 > 1.0 );
-				
-				y = v2 / v1;
-				am = ia - 1;
-				s = sqrt( 2.0 * am + 1.0 );
-				x = s * y + am;
-			}
-			while ( x <= 0 );
-			e = ( 1 + y * y ) * exp( am * log( x / am ) - s * y );
-		}
-		while ( ran1( idum_loc ) > e );
-	} 
-	return x;
-}
-
-double gamma( double alpha, double beta )
-{
-	static bool gammaStopErr;
-	
-	if ( alpha <= 0 || beta <= 0 )
-	{
-		if ( ++gammaErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: non-positive alpha or beta parameters in function 'gamma'" );
-			gammaStopErr = false;
-		}
-		else
-			if ( ! gammaStopErr )
-			{
-				plog( "\nWarning: too many non-positive parameter errors in function 'gamma', stop reporting...\n" );
-				gammaStopErr = true;
-			}
-			
-		return 0.0;
-	}
-
-	return gamdev( ( int ) round( alpha ), & idum );
-}
-
-
-/****************************************************
-BERNOULLI
-****************************************************/
-double bernoulli( double p )
-{
-	static bool bernoStopErr;
-	
-	if ( p < 0 || p > 1 )
-	{
-		if ( ++bernoErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: probability out of [0, 1] in function 'bernoulli'" );
-			bernoStopErr = false;
-		}
-		else
-			if ( ! bernoStopErr )
-			{
-				plog( "\nWarning: too many invalid probability errors in function 'bernoulli', stop reporting...\n" );
-				bernoStopErr = true;
-			}
-			
-		if ( p < 0 )
-			return 0.0;
-		else
-			return 1.0;
-	}
-
-	double dice = ran1( );
-	if ( dice < p )
-		return 1;
-	return 0;
-}
-
-
-/****************************************************
-POISSON
-****************************************************/
-
-// support function to poidev
-double gammaln( double xx )
-{
-	double x, y, tmp, ser;
-	static double cof[ 6 ]={ 76.18009172947146, -86.50532032941677, 24.01409824083091, -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5};
-	int j;
-	
-	y = x = xx;
-	tmp = x + 5.5;
-	tmp -= ( x + 0.5 ) * log( tmp );
-	ser = 1.000000000190015;
-	
-	for ( j = 0; j <= 5; ++j ) 
-		ser += cof[ j ] / ++y;
-	
-	return -tmp + log( 2.5066282746310005 * ser / x );
-}
-
-// support function to poisson
-double poidev( double xm, long *idum_loc = NULL )
-{
-	double em, t, y;
-	static double sq , alxm, g, oldm = ( -1.0 );
-
-	// Manage default (internal) number sequence
-	// WORKS ONLY FOR PARK-MILER generator
-	if ( idum_loc == NULL )
-		idum_loc = & idum;
-
-	if ( xm < 12.0 ) 
-	{
-		if ( xm != oldm ) 
-		{
-			oldm = xm;
-			g = exp( - xm );
-		}
-		
-		em = -1;
-		t = 1.0;
-		
-		do 
-		{
-			++em;
-			t *= ran1( idum_loc );
-		} 
-		while ( t > g );
-	} 
-	else 
-	{
-		if ( xm != oldm ) 
-		{
-			oldm = xm;
-			sq = sqrt( 2.0 * xm );
-			alxm = log( xm );
-			g = xm * alxm - gammaln( xm + 1.0 );
-		}
-		do 
-		{
-			do 
-			{
-				y = tan( M_PI * ran1( idum_loc ) );
-				em = sq * y + xm;
-			} 
-			while ( em < 0.0 );   
-			
-			em = floor( em );
-			t = 0.9 * ( 1.0 + y * y ) * exp( em * alxm - gammaln( em + 1.0 ) - g );
-		} 
-		while ( ran1( idum_loc ) > t );
-	}
-	return em;
-}
-
-double poisson( double mean )
-{
-	static bool poissStopErr;
-	
-	if ( mean < 0 )
-	{
-		if ( ++poissErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: negative mean in function 'poisson'" );
-			poissStopErr = false;
-		}
-		else
-			if ( ! poissStopErr )
-			{
-				plog( "\nWarning: too many negative mean errors in function 'poisson', stop reporting...\n" );
-				poissStopErr = true;
-			}
-			
-		return 0.0;
-	}
-
-	return poidev( mean, & idum );
-}
-
-
-/***************************************************
-BETA
-Return a draw from a Beta(alfa,beta) distribution
-Dosi et al. (2010) K+S
-***************************************************/
-double beta( double alpha, double beta )
-{
-	static bool betaStopErr;
-	
-	if ( alpha <= 0 || beta <= 0 )
-	{
-		if ( ++betaErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: non-positive alpha or beta parameters in function 'beta'" );
-			betaStopErr = false;
-		}
-		else
-			if ( ! betaStopErr )
-			{
-				plog( "\nWarning: too many non-positive parameter errors in function 'beta', stop reporting...\n" );
-				betaStopErr = true;
-			}
-			
-		if ( alpha < beta )
-			return 0.0;
-		else
-			return 1.0;
-	}
-
-	double U, V, den;
-	U = ran1( );
-	V = ran1( ); 
-	den = pow( U, ( 1 / alpha ) ) + pow( V, ( 1 / beta ) );
-	
-	while ( den <= 0 || den > 1)
-	{
-		U = ran1( );
-		V = ran1( );
-		den = pow( U,( 1 / alpha ) ) + pow( V, ( 1 / beta ) );
-	}
-
-	return pow( U , ( 1 / alpha ) ) / den;
-}
-
-#endif
 
 
 /****************************************************
@@ -3760,22 +2600,30 @@ double pareto( double mu, double alpha )
 	
 	if ( mu <= 0 || alpha <= 0 )
 	{
-		if ( ++paretErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: non-positive mu or alpha parameters in function 'pareto'" );
-			paretStopErr = false;
-		}
-		else
-			if ( ! paretStopErr )
-			{
-				plog( "\nWarning: too many non-positive parameter errors in function 'pareto', stop reporting...\n" );
-				paretStopErr = true;
-			}
-			
+		warn_distr( & paretErrCnt, & paretStopErr, "pareto", "non-positive mu or alpha parameter" );
 		return mu;
 	}
 
 	return mu / pow( 1 - ran1( ), 1 / alpha );
+}
+
+
+/****************************************************
+BPARETO
+****************************************************/
+double bpareto( double alpha, double low, double high )
+{
+	static bool paretStopErr;
+	
+	if ( alpha <= 0 || low <= 0 || low >= high )
+	{
+		warn_distr( & paretErrCnt, & paretStopErr, "bpareto", "non-positive alpha parameter or bounds or invalid bounds" );
+		return max( low, 0 );
+	}
+
+	return pow( pow( low, alpha ) / 
+				( ran1( ) * ( pow( low / high, alpha ) - 1 ) + 1 ), 
+				1 / alpha );
 }
 
 
@@ -3789,18 +2637,7 @@ double alapl( double mu, double alpha1, double alpha2 )
 	
 	if ( alpha1 <= 0 || alpha2 <= 0 )
 	{
-		if ( ++alaplErrCnt < ERR_LIM )	// prevent slow down due to I/O
-		{
-			plog( "\nWarning: non-positive alpha1 or alpha2 parameters in function 'alapl'" );
-			alaplStopErr = false;
-		}
-		else
-			if ( ! alaplStopErr )
-			{
-				plog( "\nWarning: too many non-positive parameter errors in function 'alapl', stop reporting...\n" );
-				alaplStopErr = true;
-			}
-			
+		warn_distr( & alaplErrCnt, & alaplStopErr, "alapl", "non-positive alpha1 or alpha2 parameter" );
 		return mu;
 	}
 
@@ -3809,6 +2646,25 @@ double alapl( double mu, double alpha1, double alpha2 )
 		return mu + alpha1 * log( draw * ( 1 + alpha1 / alpha2 ) );
 	else 
 		return mu - alpha2 * log( ( 1 - draw ) * ( 1 + alpha1 / alpha2 ) );
+}
+
+
+/****************************************************
+WARN_DISTR
+****************************************************/
+void warn_distr( int *errCnt, bool *stopErr, const char *distr, const char *msg )
+{
+	if ( ++( *errCnt ) < ERR_LIM )	// prevent slow down due to I/O
+	{
+		plog( "\nWarning: %s in function '%s'", "", msg, distr );
+		*stopErr = false;
+	}
+	else
+		if ( ! *stopErr )
+		{
+			plog( "\nWarning: too many warnings in function '%s', stop reporting...\n", "", distr );
+			*stopErr = true;
+		}
 }
 
 

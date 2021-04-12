@@ -24,7 +24,7 @@ v[11]=VS(consumption, "sector_investment_frequency");
 v[12]=VS(consumption, "sector_number_object_firms");
 v[13]=VS(consumption, "sector_initial_price");
 v[14]=VS(consumption, "sector_input_tech_coefficient");
-v[15]=VS(consumption, "sector_input_import_share");
+v[15]=VS(consumption, "sector_initial_propensity_import_inputs");
 v[16]=VS(consumption, "sector_initial_exports_share");
 v[17]=VS(consumption, "sector_initial_external_price");
 //CAPITAL PARAMETERS
@@ -33,7 +33,7 @@ v[21]=VS(capital, "sector_investment_frequency");
 v[22]=VS(capital, "sector_number_object_firms");
 v[23]=VS(capital, "sector_initial_price");
 v[24]=VS(capital, "sector_input_tech_coefficient");
-v[25]=VS(capital, "sector_input_import_share");
+v[25]=VS(capital, "sector_initial_propensity_import_inputs");
 v[26]=VS(capital, "sector_initial_exports_share");
 v[27]=VS(capital, "sector_initial_external_price");
 //INPUT PARAMETERS
@@ -42,7 +42,7 @@ v[31]=VS(input, "sector_investment_frequency");
 v[32]=VS(input, "sector_number_object_firms");
 v[33]=VS(input, "sector_initial_price");
 v[34]=VS(input, "sector_input_tech_coefficient");
-v[35]=VS(input, "sector_input_import_share");
+v[35]=VS(input, "sector_initial_propensity_import_inputs");
 v[36]=VS(input, "sector_initial_exports_share");
 v[37]=VS(input, "sector_initial_external_price");
 //EXTERNAL SECTOR PARAMETERS
@@ -108,7 +108,6 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	WRITELLS(government, "Government_Total_Taxes", v[105], 0, 1);
 	WRITELLS(government, "Government_Max_Expenses_Ceiling", v[104], 0, 1);//olhar depois
 	WRITELLS(government, "Government_Max_Expenses_Surplus", v[104], 0, 1);//olhar depois
-	WRITELLS(government, "Government_Max_Expenses_Debt", v[104], 0, 1);//olhar depois
 	WRITELLS(government, "Government_Max_Expenses", v[104], 0, 1);//olhar depois
 	for(i=1;i<=v[0]+1;i++) 
 		WRITELLS(government, "Government_Debt_GDP_Ratio", v[60], 0, i);
@@ -159,7 +158,7 @@ CYCLE(cur, "SECTORS")
 	v[152]=VS(cur, "sector_number_object_firms");
 	v[153]=VS(cur, "sector_initial_price");
 	v[154]=VS(cur, "sector_input_tech_coefficient");
-	v[155]=VS(cur, "sector_input_import_share");
+	v[155]=VS(cur, "sector_initial_propensity_import_inputs");
 	v[156]=VS(cur, "sector_desired_degree_capacity_utilization");
 	v[157]=VS(cur, "sector_initial_external_price");
 	v[158]=VS(cur, "sector_capital_output_ratio");
@@ -432,7 +431,7 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 		v[252]+=v[250];												//total induced savings
 		
 		WRITES(cur, "class_direct_tax", v[234]);//same tax rate 
-		WRITES(cur, "class_initial_imports_share", v[248]);
+		WRITES(cur, "class_initial_propensity_import", v[248]);
 		WRITELLS(cur, "Class_Stock_Deposits", v[225]*v[241], 0, 1);
 		WRITELLS(cur, "Class_Liquidity_Preference", v[255], 0, 1);//olhar depois
 		WRITELLS(cur, "Class_Max_Debt_Rate", v[254], 0, 1);//olhar depois

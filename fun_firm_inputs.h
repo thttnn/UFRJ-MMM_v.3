@@ -17,7 +17,7 @@ RESULT(v[5])
 
 
 EQUATION("Sector_Propensity_Import_Inputs")
-	v[1]=V("sector_input_import_share");							//firm propensity to import
+	v[1]=V("sector_initial_propensity_import_inputs");							//firm propensity to import
 	v[3]=VS(input, "Sector_Avg_Price");                       		//input sector average price
 	v[4]=VS(input, "Sector_External_Price");                  		//input sector external price
 	v[5]=VS(external,"Country_Exchange_Rate");						//exchange rate
