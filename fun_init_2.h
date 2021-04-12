@@ -70,11 +70,11 @@ v[63]=VS(government, "government_initial_share_input");
 //CENTRAL BANK PARAMETERS
 v[70]=VS(centralbank, "cb_target_annual_inflation");
 	
-	if(V("switch_monetary_policy")==5)			//smithin rule
+	if(V("switch_monetary_policy")==2)			//smithin rule
 		v[71]=v[70];	
-	else if(V("switch_monetary_policy")==6)		//pasinetti rule
+	else if(V("switch_monetary_policy")==3)		//pasinetti rule
 		v[71]=v[70];
-	else if(V("switch_monetary_policy")==7)		//kansas city rule.
+	else if(V("switch_monetary_policy")==4)		//kansas city rule.
 		v[71]=0;
 	else					//taylor rule or fixed monetary policy
 		v[71]=v[50]+v[70];	

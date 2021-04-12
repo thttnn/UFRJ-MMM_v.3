@@ -829,7 +829,7 @@ Var: Loans_Distribution_Firms 0 n + n n
 Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
 Param: class_debt_rate_adjustment 0 n + n n	0	0	0
-Param: class_direct_tax 0 s + n n	0.2	0.2	0.2
+Param: class_direct_tax 0 s + n n	0.3	0.2	0.1
 Param: class_id 0 n + n n	1	2	3
 Param: class_import_elasticity_price 0 n + n n	0	0	0
 Param: class_initial_propensity_import 0 n + n n	0	0	0
