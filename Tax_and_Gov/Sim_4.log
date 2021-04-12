@@ -1,0 +1,194 @@
+
+Processing configuration file C:/Lsd/Work/MMM_v.3.6/Tax_and_Gov/Sim_4.lsd ...
+
+Simulation 1 of 10 running...
+Nominal GDP is 1000.000000.
+Sector 1.000000.0 Desired Capacity Uilization is 0.880416.
+Sector 1.000000.0 Profit Distribution Rate is 0.779258.
+Sector 1.000000.0 Wage Rate is 0.255762.
+Sector 2.000000.0 Desired Capacity Uilization is 0.666667.
+Sector 2.000000.0 Profit Distribution Rate is 0.616146.
+Sector 2.000000.0 Wage Rate is 0.934784.
+Sector 3.000000.0 Desired Capacity Uilization is 0.850032.
+Sector 3.000000.0 Profit Distribution Rate is 0.833612.
+Sector 3.000000.0 Wage Rate is 0.254538.
+Pseudo Taxation 152.467927.0
+Taxation 203.708536.0
+Class 1.000000.0 Tax Rate is 0.227672.
+Class 2.000000.0 Tax Rate is 0.227672.
+Class 3.000000.0 Tax Rate is 0.227672.
+Simulation 1 of 10 finished at case 600 (60.33 sec.)
+Saving results to file C:/Lsd/Work/MMM_v.3.6/Tax_and_Gov/Sim_4_1.res.gz... Done
+
+Simulation 2 of 10 running...
+Nominal GDP is 1000.000000.
+Sector 1.000000.0 Desired Capacity Uilization is 0.880416.
+Sector 1.000000.0 Profit Distribution Rate is 0.779258.
+Sector 1.000000.0 Wage Rate is 0.255762.
+Sector 2.000000.0 Desired Capacity Uilization is 0.666667.
+Sector 2.000000.0 Profit Distribution Rate is 0.616146.
+Sector 2.000000.0 Wage Rate is 0.934784.
+Sector 3.000000.0 Desired Capacity Uilization is 0.850032.
+Sector 3.000000.0 Profit Distribution Rate is 0.833612.
+Sector 3.000000.0 Wage Rate is 0.254538.
+Pseudo Taxation 152.467927.0
+Taxation 203.708536.0
+Class 1.000000.0 Tax Rate is 0.227672.
+Class 2.000000.0 Tax Rate is 0.227672.
+Class 3.000000.0 Tax Rate is 0.227672.
+Simulation 2 of 10 finished at case 600 (61.82 sec.)
+Saving results to file C:/Lsd/Work/MMM_v.3.6/Tax_and_Gov/Sim_4_2.res.gz... Done
+
+Simulation 3 of 10 running...
+Nominal GDP is 1000.000000.
+Sector 1.000000.0 Desired Capacity Uilization is 0.880416.
+Sector 1.000000.0 Profit Distribution Rate is 0.779258.
+Sector 1.000000.0 Wage Rate is 0.255762.
+Sector 2.000000.0 Desired Capacity Uilization is 0.666667.
+Sector 2.000000.0 Profit Distribution Rate is 0.616146.
+Sector 2.000000.0 Wage Rate is 0.934784.
+Sector 3.000000.0 Desired Capacity Uilization is 0.850032.
+Sector 3.000000.0 Profit Distribution Rate is 0.833612.
+Sector 3.000000.0 Wage Rate is 0.254538.
+Pseudo Taxation 152.467927.0
+Taxation 203.708536.0
+Class 1.000000.0 Tax Rate is 0.227672.
+Class 2.000000.0 Tax Rate is 0.227672.
+Class 3.000000.0 Tax Rate is 0.227672.
+Simulation 3 of 10 finished at case 600 (58.10 sec.)
+Saving results to file C:/Lsd/Work/MMM_v.3.6/Tax_and_Gov/Sim_4_3.res.gz... Done
+
+Simulation 4 of 10 running...
+Nominal GDP is 1000.000000.
+Sector 1.000000.0 Desired Capacity Uilization is 0.880416.
+Sector 1.000000.0 Profit Distribution Rate is 0.779258.
+Sector 1.000000.0 Wage Rate is 0.255762.
+Sector 2.000000.0 Desired Capacity Uilization is 0.666667.
+Sector 2.000000.0 Profit Distribution Rate is 0.616146.
+Sector 2.000000.0 Wage Rate is 0.934784.
+Sector 3.000000.0 Desired Capacity Uilization is 0.850032.
+Sector 3.000000.0 Profit Distribution Rate is 0.833612.
+Sector 3.000000.0 Wage Rate is 0.254538.
+Pseudo Taxation 152.467927.0
+Taxation 203.708536.0
+Class 1.000000.0 Tax Rate is 0.227672.
+Class 2.000000.0 Tax Rate is 0.227672.
+Class 3.000000.0 Tax Rate is 0.227672.
+Simulation 4 of 10 finished at case 600 (63.74 sec.)
+Saving results to file C:/Lsd/Work/MMM_v.3.6/Tax_and_Gov/Sim_4_4.res.gz... Done
+
+Simulation 5 of 10 running...
+Nominal GDP is 1000.000000.
+Sector 1.000000.0 Desired Capacity Uilization is 0.880416.
+Sector 1.000000.0 Profit Distribution Rate is 0.779258.
+Sector 1.000000.0 Wage Rate is 0.255762.
+Sector 2.000000.0 Desired Capacity Uilization is 0.666667.
+Sector 2.000000.0 Profit Distribution Rate is 0.616146.
+Sector 2.000000.0 Wage Rate is 0.934784.
+Sector 3.000000.0 Desired Capacity Uilization is 0.850032.
+Sector 3.000000.0 Profit Distribution Rate is 0.833612.
+Sector 3.000000.0 Wage Rate is 0.254538.
+Pseudo Taxation 152.467927.0
+Taxation 203.708536.0
+Class 1.000000.0 Tax Rate is 0.227672.
+Class 2.000000.0 Tax Rate is 0.227672.
+Class 3.000000.0 Tax Rate is 0.227672.
+Simulation 5 of 10 finished at case 600 (60.99 sec.)
+Saving results to file C:/Lsd/Work/MMM_v.3.6/Tax_and_Gov/Sim_4_5.res.gz... Done
+
+Simulation 6 of 10 running...
+Nominal GDP is 1000.000000.
+Sector 1.000000.0 Desired Capacity Uilization is 0.880416.
+Sector 1.000000.0 Profit Distribution Rate is 0.779258.
+Sector 1.000000.0 Wage Rate is 0.255762.
+Sector 2.000000.0 Desired Capacity Uilization is 0.666667.
+Sector 2.000000.0 Profit Distribution Rate is 0.616146.
+Sector 2.000000.0 Wage Rate is 0.934784.
+Sector 3.000000.0 Desired Capacity Uilization is 0.850032.
+Sector 3.000000.0 Profit Distribution Rate is 0.833612.
+Sector 3.000000.0 Wage Rate is 0.254538.
+Pseudo Taxation 152.467927.0
+Taxation 203.708536.0
+Class 1.000000.0 Tax Rate is 0.227672.
+Class 2.000000.0 Tax Rate is 0.227672.
+Class 3.000000.0 Tax Rate is 0.227672.
+Simulation 6 of 10 finished at case 600 (63.17 sec.)
+Saving results to file C:/Lsd/Work/MMM_v.3.6/Tax_and_Gov/Sim_4_6.res.gz... Done
+
+Simulation 7 of 10 running...
+Nominal GDP is 1000.000000.
+Sector 1.000000.0 Desired Capacity Uilization is 0.880416.
+Sector 1.000000.0 Profit Distribution Rate is 0.779258.
+Sector 1.000000.0 Wage Rate is 0.255762.
+Sector 2.000000.0 Desired Capacity Uilization is 0.666667.
+Sector 2.000000.0 Profit Distribution Rate is 0.616146.
+Sector 2.000000.0 Wage Rate is 0.934784.
+Sector 3.000000.0 Desired Capacity Uilization is 0.850032.
+Sector 3.000000.0 Profit Distribution Rate is 0.833612.
+Sector 3.000000.0 Wage Rate is 0.254538.
+Pseudo Taxation 152.467927.0
+Taxation 203.708536.0
+Class 1.000000.0 Tax Rate is 0.227672.
+Class 2.000000.0 Tax Rate is 0.227672.
+Class 3.000000.0 Tax Rate is 0.227672.
+Simulation 7 of 10 finished at case 600 (65.49 sec.)
+Saving results to file C:/Lsd/Work/MMM_v.3.6/Tax_and_Gov/Sim_4_7.res.gz... Done
+
+Simulation 8 of 10 running...
+Nominal GDP is 1000.000000.
+Sector 1.000000.0 Desired Capacity Uilization is 0.880416.
+Sector 1.000000.0 Profit Distribution Rate is 0.779258.
+Sector 1.000000.0 Wage Rate is 0.255762.
+Sector 2.000000.0 Desired Capacity Uilization is 0.666667.
+Sector 2.000000.0 Profit Distribution Rate is 0.616146.
+Sector 2.000000.0 Wage Rate is 0.934784.
+Sector 3.000000.0 Desired Capacity Uilization is 0.850032.
+Sector 3.000000.0 Profit Distribution Rate is 0.833612.
+Sector 3.000000.0 Wage Rate is 0.254538.
+Pseudo Taxation 152.467927.0
+Taxation 203.708536.0
+Class 1.000000.0 Tax Rate is 0.227672.
+Class 2.000000.0 Tax Rate is 0.227672.
+Class 3.000000.0 Tax Rate is 0.227672.
+Simulation 8 of 10 finished at case 600 (76.80 sec.)
+Saving results to file C:/Lsd/Work/MMM_v.3.6/Tax_and_Gov/Sim_4_8.res.gz... Done
+
+Simulation 9 of 10 running...
+Nominal GDP is 1000.000000.
+Sector 1.000000.0 Desired Capacity Uilization is 0.880416.
+Sector 1.000000.0 Profit Distribution Rate is 0.779258.
+Sector 1.000000.0 Wage Rate is 0.255762.
+Sector 2.000000.0 Desired Capacity Uilization is 0.666667.
+Sector 2.000000.0 Profit Distribution Rate is 0.616146.
+Sector 2.000000.0 Wage Rate is 0.934784.
+Sector 3.000000.0 Desired Capacity Uilization is 0.850032.
+Sector 3.000000.0 Profit Distribution Rate is 0.833612.
+Sector 3.000000.0 Wage Rate is 0.254538.
+Pseudo Taxation 152.467927.0
+Taxation 203.708536.0
+Class 1.000000.0 Tax Rate is 0.227672.
+Class 2.000000.0 Tax Rate is 0.227672.
+Class 3.000000.0 Tax Rate is 0.227672.
+Simulation 9 of 10 finished at case 600 (72.26 sec.)
+Saving results to file C:/Lsd/Work/MMM_v.3.6/Tax_and_Gov/Sim_4_9.res.gz... Done
+
+Simulation 10 of 10 running...
+Nominal GDP is 1000.000000.
+Sector 1.000000.0 Desired Capacity Uilization is 0.880416.
+Sector 1.000000.0 Profit Distribution Rate is 0.779258.
+Sector 1.000000.0 Wage Rate is 0.255762.
+Sector 2.000000.0 Desired Capacity Uilization is 0.666667.
+Sector 2.000000.0 Profit Distribution Rate is 0.616146.
+Sector 2.000000.0 Wage Rate is 0.934784.
+Sector 3.000000.0 Desired Capacity Uilization is 0.850032.
+Sector 3.000000.0 Profit Distribution Rate is 0.833612.
+Sector 3.000000.0 Wage Rate is 0.254538.
+Pseudo Taxation 152.467927.0
+Taxation 203.708536.0
+Class 1.000000.0 Tax Rate is 0.227672.
+Class 2.000000.0 Tax Rate is 0.227672.
+Class 3.000000.0 Tax Rate is 0.227672.
+Simulation 10 of 10 finished at case 600 (80.71 sec.)
+Saving results to file C:/Lsd/Work/MMM_v.3.6/Tax_and_Gov/Sim_4_10.res.gz... Done
+
+Saving totals to file C:/Lsd/Work/MMM_v.3.6/Tax_and_Gov/Sim_4_1_10.tot.gz... Done

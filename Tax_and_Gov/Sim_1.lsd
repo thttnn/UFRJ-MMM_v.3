@@ -759,12 +759,12 @@ Param: country_initial_exports_share_GDP 0 n + n n	0.1
 Param: country_initial_government_share_GDP 0 n + n n	0.2
 Param: entry_debt_share 0 n + n n	0
 Param: survival_period 0 n + n n	0
-Param: switch_class_tax_structure 0 n + n n	3
+Param: switch_class_tax_structure 0 n + n n	1
 Param: switch_creditworthness 0 n + n n	0
 Param: switch_entry 0 n + n n	1
 Param: switch_extra_gov_expenses 0 n + n n	0
 Param: switch_extra_imports 0 n + n n	0
-Param: switch_interest_investment 0 n + n n	2
+Param: switch_interest_investment 0 n + n n	0
 Param: switch_interest_payment 0 n + n n	0
 Param: switch_monetary_policy 0 n + n n	1
 Var: Country_Annual_CPI_Inflation 1 s + n p	0
@@ -922,8 +922,8 @@ Param: fs_number_object_banks 0 n + n n	10
 Param: fs_price_strategy_long_term 0 n + n n	1
 Param: fs_price_strategy_short_term 0 n + n n	1
 Param: fs_risk_premium_class 0 n + n n	0
-Param: fs_risk_premium_long_term 0 n + n n	0.5
-Param: fs_risk_premium_short_term 0 n + n n	0.1
+Param: fs_risk_premium_long_term 0 n + n n	0
+Param: fs_risk_premium_short_term 0 n + n n	0
 Param: fs_sensitivity_debt_rate 0 n + n n	0.5
 Param: fs_sensitivity_default 0 n + n n	0.5
 Param: fs_spread_deposits 0 n + n n	0.1
@@ -1080,7 +1080,7 @@ Param: sector_external_price_shock_begin 0 n + n n	400	400	400
 Param: sector_external_price_shock_duration 0 n + n n	20	20	20
 Param: sector_external_price_shock_size 0 n + n n	0	0	0
 Param: sector_financial_cost_passtrough 0 n + n n	0	0	0
-Param: sector_indirect_tax_rate 0 n + n n	0.05	0.05	0.05
+Param: sector_indirect_tax_rate 0 n + n n	0	0	0
 Param: sector_initial_debt_rate 0 n + n n	0.25	0.25	0.25
 Param: sector_initial_demand 0 n + n n	0	0	0
 Param: sector_initial_depreciation_scale 0 n + n n	1	1	1
@@ -1427,7 +1427,7 @@ Var: MGDP 0 s + n n
 Var: XGDP 0 s + n n
 Var: DX_GDP 0 s + n n
 
-SIM_NUM 1
+SIM_NUM 10
 SEED 1
 MAX_STEP 600
 EQUATION fun_micro_macro_v.3.6.cpp
@@ -1535,7 +1535,7 @@ END_DESCRIPTION
 Parameter_switch_class_tax_structure
 (no description available)
 _INIT_
-All 1 instances equal to 3.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_switch_creditworthness
@@ -1565,7 +1565,7 @@ END_DESCRIPTION
 Parameter_switch_interest_investment
 (no description available)
 _INIT_
-All 1 instances equal to 2.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_switch_interest_payment
@@ -2516,13 +2516,13 @@ END_DESCRIPTION
 Parameter_fs_risk_premium_long_term
 determines the risk premium on debt rate applied to firms' long term loans
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_fs_risk_premium_short_term
 determines the risk premium on debt rate applied to firms' short term loans
 _INIT_
-
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_fs_sensitivity_debt_rate
@@ -3500,7 +3500,7 @@ Parameter_sector_indirect_tax_rate
 determines the indirect tax rate
 used in calibration
 _INIT_
-All 3 instances equal to 0.05.
+All 3 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_sector_initial_debt_rate

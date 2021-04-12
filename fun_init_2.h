@@ -385,16 +385,22 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 	v[233]=v[105]-v[210];											//total income taxation
 	v[235]=v[124]-v[212];											//total imported consumption expenses
 	
-	if(V("switch_class_tax_structure")==0)							    //taxation structure = no tax
-		v[234]=0;														//average direct tax rate							   				   				//class total tax
-	if(V("switch_class_tax_structure")==1)								//taxation structure = only wages
-		v[234]=v[233]/v[230];											//average direct tax rate
-	if(V("switch_class_tax_structure")==2)								//taxation structure = only profits
-		v[234]=v[233]/v[231];											//average direct tax rate
-	if(V("switch_class_tax_structure")==3)								//taxation structure = profits and wages 
-		v[234]=v[233]/v[232];											//average direct tax rate
-	if(V("switch_class_tax_structure")==4)								//taxation structure = profits, wages and interest
-		v[234]=v[233]/(v[232]+max(0,v[102]-v[52])*v[225]);				//average direct tax rate
+	if(V("switch_class_tax_structure")==0)							    	//taxation structure = no tax
+		v[280]=0;
+	if(V("switch_class_tax_structure")==1)									//taxation structure = only wages
+		v[280]=WHTAVE("class_direct_tax", "class_wage_share")*v[230];
+	if(V("switch_class_tax_structure")==2)									//taxation structure = only profits
+		v[280]=WHTAVE("class_direct_tax", "class_profit_share")*v[231];
+	if(V("switch_class_tax_structure")==3)									//taxation structure = profits and wages 
+		v[280]=WHTAVE("class_direct_tax", "class_profit_share")*v[231]
+		      +WHTAVE("class_direct_tax", "class_wage_share")*v[230];
+	if(V("switch_class_tax_structure")==4)									//taxation structure = profits, wages and interest
+		v[280]=WHTAVE("class_direct_tax", "class_profit_share")*v[231]
+		      +WHTAVE("class_direct_tax", "class_wage_share")*v[230]
+			  +WHTAVE("class_direct_tax", "class_profit_share")*max(0,v[102]-v[52])*v[225];
+	LOG("\nPseudo Taxation %f.0",v[280]);
+	LOG("\nTaxation %f.0",v[233]);
+	v[281]=v[233]/v[280];
 		
 	//WRITTING CLASS LAGGED VALUES  
 	v[251]=v[252]=0;
@@ -405,20 +411,34 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 		v[242]=VS(cur, "class_wage_share");
 		v[254]=VS(cur, "class_initial_max_debt_rate");
 		v[255]=VS(cur, "class_initial_liquidity_preference");
-		
-		//v[243]=v[230]*v[242]+v[231]*v[241]+max(0,v[102]-v[52])*v[225]*v[241]; //class gross income
+	
 		v[243]=v[230]*v[242]+v[231]*v[241];
 		
 		if(V("switch_class_tax_structure")==0)							    	//taxation structure = no tax
+		{
+			v[234]=0;
 			v[244]=0;															//average direct tax rate							   				   				//class total tax
+		}
 		if(V("switch_class_tax_structure")==1)									//taxation structure = only wages
+		{
+			v[234]=VS(cur,"class_direct_tax")*v[281];
 			v[244]=v[234]*(v[230]*v[242]);										//average direct tax rate
+		}
 		if(V("switch_class_tax_structure")==2)									//taxation structure = only profits
+		{
+			v[234]=VS(cur,"class_direct_tax")*v[281];
 			v[244]=v[234]*(v[231]*v[241]);										//average direct tax rate
+		}
 		if(V("switch_class_tax_structure")==3)									//taxation structure = profits and wages 
+		{
+			v[234]=VS(cur,"class_direct_tax")*v[281];
 			v[244]=v[234]*(v[230]*v[242]+v[231]*v[241]);						//average direct tax rate
+		}
 		if(V("switch_class_tax_structure")==4)									//taxation structure = profits, wages and interest
-			v[244]=v[234]*v[243];												//average direct tax rate
+		{
+			v[234]=VS(cur,"class_direct_tax")*v[281];
+			v[244]=v[234]*(v[230]*v[242]+v[231]*v[241]+max(0,v[102]-v[52])*v[225]*v[241]);												//average direct tax rate
+		}
 		LOG("\nClass %f.0",SEARCH_INST(cur));LOG(" Tax Rate is %f.",v[234]);
 
 		v[245]=v[243]-v[244];										//class disposable income
