@@ -220,7 +220,6 @@ Label Root
 		{
 			Param: government_benefit_rate
 			Param: government_expectations
-			Param: government_inflation_passtrought
 			Param: government_initial_debt_gdp_ratio
 			Param: government_initial_share_capital
 			Param: government_initial_share_consumption
@@ -748,31 +747,31 @@ Var: Time_Step 0 n + n n
 
 Object: COUNTRY C	1
 Param: annual_frequency 0 n + n n	4
-Param: begin_credit_rationing 0 n + n n	-1
+Param: begin_credit_rationing 0 n + n n	0
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
-Param: begin_flexible_exchange_rate 0 n + n n	-1
+Param: begin_flexible_exchange_rate 0 n + n n	0
 Param: begin_flexible_surplus_target 0 n + n n	0
 Param: begin_monetary_policy 0 n + n n	0
-Param: begin_surplus_target_rule 0 n + n n	-1
+Param: begin_surplus_target_rule 0 n + n n	0
 Param: country_initial_depreciation_share_GDP 0 n + n n	0.1
 Param: country_initial_exports_share_GDP 0 n + n n	0.1
 Param: country_initial_government_share_GDP 0 n + n n	0.2
 Param: entry_debt_share 0 n + n n	0
 Param: survival_period 0 n + n n	0
-Param: switch_class_tax_structure 0 n + n n	2
+Param: switch_class_tax_structure 0 n + n n	3
 Param: switch_creditworthness 0 n + n n	0
 Param: switch_entry 0 n + n n	1
 Param: switch_extra_gov_expenses 0 n + n n	0
 Param: switch_extra_imports 0 n + n n	0
-Param: switch_interest_investment 0 n + n n	0
+Param: switch_interest_investment 0 n + n n	2
 Param: switch_interest_payment 0 n + n n	0
 Param: switch_monetary_policy 0 n + n n	1
-Var: Country_Annual_CPI_Inflation 1 s + n p	0
+Var: Country_Annual_CPI_Inflation 1 s + n n	0
 Var: Country_Annual_GDP 0 s + n n
 Var: Country_Annual_Growth 1 s + n n	0
-Var: Country_Annual_Inflation 1 s + n p	0
+Var: Country_Annual_Inflation 1 s + n n	0
 Var: Country_Annual_Real_GDP 0 s + n n
-Var: Country_Annual_Real_Growth 1 s + n p	0
+Var: Country_Annual_Real_Growth 1 s + n n	0
 Var: Country_Autonomous_Consumption 0 n + n n
 Var: Country_Autonomous_Investment 0 s + n n
 Var: Country_Avg_HHI 0 s + n n
@@ -795,7 +794,7 @@ Var: Country_GDP 10 s + n n	294	294	294	294	294	294	294	294	294	294
 Var: Country_GDP_Demand 0 s + n n
 Var: Country_Gini_Index 0 s + n n
 Var: Country_Hedge_Share 0 s + n n
-Var: Country_Idle_Capacity 5 s + n p	0.18	0.18	0.18	0.18	0.18
+Var: Country_Idle_Capacity 5 s + n n	0.18	0.18	0.18	0.18	0.18
 Var: Country_Induced_Investment 0 s + n n
 Var: Country_Inventories 1 n + n n	0
 Var: Country_Inventories_Variation 0 n + n n
@@ -809,7 +808,7 @@ Var: Country_Productive_Capacity_Depreciated 0 s + n n
 Var: Country_Productive_Capacity_Expansion 0 s + n n
 Var: Country_Productive_Capacity_Replacement 0 s + n n
 Var: Country_Profit_Share 0 s + n n
-Var: Country_Real_GDP 9 s + n n	0	0	0	0	0	0	0	0	0
+Var: Country_Real_GDP 9 s + n p	0	0	0	0	0	0	0	0	0
 Var: Country_Real_GDP_Demand 0 s + n n
 Var: Country_Speculative_Share 0 s + n n
 Var: Country_Total_Classes_Expenses 0 n + n n
@@ -829,9 +828,9 @@ Var: Loans_Distribution_Firms 0 n + n n
 Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1
 Param: class_debt_rate_adjustment 0 n + n n	0	0	0
-Param: class_direct_tax 0 s + n n	0.170404	0.170404	0.170404
+Param: class_direct_tax 0 s + n n	0.3	0.3	0.3
 Param: class_id 0 n + n n	1	2	3
-Param: class_import_elasticity_price 0 n + n n	0	0	0
+Param: class_import_elasticity_price 0 n + n n	1	1	1
 Param: class_initial_propensity_import 0 n + n n	0	0	0
 Param: class_initial_liquidity_preference 0 n + n n	0	0	0
 Param: class_initial_max_debt_rate 0 n + n n	1	1	1
@@ -889,7 +888,7 @@ Object: EXTERNAL_SECTOR C	1
 Param: exchange_rate_adjustment 0 n + n n	0.01
 Param: exchange_rate_max 0 n + n n	100
 Param: exchange_rate_min 0 n + n n	0.001
-Param: external_capital_flow_adjustment 0 n + n n	0
+Param: external_capital_flow_adjustment 0 n + n n	50
 Param: external_income_adjustmnent 0 n + n n	0
 Param: external_income_growth 0 n + n n	0.0025
 Param: external_income_sd 0 n + n n	0.01
@@ -922,10 +921,10 @@ Param: fs_number_object_banks 0 n + n n	10
 Param: fs_price_strategy_long_term 0 n + n n	1
 Param: fs_price_strategy_short_term 0 n + n n	1
 Param: fs_risk_premium_class 0 n + n n	0
-Param: fs_risk_premium_long_term 0 n + n n	0
+Param: fs_risk_premium_long_term 0 n + n n	0.1
 Param: fs_risk_premium_short_term 0 n + n n	0
-Param: fs_sensitivity_debt_rate 0 n + n n	0.5
-Param: fs_sensitivity_default 0 n + n n	0.5
+Param: fs_sensitivity_debt_rate 0 n + n n	0.1
+Param: fs_sensitivity_default 0 n + n n	0.1
 Param: fs_spread_deposits 0 n + n n	0.1
 Param: fs_spread_long_term 0 n + n n	0.05
 Param: fs_spread_long_term_adjustment 0 n + n n	0
@@ -968,7 +967,7 @@ Var: Bank_Accumulated_Defaulted_Loans 1 n + n n	0
 Var: Bank_Accumulated_Profits 1 n + n n	0
 Var: Bank_Competitiveness 1 n + n n	0
 Var: Bank_Debt_Payment 0 n + n n
-Var: Bank_Default_Share 1 n + n n	0
+Var: Bank_Default_Share 5 n + n n	0	0	0	0	0
 Var: Bank_Defaulted_Loans 1 n + n n	0
 Var: Bank_Demand_Loans 1 n + n n	0
 Var: Bank_Demand_Met 1 n + n n	0
@@ -1004,7 +1003,7 @@ Param: cb_minimum_capital_ratio 0 n + n n	0.05
 Param: cb_sensitivity_capacity 0 n + n n	0
 Param: cb_sensitivity_credit_growth 0 n + n n	0
 Param: cb_sensitivity_debt_rate 0 n + n n	0
-Param: cb_sensitivity_inflation 0 n + n n	0
+Param: cb_sensitivity_inflation 0 n + n n	1.1
 Param: cb_sensitivity_exchange 0 n + n n	0
 Param: cb_target_annual_inflation 0 n + n n	0.02
 Param: cb_target_capacity 0 n + n n	0.15
@@ -1014,18 +1013,17 @@ Param: cb_target_reserves 0 n + n n	0
 Var: Central_Bank_Basic_Interest_Rate 1 s + d n	0
 
 Object: GOVERNMENT C	1
-Param: government_benefit_rate 0 n + n n	0
+Param: government_benefit_rate 0 n + n n	0.1
 Param: government_expectations 0 n + n n	0.5
-Param: government_inflation_passtrought 0 n + n n	1
 Param: government_initial_debt_gdp_ratio 0 n + n n	0.5
-Param: government_initial_share_capital 0 n + n n	0
-Param: government_initial_share_consumption 0 n + n n	0
-Param: government_initial_share_input 0 n + n n	0
+Param: government_initial_share_capital 0 n + n n	0.3
+Param: government_initial_share_consumption 0 n + n n	0.1
+Param: government_initial_share_input 0 n + n n	0.1
 Param: government_max_debt_ratio 0 n + n n	1
 Param: government_max_surplus_target 0 s + n n	0.03
 Param: government_min_debt_ratio 0 n + n n	0.5
 Param: government_min_surplus_target 0 s + n n	-0.03
-Param: government_real_growth 0 n + n n	0.00155
+Param: government_real_growth 0 n + n n	0.003
 Param: government_surplus_target_adjustment 0 n + n n	0.001
 Var: Government_Debt 5 s + n n	0	0	0	0	0
 Var: Government_Debt_GDP_Ratio 5 s + n n	0	0	0	0	0
@@ -1072,7 +1070,7 @@ Param: sector_elasticity_quality 0 n + n n	0.5	0.5	0.5
 Param: sector_expectations 0 n + n n	0.3	0.3	0.3
 Param: sector_exports_coefficient 0 s + n n	0	0	0
 Param: sector_exports_elasticity_income 0 n + n n	1	1	1
-Param: sector_exports_elasticity_price 0 n + n n	0	0	0
+Param: sector_exports_elasticity_price 0 n + n n	1	1	1
 Param: sector_external_price_competitiveness 0 n + n n	0	0	0
 Param: sector_external_price_growth 0 n + n n	0.005	0.005	0.005
 Param: sector_external_price_sd 0 n + n n	0.01	0.01	0.01
@@ -1080,8 +1078,8 @@ Param: sector_external_price_shock_begin 0 n + n n	400	400	400
 Param: sector_external_price_shock_duration 0 n + n n	20	20	20
 Param: sector_external_price_shock_size 0 n + n n	0	0	0
 Param: sector_financial_cost_passtrough 0 n + n n	0	0	0
-Param: sector_indirect_tax_rate 0 n + n n	0	0	0
-Param: sector_initial_debt_rate 0 n + n n	0.25	0.25	0.25
+Param: sector_indirect_tax_rate 0 n + n n	0.05	0.05	0.05
+Param: sector_initial_debt_rate 0 n + n n	0.4	0.4	0.4
 Param: sector_initial_demand 0 n + n n	0	0	0
 Param: sector_initial_depreciation_scale 0 n + n n	1	1	1
 Param: sector_initial_exports_share 0 n + n n	0.2	0.6	0.2
@@ -1089,7 +1087,7 @@ Param: sector_initial_external_price 0 n + n n	1	2	1
 Param: sector_initial_liquidity_preference 0 n + n n	0.05	0.05	0.05
 Param: sector_initial_price 0 n + n n	1	2	1
 Param: sector_initial_productivity 0 n + n n	1	1	1
-Param: sector_initial_profit_rate 0 n + n n	0.3	0.6	0.3
+Param: sector_initial_profit_rate 0 n + n n	0.2	0.4	0.2
 Param: sector_initial_quality 0 n + n n	1	1	1
 Param: sector_innovation_proportion 0 n + n n	0.5	0.5	0.5
 Param: sector_initial_propensity_import_inputs 0 n + n n	0.05	0.05	0.05
@@ -1166,7 +1164,7 @@ Var: Sector_Stock_Loans 1 s + n n	0	0	0
 Var: Sector_Taxation 0 n + n n
 Var: Sector_Turbulence 0 s + n n
 Var: Sector_Propensity_Import_Inputs 1 s + n n	0	0	0
-Param: sector_input_import_elasticity_price 0 n + n n	0	0	0
+Param: sector_input_import_elasticity_price 0 n + n n	1	1	1
 Var: Sector_Profits 0 s + n n
 Param: sector_external_price_weight 0 n + n n	1	1	1
 
@@ -1427,7 +1425,7 @@ Var: MGDP 0 s + n n
 Var: XGDP 0 s + n n
 Var: DX_GDP 0 s + n n
 
-SIM_NUM 10
+SIM_NUM 1
 SEED 1
 MAX_STEP 600
 EQUATION fun_micro_macro_v.3.6.cpp
@@ -1466,7 +1464,7 @@ END_DESCRIPTION
 Parameter_begin_credit_rationing
 (no description available)
 _INIT_
-All 1 instances equal to -1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_begin_expenses_ceiling_rule
@@ -1478,7 +1476,7 @@ END_DESCRIPTION
 Parameter_begin_flexible_exchange_rate
 (no description available)
 _INIT_
-All 1 instances equal to -1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_begin_flexible_surplus_target
@@ -1496,7 +1494,7 @@ END_DESCRIPTION
 Parameter_begin_surplus_target_rule
 (no description available)
 _INIT_
-All 1 instances equal to -1.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_country_initial_depreciation_share_GDP
@@ -1535,7 +1533,7 @@ END_DESCRIPTION
 Parameter_switch_class_tax_structure
 (no description available)
 _INIT_
-All 1 instances equal to 2.
+All 1 instances equal to 3.
 END_DESCRIPTION
 
 Parameter_switch_creditworthness
@@ -1565,7 +1563,7 @@ END_DESCRIPTION
 Parameter_switch_interest_investment
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 2.
 END_DESCRIPTION
 
 Parameter_switch_interest_payment
@@ -1952,7 +1950,7 @@ Parameter_class_direct_tax
 determines the direct tax rate on class' income. 
 defines by the calibration
 _INIT_
-All 3 instances equal to 0.170404.
+
 END_DESCRIPTION
 
 Parameter_class_id
@@ -1964,7 +1962,7 @@ END_DESCRIPTION
 Parameter_class_import_elasticity_price
 deterines how class import share of consumption adjusts to price differentials
 _INIT_
-All 3 instances equal to 0.
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_class_initial_propensity_import
@@ -2321,7 +2319,7 @@ END_DESCRIPTION
 Parameter_external_capital_flow_adjustment
 determines the intensity and scale of capital flows based on external income
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 50.
 END_DESCRIPTION
 
 Parameter_external_income_adjustmnent
@@ -2516,7 +2514,7 @@ END_DESCRIPTION
 Parameter_fs_risk_premium_long_term
 determines the risk premium on debt rate applied to firms' long term loans
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_fs_risk_premium_short_term
@@ -2528,13 +2526,13 @@ END_DESCRIPTION
 Parameter_fs_sensitivity_debt_rate
 determines the financial sector (and banks) sensitivity to avg debt rate on credit rationing
 _INIT_
-All 1 instances equal to 0.5.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_fs_sensitivity_default
 determines the financial sector (and banks) sensitivity to own default rate on credit rationing
 _INIT_
-All 1 instances equal to 0.5.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_fs_spread_deposits
@@ -3017,7 +3015,7 @@ END_DESCRIPTION
 Parameter_cb_sensitivity_inflation
 determines the central bank's sensitivity to inflation gaps in the taylor rule
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 1.1.
 END_DESCRIPTION
 
 Parameter_cb_sensitivity_exchange
@@ -3071,19 +3069,13 @@ END_DESCRIPTION
 Parameter_government_benefit_rate
 Share of Sectoral Avg Wage paid as unemployment benefit by the Government
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_government_expectations
 Government expectation parameter, to adjust past growth
 _INIT_
 All 1 instances equal to 0.5.
-END_DESCRIPTION
-
-Parameter_government_inflation_passtrought
-Determines how past inflation is used in adjusting government desired expenses
-_INIT_
-All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_government_initial_debt_gdp_ratio
@@ -3097,21 +3089,21 @@ Parameter_government_initial_share_capital
 Determines th inital participation of investment in government's budget.
 Used in calibration.
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.3.
 END_DESCRIPTION
 
 Parameter_government_initial_share_consumption
 Determines th inital participation of consumption goods in government's budget.
 Used in calibration.
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_government_initial_share_input
 Determines th inital participation of intermediate goods in government's budget.
 Used in calibration.
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_government_max_debt_ratio
@@ -3141,7 +3133,7 @@ END_DESCRIPTION
 Parameter_government_real_growth
 Determines the desired quarterly real growth on government desired expenses
 _INIT_
-All 1 instances equal to 0.00155.
+All 1 instances equal to 0.003.
 END_DESCRIPTION
 
 Parameter_government_surplus_target_adjustment
@@ -3451,7 +3443,7 @@ END_DESCRIPTION
 Parameter_sector_exports_elasticity_price
 determines the sector's exports elasticity to price differentials
 _INIT_
-All 3 instances equal to 0.
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_sector_external_price_competitiveness
@@ -3500,14 +3492,14 @@ Parameter_sector_indirect_tax_rate
 determines the indirect tax rate
 used in calibration
 _INIT_
-All 3 instances equal to 0.
+All 3 instances equal to 0.05.
 END_DESCRIPTION
 
 Parameter_sector_initial_debt_rate
 determines the initial sector (and firms) debt rate
 used in calibration to define the initial stock of loans
 _INIT_
-
+All 3 instances equal to 0.4.
 END_DESCRIPTION
 
 Parameter_sector_initial_demand
@@ -4044,7 +4036,7 @@ END_DESCRIPTION
 Parameter_sector_input_import_elasticity_price
 (no description available)
 _INIT_
-All 3 instances equal to 0.
+All 3 instances equal to 1.
 END_DESCRIPTION
 
 Variable_Sector_Profits

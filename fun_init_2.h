@@ -365,7 +365,8 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 		{												
 		WRITES(cur1, "bank_id", SEARCH_INSTS(root, cur1)); 
 		WRITELLS(cur1, "Bank_Market_Share", 1/v[57], 0, 1);
-		WRITELLS(cur1, "Bank_Default_Share", 0, 0, 1);
+		for(i=1;i<=v[0]+1;i++) 
+			WRITELLS(cur1, "Bank_Default_Share", 0, 0, i);
 		WRITELLS(cur1, "Bank_Accumulated_Defaulted_Loans", 0, 0, 1);
 		WRITELLS(cur1, "Bank_Total_Stock_Loans", v[214]/v[57], 0, 1);
 		WRITELLS(cur1, "Bank_Competitiveness", 1, 0, 1);

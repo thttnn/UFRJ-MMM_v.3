@@ -316,6 +316,9 @@ This variable writes parameters for the current financial position of the firm.
 	v[6]=V("Firm_Effective_Investment_Expenses");
 	v[7]=v[5]+v[6];
 	
+	if(V("Firm_Investment_Period")==1)
+	{
+	
 	if (v[4]>=v[7])
 	{
 		WRITE("firm_hedge",1);
@@ -339,6 +342,9 @@ This variable writes parameters for the current financial position of the firm.
 		WRITE("firm_ponzi",1);
 		v[8]=2;
 	}
+	}
+	else
+		v[8]=CURRENT;
 RESULT(v[8])
 
 

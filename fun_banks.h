@@ -13,7 +13,7 @@ Might impact effective loans
 	v[1]=V("cb_minimum_capital_ratio");									//minimum capital ratio defined by the regulatory rule
 	v[2]=V("fs_sensitivity_debt_rate");									//bank's sensitivity to overall indebtedness of the economy
 	v[3]=VL("Country_Debt_Rate_Firms",1);								//average debt rate of firms of the economy
-	v[4]=VL("Bank_Default_Share",1);									//bank's share of accumulated defaulted loans over total loans
+	v[4]=LAG_AVE(p,"Bank_Default_Share",V("annual_frequency"),1);		//bank's share of accumulated defaulted loans over total loans
 	v[5]=V("fs_sensitivity_default");									//bank's sensitivity to its own default ratio
 	v[6]=v[1]+v[2]*v[3]+v[5]*v[4];										//desired share of net worth in relation to total loans
 	if(v[6]!=0)															//if desired share is not zero												
@@ -542,7 +542,7 @@ EQUATION("Bank_Default_Share");
 /*
 Current bank defaulted loans over stock of long term loans
 */
-	v[0]=V("Bank_Accumulated_Defaulted_Loans");
+	v[0]=V("Bank_Defaulted_Loans");
 	v[1]=V("Bank_Stock_Loans_Long_Term");
 	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(min(1,v[2]))
