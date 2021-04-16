@@ -393,7 +393,7 @@ Sum up sector's effective production over productive capacity, weighted by secto
 	v[0]=WHTAVE("Sector_Capacity_Utilization", "Sector_Effective_Production");
 	v[1]=SUM("Sector_Effective_Production");
 	v[2]= v[1]!=0? v[0]/v[1]: 0;
-RESULT(v[2])
+RESULT(min(1,v[2]))
 
 EQUATION("Country_Idle_Capacity")
 RESULT(1-V("Country_Capacity_Utilization"))
@@ -575,8 +575,42 @@ EQUATION("Country_Gini_Index")
 	v[0]=1-(v[11]+v[12]+v[13]);
 RESULT(v[0])
 
+EQUATION("Country_Gini_Index_Pretax")
+	v[1]=VS(cclass, "Class_Gross_Income_Share");
+	v[2]=VS(bclass, "Class_Gross_Income_Share");
+	v[3]=VS(aclass, "Class_Gross_Income_Share");
+	v[4]=VS(cclass, "class_population_share");
+	v[5]=VS(bclass, "class_population_share");
+	v[6]=VS(aclass, "class_population_share");
+	v[7]=1-v[4];
+	v[8]=1-v[4]-v[5];
+	v[9]=0;
+	v[11]=v[1]*(v[4]+2*v[7]);
+	v[12]=v[2]*(v[5]+2*v[8]);
+	v[13]=v[3]*(v[6]+2*v[9]);
+	v[0]=1-(v[11]+v[12]+v[13]);
+RESULT(v[0])
 
+EQUATION("Country_Gini_Index_Wealth")
+	v[1]=VS(cclass, "Class_Wealth_Share");
+	v[2]=VS(bclass, "Class_Wealth_Share");
+	v[3]=VS(aclass, "Class_Wealth_Share");
+	v[4]=VS(cclass, "class_population_share");
+	v[5]=VS(bclass, "class_population_share");
+	v[6]=VS(aclass, "class_population_share");
+	v[7]=1-v[4];
+	v[8]=1-v[4]-v[5];
+	v[9]=0;
+	v[11]=v[1]*(v[4]+2*v[7]);
+	v[12]=v[2]*(v[5]+2*v[8]);
+	v[13]=v[3]*(v[6]+2*v[9]);
+	v[0]=1-(v[11]+v[12]+v[13]);
+RESULT(v[0])
 
-
-
+EQUATION("Country_Avg_Propensity_Consume")
+	v[0]=VS(consumption, "Sector_Avg_Price");
+	v[1]=SUM("Class_Effective_Real_Domestic_Consumption");
+	v[2]=SUM("Class_Nominal_Gross_Income");
+	v[3]= v[2]!=0? v[0]*v[1]/v[2] : 0;
+RESULT(v[3])
 

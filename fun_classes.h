@@ -473,13 +473,21 @@ RESULT(v[4])
 
 EQUATION("Class_Income_Share")
 /*
-Class share of nominal income
+Class share of nominal disposable income
 */
 	v[0]=V("Class_Nominal_Disposable_Income");
 	v[1]=SUMS(PARENT,"Class_Nominal_Disposable_Income");
 	v[2]= v[1]!=0? v[0]/v[1]: 0;
 RESULT(v[2])
 
+EQUATION("Class_Gross_Income_Share")
+/*
+Class share of nominal gross income
+*/
+	v[0]=V("Class_Nominal_Gross_Income");
+	v[1]=SUMS(PARENT,"Class_Nominal_Gross_Income");
+	v[2]= v[1]!=0? v[0]/v[1]: 0;
+RESULT(v[2])
 
 EQUATION("Class_Wealth_Share")
 /*

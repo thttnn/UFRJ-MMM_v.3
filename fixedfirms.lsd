@@ -755,7 +755,7 @@ Param: annual_frequency 0 n + n n	4
 Param: begin_credit_rationing 0 n + n n	0
 Param: begin_expenses_ceiling_rule 0 n + n n	-1
 Param: begin_flexible_exchange_rate 0 n + n n	0
-Param: begin_flexible_surplus_target 0 n + n n	0
+Param: begin_flexible_surplus_target 0 n + n n	-1
 Param: begin_monetary_policy 0 n + n n	0
 Param: begin_surplus_target_rule 0 n + n n	0
 Param: country_initial_depreciation_share_GDP 0 n + n n	0.1
@@ -1024,15 +1024,15 @@ Var: Central_Bank_Basic_Interest_Rate 1 s + d n	0
 Object: GOVERNMENT C	1
 Param: government_benefit_rate 0 n + n n	0
 Param: government_expectations 0 n + n n	1
-Param: government_initial_debt_gdp_ratio 0 n + n n	0.5
+Param: government_initial_debt_gdp_ratio 0 n + n n	1
 Param: government_initial_share_capital 0 n + n n	0.3
 Param: government_initial_share_consumption 0 n + n n	0.1
 Param: government_initial_share_input 0 n + n n	0.1
 Param: government_max_debt_ratio 0 n + n n	1
-Param: government_max_surplus_target 0 s + n n	0.03
+Param: government_max_surplus_target 0 s + n n	0
 Param: government_min_debt_ratio 0 n + n n	0.5
-Param: government_min_surplus_target 0 s + n n	-0.03
-Param: government_real_growth 0 n + n n	0.00275
+Param: government_min_surplus_target 0 s + n n	0
+Param: government_real_growth 0 n + n n	0.0027
 Param: government_surplus_target_adjustment 0 n + n n	0.001
 Var: Government_Debt 5 s + n n	0	0	0	0	0
 Var: Government_Debt_GDP_Ratio 5 s + n n	0	0	0	0	0
@@ -1069,7 +1069,7 @@ Param: sector_antecipation 0 n + n n	0	0	0
 Param: sector_bargain_power_adjustment 0 n + n n	0	0	0
 Param: sector_capital_duration 0 n + n n	40	40	40
 Param: sector_capital_output_ratio 0 n + n n	1	1	1
-Param: sector_competitiveness_adjustment 0 n + n n	1	1	1
+Param: sector_competitiveness_adjustment 0 n + n n	0	0	0
 Param: sector_debt_rate_adjustment 0 n + n n	0	0	0
 Param: sector_desired_degree_capacity_utilization 0 n + n n	0.95	0.95	0.95
 Param: sector_desired_inventories_proportion 0 n + n n	0.1	0.1	0.1
@@ -1097,7 +1097,7 @@ Param: sector_initial_external_price 0 n + n n	1	2	1
 Param: sector_initial_liquidity_preference 0 n + n n	0.05	0.05	0.05
 Param: sector_initial_price 0 n + n n	1	2	1
 Param: sector_initial_productivity 0 n + n n	1	1	1
-Param: sector_initial_profit_rate 0 n + n n	0.3	0.6	0.3
+Param: sector_initial_profit_rate 0 n + n n	0.2	0.4	0.2
 Param: sector_initial_quality 0 n + n n	1	1	1
 Param: sector_innovation_proportion 0 n + n n	0.5	0.5	0.5
 Param: sector_initial_propensity_import_inputs 0 n + n n	0.05	0.05	0.05
@@ -1435,7 +1435,7 @@ Var: MGDP 0 s + n n
 Var: XGDP 0 s + n n
 Var: DX_GDP 0 s + n n
 
-SIM_NUM 5
+SIM_NUM 1
 SEED 1
 MAX_STEP 600
 EQUATION fun_micro_macro_v.3.6.cpp
@@ -1492,7 +1492,7 @@ END_DESCRIPTION
 Parameter_begin_flexible_surplus_target
 (no description available)
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to -1.
 END_DESCRIPTION
 
 Parameter_begin_monetary_policy
@@ -3117,7 +3117,7 @@ Parameter_government_initial_debt_gdp_ratio
 Determines the initial relation between GDP and Government Debt.
 Used in calibration.
 _INIT_
-All 1 instances equal to 0.5.
+All 1 instances equal to 1.
 END_DESCRIPTION
 
 Parameter_government_initial_share_capital
@@ -3150,7 +3150,7 @@ END_DESCRIPTION
 Parameter_government_max_surplus_target
 (no description available)
 _INIT_
-All 1 instances equal to 0.03.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_government_min_debt_ratio
@@ -3162,13 +3162,13 @@ END_DESCRIPTION
 Parameter_government_min_surplus_target
 (no description available)
 _INIT_
-All 1 instances equal to -0.03.
+All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_government_real_growth
 Determines the desired quarterly real growth on government desired expenses
 _INIT_
-All 1 instances equal to 0.00275.
+All 1 instances equal to 0.0027.
 END_DESCRIPTION
 
 Parameter_government_surplus_target_adjustment
@@ -3416,7 +3416,7 @@ END_DESCRIPTION
 Parameter_sector_competitiveness_adjustment
 determines how market shares adjust to competitiveness gains
 _INIT_
-
+All 3 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_sector_debt_rate_adjustment

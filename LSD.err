@@ -22,3 +22,13 @@ pack .deb.b -padx $butPad -pady $butPad -side right -after .deb.cc
 Message:
 window ".deb.cc" isn't packed
 -----
+
+
+====================> NEW TCL SESSION
+
+(04/14/21 19:06:06)
+Command:
+FATAL ERROR
+Message:
+System Signal received: SIGSEGV (Segmentation violation)
+-----

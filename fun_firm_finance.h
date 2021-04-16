@@ -310,42 +310,43 @@ This variable writes parameters for the current financial position of the firm.
 	v[1]=V("Firm_Effective_Production");                              //firm's effective production
 	v[2]=V("Firm_Variable_Cost");                                     //firm's variable cost	
 	v[3]=V("Firm_Deposits_Return");
-	v[4]=v[0]-v[1]*v[2];
+	v[4]=V("sector_profits_distribution_rate");
+	v[8]=v[4]*(v[0]-v[1]*v[2]);
 	
 	v[5]=V("Firm_Financial_Obligations");
-	v[6]=V("Firm_Effective_Investment_Expenses");
+	v[6]=V("Firm_Desired_Investment_Expenses");
 	v[7]=v[5]+v[6];
 	
 	if(V("Firm_Investment_Period")==1)
 	{
 	
-	if (v[4]>=v[7])
+	if (v[8]>=v[7])
 	{
 		WRITE("firm_hedge",1);
 		WRITE("firm_speculative", 0);
 		WRITE("firm_ponzi",0);
-		v[8]=0;
+		v[9]=0;
 	}
 	
-	if (v[4]<v[7]&&v[4]>=v[5])
+	if (v[8]<v[7]&&v[8]>=v[5])
 	{
 		WRITE("firm_hedge",0);
 		WRITE("firm_speculative", 1);
 		WRITE("firm_ponzi",0);
-		v[8]=1;
+		v[9]=1;
 	}
 	
-	if (v[4]<v[7]&&v[4]<v[5])
+	if (v[8]<v[7]&&v[8]<v[5])
 	{
 		WRITE("firm_hedge",0);
 		WRITE("firm_speculative", 0);
 		WRITE("firm_ponzi",1);
-		v[8]=2;
+		v[9]=2;
 	}
 	}
 	else
-		v[8]=CURRENT;
-RESULT(v[8])
+		v[9]=CURRENT;
+RESULT(v[9])
 
 
 

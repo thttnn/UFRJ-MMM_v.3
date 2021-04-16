@@ -264,7 +264,11 @@ EQUATION("Government_Surplus_GDP_Ratio")
 	v[3]= v[2]!=0? v[1]/v[2] : 0;
 RESULT(v[3])
 
-	
+EQUATION("Government_Fiscal_Multiplier")
+	v[0]=LAG_GROWTH(p, "Government_Effective_Expenses",V("annual_frequency"));
+	v[1]=LAG_GROWTH(country, "Country_GDP",V("annual_frequency"));
+	v[2]= v[0]!=0? v[1]/v[0] : 0;
+RESULT(v[2])
 
 
 
