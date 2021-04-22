@@ -14,8 +14,8 @@ Real value of external income.
 	v[9]=V("external_shock_begin");          				//defines when the shock happens
 	v[10]=V("external_shock_duration");       				//defines how long the shock lasts
 	v[11]=V("external_shock_size");           				//defines the size, in percentage, of the shock
-	if(t>=v[9]&&t<v[9]+v[10])
-		v[12]=v[8]*(1+v[11]);
+	if(t>=v[9]&&t<v[9]+v[10]&&v[10]!=0)
+		v[12]=v[11];
 	else
 		v[12]=v[8];
 
@@ -65,7 +65,7 @@ Country net capital flows are a function of the quarterly nominal interest rate 
 */
 	v[0]=VL("Country_GDP",1);
 	v[1]=V("Central_Bank_Basic_Interest_Rate");
-	v[2]=V("external_interest_rate");
+	v[2]=norm(V("external_interest_rate"),V("external_interest_sd"));
 	v[3]=pow(1+v[2],1/V("annual_frequency"))-1;
 	v[4]=V("external_capital_flow_adjustment");
 	v[5]=V("Country_Exchange_Rate");
@@ -118,16 +118,10 @@ EQUATION("Country_Exchange_Rate")
 /*
 Nominal exchange rate.
 */
-	v[0]=CURRENT;
+	v[0]=V("initial_exchange_rate");
 	v[1]=VL("Country_Trade_Balance",1)+VL("Country_Capital_Flows",1);
 	v[2]=V("exchange_rate_adjustment");
-	if(v[1]<0)
-		v[3]=v[0]+v[2];
-	else if(v[1]>0)
-		v[3]=v[0]-v[2];
-	else
-		v[3]=v[0];
-	//v[3]=v[0]+v[2]*v[1];
+	v[3]=v[0]-(v[2]*v[1]/VL("Country_GDP",1));
 	v[4]=V("exchange_rate_min");
 	v[5]=V("exchange_rate_max");
 	v[6]=max(min(v[3],v[5]),v[4]);	
@@ -135,7 +129,7 @@ Nominal exchange rate.
 	if(t>v[7]&&v[7]!=-1)
 		v[8]=v[6];
 	else
-		v[8]=v[0];
+		v[8]=CURRENT;
 RESULT(v[8])
 
 

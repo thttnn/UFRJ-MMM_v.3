@@ -23,8 +23,8 @@ User can also define a external price shock:
 	v[6]=V("sector_external_price_shock_begin");          				
 	v[7]=V("sector_external_price_shock_duration");       				
 	v[8]=V("sector_external_price_shock_size");           			
-		if(t>=v[6]&&t<v[6]+v[7])
-			v[9]=v[5]*(1+v[8]);
+		if(t>=v[6]&&t<v[6]+v[7]&&v[7]!=0)
+			v[9]=v[8];
 		else
 			v[9]=v[5];
 	v[10]=v[0]*(1+v[9]);	

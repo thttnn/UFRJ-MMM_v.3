@@ -5,7 +5,7 @@ EQUATION("Government_Desired_Wages")
 Priority expenses.
 If there are no maximum expenses, it is adjusted by average productivity growth and inflation.
 */                                     
-	v[0]= LAG_GROWTH(consumption, "Sector_Avg_Price", 1, 1);		   		
+	v[0]= LAG_GROWTH(consumption, "Country_Consumer_Price_Index", 1, 1);		   		
 	v[1]=V("government_real_growth");
 	v[2]=CURRENT*(1+v[0]+v[1]);
 RESULT(max(0,v[2]))
@@ -100,16 +100,11 @@ Adjusts government surplus target based on debt to gdp evolution
 	if(t>=v[9]&&v[9]!=-1&&v[11]==0)
 	{
 	if(v[3]>v[4])                           		   //if debt to gdp is higher than accepted 
-		v[7]=v[2]+v[6];							       //increase surplus target
+		v[7]=v[2]+v[6]*abs(v[3]-v[4]);							       //increase surplus target
 	else if (v[3]<v[5])                     		   //if debt to gdp is lower than accepted 
-		v[7]=v[2]-v[6];								   //deacrease surplus target
+		v[7]=v[2]-v[6]*abs(v[3]-v[5]);								   //deacrease surplus target
 	else											   //if debt to gdp is between acceptable band
-		{
-		if(v[3]>v[8])
-			v[7]=v[2]+v[6];							   //increase surplus target
-		else
-			v[7]=v[2];		
-		}		
+		v[7]=v[2];				
 	}
 	else                                               //if flexible surplus target rule is not active
 		v[7]=v[2];                                     //do not change surplus taget  
@@ -136,7 +131,7 @@ EQUATION("Government_Max_Expenses_Ceiling")
 /*
 Government Max Expenses determined by Expenses Ceiling Target Fiscal rule
 */
-	v[1]=LAG_GROWTH(consumption, "Sector_Avg_Price", 1, 1);
+	v[1]=LAG_GROWTH(consumption, "Country_Consumer_Price_Index", 1, 1);
 	v[2]=VL("Government_Effective_Expenses",1);
 	v[3]=v[2]*(1+v[1]);
 RESULT(v[3])

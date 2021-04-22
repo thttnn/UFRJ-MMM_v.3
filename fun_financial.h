@@ -62,9 +62,7 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 			 +v[31]*v[21]
 			 -v[32]*v[22]
 			 +v[33]*v[23]
-			 +v[34]*v[24]
-			 +v[35]*v[25]
-			 +v[25]*v[26];
+			 +v[34]*v[24];
 	}
 	
 	if(v[30]==2)//smithin rule

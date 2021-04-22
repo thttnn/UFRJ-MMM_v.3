@@ -199,16 +199,18 @@ EQUATION("Sector_Bargain_Power")
 	v[2]= fmod((double) t-1,v[1]);                                                      //divide the time period by the annual period parameter
 	v[3]=V("sector_passthrough_productivity");
 	v[4]=V("sector_passthrough_inflation");
+	v[11]=LAG_AVE(p, "Sector_Capacity_Utilization", v[1],1);
+	v[12]=V("sector_desired_degree_capacity_utilization");
 	if(v[2]==0)                                                                      	 //if the rest of the above division is zero (beggining of the year, adjust wages)
 		{
 		v[5]=LAG_GROWTH(p, "Sector_Employment", v[1], 1);
 		v[6]=V("sector_bargain_power_adjustment");
-		if(v[5]>0)
+		if(v[5]>0&&v[11]>v[12])
 			{
 			v[7]=v[3]*(1+v[5]*v[6]);
 			v[8]=v[4]*(1+v[5]*v[6]);
 			}
-		else if(v[5]<0)
+		else if(v[5]<0&&v[11]<v[12])
 			{
 			v[7]=v[3]*(1+v[5]*v[6]);
 			v[8]=v[4]*(1+v[5]*v[6]);				

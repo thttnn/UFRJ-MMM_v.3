@@ -455,7 +455,14 @@ if(v[0]<=0)																//losses
 }
 else
 {
-
+	if(V("switch_fixed_bank_profit_distribution")==1)
+	{
+	v[3]=V("fs_profit_distribution_rate");
+	v[2]=v[0]*(1-v[3]);
+	v[1]=v[0]*v[3];			
+	}
+	else
+	{	
 	v[3]=VL("Bank_Accumulated_Profits",1);
 	v[4]=V("Bank_Total_Stock_Loans");
 	v[5]=V("cb_minimum_capital_ratio");									//minimum capital ratio defined by the regulatory rule
@@ -479,6 +486,7 @@ else
 		v[2]=min(v[0],(v[14]-v[3]));									//retain the needed difference, limited to current profits
 		v[1]=v[0]-v[2];													//distribute the rest
 		}
+	}
 
 }
 WRITE("Bank_Retained_Profits", v[2]);
