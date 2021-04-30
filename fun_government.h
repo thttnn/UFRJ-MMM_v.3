@@ -86,31 +86,41 @@ EQUATION("Government_Surplus_Rate_Target")
 /*
 Adjusts government surplus target based on debt to gdp evolution
 */
-	v[0]=V("government_max_surplus_target");                     
-	v[1]=V("government_min_surplus_target");
-	v[2]=CURRENT;                   						   //last period's target
-	v[3]=VL("Government_Debt_GDP_Ratio",1);                    //current debt to gdp ratio
-	v[8]=VL("Government_Debt_GDP_Ratio",2);
-	v[4]=V("government_max_debt_ratio");                       //maximum debt to gdp accepted, parameter
-	v[5]=V("government_min_debt_ratio");                       //minimum debt to gdp accepted, parameter
-	v[6]=V("government_surplus_target_adjustment");			   //adjustment parameter
-	v[9]=V("begin_flexible_surplus_target");
-	v[10]=V("annual_frequency");
-	v[11]= fmod((double) t-1,v[10]);
-	if(t>=v[9]&&v[9]!=-1&&v[11]==0)
+	v[0]=V("annual_frequency");
+	v[1]=V("government_max_surplus_target");                     
+	v[2]=V("government_min_surplus_target");
+	v[3]=LAG_GROWTH(p, "Government_Debt_GDP_Ratio", v[0], 1);
+	v[4]=LAG_AVE(p,"Government_Debt_GDP_Ratio",v[0],1);        //annual average debt rate
+	v[5]=V("government_max_debt_ratio");                       //maximum debt to gdp accepted, parameter
+	v[6]=V("government_min_debt_ratio");                       //minimum debt to gdp accepted, parameter
+	v[7]=V("government_surplus_target_adjustment");			   //adjustment parameter
+	v[8]=V("begin_flexible_surplus_target");
+	
+	v[9]= fmod((double) t-1,v[0]);
+	if(t>=v[8]&&v[8]!=-1&&v[9]==0)
 	{
-	if(v[3]>v[4])                           		   //if debt to gdp is higher than accepted 
-		v[7]=v[2]+v[6]*abs(v[3]-v[4]);							       //increase surplus target
-	else if (v[3]<v[5])                     		   //if debt to gdp is lower than accepted 
-		v[7]=v[2]-v[6]*abs(v[3]-v[5]);								   //deacrease surplus target
-	else											   //if debt to gdp is between acceptable band
-		v[7]=v[2];				
+	if(v[4]>v[5])                           		   								 //if debt to gdp is higher than accepted 
+		//v[10]=CURRENT*(1+v[7]*(v[4]-v[5])/v[5]);							         //increase surplus target
+		v[10]=CURRENT+v[7];
+	else if (v[4]<v[6])                     		  								 //if debt to gdp is lower than accepted 
+		//v[10]= v[6]!=0? CURRENT*(1+v[7]*(v[4]-v[6])/v[6]) : CURRENT;				 //deacrease surplus target
+		v[10]=CURRENT-v[7];
+	else
+	{		//if debt to gdp is between acceptable band
+		//v[10]=CURRENT*(1+v[7]*v[3]);	
+		if(v[3]>0)
+			v[10]=CURRENT+v[7];
+		if(v[3]<0)
+			v[10]=CURRENT-v[7];
+		else
+			v[10]=CURRENT;
 	}
-	else                                               //if flexible surplus target rule is not active
-		v[7]=v[2];                                     //do not change surplus taget  
+	}
+	else                                               								 //if flexible surplus target rule is not active
+		v[10]=CURRENT;                                    							 //do not change surplus taget  
 		
-	v[8]=max(min(v[0],v[7]),v[1]);
-RESULT(v[8])
+	v[11]=max(min(v[1],v[10]),v[2]);
+RESULT(v[11])
 
 
 EQUATION("Government_Max_Expenses_Surplus")

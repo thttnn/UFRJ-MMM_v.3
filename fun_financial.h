@@ -9,19 +9,15 @@ EQUATION("Central_Bank_Basic_Interest_Rate")
 Nominal Interest rate is set by the central bank following a (possible) dual mandate Taylor Rule, considering the inflation and unemployment gaps.
 "switch_monetary_policy":
 0-->       no monetary policy rule
-1-->       single mandate (inflation) taylor rule
-2-->       dual mandate (inflation and unemploymeny) taylor rule
-3-->       triple mandate (inflation, unemployment and credit growth) taylor rule
-4-->       triple mandate (inflation, unemployment and debt rate) taylor rule
-5-->       smithin rule
-6--> 	   pasinetti rule
-7-->       kansas city rule
+1-->       taylor rule
+2-->       smithin rule
+3--> 	   pasinetti rule
+4-->       kansas city rule
 
-"cb_interest_rate_adjustment": absolute increase
 
 */
 	
-	v[0]=V("cb_annual_real_interest_rate");
+	v[0]=V("cb_quarterly_nominal_interest_rate");
 	
 	v[1]=V("cb_target_annual_inflation");
 	v[2]=V("cb_target_capacity");
@@ -37,18 +33,18 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	v[15]=VL("Country_Exchange_Rate",1);
 	v[16]=LAG_GROWTH(country, "Country_Avg_Productivity", 1,1);
 	
-	v[21]=v[11]-v[1];
-	v[22]=v[12]-v[2];
-	v[23]=max(0,v[13]-v[3]);
-	v[24]=max(0,v[14]-v[4]);
-	v[25]=max(0,v[15]-v[5]);
-	v[26]=min(0,v[15]-v[6]);
+	v[21]=(v[11]-v[1])/v[1];
+	v[22]=(v[12]-v[2])/v[2];
+	v[23]=max(0,(v[13]-v[3])/v[3]);
+	v[24]=max(0,(v[14]-v[4])/v[4]);
+	v[25]=max(0,(v[15]-v[5])/v[5]);
+	v[26]=min(0,(v[15]-v[6])/v[6]);
 	
 	
 	v[30]=V("switch_monetary_policy");
 	
-	if(v[30]==0)//no monetary policy rule, fixed nominal interest rate set by "cb_annual_real_interest_rate" parameter
-		v[40]=v[0]+v[11];
+	if(v[30]==0)//no monetary policy rule, fixed nominal interest rate set by "cb_quarterly_nominal_interest_rate" parameter
+		v[40]=v[0];
 	
 	if(v[30]==1)//taylor rule
 	{
@@ -58,11 +54,11 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 		v[34]=V("cb_sensitivity_debt_rate");
 		v[35]=V("cb_sensitivity_exchange");
 
-		v[40]=v[0]+v[1]
+		v[40]=v[0]*(1
 			 +v[31]*v[21]
 			 -v[32]*v[22]
 			 +v[33]*v[23]
-			 +v[34]*v[24];
+			 +v[34]*v[24]);
 	}
 	
 	if(v[30]==2)//smithin rule
@@ -75,32 +71,38 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 		v[40]=0;
 
 	//Smoothing
+	v[41]=V("cb_smoothing");
+	v[42]=CURRENT;
+	v[43]=v[40]*(1-v[41]) + v[41]*v[42];
 	
-	v[41]=V("cb_interest_rate_adjustment");
-	v[42]=pow(1+CURRENT,V("annual_frequency"))-1;					//annual basic interest
-	if(abs(v[40]-v[42])>v[41]&&v[41]!=-1)
-		{
-			if(v[40]>v[42])
-				v[43]=v[42]+v[41];
-			else if(v[40]<v[42])
-				v[43]=v[42]-v[41];
-			else
-				v[43]=v[42];
-		}
-	else
-		v[43]=v[40];
-	
+	//Regime Begin
 	v[44]=V("begin_monetary_policy");
 	if(t>v[44]&&v[44]!=-1)
 		v[45]=v[43];
 	else
 		v[45]=v[42];
 	
-	//Quarterly rate
-	v[46]=pow(1+v[45],1/V("annual_frequency"))-1;
+	v[46]=max(0,v[45]);
+	v[47]=LAG_GROWTH(country, "Country_Consumer_Price_Index", 1, 1);
+	v[48]= v[46]-v[47];
+	WRITE("CB_Quarterly_Real_Interest_Rate", v[48]);
 	
-RESULT(max(0,v[46]))
+	
+	v[50]=VL("CB_Credibility",1);
+	v[51]=abs((v[11]-v[1])/v[1]);
+	v[52]=V("cb_credibility_tolerance");
+	v[53]=V("cb_credibility_adjustment");
+	if(v[51]>v[52])
+		v[54]=v[50]-v[53];
+	else
+		v[54]=v[50]+v[53];
+	v[55]=max(0.00,min(1,v[54]));
+	WRITE("CB_Credibility", v[55]);
+	
+RESULT(max(0,v[45]))
 
+EQUATION_DUMMY("CB_Credibility", "Central_Bank_Basic_Interest_Rate")
+EQUATION_DUMMY("CB_Quarterly_Real_Interest_Rate", "Central_Bank_Basic_Interest_Rate")
 
 EQUATION("Financial_Sector_Interest_Rate_Deposits")
 /*

@@ -24,17 +24,19 @@ Nominal Wage of the firm. It increases year by year depending on inflation and f
 	v[2]= fmod((double) t-1,v[1]);                                                      //divide the time period by the annual period parameter
 	if(v[2]==0)                                                                      	 //if the rest of the above division is zero (beggining of the year, adjust wages)
 		{
-		v[4]=LAG_GROWTH(p, "Firm_Avg_Productivity", v[1], 1);
-		v[5]=V("sector_passthrough_productivity");
-		v[6]=VL("Country_Annual_CPI_Inflation", 1);
-		v[7]=V("sector_passthrough_inflation");
-		v[8]=VS(financial, "cb_target_annual_inflation");
-		//v[9]=v[0]*(1+v[8]+v[5]*v[4]+v[7]*(max(0,v[6]-v[8])));                           //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
-		v[9]=v[0]*(1+v[7]*max(0,v[6])+v[5]*v[4]);
+		v[3]=LAG_GROWTH(p, "Firm_Avg_Productivity", v[1], 1);
+		v[4]=V("sector_passthrough_productivity");
+		v[5]=VL("Country_Annual_CPI_Inflation", 1);
+		v[6]=V("sector_passthrough_inflation");
+		v[7]=VS(centralbank, "cb_target_annual_inflation");
+		v[8]=VS(centralbank, "CB_Credibility");
+		v[9]=v[8]*v[7] + (1-v[8])*v[5];
+		//v[9]=v[0]*(1+v[7]+v[4]*v[3]+v[6]*(max(0,v[5]-v[7])));                           //current wage will be the last period's multiplied by a rate of growth which is an expected rate on productivity plus an inflation adjustment in the wage price index
+		v[10]=v[0]*(1+v[6]*max(0,v[9])+v[4]*v[3]);
 		}
 	else                                                                             	 //if the rest of the division is not zero, do not adjust wages
-		v[9]=v[0];                                                                      //current wages will be the last period's
-RESULT(v[9])
+		v[10]=v[0];                                                                      //current wages will be the last period's
+RESULT(v[10])
 
 
 EQUATION("Firm_Input_Cost")

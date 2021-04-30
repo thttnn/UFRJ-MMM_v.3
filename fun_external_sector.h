@@ -66,10 +66,9 @@ Country net capital flows are a function of the quarterly nominal interest rate 
 	v[0]=VL("Country_GDP",1);
 	v[1]=V("Central_Bank_Basic_Interest_Rate");
 	v[2]=norm(V("external_interest_rate"),V("external_interest_sd"));
-	v[3]=pow(1+v[2],1/V("annual_frequency"))-1;
 	v[4]=V("external_capital_flow_adjustment");
 	v[5]=V("Country_Exchange_Rate");
-	v[6]=(v[1]-v[3])*v[0]*v[4]*v[5];
+	v[6]=(v[1]-v[2])*v[0]*v[4]*v[5];
 RESULT(v[6])
 
 EQUATION("Country_International_Reserves")

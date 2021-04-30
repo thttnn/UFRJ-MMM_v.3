@@ -52,7 +52,7 @@ v[42]=VS(external, "external_capital_flow_adjustment");
 v[43]=VS(external, "initial_reserves_ratio");
 v[44]=VS(external, "initial_exchange_rate");
 //FINANCIAL PARAMETERS
-v[50]=VS(financial, "cb_annual_real_interest_rate");
+v[50]=VS(financial, "cb_quarterly_nominal_interest_rate");
 v[51]=VS(financial, "fs_initial_leverage");
 v[52]=VS(financial, "fs_spread_deposits");
 v[53]=VS(financial, "fs_spread_short_term");
@@ -77,14 +77,14 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	else if(V("switch_monetary_policy")==4)		//kansas city rule.
 		v[71]=0;
 	else					//taylor rule or fixed monetary policy
-		v[71]=v[50]+v[70];	
+		v[71]=v[50];		
 
 	v[100]=(((v[20]*v[22]/v[21])+(v[30]*v[32]/v[31])+(v[10]*v[12]/v[11]))*v[23])/v[1];				//nominal GDP
 	LOG("\nNominal GDP is %f.",v[100]);
 		
 	//GOVERNMENT INTERMEDIATE CALCULATION
 	v[101]=v[100]*v[60];								//government debt
-	v[102]=pow((1+v[71]),(1/v[0]))-1;					//quarterly basic interest rate
+	v[102]=v[71];                                       //interest rate on government debt
 	v[103]=v[102]*v[101];								//government interest payment
 	v[104]=v[2]*v[100];									//government expenses
 	v[105]=v[103]+v[104];								//government total taxes
@@ -104,7 +104,7 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	WRITELLS(government, "Government_Desired_Investment", v[107], 0, 1);
 	WRITELLS(government, "Government_Desired_Inputs", v[108], 0, 1);
 	WRITELLS(government, "Government_Surplus_Rate_Target", v[113], 0, 1);
-	WRITELLS(government, "Government_Debt", v[101], 0, 1);
+	for(i=1;i<=v[0]+1;i++)WRITELLS(government, "Government_Debt", v[101], 0, i);
 	WRITELLS(government, "Government_Total_Taxes", v[105], 0, 1);
 	WRITELLS(government, "Government_Max_Expenses_Ceiling", v[104], 0, 1);//olhar depois
 	WRITELLS(government, "Government_Max_Expenses_Surplus", v[104], 0, 1);//olhar depois
