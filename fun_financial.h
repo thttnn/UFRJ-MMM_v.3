@@ -4,6 +4,30 @@
 Interest Rates
 *******************************************************************************/
 
+EQUATION("CB_Inflation_Gap")
+
+	v[1]=V("cb_target_annual_inflation");
+	v[0]=VL("Country_Consumer_Price_Index",1);
+	v[2]=VS(government,"government_expectations");
+	v[3]=LAG_GROWTH(country, "Country_Consumer_Price_Index", 1, 1);
+	v[4]=v[0]*(1+v[2]*v[3]);
+	v[5]=VL("Country_Consumer_Price_Index",V("annual_frequency"));
+	v[6]= v[5]!=0? (v[4]-v[5])/v[5] : 0;
+	v[7]=(v[6]-v[1])/v[1];
+RESULT(v[7])
+
+
+EQUATION("CB_Output_Gap")
+	v[0]=VL("Country_Real_GDP",1);
+	v[1]=VS(government,"government_expectations");
+	v[2]=VL("Country_Annual_Real_Growth",1);
+	v[3]=V("annual_frequency");
+	v[4]=LAG_AVE(p,"Country_Real_GDP",v[3],2);
+	v[5]=v[4]*(1+v[1]*v[2]/v[3]);
+	v[6]= v[5]!=0? (v[0]-v[5])/v[5] : 0;
+RESULT(v[6])
+
+
 EQUATION("Central_Bank_Basic_Interest_Rate")
 /*
 Nominal Interest rate is set by the central bank following a (possible) dual mandate Taylor Rule, considering the inflation and unemployment gaps.
@@ -33,7 +57,17 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	v[15]=VL("Country_Exchange_Rate",1);
 	v[16]=LAG_GROWTH(country, "Country_Avg_Productivity", 1,1);
 	
-	v[21]=(v[11]-v[1])/v[1];
+	v[60]=VL("Country_Consumer_Price_Index",1);
+	v[61]=VS(government,"government_expectations");
+	v[47]=LAG_GROWTH(country, "Country_Consumer_Price_Index", 1, 1);
+	v[62]=v[60]*(1+v[61]*v[47]);
+	v[63]=VL("Country_Consumer_Price_Index",V("annual_frequency"));
+	v[64]= v[63]!=0? (v[62]-v[63])/v[63] : 0;
+	
+	if(V("switch_foroward_looking")==1)
+		v[21]=(v[64]-v[1])/v[1];
+	else
+		v[21]=(v[11]-v[1])/v[1];
 	v[22]=(v[12]-v[2])/v[2];
 	v[23]=max(0,(v[13]-v[3])/v[3]);
 	v[24]=max(0,(v[14]-v[4])/v[4]);
@@ -62,10 +96,11 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	}
 	
 	if(v[30]==2)//smithin rule
-		v[40]=v[11];	
+		v[40]=v[47];
 	
 	if(v[30]==3)//pasinetti rule
-		v[40]=v[11]+v[16];
+		v[40]=v[47]+v[16];
+
 
 	if(v[30]==4)//kansas city rule.
 		v[40]=0;
@@ -83,7 +118,6 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 		v[45]=v[42];
 	
 	v[46]=max(0,v[45]);
-	v[47]=LAG_GROWTH(country, "Country_Consumer_Price_Index", 1, 1);
 	v[48]= v[46]-v[47];
 	WRITE("CB_Quarterly_Real_Interest_Rate", v[48]);
 	
@@ -99,10 +133,29 @@ Nominal Interest rate is set by the central bank following a (possible) dual man
 	v[55]=max(0.00,min(1,v[54]));
 	WRITE("CB_Credibility", v[55]);
 	
-RESULT(max(0,v[45]))
+	v[60]=VL("Country_Consumer_Price_Index",1);
+	v[61]=VS(government,"government_expectations");
+	v[62]=v[60]*(1+v[61]*v[47]);
+	v[63]=VL("Country_Consumer_Price_Index",V("annual_frequency"));
+	v[64]= v[63]!=0? (v[62]-v[63])/v[63] : 0;
+	
+	v[71]=V("cb_interest_rate_min");
+	v[72]=V("cb_interest_rate_max");
+	v[73]=max(min(v[45],v[72]),v[71]);	
+	
+	v[80]=V("interest_shock_begin");          				//defines when the shock happens
+	v[81]=V("interest_shock_duration");       				//defines how long the shock lasts
+	v[82]=V("interest_shock_size");           				//defines the size, in percentage, of the shock
+	if(t>=v[80]&&t<v[80]+v[81]&&v[81]!=0)
+		v[83]=v[82];
+	else
+		v[83]=v[73];
+	
+RESULT(v[83])
 
 EQUATION_DUMMY("CB_Credibility", "Central_Bank_Basic_Interest_Rate")
 EQUATION_DUMMY("CB_Quarterly_Real_Interest_Rate", "Central_Bank_Basic_Interest_Rate")
+
 
 EQUATION("Financial_Sector_Interest_Rate_Deposits")
 /*
@@ -210,7 +263,7 @@ EQUATION("Financial_Sector_Default_Rate")
 Total Defaluted Loans over total stock of loans
 Analysis Variable
 */
-	v[0]=V("Financial_Sector_Accumulated_Defaulted_Loans");
+	v[0]=V("Financial_Sector_Defaulted_Loans");
 	v[1]=V("Financial_Sector_Stock_Loans_Long_Term");
 	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])

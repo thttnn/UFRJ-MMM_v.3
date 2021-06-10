@@ -21,7 +21,8 @@ Capital good's productivity increase with accumulated production due to a learni
 */   
 	v[1]=V("sector_learning_adjustment");                  //learning by doing adjustment parameter
 	v[2]=VL("Capital_Good_Acumulated_Production",1);       //capital good's acumulated production
-	v[3]=1+v[1]*(1-exp(-v[2]));                       	   //the learning of the capital good depends on the acumulated production 
+	//v[3]=1+v[1]*(1-exp(-v[2]));                       	   //the learning of the capital good depends on the acumulated production 
+	v[3]=1+v[1]*(VLS(government, "Government_Effective_Investment",1)/VL("Country_GDP",1));
 	v[4]=V("capital_good_date_birth");                     //capital good date of birth
 	v[5]=V("capital_good_productivity_initial");           //initial productivity of the capital good
 	if((double)t==v[4])                                    //if t equals the capital good date of birth

@@ -6,7 +6,7 @@ Priority expenses.
 If there are no maximum expenses, it is adjusted by average productivity growth and inflation.
 */                                     
 	v[0]= LAG_GROWTH(consumption, "Country_Consumer_Price_Index", 1, 1);		   		
-	v[1]=V("government_real_growth");
+	v[1]=V("government_real_wage_growth");
 	v[2]=CURRENT*(1+v[0]+v[1]);
 RESULT(max(0,v[2]))
 
@@ -51,7 +51,7 @@ EQUATION("Government_Desired_Investment")
 Desired Investment Expenses
 Adjusted by a desired real growth rate and avg capital price growth
 */
-	v[0]=V("government_real_growth");		
+	v[0]=V("government_real_investment_growth");		
 	v[1]=LAG_GROWTH(capital, "Sector_Avg_Price", 1, 1);
 	v[2]=CURRENT*(1+v[0]+v[1]);
 RESULT(max(0,v[2]))
@@ -62,7 +62,7 @@ EQUATION("Government_Desired_Consumption")
 Desired Consumption Expenses
 Adjusted by a desired real growth rate and avg consumption price growth
 */
-	v[0]=V("government_real_growth");   
+	v[0]=V("government_real_consumption_growth");   
 	v[1]= LAG_GROWTH(consumption, "Sector_Avg_Price", 1, 1);
 	v[2]=CURRENT*(1+v[0]+v[1]);
 RESULT(max(0,v[2]))
@@ -73,7 +73,7 @@ EQUATION("Government_Desired_Inputs")
 Desired Intermediate Expenses
 Adjusted by a desired real growth rate and avg input price growth
 */
-	v[0]=V("government_real_growth");      
+	v[0]=V("government_real_input_growth");      
 	v[1]=LAG_GROWTH(input, "Sector_Avg_Price", 1, 1);
 	v[2]=CURRENT*(1+v[0]+v[1]);
 RESULT(max(0,v[2]))
@@ -100,14 +100,11 @@ Adjusts government surplus target based on debt to gdp evolution
 	if(t>=v[8]&&v[8]!=-1&&v[9]==0)
 	{
 	if(v[4]>v[5])                           		   								 //if debt to gdp is higher than accepted 
-		//v[10]=CURRENT*(1+v[7]*(v[4]-v[5])/v[5]);							         //increase surplus target
 		v[10]=CURRENT+v[7];
 	else if (v[4]<v[6])                     		  								 //if debt to gdp is lower than accepted 
-		//v[10]= v[6]!=0? CURRENT*(1+v[7]*(v[4]-v[6])/v[6]) : CURRENT;				 //deacrease surplus target
 		v[10]=CURRENT-v[7];
 	else
 	{		//if debt to gdp is between acceptable band
-		//v[10]=CURRENT*(1+v[7]*v[3]);	
 		if(v[3]>0)
 			v[10]=CURRENT+v[7];
 		if(v[3]<0)
@@ -202,7 +199,7 @@ if(v[0]==-1)                                               //no fiscal rule
 	v[9]=v[2];    										   //government unemployment benefits equal 0
 	v[10]=v[3];                                            //government consumption equal desired
 	v[11]=v[5];                                            //government intermediate equal desired
-	v[12]=v[4];                                            //government investment demand equals desired
+	v[15]=v[4];                                            //government investment demand equals desired
 }
 else
 {
@@ -275,7 +272,11 @@ EQUATION("Government_Fiscal_Multiplier")
 	v[2]= v[0]!=0? v[1]/v[0] : 0;
 RESULT(v[2])
 
-
+EQUATION("Government_Investment_GDP_Ratio")
+	v[1]=V("Government_Effective_Investment");
+	v[2]=V("Country_GDP");
+	v[3]= v[2]!=0? v[1]/v[2] : 0;
+RESULT(v[3])
 
 
 

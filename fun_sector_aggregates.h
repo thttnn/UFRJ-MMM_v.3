@@ -204,15 +204,16 @@ EQUATION("Sector_Bargain_Power")
 	if(v[2]==0)                                                                      	 //if the rest of the above division is zero (beggining of the year, adjust wages)
 		{
 		v[5]=LAG_GROWTH(p, "Sector_Employment", v[1], 1);
-		v[6]=V("sector_bargain_power_adjustment");
+		v[6]=V("sector_bargain_power_inflaton_adjustment");
+		v[13]=V("sector_bargain_power_productivity_adjustment");
 		if(v[5]>0&&v[11]>v[12])
 			{
-			v[7]=v[3]*(1+v[5]*v[6]);
+			v[7]=v[3]*(1+v[5]*v[13]);
 			v[8]=v[4]*(1+v[5]*v[6]);
 			}
-		else if(v[5]<0&&v[11]<v[12])
+		else if(v[5]<0&&v[11]<v[13])
 			{
-			v[7]=v[3]*(1+v[5]*v[6]);
+			v[7]=v[3]*(1+v[5]*v[13]);
 			v[8]=v[4]*(1+v[5]*v[6]);				
 			}
 		else

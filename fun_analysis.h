@@ -53,6 +53,12 @@ RESULT(VS(country,"Country_Avg_Profit_Rate"))
 EQUATION("PCU")//Productive Capacity Utilization Rate
 RESULT(VS(country,"Country_Capacity_Utilization"))
 
+EQUATION("PROFITS")//Total Profits
+RESULT(VS(country, "Country_Total_Profits"))
+
+EQUATION("WAGE")//Total Wages
+RESULT(VS(country, "Country_Total_Wages"))
+
 EQUATION("PSH")//Profit Share
 RESULT(VS(country,"Country_Profit_Share"))
 
@@ -85,10 +91,10 @@ RESULT(VS(country, "Country_Capital_Stock")/V("P"))
 EQUATION("G_r")//Quarterly Real Government Expenses
 RESULT(VS(government, "Government_Effective_Expenses")/V("P"))
 
-EQUATION("PROFITS")//Real Profits
+EQUATION("PROF_r")//Real Profits
 RESULT(VS(country, "Country_Total_Profits")/V("P"))
 
-EQUATION("WAGE")//Real Wages
+EQUATION("WAGE_r")//Real Wages
 RESULT(VS(country, "Country_Total_Wages")/V("P"))
 
 EQUATION("M_r")//Quarterly Real Imports

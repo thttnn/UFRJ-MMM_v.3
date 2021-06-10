@@ -508,177 +508,411 @@ void set_lab_tit( variable *var )
 }
 
 
+/*****************************************************************************
+SET_BLUEPRINT
+copy the naked structure of the model into another object, called blueprint, 
+to be used for adding objects without example
+******************************************************************************/
+void set_blueprint( object *container, object *r )
+{
+	bridge *cb, *cb1;
+	object *cur, *cur1;
+	variable *cv;
+	
+	if ( r == NULL )
+		return;
+
+	for ( cv = r->v; cv != NULL; cv = cv->next )
+		container->add_var_from_example( cv );
+	
+	delete [ ] container->label;
+	
+	container->label = new char[ strlen( r->label ) + 1 ];
+	strcpy( container->label, r->label );
+
+	for ( cb = r->b; cb != NULL; cb = cb->next )
+	{
+		if ( cb->head == NULL )
+			continue;
+		
+		cur1 = cb->head;
+		container->add_obj( cur1->label, 1, 0 );
+		
+		for ( cb1 = container->b; strcmp( cb1->blabel, cb->blabel ); cb1 = cb1->next );
+		
+		cur = cb1->head;
+		set_blueprint( cur, cur1 );
+	}
+}
+
+
+/*****************************************************************************
+EMPTY_BLUEPRINT
+remove the current blueprint
+******************************************************************************/
+void empty_blueprint( void )
+{
+	if ( blueprint == NULL )
+		return;
+
+	blueprint->empty( );
+	blueprint->delete_obj( );
+	blueprint = NULL;
+}
+
+
+/*****************************************************************************
+RESET_BLUEPRINT
+reset the current blueprint
+******************************************************************************/
+void reset_blueprint( object *r )
+{
+	empty_blueprint( );
+	blueprint = new object;
+	blueprint->init( NULL, "Root" );
+	set_blueprint( blueprint, r );
+}
+
 /***************************************************
 SEARCH_DESCRIPTION
 ***************************************************/
-description *search_description( char *lab )
+description *search_description( const char *lab, bool add_missing )
 {
-	description *cur;
+	description *cd;
 	variable *cv;
 
-	for ( cur = descr; cur != NULL; cur = cur->next )
-	{
-		if ( ! strcmp( cur->label, lab ) )
-			return cur;
-	}
+	for ( cd = descr; cd != NULL; cd = cd->next )
+		if ( ! strcmp( cd->label, lab ) )
+			return cd;
 	
-	cv = root->search_var( NULL, lab );
-	
-	if ( cv == NULL )
+	if ( ! add_missing )
 		return NULL;
 	
-	if ( cv->param == 0 )
-		add_description( lab, "Variable", "(no description available )" );
-	if ( cv->param == 1 )
-		add_description( lab, "Parameter", "(no description available )" );  
-	if ( cv->param == 2 )
-		add_description( lab, "Function", "(no description available )" );  
+	if ( root->search( lab ) != NULL )
+		return add_description( lab );
+	
+	cv = root->search_var( NULL, lab );
+	if ( cv != NULL )
+		return add_description( lab, cv->param );
 
-	return search_description( lab );
+	return NULL;
 } 
-
-
-/***************************************************
-AUTOFILL_DESCR
-generate recur. the descriptions of the model as it is
-***************************************************/
-void autofill_descr( object *o )
-{
-	int i;
-	bridge *cb;
-	description *cur;
-	variable *cv;
-
-	cur = search_description( o->label );
-	if ( cur == NULL )
-		add_description( o->label, "Object", "(no description available)" );
-
-	for ( cv = o->v; cv != NULL; cv = cv->next)
-	{
-		cur = search_description(cv->label);
-		if ( cur == NULL )
-		{
-			i = cv->param;
-			if ( i == 1 )
-				add_description( cv->label, "Parameter", "(no description available)" );
-			if ( i == 0 )
-				add_description( cv->label, "Variable", "(no description available)" );
-			if ( i == 2 )
-				add_description( cv->label, "Function", "(no description available)" );
-		} 
-	} 
-	 
-	for ( cb = o->b; cb != NULL; cb = cb->next )
-		if ( cb->head != NULL )
-			autofill_descr( cb->head );
-}
-
-
-/***************************************************
-CHANGE_DESCR_LAB
-***************************************************/
-void change_descr_lab( char const *lab_old, char const *lab, char const *type, char const *text, char const *init )
-{
-	description *cur, *cur1;
-
-	for ( cur = descr; cur != NULL; cur = cur->next )
-	{
-		if ( ! strcmp( cur->label, lab_old ) )
-		{
-
-			if ( ! strcmp( lab, "" ) && ! strcmp( type, "" ) && ! strcmp( text, "" ) && ! strcmp(init, "" ) )
-			{
-				delete [ ] cur->label;
-				delete [ ] cur->type;
-				delete [ ] cur->text;
-				delete [ ] cur->init;
-		  
-				if ( cur == descr )
-				{
-					descr = cur->next;	
-					delete cur;
-				}
-				else
-				{
-					for ( cur1 = descr; cur1->next != cur; cur1 = cur1->next );
-					
-					cur1->next = cur->next;
-					delete cur;
-				} 
-			}
-			
-			if ( strcmp( lab, "" ) )
-			{
-				delete [ ] cur->label;
-				cur->label = new char [ strlen( lab ) + 1 ];
-				strcpy( cur->label, lab );
-			}
-			
-			if ( strcmp( type, "" ) )
-			{
-				delete [ ] cur->type;
-				cur->type = new char [ strlen( type ) + 1 ];
-				strcpy( cur->type, type );
-			}
-			
-			if ( strcmp( text, "" ) )
-			{
-				delete [ ] cur->text;
-				cur->text = new char [ strlen( text ) + 1 ];
-				strcpy( cur->text, text );
-			} 
-			
-			if ( strcmp( init, "" ) )
-			{
-				delete [ ] cur->init;
-				cur->init = new char [ strlen( init ) + 1 ];
-				strcpy( cur->init, init );
-			} 
-
-		   return;
-		}
-	}
-}
 
 
 /***************************************************
 ADD_DESCRIPTION
 ***************************************************/
-void add_description( char const *lab, char const *type, char const *text )
-{
-	description *cur;
+const char *kwords[ ] = { BEG_INIT, END_DESCR };
 
+description *add_description( char const *lab, int type, char const *text, char const *init, char initial, char observe )
+{
+	char *str, ltype [ MAX_ELEM_LENGTH + 1 ];
+	int i, j;
+	description *cd;
+
+	if ( search_description( lab, false ) != NULL )	// already exists?
+		return change_description( lab, NULL, type, text, init, initial, observe );
+	
 	if ( descr == NULL )
-		cur = descr = new description;
+		cd = descr = new description;
 	else
 	{ 
-		for ( cur = descr; cur->next != NULL; cur = cur->next );
-	  
-		cur->next = new description;
-		cur = cur->next;
+		for ( cd = descr; cd->next != NULL; cd = cd->next );
+		cd->next = new description;
+		cd = cd->next;
 	}  
 
-	cur->next = NULL;
-	cur->label = new char [ strlen( lab ) + 1 ];
-	strcpy( cur->label, lab );
-	cur->type = new char [ strlen( type ) + 1 ];
-	strcpy( cur->type, type );
-	if ( text != NULL && strlen( text ) != 0 )
+	cd->next = NULL;
+	cd->label = new char [ strlen( lab ) + 1 ];
+	strcln( cd->label, lab, strlen( lab ) + 1 );
+	
+	switch ( type )
 	{
-		cur->text = new char [ strlen( text ) + 1 ]; 
-		strcpy( cur->text, text );
+		case 0:
+		default:
+			strcpy( ltype, "Variable" );
+			break;
+		case 1:
+			strcpy( ltype, "Parameter" );  
+			break;
+		case 2:
+			strcpy( ltype, "Function" );
+			break;
+		case 4:
+			strcpy( ltype, "Object" );
+	}
+	
+	cd->type = new char [ strlen( ltype ) + 1 ];
+	strcpy( cd->type, ltype );
+	
+	if ( ! strwsp( text ) && strstr( text, LEGACY_NO_DESCR ) == NULL && ( strlen( NO_DESCR ) == 0 || strstr( text, NO_DESCR ) == NULL ) )
+	{
+		for ( i = 0; i < 2; ++i )
+		{
+			str = strstr( text, kwords[ i ] );
+			if ( str != NULL )
+				for( j = 0; j < strlen( kwords[ i ] ); ++j, ++str )
+					*str = tolower( *str );
+		}
+		
+		cd->text = new char [ strlen( text ) + 1 ]; 
+		strcln( cd->text, text, strlen( text ) + 1 );
 	}
 	else
 	{
-		cur->text = new char[ 29 ]; 
-		strcpy( cur->text, "(no description available)" );
+		cd->text = new char[ strlen( NO_DESCR ) + 1 ]; 
+		strcln( cd->text, NO_DESCR, strlen( NO_DESCR ) + 1 );
 	}
-	   
-	cur->init = NULL;
+	
+	if ( ! strwsp( init ) )
+	{
+		str = strstr( init, kwords[ 1 ] );
+		if ( str != NULL )
+			for( j = 0; j < strlen( kwords[ 1 ] ); ++j, ++str )
+				*str = tolower( *str );
+		
+		cd->init = new char [ strlen( init ) + 1 ]; 
+		strcln( cd->init, init, strlen( init ) + 1 );
+	}
+	else
+		cd->init = NULL;
+	
+	cd->initial = initial;
+	cd->observe = observe;  	
+	
+	return cd;
+}
+
+
+/***************************************************
+CHANGE_DESCRIPTION
+***************************************************/
+description *change_description( char const *lab_old, char const *lab, int type, char const *text, char const *init, char initial, char observe )
+{
+	char *str, ltype [ MAX_ELEM_LENGTH + 1 ];
+	int i, j;
+	description *cd, *cd1;
+
+	for ( cd = descr; cd != NULL; cd = cd->next )
+	{
+		if ( ! strcmp( cd->label, lab_old ) )
+		{
+
+			if ( lab == NULL && type < 0 && text == NULL && init == NULL && initial == '\0' && observe == '\0' )
+			{
+				delete [ ] cd->label;
+				delete [ ] cd->type;
+				delete [ ] cd->text;
+				delete [ ] cd->init;
+		  
+				if ( cd == descr )
+					descr = cd->next;	
+				else
+				{
+					for ( cd1 = descr; cd1->next != cd; cd1 = cd1->next );
+					cd1->next = cd->next;
+				} 
+				
+				delete cd;
+				
+				return NULL;
+			}
+			
+			if ( lab != NULL )
+			{
+				delete [ ] cd->label;
+				cd->label = new char [ strlen( lab ) + 1 ];
+				strcln( cd->label, lab, strlen( lab ) + 1 );
+			}
+			
+			if ( type >= 0 )
+			{
+				delete [ ] cd->type;
+				
+				switch ( type )
+				{
+					case 0:
+						strcpy( ltype, "Variable" );
+						break;
+					case 1:
+						strcpy( ltype, "Parameter" );  
+						break;
+					case 2:
+						strcpy( ltype, "Function" );
+						break;
+					case 4:
+					default:
+						strcpy( ltype, "Object" );
+				}
+	
+				cd->type = new char [ strlen( ltype ) + 1 ];
+				strcpy( cd->type, ltype );
+			}
+			
+			if ( text != NULL )
+			{
+				delete [ ] cd->text;
+
+				if ( ! strwsp( text ) && strstr( text, LEGACY_NO_DESCR ) == NULL && ( strlen( NO_DESCR ) == 0 || strstr( text, NO_DESCR ) == NULL ) )
+				{
+					for ( i = 0; i < 2; ++i )
+					{
+						str = strstr( text, kwords[ i ] );
+						if ( str != NULL )
+							for( j = 0; j < strlen( kwords[ i ] ); ++j, ++str )
+								*str = tolower( *str );
+					}
+		
+					cd->text = new char [ strlen( text ) + 1 ]; 
+					strcln( cd->text, text, strlen( text ) + 1 );
+				}
+				else
+				{
+					cd->text = new char[ strlen( NO_DESCR ) + 1 ]; 
+					strcln( cd->text, NO_DESCR, strlen( NO_DESCR ) + 1 );
+				}
+			} 
+			
+			if ( init != NULL )
+			{
+				delete [ ] cd->init;
+
+				if ( ! strwsp( init ) )
+				{
+					str = strstr( init, kwords[ 1 ] );
+					if ( str != NULL )
+						for( j = 0; j < strlen( kwords[ 1 ] ); ++j, ++str )
+							*str = tolower( *str );
+		
+					cd->init = new char [ strlen( init ) + 1 ]; 
+					strcln( cd->init, init, strlen( init ) + 1 );
+				}
+				else
+					cd->init = NULL;
+			} 
+
+			if ( initial != '\0' )
+				cd->initial = initial;
+
+			if ( observe != '\0' )
+				cd->observe = observe;
+
+			return cd;
+		}
+	}
+	
+	return NULL;
+}
+
+
+/*****************************************************************************
+EMPTY_DESCRIPTION
+******************************************************************************/
+void empty_description( void )
+{
+	description *cd, *cd1;
+	
+	for ( cd = descr; cd != NULL; cd = cd1 )
+	{
+		cd1 = cd->next;
+		delete [ ] cd->label;
+		delete [ ] cd->type;
+		delete [ ] cd->text;
+		delete [ ] cd->init;
+		delete cd;
+	}
+	
+	descr = NULL;
+}
+
+
+/***************************************************
+RESET_DESCRIPTION
+regenerate recur. the descriptions of the model as it is
+***************************************************/
+void reset_description( object *r )
+{
+	bridge *cb;
+	variable *cv;
+
+	search_description( r->label );
+
+	for ( cv = r->v; cv != NULL; cv = cv->next )
+		search_description( cv->label );
+	 
+	for ( cb = r->b; cb != NULL; cb = cb->next )
+		if ( cb->head != NULL )
+			reset_description( cb->head );
+}
+
+
+/***************************************************
+HAS_DESCR_TEXT
+***************************************************/
+bool has_descr_text( description *d )
+{
+	if ( d != NULL && d->text != NULL && strlen( d->text ) > 0 && strstr( d->text, LEGACY_NO_DESCR ) == NULL && ( strlen( NO_DESCR ) == 0 || strstr( d->text, NO_DESCR ) == NULL ) )
+		return true;
+	
+	return false;
 }
 
 
 #ifndef NW
+
+/***************************************************
+FMT_TTIP_DESCR
+***************************************************/
+char *fmt_ttip_descr( char *out, description *d, int outSz, bool init )
+{
+	char out1[ outSz ];		
+	
+	if ( out == NULL || outSz <= 0 )
+		return NULL;
+	
+	if ( has_descr_text ( d ) ) 
+		strcln( out, d->text, outSz );
+	else
+		out[ 0 ] = '\0';
+	
+	if ( init && d != NULL && d->init != NULL && strlen( d->init ) > 0 ) 
+	{
+		if ( strlen( out ) > 0 )
+			strncat( out, "\n\u2500\u2500\u2500\n", outSz - strlen( out ) - 1 );
+		
+		strcln( out1, d->init, outSz );
+		strncat( out, out1, outSz - strlen( out ) - 1 );
+	}
+		
+	if ( strlen( out ) > 0 )
+	{
+		strwrap( out1, out, outSz - 1, 60 );
+		strtcl( out, out1, outSz - 1 );
+	}
+	
+	return out;
+}
+
+
+/***************************************************
+SET_TTIP_DESCR
+***************************************************/
+void set_ttip_descr( const char *w, const char *lab, int it, bool init )
+{
+	char desc[ MAX_LINE_SIZE + 1 ];				
+	description *cd;
+
+	// add tooltip only if element has description
+	cd = search_description( lab, false );
+	if ( cd != NULL && strlen( fmt_ttip_descr( desc, cd, MAX_LINE_SIZE + 1, init ) ) > 0 )
+	{
+		if ( it >= 0 )			// listbox?
+			cmd( "tooltip::tooltip %s -item %d \"%s\"", w, it, desc );
+		else
+			cmd( "tooltip::tooltip %s \"%s\"", w, desc );
+	}
+}
+
 
 /****************************************************
 SEARCH_ALL_SOURCES
@@ -728,7 +962,7 @@ RETURN_WHERE_USED
 void return_where_used( char *lab, char s[ ] ) 
 {
 	char *r; 
-	int choice = -1;
+	int choice = -1;	// make scan without window
 
 	scan_used_lab( lab, &choice );
 	r = ( char * ) Tcl_GetVar( inter, "list_used", 0 );
@@ -740,59 +974,11 @@ void return_where_used( char *lab, char s[ ] )
 
 
 /***************************************************
-CHANGE_DESCR_TEXT
-***************************************************/
-void change_descr_text( char *lab )
-{
-	description *cur;
-	char *lab1;
-
-	for ( cur = descr; cur != NULL; cur = cur->next )
-	{
-		if ( ! strcmp( cur->label, lab ) )
-		{
-			delete [ ] cur->text;
-			lab1 = ( char * ) Tcl_GetVar( inter, "text_description", 0 );
-			cur->text = new char[ strlen( lab1 ) + 1 ];
-			strcpy( cur->text, lab1 );
-			return;
-	   }
-	}
-}
-
-
-/***************************************************
-CHANGE_INIT_TEXT
-***************************************************/
-void change_init_text( char *lab )
-{
-	description *cur;
-	char *lab1;
-
-	for ( cur = descr; cur != NULL; cur = cur->next )
-	{
-		if ( ! strcmp( cur->label, lab ) )
-		{
-			lab1 = ( char * ) Tcl_GetVar( inter, "text_description", 0 );
-			if ( strlen( lab1 ) > 0 )
-			{
-				if ( cur->init != NULL )
-				delete [ ] cur->init;
-				cur->init = new char[ strlen( lab1 ) + 1 ];
-				strcpy( cur->init, lab1 );
-			}
-			return;
-		}
-	}
-}
-
-
-/***************************************************
 GET_VAR_DESCR
 ***************************************************/
 void get_var_descr( char const *lab, char *descr, int descr_len )
 {
-	char str[ 2 * MAX_ELEM_LENGTH ], str1[ MAX_LINE_SIZE ];
+	char str[ 2 * MAX_ELEM_LENGTH ], str1[ MAX_LINE_SIZE + 1 ], str2[ descr_len ];
 	int i, j = 0, done = -1;
 	FILE *f;
 	
@@ -857,7 +1043,7 @@ void get_var_descr( char const *lab, char *descr, int descr_len )
 
 				if ( done == 0 || done == 2 )
 					if ( str1[ i ] != '\r' )
-						descr[ j++ ] = str1[ i ];
+						str2[ j++ ] = str1[ i ];
 
 				if ( done == 2 && str1[ i ] == '\n' )
 					done = -1; 
@@ -869,7 +1055,9 @@ void get_var_descr( char const *lab, char *descr, int descr_len )
 		
 		fclose( f );
 	}
-	descr[ j ] = '\0';
+	
+	str2[ j ] = '\0';
+	strcln( descr, str2, descr_len );
 }
 
 
@@ -896,8 +1084,8 @@ void auto_document( int *choice, char const *lab, char const *which, bool append
 				var = false;
 	  
 			return_where_used( cd->label, str1 ); 
-			if ( ( append || ! var ) && ! strstr( cd->text, "(no description available)" ) )
-				if ( strlen( cd->text ) == 0 || ! strcmp( cd->text, "\n" ) )
+			if ( ( append || ! var ) && has_descr_text ( cd ) )
+				if ( strwsp( cd->text ) )
 					sprintf( msg, "%s\n'%s' appears in the equation for: %s", app, cd->label, str1 );
 				else
 					sprintf( msg, "%s\n%s\n'%s' appears in the equation for: %s", cd->text, app, cd->label, str1 );
@@ -954,7 +1142,7 @@ void get_saved( object *n, FILE *out, const char *sep, bool all_var )
 		if ( cv->save || all_var )
 		{
 			// get element description
-			cd = search_description( cv->label );
+			cd = search_description( cv->label, false );
 			if ( cd != NULL && cd->text != NULL && ( sl = strlen( cd->text ) ) > 0 )
 			{
 				// select just the first description line
@@ -1001,7 +1189,7 @@ void get_sa_limits( object *r, FILE *out, const char *sep )
 		cv = r->search_var( NULL, cs->label );
 		
 		// get element description
-		cd = search_description( cs->label );
+		cd = search_description( cs->label, false );
 		if ( cd != NULL && cd->text != NULL && ( sl = strlen( cd->text ) ) > 0 )
 		{
 			// select just the first description line
@@ -1466,12 +1654,6 @@ double init_lattice( double pixW, double pixH, double nrow, double ncol, char co
 	dimH = pixH / rows;
 	dimW = pixW / columns;
 
-	// create the window with the lattice, roughly 600 pixels as maximum dimension
-	cmd( "newtop .lat \"%s%s - LSD Lattice (%.0lf x %.0lf)\" { destroytop .lat } \"\"", unsaved_change() ? "*" : " ", simul_name, nrow, ncol );
-
-	cmd( "bind .lat <Button-2> { .lat.b.ok invoke }" );
-	cmd( "bind .lat <Button-3> { event generate .lat <Button-2> -x %%x -y %%y }" );
-
 	char init_color_string[ 32 ];		// the final string to be used to define tk color to use
 
 	if ( init_color < 0 && ( - init_color ) <= 0xffffff )		// RGB mode selected?
@@ -1483,6 +1665,9 @@ double init_lattice( double pixW, double pixH, double nrow, double ncol, char co
 		cmd( "if { ! [ info exist c%d ] } { set c%d $colorsTheme(bg) }", init_color, init_color  );
 	}
 			
+	// create the window with the lattice, roughly 600 pixels as maximum dimension
+	cmd( "newtop .lat \"%s%s - LSD Lattice (%.0lf x %.0lf)\" { destroytop .lat } \"\"", unsaved_change() ? "*" : " ", simul_name, nrow, ncol );
+
 	cmd( "ttk::canvas .lat.c -height %d -width %d -entry 0 -dark $darkTheme", ( unsigned int ) pixH, ( unsigned int ) pixW );
 	
 	if ( init_color != 1001 )
@@ -1490,7 +1675,30 @@ double init_lattice( double pixW, double pixH, double nrow, double ncol, char co
 
 	cmd( "pack .lat.c" );
 
-	cmd( "save .lat b { set b \"%s.eps\"; set a [ tk_getSaveFile -parent .lat -title \"Save Lattice Image File\" -defaultextension .eps -initialfile $b -initialdir \"%s\" -filetypes { { {Encapsulated Postscript files} {.eps} } { {All files} {*} } } ]; if { $a != \"\" } { .lat.c postscript -colormode color -file \"$a\" } }", simul_name, path );
+	cmd( "save .lat b { \
+			if { ! [ info exists pltSavFmt ] } { \
+				set pltSavFmt svg \
+			}; \
+			if { [ string equal $pltSavFmt eps ] } { \
+				set c \"Encapsulated Postscript\" \
+			} else { \
+				set c \"Scalable Vector Graphics\" \
+			}; \
+			set a [ tk_getSaveFile -parent .lat -title \"Save Lattice to File\" -defaultextension .$pltSavFmt -initialfile %s.$pltSavFmt -initialdir \"%s\" -filetypes { { {Scalable Vector Graphics} {.svg} } { {Encapsulated Postscript} {.eps} } { {All files} {*} } } -typevariable c ]; \
+			if { [ string length $a ] != 0 } { \
+				set a [ file nativename $a ]; \
+				set b [ string trimleft [ file extension $a ] . ]; \
+				if { $b in [ list svg eps ] } { \
+					set pltSavFmt $b \
+				}; \
+				if [ string equal $pltSavFmt eps ] { \
+					.lat.c postscript -colormode color -file \"$a\" \
+				} else { \
+					canvas2svg .lat.c \"$a\" \
+				}; \
+				plog \"\nPlot saved: $a\n\" \
+			} \
+		}", simul_name, path, simul_name );
 
 	cmd( "set rows %d", rows );
 	cmd( "set columns %d", columns );
@@ -1509,6 +1717,10 @@ double init_lattice( double pixW, double pixH, double nrow, double ncol, char co
 
 	cmd( "showtop .lat centerS no no no" );
 	
+	cmd( "tooltip::tooltip .lat.b.ok \"Save plot to file\"" );
+
+	cmd( "bind .lat <Button-2> { .lat.b.ok invoke }" );
+	cmd( "bind .lat <Button-3> { event generate .lat <Button-2> -x %%x -y %%y }" );
 	cmd( "bind .lat <F1> { LsdHelp lattice.html }" );
 	set_shortcuts_run( ".lat" );
 

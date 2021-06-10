@@ -91,14 +91,14 @@ char *sens_file = NULL;		// current sensitivity analysis file
 char *simul_name = NULL;	// name of current simulation configuration
 char *struct_file = NULL;	// name of current configuration file
 char equation_name[ MAX_PATH_LENGTH + 1 ] = "";// equation file name
-char error_hard_msg1[ TCL_BUFF_STR ];	// buffer for parallel worker title msg
-char error_hard_msg2[ TCL_BUFF_STR ];	// buffer for parallel worker log msg
-char error_hard_msg3[ TCL_BUFF_STR ];	// buffer for parallel worker box msg
-char lastObj[ MAX_ELEM_LENGTH ] = "";	// last shown object for quick reload
+char error_hard_msg1[ TCL_BUFF_STR + 1 ];	// buffer for parallel worker title msg
+char error_hard_msg2[ TCL_BUFF_STR + 1 ];	// buffer for parallel worker log msg
+char error_hard_msg3[ TCL_BUFF_STR + 1 ];	// buffer for parallel worker box msg
+char lastObj[ MAX_ELEM_LENGTH + 1 ] = "";	// last shown object for quick reload
 char lsd_eq_file[ MAX_FILE_SIZE + 1 ] = "";	// equations saved in configuration file
-char msg[ TCL_BUFF_STR ] = "";			// auxiliary Tcl buffer
-char name_rep[ MAX_PATH_LENGTH + 1 ];	// documentation report file name
-char tcl_dir[ MAX_PATH_LENGTH + 1 ];	// Tcl/Tk directory
+char msg[ TCL_BUFF_STR + 1 ] = "";			// auxiliary Tcl buffer
+char name_rep[ MAX_PATH_LENGTH + 1 ];		// documentation report file name
+char tcl_dir[ MAX_PATH_LENGTH + 1 ];		// Tcl/Tk directory
 description *descr = NULL;	// model description structure
 eq_mapT eq_map;				// fast equation look-up map
 int actual_steps = 0;		// number of executed time steps
@@ -140,6 +140,7 @@ object *currObj = NULL;		// pointer to current object in browser
 object *root = NULL;		// LSD root object
 object *wait_delete = NULL;	// LSD object waiting for deletion
 o_setT obj_list;			// set with all existing LSD objects
+s_vecT res_list;			// list of results files last saved
 sense *rsense = NULL;		// LSD sensitivity analysis structure
 variable *cemetery = NULL;	// LSD saved data from deleted objects
 variable *last_cemetery = NULL;	// LSD last saved data from deleted objects
@@ -198,7 +199,7 @@ int lsdmain( int argn, char **argv )
 
 	root = new object;
 	root->init( NULL, "Root" );
-	add_description( "Root", "Object", "(no description available)" );
+	add_description( "Root" );
 	reset_blueprint( NULL );
 
 #ifdef NW
@@ -369,6 +370,7 @@ int lsdmain( int argn, char **argv )
 	// initialize tcl/tk and set global bidirectional variables
 	init_tcl_tk( argv[ 0 ], "lsd" );
 	Tcl_LinkVar( inter, "choice", ( char * ) &choice, TCL_LINK_INT );
+	Tcl_LinkVar( inter, "choice_g", ( char * ) &choice_g, TCL_LINK_INT );
 	Tcl_LinkVar( inter, "stop", ( char * ) &stop, TCL_LINK_BOOLEAN );
 	Tcl_LinkVar( inter, "debug_flag", ( char * ) &debug_flag, TCL_LINK_BOOLEAN );
 	Tcl_LinkVar( inter, "when_debug", ( char * ) &when_debug, TCL_LINK_INT );
@@ -602,6 +604,7 @@ int lsdmain( int argn, char **argv )
 	}
 
 	Tcl_UnlinkVar( inter, "choice" );
+	Tcl_UnlinkVar( inter, "choice_g" );
 	Tcl_UnlinkVar( inter, "stop" );
 	Tcl_UnlinkVar( inter, "debug_flag" );
 	Tcl_UnlinkVar( inter, "when_debug" );
@@ -672,6 +675,7 @@ void run( void )
 #endif
 
 	set_fast( 0 );			// should always start on OBSERVE and switch to FAST later
+	res_list.clear( );		// empty list of saved results files
 
 	for ( i = 1, quit = 0; i <= sim_num && quit != 2; ++i )
 	{
@@ -853,9 +857,6 @@ void run( void )
 						cmd( ".b.r2.pause conf -text Pause" );
 					}
 					break;
-
-				default:
-				break;
 			}
 
 			done_in = 0;
@@ -915,8 +916,13 @@ void run( void )
 					else
 						sprintf( msg, "%s%s%s_%d_%d.%s", save_alt_path ? alt_path : path, strlen( save_alt_path ? alt_path : path ) > 0 ? "/" : "", save_alt_path ? alt_name : simul_name, findex, seed - 1, docsv ? "csv" : "res" );
 
+					if ( dozip )
+						strcat( msg, ".gz" );
+					
+					res_list.push_back( msg );
+					
 					if ( fast_mode < 2 )
-						plog( "Saving results to file %s%s... ", "", msg, dozip ? ".gz" : "" );
+						plog( "Saving results to file %s... ", "", msg );
 
 					rf = new result( msg, "wt", dozip, docsv );	// create results file object
 					rf->title( root, 1 );						// write header

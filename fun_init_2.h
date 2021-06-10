@@ -71,25 +71,25 @@ v[63]=VS(government, "government_initial_share_input");
 v[70]=VS(centralbank, "cb_target_annual_inflation");
 	
 	if(V("switch_monetary_policy")==2)			//smithin rule
-		v[71]=v[70];	
+		v[71]=v[70]/v[0];	
 	else if(V("switch_monetary_policy")==3)		//pasinetti rule
-		v[71]=v[70];
+		v[71]=v[70]/v[0];
 	else if(V("switch_monetary_policy")==4)		//kansas city rule.
-		v[71]=0;
+		v[71]=v[70]/v[0];
 	else					//taylor rule or fixed monetary policy
 		v[71]=v[50];		
 
 	v[100]=(((v[20]*v[22]/v[21])+(v[30]*v[32]/v[31])+(v[10]*v[12]/v[11]))*v[23])/v[1];				//nominal GDP
-	LOG("\nNominal GDP is %f.",v[100]);
+		LOG("\nNominal GDP is %f.",v[100]);	
 		
 	//GOVERNMENT INTERMEDIATE CALCULATION
 	v[101]=v[100]*v[60];								//government debt
 	v[102]=v[71];                                       //interest rate on government debt
 	v[103]=v[102]*v[101];								//government interest payment
-	v[104]=v[2]*v[100];									//government expenses
+	v[104]=v[2]*v[100];									//government expenses	
 	v[105]=v[103]+v[104];								//government total taxes
-	v[106]=v[104]*v[61];								//government nominal consumption
-	v[107]=v[104]*v[62];								//government nominal investment
+	v[106]=v[104]*v[61];								//government nominal consumption	
+	v[107]=v[104]*v[62];								//government nominal investment	
 	v[108]=v[104]*v[63];								//government nominal inputs
 	v[109]=v[106]/v[13];								//government real consumption
 	v[110]=v[107]/v[23];								//government real investment
@@ -97,11 +97,24 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	v[112]=v[104]-v[106]-v[107]-v[108];					//government wages
 	v[113]=v[103]/v[100];								//government surplus rate target
 	
+	//LOG PLOTTING GOVERNMENT VARIABLES
+	LOG("\nGovernment Debt is %f.",v[101]);	
+	LOG("\nBasic Interest Rate is %f.",v[102]);
+	LOG("\nGovernment Interest Payment is %f.",v[103]);	
+	LOG("\nGovernment Primary Expenses is %f.",v[104]);
+	LOG("\nTotal Taxes is %f.",v[105]);	
+	LOG("\nGovernment Nominal Consumption is %f.",v[106]);	
+	LOG("\nGovernment Nominal Investment %f.",v[107]);
+	LOG("\nGovernment Nominal Inputs is %f.",v[108]);
+	LOG("\nGovernment Nominal Wages is %f.",v[112]);		
+	LOG("\nGovernment Surplus Target is %f.",v[113]);
+			
 	//WRITTING GOVERNMENT LAGGED VALUES
 	WRITELLS(government, "Government_Desired_Wages", v[112], 0, 1);
 	WRITELLS(government, "Government_Desired_Unemployment_Benefits", 0, 0, 1);
 	WRITELLS(government, "Government_Desired_Consumption", v[106], 0, 1);
 	WRITELLS(government, "Government_Desired_Investment", v[107], 0, 1);
+	WRITELLS(government, "Government_Effective_Investment", v[107], 0, 1);
 	WRITELLS(government, "Government_Desired_Inputs", v[108], 0, 1);
 	WRITELLS(government, "Government_Surplus_Rate_Target", v[113], 0, 1);
 	for(i=1;i<=v[0]+1;i++)WRITELLS(government, "Government_Debt", v[101], 0, i);
@@ -124,6 +137,16 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	v[128]=v[125]/v[13];								//country real consumption exports
 	v[129]=v[126]/v[23];								//country real capital exports
 	v[130]=v[127]/v[33];								//country real input exports
+	
+	//LOG PLOTTING EXTERNAL VARIABLES
+	LOG("\nExternal Nominal Income is %f.",v[120]);	
+	LOG("\nCapital Flows is %f.",v[121]);
+	LOG("\nInternational Reserves is %f.",v[122]);	
+	LOG("\nNominal Exports is %f.",v[123]);
+	LOG("\nNominal Imports is %f.",v[124]);	
+	LOG("\nNominal Consumption Exports is %f.",v[125]);	
+	LOG("\nNominal Capital Exports %f.",v[126]);
+	LOG("\nNominal Input Exports is %f.",v[127]);
 
 	//SECTORAL DEMAND CALCULATION
 	v[140]=v[100]*(1-v[1]-v[2]-v[3])-v[103];														//nominal domestic consumption
@@ -133,6 +156,9 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	WRITES(consumption, "sector_initial_demand", v[141]);
 	WRITES(capital, "sector_initial_demand", v[142]);
 	WRITES(input, "sector_initial_demand", v[143]);
+	LOG("\nReal Consumption Demand is %f.",v[141]);	
+	LOG("\nReal Capital Demand %f.",v[142]);
+	LOG("\nReal Input Demand is %f.",v[143]);
 
 	v[270]=WHTAVE("sector_initial_price", "sector_initial_demand")/SUM("sector_initial_demand");	//average price
 	
@@ -147,6 +173,7 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	WRITELLS(external, "Country_Capital_Flows", v[121], 0, 1);
 	WRITELLS(external, "Country_International_Reserves_GDP_Ratio", v[43], 0, 1);
 	WRITELLS(external, "Country_External_Debt", 0, 0, 1);
+	
 	
 v[210]=v[211]=v[212]=v[213]=v[214]=v[215]=v[216]=v[217]=v[218]=v[219]=v[226]=0;
 CYCLE(cur, "SECTORS")
@@ -202,7 +229,7 @@ CYCLE(cur, "SECTORS")
 	v[196]=v[195]/v[176];											//sector profit distribution rate
 	v[197]=v[180]*v[158];											//sector productive capacity
 	v[198]=v[150]/v[197];											//sector capacity utilization
-	v[199]=(VS(cur,"sector_initial_exports_share")*v[123]/v[153])/(pow((v[157]*v[44]/v[153]),VS(cur,"sector_exports_elasticity_income"))*pow(v[120],VS(cur,"sector_exports_elasticity_income")));
+	v[199]=(VS(cur,"sector_initial_exports_share")*v[123]/v[153])/(pow((v[157]*v[44]/v[153]),VS(cur,"sector_exports_elasticity_income"))*pow((v[120]/v[270]),VS(cur,"sector_exports_elasticity_income")));
 
 	//WRITTING SECTOR LAGGED VALUES
 	WRITES(cur, "sector_exports_coefficient", v[199]);
@@ -229,9 +256,12 @@ CYCLE(cur, "SECTORS")
 	for(i=1;i<=v[151];i++) WRITELLS(cur, "Sector_Demand_Met_By_Imports", 1, 0, i);
 	for(i=1;i<=v[151];i++) WRITELLS(cur, "Sector_Effective_Orders", v[150], 0, i);
 	
-	LOG("\nSector %f.0",SEARCH_INST(cur));LOG(" Desired Capacity Uilization is %f.",v[198]);
-	LOG("\nSector %f.0",SEARCH_INST(cur));LOG(" Profit Distribution Rate is %f.",v[196]);
-	LOG("\nSector %f.0",SEARCH_INST(cur));LOG(" Wage Rate is %f.",v[188]);
+	LOG("\nSector %.0f",SEARCH_INST(cur));LOG(" Desired Capacity Uilization is %f.",v[198]);
+	LOG("\nSector %.0f",SEARCH_INST(cur));LOG(" Profit Distribution Rate is %f.",v[196]);
+	LOG("\nSector %.0f",SEARCH_INST(cur));LOG(" Wage Rate is %f.",v[188]);
+	LOG("\nSector %.0f",SEARCH_INST(cur));LOG(" Markup is %f.",v[190]);
+	LOG("\nSector %.0f",SEARCH_INST(cur));LOG(" Exports Coefficient is %f.",v[199]);
+	LOG("\nSector %.0f",SEARCH_INST(cur));LOG(" Desired Market Share is %f.",2/v[152]);
 	
 	//WRITTING FIRM LAGGED VALUES
 	cur1=SEARCHS(cur, "FIRMS");																	
@@ -425,7 +455,7 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 			v[234]=VS(cur,"class_direct_tax")*v[281];
 			v[244]=v[234]*(v[230]*v[242]+v[231]*v[241]+max(0,v[102]-v[52])*v[225]*v[241]);												//average direct tax rate
 		}
-		LOG("\nClass %f.0",SEARCH_INST(cur));LOG(" Tax Rate is %f.",v[234]);
+		LOG("\nClass %.0f",SEARCH_INST(cur));LOG(" Tax Rate is %f.",v[234]);
 
 		v[245]=v[243]-v[244];										//class disposable income
 		v[246]=v[245]*v[240];										//class induced expenses
@@ -436,9 +466,11 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 		v[251]+=v[249];												//total induced domestic consumption
 		v[252]+=v[250];												//total induced savings
 		
+		LOG("\nClass %.0f",SEARCH_INST(cur));LOG(" Propensity to Import %f.",v[248]);
 		WRITES(cur, "class_direct_tax", v[234]);//same tax rate 
 		WRITES(cur, "class_initial_propensity_import", v[248]);
 		WRITELLS(cur, "Class_Stock_Deposits", v[225]*v[241], 0, 1);
+		//WRITELLS(cur, "Class_Stock_Deposits", 0, 0, 1);
 		WRITELLS(cur, "Class_Liquidity_Preference", v[255], 0, 1);//olhar depois
 		WRITELLS(cur, "Class_Max_Debt_Rate", v[254], 0, 1);//olhar depois
 		WRITELLS(cur, "Class_Stock_Loans", 0, 0, 1);

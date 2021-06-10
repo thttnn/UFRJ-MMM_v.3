@@ -234,6 +234,32 @@ Share of profits over the sum of profits and wages
 RESULT(v[3])
 
 
+EQUATION("Country_Industrial_Profit_Share")
+/*
+Share of industrial profits over the sum of profits and wages
+*/
+	v[0]=0;                                                    		//initializes the CYCLE
+	CYCLE(cur, "SECTORS")                                      		//CYCLE trought all sectors
+		v[0]=v[0]+SUMS(cur, "Firm_Net_Profits");                    //sums up the surplus of all sectors
+	v[1]=V("Country_Total_Wages");
+	v[2]=V("Country_Total_Profits");
+	v[3]=v[1]+v[2];
+	v[4]= v[3]!=0? v[0]/v[3] : 0;
+RESULT(v[4])
+
+
+EQUATION("Country_Financial_Profit_Share")
+/*
+Share of financial profits over the sum of profits and wages
+*/
+	v[0]=V("Financial_Sector_Profits");
+	v[1]=V("Country_Total_Wages");
+	v[2]=V("Country_Total_Profits");
+	v[3]=v[1]+v[2];
+	v[4]= v[3]!=0? v[0]/v[3] : 0;
+RESULT(v[4])
+
+
 EQUATION("Country_Wage_Share")
 /*
 Share of profits over the sum of profits and wages

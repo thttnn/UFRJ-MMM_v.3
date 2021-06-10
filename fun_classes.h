@@ -454,7 +454,7 @@ Class stock of deposits
 	v[4]=SUMS(country, "Sector_Entry_Deposits_Needed");
 	v[6]=V("Class_Deposits_Return");
 	v[5]=v[0]+v[1]+v[2]*(v[3]-v[4])+v[6];
-RESULT(v[5])
+RESULT(max(v[5],0))
 
 
 EQUATION("Class_Debt_Rate")

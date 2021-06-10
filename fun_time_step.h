@@ -6,6 +6,8 @@ Determines the order in which the variables will be calculated in each time step
 */
 
 /*****INTEREST RATES*****/
+V("CB_Inflation_Gap");
+V("CB_Output_Gap");
 V("Central_Bank_Basic_Interest_Rate");  
 V("Financial_Sector_Interest_Rate_Deposits");
 V("Bank_Competitiveness");

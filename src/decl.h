@@ -67,7 +67,10 @@ Relevant flags (when defined):
 #define SENS_SEP " ,;|/#\t\n"			// sensitivity data valid separators
 #define USER_D_VARS 1000				// number of user double variables
 #define UPD_PER 0.2						// update period during simulation run in s
-
+#define NO_DESCR ""						// no description available text
+#define LEGACY_NO_DESCR "(no description available)" // legacy description (do not change)
+#define BEG_INIT "_INIT_"				// initial values description section begin keyword
+#define END_DESCR "END_DESCRIPTION"		// description section end keyword
 
 // define PI for C++11
 #ifndef M_PI
@@ -190,6 +193,7 @@ bool check_cond( double val1, int lopc, double val2 );
 bool contains( FILE *f, char *lab, int len );
 bool create_maverag( int *choice );
 bool create_series( int *choice, bool mc, vector < string > var_names );
+bool has_descr_text( description *d );
 bool is_equation_header( char *line, char *var, char *updt_in );
 bool load_description( char *msg, FILE *f );
 bool load_prev_configuration( void );
@@ -202,8 +206,11 @@ bool sort_listbox( int box, int order, object *r );
 bool unsaved_change( bool );
 bool unsaved_change( void );
 char *NOLH_valid_tables( int k, char* ch );
+char *fmt_ttip_descr( char *out, description *d, int outSz, bool init = true );
 char *upload_eqfile( void );
-description *search_description( char *lab );
+description *add_description( char const *lab, int type = 4, char const *text = NULL, char const *init = NULL, char initial = 'n', char observe = 'n' );
+description *change_description( char const *lab_old, char const *lab = NULL, int type = -1, char const *text = NULL, char const *init = NULL, char initial = '\0', char observe = '\0' );
+description *search_description( const char *lab, bool add_missing = true );
 double lower_bound( double a, double b, double marg, double marg_eq, int dig = 16 );
 double upper_bound( double a, double b, double marg, double marg_eq, int dig = 16 );
 double *log_data( double *data, int start, int end, int ser, const char *err_msg );
@@ -232,20 +239,14 @@ object *skip_next_obj( object *t, int *count );
 void NOLH_clear( void );
 void add_cemetery( variable *v );
 void add_da_plot_tab( const char *w, int id_plot );
-void add_description( char const *lab, char const *type, char const *text );
 void add_rt_plot_tab( const char *w, int id_sim );
 void analysis( int *choice, bool mc = false );
 void ancestors( object *r, FILE *f, bool html = true );
 void assign( object *r, int *idx, char *lab );
-void attach_instance_number( char *ch, object *r );
+void attach_instance_number( char *outh, char *outv, object *r, int outSz );
 void auto_document( int *choice, char const *lab, char const *which, bool append = false );
-void autofill_descr( object *o );
 void canvas_binds( int n );
 void center_plot( void );
-void change_descr_lab( char const *lab_old, char const *lab, char const *type, char const *text, char const *init );
-void change_descr_lab( char const *lab_old, char const *lab, char const *type, char const *text, char const *init );
-void change_descr_text( char *lab );
-void change_init_text( char *lab );
 void chg_obj_num( object **c, int value, int all, int pippo[ ], int *choice, int cfrom );
 void clean_debug( object *n );
 void clean_parallel( object *n );
@@ -260,12 +261,13 @@ void count_save( object *n, int *count );
 void cover_browser( const char *text1, const char *text2, bool run );
 void create( void );
 void create_form( int num, char const *title, char const *prefix, FILE *frep );
+void create_float_list( object *t );
 void create_initial_values( object *r, FILE *frep );
 void create_logwindow( void );
 void create_par_map( object *r );
 void create_table_init( object *r, FILE *frep );
 void dataentry_sensitivity( int *choice, sense *s, int nval = 0 );
-void deb_show( object *r, const char *hl_var );
+void deb_show( object *r, const char *hl_var, int mode );
 void delete_bridge( object *d );
 void disable_plot( void );
 void draw_buttons( void );
@@ -319,6 +321,7 @@ void put_text( char *str, char *num, int x, int y, char *str2);
 void read_eq_filename( char *s );
 void report( int *choice, object *r );
 void reset_blueprint( object *r );
+void reset_description( object *r );
 void reset_end( object *r );
 void reset_plot( void );
 void run( void );
@@ -345,13 +348,14 @@ void set_obj_number( object *r, int *choice );
 void set_shortcuts( const char *window );
 void set_shortcuts_run( const char *window );
 void set_title( object *c, char *lab, char *tag, int *incr );
+void set_ttip_descr( const char *w, const char *lab, int it = -1, bool init = true );
 void shift_desc( int direction, char *dlab, object *r );
 void shift_var( int direction, char *vlab, object *r );
 void show_cells( object *r, char *lab );
 void show_debug( object *n );
 void show_descr( char *lab, int *choice );
 void show_eq( char *lab, int *choice );
-void show_graph( object *t );
+void show_graph( object *t = NULL );
 void show_initial( object *n );
 void show_neighbors( object *r, bool update );
 void show_observe( object *n );
@@ -380,6 +384,7 @@ void unload_configuration ( bool full );
 void unlink_cells( object *r, char *lab );
 void unset_shortcuts_run( const char *window );
 void update_bounds( void );
+void update_descr_dict( void );
 void update_more_tab( const char *w, bool adding = false );
 void warn_distr( int *errCnt, bool *stopErr, const char *distr, const char *msg );
 void wipe_out( object *d );
@@ -457,6 +462,7 @@ extern object *blueprint;   	// LSD blueprint (effective model in use )
 extern object *currObj;			// pointer to current object in browser
 extern object *wait_delete;		// LSD object waiting for deletion
 extern o_setT obj_list;			// list with all existing LSD objects
+extern s_vecT res_list;			// list of results files last saved
 extern sense *rsense;       	// LSD sensitivity analysis structure
 extern variable *cemetery;  	// LSD saved data from deleted objects
 extern variable *last_cemetery;	// LSD last saved data from deleted objects
@@ -471,7 +477,7 @@ extern map< thread::id, worker * > thr_ptr;	// worker thread pointers
 // Tcl/Tk specific definitions (for the windowed version only)
 #ifndef NW
 
-extern p_mapT par_map;			// variable to parent name map for AoR
+extern p_mapT par_map;			// element to parent name map for AoR
 
 // C to TCL interface functions
 int Tcl_get_obj_conf( ClientData cdata, Tcl_Interp *inter, int argc, const char *argv[ ] );
