@@ -50,7 +50,7 @@ V("Country_Exchange_Rate");
 V("Sector_Real_Exports");   
 
 /*****GOVERNMENT*****/  
-V("Government_Desired_Wages");                                  		                          
+V("Government_Desired_Wages");                                		                          
 V("Government_Desired_Unemployment_Benefits");                                     
 V("Government_Desired_Investment");   
 V("Government_Desired_Consumption");  

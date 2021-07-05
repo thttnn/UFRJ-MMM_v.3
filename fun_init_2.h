@@ -83,7 +83,7 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 		LOG("\nNominal GDP is %f.",v[100]);	
 		
 	//GOVERNMENT INTERMEDIATE CALCULATION
-	v[101]=v[100]*v[60];								//government debt
+	v[101]=v[0]*v[100]*v[60];							//government debt
 	v[102]=v[71];                                       //interest rate on government debt
 	v[103]=v[102]*v[101];								//government interest payment
 	v[104]=v[2]*v[100];									//government expenses	
@@ -118,7 +118,7 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 	WRITELLS(government, "Government_Desired_Inputs", v[108], 0, 1);
 	WRITELLS(government, "Government_Surplus_Rate_Target", v[113], 0, 1);
 	for(i=1;i<=v[0]+1;i++)WRITELLS(government, "Government_Debt", v[101], 0, i);
-	WRITELLS(government, "Government_Total_Taxes", v[105], 0, 1);
+	for(i=1;i<=v[0]+1;i++)WRITELLS(government, "Government_Total_Taxes", v[105], 0, 1);
 	WRITELLS(government, "Government_Max_Expenses_Ceiling", v[104], 0, 1);//olhar depois
 	WRITELLS(government, "Government_Max_Expenses_Surplus", v[104], 0, 1);//olhar depois
 	WRITELLS(government, "Government_Max_Expenses", v[104], 0, 1);//olhar depois

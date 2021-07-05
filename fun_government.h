@@ -1,14 +1,21 @@
 /*****GOVERNMENT DECISION VARIABLES*****/
 
+
 EQUATION("Government_Desired_Wages")
 /*
 Priority expenses.
 If there are no maximum expenses, it is adjusted by average productivity growth and inflation.
-*/                                     
-	v[0]= LAG_GROWTH(consumption, "Country_Consumer_Price_Index", 1, 1);		   		
-	v[1]=V("government_real_wage_growth");
-	v[2]=CURRENT*(1+v[0]+v[1]);
-RESULT(max(0,v[2]))
+*/     
+	v[0]=V("annual_frequency");								
+	v[1]=LAG_GROWTH(country, "Country_Consumer_Price_Index", v[0], 1);		   		
+	v[2]=V("government_real_annual_wage_growth");
+	v[3]= fmod((double) t-1,v[0]);
+	if(v[3]==0)
+		v[4]=CURRENT*v[0]*(1+v[2]+v[1]);
+	else
+		v[4]=CURRENT*v[0];
+	v[5]=v[4]/v[0];
+RESULT(max(0,v[5]))
 
 
 EQUATION("Government_Desired_Unemployment_Benefits")
@@ -51,10 +58,16 @@ EQUATION("Government_Desired_Investment")
 Desired Investment Expenses
 Adjusted by a desired real growth rate and avg capital price growth
 */
-	v[0]=V("government_real_investment_growth");		
-	v[1]=LAG_GROWTH(capital, "Sector_Avg_Price", 1, 1);
-	v[2]=CURRENT*(1+v[0]+v[1]);
-RESULT(max(0,v[2]))
+	v[0]=V("annual_frequency");								
+	v[1]=LAG_GROWTH(capital, "Sector_Avg_Price", v[0], 1);		   		
+	v[2]=V("government_real_annual_investment_growth");
+	v[3]= fmod((double) t-1,v[0]);
+	if(v[3]==0)
+		v[4]=CURRENT*v[0]*(1+v[2]+v[1]);
+	else
+		v[4]=CURRENT*v[0];
+	v[5]=v[4]/v[0];
+RESULT(max(0,v[5]))
 
 
 EQUATION("Government_Desired_Consumption")
@@ -62,10 +75,16 @@ EQUATION("Government_Desired_Consumption")
 Desired Consumption Expenses
 Adjusted by a desired real growth rate and avg consumption price growth
 */
-	v[0]=V("government_real_consumption_growth");   
-	v[1]= LAG_GROWTH(consumption, "Sector_Avg_Price", 1, 1);
-	v[2]=CURRENT*(1+v[0]+v[1]);
-RESULT(max(0,v[2]))
+	v[0]=V("annual_frequency");								
+	v[1]=LAG_GROWTH(consumption, "Sector_Avg_Price", v[0], 1);		   		
+	v[2]=V("government_real_annual_consumption_growth");
+	v[3]= fmod((double) t-1,v[0]);
+	if(v[3]==0)
+		v[4]=CURRENT*v[0]*(1+v[2]+v[1]);
+	else
+		v[4]=CURRENT*v[0];
+	v[5]=v[4]/v[0];
+RESULT(max(0,v[5]))
 
 
 EQUATION("Government_Desired_Inputs")
@@ -73,10 +92,16 @@ EQUATION("Government_Desired_Inputs")
 Desired Intermediate Expenses
 Adjusted by a desired real growth rate and avg input price growth
 */
-	v[0]=V("government_real_input_growth");      
-	v[1]=LAG_GROWTH(input, "Sector_Avg_Price", 1, 1);
-	v[2]=CURRENT*(1+v[0]+v[1]);
-RESULT(max(0,v[2]))
+	v[0]=V("annual_frequency");								
+	v[1]=LAG_GROWTH(input, "Sector_Avg_Price", v[0], 1);		   		
+	v[2]=V("government_real_annual_input_growth");
+	v[3]= fmod((double) t-1,v[0]);
+	if(v[3]==0)
+		v[4]=CURRENT*v[0]*(1+v[2]+v[1]);
+	else
+		v[4]=CURRENT*v[0];
+	v[5]=v[4]/v[0];
+RESULT(max(0,v[5]))
 
 
 /*****FISCAL RULES VARIABLES*****/
@@ -124,24 +149,39 @@ EQUATION("Government_Max_Expenses_Surplus")
 /*
 Government Max Expenses determined by Primary Surplus Target Fiscal rule
 */
-	v[0]=VL("Country_GDP",1);
-	v[1]=VL("Country_GDP",2);
-	v[2]=V("government_expectations");
-	v[3]= v[1]!=0? v[2]*(v[0]-v[1])/v[1] : 0;
-	v[4]=VL("Government_Total_Taxes",1);
-	v[5]=V("Government_Surplus_Rate_Target");
-	v[6]=(1+v[3])*(v[4]-v[5]*v[0]);
-RESULT(v[6])
+	v[0]=V("annual_frequency");
+	v[1]= fmod((double) t-1,v[0]);
+	if(v[1]==0)
+	{
+		v[2]=LAG_SUM(country, "Country_GDP", v[0], 1);
+		v[3]=LAG_SUM(country, "Country_GDP", v[0], v[0]+1);
+		v[4]=V("government_expectations");
+		v[5]=v[3]!=0? v[4]*(v[2]-v[3])/v[3] : 0;
+		v[6]=LAG_SUM(government, "Government_Total_Taxes", v[0], 1);
+		v[7]=V("Government_Surplus_Rate_Target");
+		v[8]=(1+v[5])*(v[6]-v[7]*v[2]);
+		v[9]=v[8]/v[0];
+	}
+	else
+		v[9]=CURRENT;
+RESULT(v[9])
 
 
 EQUATION("Government_Max_Expenses_Ceiling")
 /*
 Government Max Expenses determined by Expenses Ceiling Target Fiscal rule
 */
-	v[1]=LAG_GROWTH(consumption, "Country_Consumer_Price_Index", 1, 1);
-	v[2]=VL("Government_Effective_Expenses",1);
-	v[3]=v[2]*(1+v[1]);
-RESULT(v[3])
+	v[0]=V("annual_frequency");
+	v[1]= fmod((double) t-1,v[0]);
+	if(v[1]==0)
+		{
+		v[2]=LAG_GROWTH(consumption, "Country_Consumer_Price_Index", v[0], 1);
+		v[3]=LAG_SUM(government, "Government_Effective_Expenses", v[0], 1);
+		v[4]=v[3]*(1+v[2])/v[0];
+		}
+	else
+		v[4]=CURRENT;
+RESULT(v[4])
 
 
 EQUATION("Government_Max_Expenses")
@@ -190,38 +230,90 @@ v[0]=V("Government_Max_Expenses");
 v[1]=V("Government_Desired_Wages");
 v[2]=V("Government_Desired_Unemployment_Benefits");
 v[3]=V("Government_Desired_Consumption");
-v[4]=V("Government_Desired_Investment");
-v[5]=V("Government_Desired_Inputs");
+v[4]=V("Government_Desired_Inputs");
+v[5]=V("Government_Desired_Investment");
+v[6]=v[1]+v[2]+v[3]+v[4]+v[5];							   //total desired expenses
 
 if(v[0]==-1)                                               //no fiscal rule
 {
-	v[8]=v[1];											   //government wages equal desired wages
-	v[9]=v[2];    										   //government unemployment benefits equal 0
-	v[10]=v[3];                                            //government consumption equal desired
-	v[11]=v[5];                                            //government intermediate equal desired
-	v[15]=v[4];                                            //government investment demand equals desired
+	v[16]=v[1];											   //government wages equal desired wages
+	v[17]=v[2];    										   //government unemployment benefits equal 0
+	v[18]=v[3];                                            //government consumption equal desired
+	v[19]=v[4];                                            //government intermediate equal desired
+	v[20]=v[5];                                            //government investment demand equals desired
 }
 else
 {
-		v[8]=min(v[0],v[1]);								   //government wages is desired limited by maximum expenses
-		v[9]=min(v[2],(v[0]-v[8]));    						   //government unemployment benefits is desired limited by maximum expenses minus wages
-		v[10]=min(v[3],(v[0]-v[8]-v[9]));       			   //government consumption is desired limited by maximum expenses minus wages and benefits
-		v[11]=min(v[5],(v[0]-v[8]-v[9]-v[10]));        		   //government intermediate is desired limited by maximum expenses minus wages and benefits
-		v[12]=min(v[4],(v[0]-v[8]-v[9]-v[10]-v[11]));          //government investment is desired limited by maximum expenses minus wages and benefits
-		v[14]=max(0,(v[0]-(v[8]+v[9]+v[10]+v[11]+v[12])));
-		if(V("switch_extra_gov_expenses")==1)
-			v[15]=v[12]+v[14];
-		else
-			v[15]=v[12];	
+	v[7]=V("switch_government_priority_scheme");
+	
+	if(v[7]==0)//no priority, effective expenses are proportional to desired. No seed for switch_extra_gov_expenses
+		{
+		v[8]= v[6]!=0? v[0]*v[1]/v[6] : 0;								
+		v[9]= v[6]!=0? v[0]*v[2]/v[6] : 0;								
+		v[10]=v[6]!=0? v[0]*v[3]/v[6] : 0;								
+		v[11]=v[6]!=0? v[0]*v[4]/v[6] : 0;								
+		v[12]=v[6]!=0? v[0]*v[5]/v[6] : 0;								
+		}
+	if(v[7]==1)//wages and benefits are compulsory. The rest is divided proportionally.
+		{
+		v[8]=min(v[0],v[1]);														 
+		v[9]=min(v[2],(v[0]-v[8]));    												 
+		v[10]=(v[3]+v[4]+v[5])!=0? (v[0]-v[8]-v[9])*v[3]/(v[3]+v[4]+v[5]) : 0;		 
+		v[11]=(v[3]+v[4]+v[5])!=0? (v[0]-v[8]-v[9])*v[4]/(v[3]+v[4]+v[5]) : 0;		
+		v[12]=(v[3]+v[4]+v[5])!=0? (v[0]-v[8]-v[9])*v[5]/(v[3]+v[4]+v[5]) : 0;		
+		}
+	if(v[7]==2)//wages->benefits->consumption->inputs->investment
+		{
+		v[8]=min(v[0],v[1]);								   
+		v[9]=min(v[2],(v[0]-v[8]));    						 
+		v[10]=min(v[3],(v[0]-v[8]-v[9]));       			 
+		v[11]=min(v[4],(v[0]-v[8]-v[9]-v[10]));        		 
+		v[12]=min(v[5],(v[0]-v[8]-v[9]-v[10]-v[11]));         
+		}
+		
+	v[14]=max(0,(v[0]-(v[8]+v[9]+v[10]+v[11]+v[12])));		   //available government expenses		   
+	v[15]=V("switch_extra_gov_expenses");
+	if(v[15]==0)//no extra expenses
+		{
+		v[16]=v[8];
+		v[17]=v[9];
+		v[18]=v[10];
+		v[19]=v[11];
+		v[20]=v[12];
+		}
+	if(v[15]==1)//extra wages
+		{
+		v[16]=v[8]+v[14];
+		v[17]=v[9];
+		v[18]=v[10];
+		v[19]=v[11];
+		v[20]=v[12];
+		}
+	if(v[15]==2)//extra discritionary expenses, divided proportionally
+		{
+		v[16]= v[8];
+		v[17]= v[9];
+		v[18]= (v[3]+v[4]+v[5])!=0? v[10]+(v[14]*v[3]/(v[3]+v[4]+v[5])) : 0;
+		v[19]= (v[3]+v[4]+v[5])!=0? v[11]+(v[14]*v[4]/(v[3]+v[4]+v[5])) : 0;
+		v[20]= (v[3]+v[4]+v[5])!=0? v[12]+(v[14]*v[5]/(v[3]+v[4]+v[5])) : 0;
+		}
+	if(v[15]==3)//extra investment
+		{
+		v[16]=v[8];
+		v[17]=v[9];
+		v[18]=v[10];
+		v[19]=v[11];
+		v[20]=v[12]+v[14];
+		}				
 }
-WRITE("Government_Effective_Wages", max(0,v[8]));
-WRITE("Government_Effective_Unemployment_Benefits",  max(0,v[9]));
-WRITE("Government_Effective_Consumption",  max(0,v[10]));
-WRITE("Government_Effective_Investment",  max(0,v[15]));
-WRITE("Government_Effective_Inputs",  max(0,v[11]));
-WRITE("Government_Desired_Expenses",  v[1]+v[2]+v[3]+v[4]+v[5]);
-v[13]=max(0,(v[8]+v[9]+v[10]+v[11]+v[15]));
-RESULT(v[13])
+WRITE("Government_Effective_Wages", max(0,v[16]));
+WRITE("Government_Effective_Unemployment_Benefits",  max(0,v[17]));
+WRITE("Government_Effective_Consumption",  max(0,v[18]));
+WRITE("Government_Effective_Inputs",  max(0,v[19]));
+WRITE("Government_Effective_Investment",  max(0,v[20]));
+WRITE("Government_Desired_Expenses",  v[6]);
+v[21]=max(0,(v[16]+v[17]+v[18]+v[19]+v[20]));
+RESULT(v[21])
 
 EQUATION_DUMMY("Government_Effective_Wages","Government_Effective_Expenses")
 EQUATION_DUMMY("Government_Effective_Unemployment_Benefits","Government_Effective_Expenses")
@@ -256,7 +348,7 @@ RESULT(CURRENT-V("Government_Nominal_Result")+VS(financial, "Financial_Sector_Re
 
 EQUATION("Government_Debt_GDP_Ratio")
 	v[1]=V("Government_Debt");
-	v[2]=V("Country_GDP");
+	v[2]=LAG_SUM(country, "Country_GDP", V("annual_frequency"));
 	v[3]= v[2]!=0? v[1]/v[2] : 0;
 RESULT(v[3])
 
@@ -269,8 +361,12 @@ RESULT(v[3])
 EQUATION("Government_Fiscal_Multiplier")
 	v[0]=LAG_GROWTH(p, "Government_Effective_Expenses",V("annual_frequency"));
 	v[1]=LAG_GROWTH(country, "Country_GDP",V("annual_frequency"));
-	v[2]= v[0]!=0? v[1]/v[0] : 0;
-RESULT(v[2])
+	v[2]= fmod((double) t-1,V("annual_frequency"));
+	if(v[2]==0)
+		v[3]= v[0]!=0? v[1]/v[0] : 0;
+	else
+		v[3]=CURRENT;
+RESULT(v[3])
 
 EQUATION("Government_Investment_GDP_Ratio")
 	v[1]=V("Government_Effective_Investment");
@@ -278,9 +374,21 @@ EQUATION("Government_Investment_GDP_Ratio")
 	v[3]= v[2]!=0? v[1]/v[2] : 0;
 RESULT(v[3])
 
+EQUATION("Government_RND_Expenses")
+	v[1]=V("Government_Effective_Wages");
+	v[2]=V("government_rnd_proportion");
+	v[3]= v[1]*v[2];
+RESULT(v[3])
 
+EQUATION("Government_Accumulated_Real_Investment")
+	v[0]=CURRENT;
+	v[1]=V("Government_Effective_Investment");
+	v[2]=VS(capital, "Sector_Avg_Price");
+	v[3]=v[0]+(v[1]/v[2]);
+RESULT(v[3])
 
-
+EQUATION("Government_Accumulated_RND_Expenses")
+RESULT(CURRENT+V("Government_RND_Expenses"))
 
 
 

@@ -214,3 +214,27 @@ progressbox .da.pas "Add Series" "Creating MC Series" "Series" %d { set stop tru
 Message:
 divide by zero
 -----
+
+
+====================> NEW TCL SESSION
+
+(06/11/21 23:36:37)
+Command:
+progressbox .da.pas "Add Series" "Creating MC Series" "Series" %d { set stop true } .da
+Message:
+divide by zero
+-----
+
+(06/11/21 23:37:35)
+Command:
+progressbox .da.pas "Add Series" "Creating MC Series" "Series" %d { set stop true } .da
+Message:
+divide by zero
+-----
+
+(06/11/21 23:37:41)
+Command:
+progressbox .da.pas "Add Series" "Creating MC Series" "Series" %d { set stop true } .da
+Message:
+divide by zero
+-----
