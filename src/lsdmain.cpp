@@ -1,6 +1,6 @@
 /*************************************************************
 
-	LSD 8.0 - March 2021
+	LSD 8.0 - May 2021
 	written by Marco Valente, Universita' dell'Aquila
 	and by Marcelo Pereira, University of Campinas
 
@@ -72,6 +72,7 @@ bool redrawRoot;			// control for redrawing root window (.)
 bool redrawStruc;			// control for redrawing model structure window
 bool running = false;		// simulation is running
 bool save_alt_path = false;	// alternate save path flag
+bool save_ok = true;		// control if saving model configuration is possible
 bool scrollB = true;		// scroll box state in current runtime plot
 bool struct_loaded = false;	// a valid configuration file is loaded
 bool tk_ok = false;			// control for tk ready to operate
@@ -98,6 +99,7 @@ char lastObj[ MAX_ELEM_LENGTH + 1 ] = "";	// last shown object for quick reload
 char lsd_eq_file[ MAX_FILE_SIZE + 1 ] = "";	// equations saved in configuration file
 char msg[ TCL_BUFF_STR + 1 ] = "";			// auxiliary Tcl buffer
 char name_rep[ MAX_PATH_LENGTH + 1 ];		// documentation report file name
+char path_rep[ MAX_PATH_LENGTH + 1 ];		// documentation report file path
 char tcl_dir[ MAX_PATH_LENGTH + 1 ];		// Tcl/Tk directory
 description *descr = NULL;	// model description structure
 eq_mapT eq_map;				// fast equation look-up map
@@ -161,6 +163,7 @@ int i_values[ 4 ];			// user temporary variables copy
 double d_values[ USER_D_VARS ];
 object *o_values[ 10 ];
 netLink *n_values[ 10 ];
+FILE *f_values[ 1 ];
 p_mapT par_map;				// variable to parent name map for AoR
 Tcl_Interp *inter = NULL;	// global Tcl interpreter in LSD
 #endif
@@ -525,6 +528,9 @@ int lsdmain( int argn, char **argv )
 	// create a Tcl command to get LSD variable description from equation file(s)
 	Tcl_CreateCommand( inter, "get_var_descr", Tcl_get_var_descr, NULL, NULL );
 
+	// create a Tcl command to set tooltip from LSD variable description
+	Tcl_CreateCommand( inter, "set_ttip_descr", Tcl_set_ttip_descr, NULL, NULL );
+
 	// create Tcl command to upload series data
 	Tcl_CreateObjCommand( inter, "upload_series", Tcl_upload_series, NULL, NULL );
 
@@ -561,6 +567,7 @@ int lsdmain( int argn, char **argv )
 	eq_file = upload_eqfile( );
 	strcpy( lsd_eq_file, "" );
 	sprintf( name_rep, "report_%s.html", simul_name );
+	strcpy( path_rep, "" );
 
 	// fix model configuration file
 	if ( i == 0 )
@@ -682,6 +689,7 @@ void run( void )
 		running = true;		// signal simulation is running
 		cur_sim = i;	 	// update the current run in the set of runs
 		actual_steps = 0;	// no steps performed yet
+		save_ok = true;		// valid structure to save
 		
 		empty_cemetery( ); 	// ensure that previous data are not erroneously mixed 
 
@@ -945,8 +953,11 @@ void run( void )
 					sprintf( msg, "%s%s%s.%s", save_alt_path ? alt_path : path, strlen( save_alt_path ? alt_path : path ) > 0 ? "/" : "", save_alt_path ? alt_name : simul_name, docsv ? "csv" : "tot" );
 				}
 
+				if ( dozip )
+					strcat( msg, ".gz" );
+					
 				if ( fast_mode < 2 && i == sim_num )		// print only for last
-					plog( "\nSaving totals to file %s%s... ", "", msg, dozip ? ".gz" : "" );
+					plog( "\nSaving totals to file %s... ", "", msg );
 
 				if ( i == 1 && grandTotal && ! add_to_tot )
 				{
@@ -1343,10 +1354,10 @@ void create_logwindow( void )
 	cmd( "pack $w.scrollx -side bottom -fill x" );
 	cmd( "pack $w -expand yes -fill both" );
 	
-	cmd( "bind .log.text.text <2> { \
+	cmd( "bind .log.text.text <Button-2> { \
 			tk_popup .log.text.text.menu %%X %%Y \
 		}" );	
-	cmd( "bind .log.text.text <3> { \
+	cmd( "bind .log.text.text <Button-3> { \
 			tk_popup .log.text.text.menu %%X %%Y \
 		}" );	
 
@@ -1504,7 +1515,7 @@ void cover_browser( const char *text1, const char *text2, bool run )
 		cmd( "wm title . \"$origMainTit (DISABLED)\"" );
 	}
 	
-	cmd( "update idletasks" );
+	cmd( "update" );
 	
 	brCovered = true;
 	redrawRoot = false;
