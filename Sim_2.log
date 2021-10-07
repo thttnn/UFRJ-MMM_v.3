@@ -1,89 +1,56 @@
 
-Processing configuration file C:/Lsd/Work/MMM_v.3.6/Sim_2.lsd ...
+Processing configuration file C:\LSD\Work\MMM_v.3\Sim_2.lsd ...
 
-Simulation 1 of 5 running...
+Simulation 1 of 1 running...
 Nominal GDP is 1000.000000.
-Sector 1.000000.0 Desired Capacity Uilization is 0.908988.
-Sector 1.000000.0 Profit Distribution Rate is 0.786196.
-Sector 1.000000.0 Wage Rate is 0.135142.
-Sector 2.000000.0 Desired Capacity Uilization is 0.916667.
-Sector 2.000000.0 Profit Distribution Rate is 0.720833.
-Sector 2.000000.0 Wage Rate is 0.776525.
-Sector 3.000000.0 Desired Capacity Uilization is 0.869868.
-Sector 3.000000.0 Profit Distribution Rate is 0.858695.
-Sector 3.000000.0 Wage Rate is 0.130404.
-Class 1.000000.0 Tax Rate is 0.163518.
-Class 2.000000.0 Tax Rate is 0.163518.
-Class 3.000000.0 Tax Rate is 0.163518.
-Simulation 1 of 5 finished at case 600 (107.42 sec.)
-Saving results to file C:/Lsd/Work/MMM_v.3.6/Sim_2_1.res.gz... Done
+Government Debt is 500.000000.
+Basic Interest Rate is 0.003000.
+Government Interest Payment is 1.500000.
+Government Primary Expenses is 200.000000.
+Total Taxes is 201.500000.
+Government Nominal Consumption is 0.000000.
+Government Nominal Investment 80.000000.
+Government Nominal Inputs is 0.000000.
+Government Nominal Wages is 120.000000.
+Government Surplus Target is 0.001500.
+External Nominal Income is 1000.000000.
+Capital Flows is 0.000000.
+International Reserves is 0.000000.
+Nominal Exports is 100.000000.
+Nominal Imports is 100.000000.
+Nominal Consumption Exports is 30.000000.
+Nominal Capital Exports 40.000000.
+Nominal Input Exports is 30.000000.
+Real Consumption Demand is 628.500000.
+Real Capital Demand 110.000000.
+Real Input Demand is 501.016129.
+Sector 1 Desired Capacity Uilization is 0.897857.
+Sector 1 Profit Distribution Rate is 0.812782.
+Sector 1 Wage Rate is 0.190915.
+Sector 1 Markup is 1.692290.
+Sector 1 Exports Coefficient is 0.032662.
+Sector 1 Desired Market Share is 0.020000.
+Sector 2 Desired Capacity Uilization is 0.916667.
+Sector 2 Profit Distribution Rate is 0.735152.
+Sector 2 Wage Rate is 0.832433.
+Sector 2 Markup is 1.622807.
+Sector 2 Exports Coefficient is 0.021775.
+Sector 2 Desired Market Share is 0.050000.
+Sector 3 Desired Capacity Uilization is 0.927808.
+Sector 3 Profit Distribution Rate is 0.875852.
+Sector 3 Wage Rate is 0.192516.
+Sector 3 Markup is 1.687718.
+Sector 3 Exports Coefficient is 0.032662.
+Sector 3 Desired Market Share is 0.033333.
+Pseudo Taxation 250.888161.0
+Taxation 134.024194.0
+Class 1 Tax Rate is 0.160260.
+Class 1 Propensity to Import 0.370379.
+Class 2 Tax Rate is 0.160260.
+Class 2 Propensity to Import 0.133869.
+Class 3 Tax Rate is 0.160260.
+Class 3 Propensity to Import 0.034452.
+Simulation 1 of 1 finished at case 600 (41.37 sec.)
+Saving results to file C:\LSD\Work\MMM_v.3\Sim_2_1.res.gz... Done
 
-Simulation 2 of 5 running...
-Nominal GDP is 1000.000000.
-Sector 1.000000.0 Desired Capacity Uilization is 0.908988.
-Sector 1.000000.0 Profit Distribution Rate is 0.786196.
-Sector 1.000000.0 Wage Rate is 0.135142.
-Sector 2.000000.0 Desired Capacity Uilization is 0.916667.
-Sector 2.000000.0 Profit Distribution Rate is 0.720833.
-Sector 2.000000.0 Wage Rate is 0.776525.
-Sector 3.000000.0 Desired Capacity Uilization is 0.869868.
-Sector 3.000000.0 Profit Distribution Rate is 0.858695.
-Sector 3.000000.0 Wage Rate is 0.130404.
-Class 1.000000.0 Tax Rate is 0.163518.
-Class 2.000000.0 Tax Rate is 0.163518.
-Class 3.000000.0 Tax Rate is 0.163518.
-Simulation 2 of 5 finished at case 600 (128.97 sec.)
-Saving results to file C:/Lsd/Work/MMM_v.3.6/Sim_2_2.res.gz... Done
-
-Simulation 3 of 5 running...
-Nominal GDP is 1000.000000.
-Sector 1.000000.0 Desired Capacity Uilization is 0.908988.
-Sector 1.000000.0 Profit Distribution Rate is 0.786196.
-Sector 1.000000.0 Wage Rate is 0.135142.
-Sector 2.000000.0 Desired Capacity Uilization is 0.916667.
-Sector 2.000000.0 Profit Distribution Rate is 0.720833.
-Sector 2.000000.0 Wage Rate is 0.776525.
-Sector 3.000000.0 Desired Capacity Uilization is 0.869868.
-Sector 3.000000.0 Profit Distribution Rate is 0.858695.
-Sector 3.000000.0 Wage Rate is 0.130404.
-Class 1.000000.0 Tax Rate is 0.163518.
-Class 2.000000.0 Tax Rate is 0.163518.
-Class 3.000000.0 Tax Rate is 0.163518.
-Simulation 3 of 5 finished at case 600 (117.24 sec.)
-Saving results to file C:/Lsd/Work/MMM_v.3.6/Sim_2_3.res.gz... Done
-
-Simulation 4 of 5 running...
-Nominal GDP is 1000.000000.
-Sector 1.000000.0 Desired Capacity Uilization is 0.908988.
-Sector 1.000000.0 Profit Distribution Rate is 0.786196.
-Sector 1.000000.0 Wage Rate is 0.135142.
-Sector 2.000000.0 Desired Capacity Uilization is 0.916667.
-Sector 2.000000.0 Profit Distribution Rate is 0.720833.
-Sector 2.000000.0 Wage Rate is 0.776525.
-Sector 3.000000.0 Desired Capacity Uilization is 0.869868.
-Sector 3.000000.0 Profit Distribution Rate is 0.858695.
-Sector 3.000000.0 Wage Rate is 0.130404.
-Class 1.000000.0 Tax Rate is 0.163518.
-Class 2.000000.0 Tax Rate is 0.163518.
-Class 3.000000.0 Tax Rate is 0.163518.
-Simulation 4 of 5 finished at case 600 (142.08 sec.)
-Saving results to file C:/Lsd/Work/MMM_v.3.6/Sim_2_4.res.gz... Done
-
-Simulation 5 of 5 running...
-Nominal GDP is 1000.000000.
-Sector 1.000000.0 Desired Capacity Uilization is 0.908988.
-Sector 1.000000.0 Profit Distribution Rate is 0.786196.
-Sector 1.000000.0 Wage Rate is 0.135142.
-Sector 2.000000.0 Desired Capacity Uilization is 0.916667.
-Sector 2.000000.0 Profit Distribution Rate is 0.720833.
-Sector 2.000000.0 Wage Rate is 0.776525.
-Sector 3.000000.0 Desired Capacity Uilization is 0.869868.
-Sector 3.000000.0 Profit Distribution Rate is 0.858695.
-Sector 3.000000.0 Wage Rate is 0.130404.
-Class 1.000000.0 Tax Rate is 0.163518.
-Class 2.000000.0 Tax Rate is 0.163518.
-Class 3.000000.0 Tax Rate is 0.163518.
-Simulation 5 of 5 finished at case 600 (103.33 sec.)
-Saving results to file C:/Lsd/Work/MMM_v.3.6/Sim_2_5.res.gz... Done
-
-Saving totals to file C:/Lsd/Work/MMM_v.3.6/Sim_2_1_5.tot.gz... Done
+Saving totals to file C:\LSD\Work\MMM_v.3\Sim_2_1_1.tot.gz... Done
