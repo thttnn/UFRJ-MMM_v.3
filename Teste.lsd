@@ -413,6 +413,7 @@ Label Root
 				Var: Firm_Variable_Cost
 				Var: Firm_Wage
 				Var: Firm_Input_Imports
+				Param: firm_inn_prob
 
 			}
 
@@ -1331,6 +1332,7 @@ Var: Firm_Unit_Financial_Cost 0 n + n n
 Var: Firm_Variable_Cost 1 n + n n	0	0	0
 Var: Firm_Wage 1 n + n n	0	0	0
 Var: Firm_Input_Imports 0 n + n n
+Param: firm_inn_prob 0 s + n n	0	0	0
 
 Object: CAPITALS C	1	1	1
 Param: capital_good_date_birth 0 n + n n	-59	-59	-59
@@ -4067,6 +4069,12 @@ END_DESCRIPTION
 
 Variable_Firm_Input_Imports
 
+END_DESCRIPTION
+
+Parameter_firm_inn_prob
+
+_INIT_
+All 3 instances equal to 0
 END_DESCRIPTION
 
 Object_CAPITALS

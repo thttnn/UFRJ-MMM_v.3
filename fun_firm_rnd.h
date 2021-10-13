@@ -27,7 +27,7 @@ EQUATION("Firm_Imitation_Productivity")
 /*
 Imitation process. The sucess depends on the amount of recources alocated to imitation. Firms search for best productivity and best quality of the sector, trying to copy if succeded.
 */
-	v[0]=V("Firm_RND_Expenses");                    //firm's RND expenses
+	v[0]=V("Firm_RND_Expenses")/V("Firm_Price");         //firm's real RND expenses                       
 	v[1]=V("sector_innovation_proportion");    		//firm's share of RND expenses destinated to innovation
 	v[2]=(v[0]*(1-v[1]));                           //amount of recources for imitation
 	v[3]=1-exp(-v[2]);                   			//probability of success of the imitation depends on amount of recources available
@@ -42,7 +42,7 @@ EQUATION("Firm_Innovation_Productivity")
 /*
 Innovation process. The sucess depends on the amount ou recources alocated to innovation. Firms search for new productivity and porduct quality and the result depends on a random distribution with exonegous parameters.
 */
-	v[0]=V("Firm_RND_Expenses");                    	//firm's RND expenses                       
+	v[0]=V("Firm_RND_Expenses")/V("Firm_Price");         //firm's real RND expenses                       
 	v[1]=V("sector_innovation_proportion");    			//firm's share of RND expenses destinated to innovation
 	v[2]=(v[0]*v[1]);                           		//amount of recources for innovation
 	v[3]=1-exp(-v[2]);                     				//probability of success of the innovation depends on the parameter and the amount of recources available  
@@ -63,7 +63,7 @@ EQUATION("Firm_Imitation_Quality")
 /*
 Imitation process. The sucess depends on the amount of recources alocated to imitation. Firms search for best quality of the sector, trying to copy if succeded.
 */
-	v[0]=V("Firm_RND_Expenses");                   		//firm's RND expenses
+	v[0]=V("Firm_RND_Expenses")/V("Firm_Price");         //firm's real RND expenses                       
 	v[1]=V("sector_innovation_proportion");    			//firm's share of RND expenses destinated to innovation
 	v[2]=(v[0]*(1-v[1]));                           	//amount of recources for imitation
 	v[3]=1-exp(-v[2]);                   				//probability of success of the imitation depends on amount of recources available
@@ -78,7 +78,7 @@ EQUATION("Firm_Innovation_Quality")
 /*
 Innovation process. The sucess depends on the amount ou recources alocated to innovation. Firms search for new quality and the result depends on a random distribution with exonegous parameters.
 */
-	v[0]=V("Firm_RND_Expenses");                    	//firm's RND expenses                       
+	v[0]=V("Firm_RND_Expenses")/V("Firm_Price");         //firm's real RND expenses                       
 	v[1]=V("sector_innovation_proportion");    			//firm's share of RND expenses destinated to innovation
 	v[2]=(v[0]*v[1]);                           		//amount of recources for innovation
 	v[3]=1-exp(-v[2]);                     				//probability of success of the innovation depends on the parameter and the amount of recources available  
