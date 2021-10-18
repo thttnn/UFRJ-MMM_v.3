@@ -58,8 +58,11 @@ Innovation process. The sucess depends on the amount ou recources alocated to in
 		v[13]=V("sector_productivity_sensitivity_government_rnd");
 		v[14]=V("sector_productivity_sensitivity_government_investment");	
 		
-		v[7]=log(v[5])+(double)t*(v[6])+v[13]*(v[12]/v[10])+v[14]*(v[11]/v[10]);        		//the average of the innovation distribution will be the initial frontier productivity plus the opportunity parameter times the time period
-		v[8]=exp(norm(v[7],v[4]));             			//the innovation productivity will be a draw from a normal distribution with average depending of the tech regime and std. dev fixed
+		//v[7]=log(v[5])+(double)t*(v[6])+v[13]*(v[12]/v[10])+v[14]*(v[11]/v[10]);        		//the average of the innovation distribution will be the initial frontier productivity plus the opportunity parameter times the time period
+		v[7]=log(v[5])+(double)t*(v[6]);
+		//v[8]=exp(norm(v[7],v[4]));             			//the innovation productivity will be a draw from a normal distribution with average depending of the tech regime and std. dev fixed
+		
+		v[8]=VL("Firm_Frontier_Productivity",1) + norm(v[6],v[4]);
 		}
 	else                                        		//if the random number is not lower then  the innovation probability
 		v[8]=0;                                			//innovation failed and the productivity is zero

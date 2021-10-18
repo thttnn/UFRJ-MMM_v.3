@@ -7,8 +7,8 @@ Priority expenses.
 If there are no maximum expenses, it is adjusted by average productivity growth and inflation.
 */     
 	v[0]=V("annual_frequency");								
-	v[1]=LAG_GROWTH(country, "Country_Consumer_Price_Index", v[0], 1);		   		
-	v[2]=V("government_real_annual_wage_growth");
+	v[1]=LAG_GROWTH(country, "Country_Consumer_Price_Index", v[0], 1);		   	
+	v[2]=norm(V("government_real_annual_wage_growth"),V("government_real_annual_wage_sd")) ;
 	v[3]= fmod((double) t-1,v[0]);
 	if(v[3]==0)
 		v[4]=CURRENT*v[0]*(1+v[2]+v[1]);
@@ -59,8 +59,8 @@ Desired Investment Expenses
 Adjusted by a desired real growth rate and avg capital price growth
 */
 	v[0]=V("annual_frequency");								
-	v[1]=LAG_GROWTH(capital, "Sector_Avg_Price", v[0], 1);		   		
-	v[2]=V("government_real_annual_investment_growth");
+	v[1]=LAG_GROWTH(capital, "Sector_Avg_Price", v[0], 1);		
+	v[2]=norm(V("government_real_annual_investment_growth"),V("government_real_annual_investment_sd")) ;	
 	v[3]= fmod((double) t-1,v[0]);
 	if(v[3]==0)
 		v[4]=CURRENT*v[0]*(1+v[2]+v[1]);
@@ -76,8 +76,8 @@ Desired Consumption Expenses
 Adjusted by a desired real growth rate and avg consumption price growth
 */
 	v[0]=V("annual_frequency");								
-	v[1]=LAG_GROWTH(consumption, "Sector_Avg_Price", v[0], 1);		   		
-	v[2]=V("government_real_annual_consumption_growth");
+	v[1]=LAG_GROWTH(consumption, "Sector_Avg_Price", v[0], 1);	
+	v[2]=norm(V("government_real_annual_consumption_growth"),V("government_real_annual_consumption_sd")) ;	
 	v[3]= fmod((double) t-1,v[0]);
 	if(v[3]==0)
 		v[4]=CURRENT*v[0]*(1+v[2]+v[1]);
@@ -93,8 +93,8 @@ Desired Intermediate Expenses
 Adjusted by a desired real growth rate and avg input price growth
 */
 	v[0]=V("annual_frequency");								
-	v[1]=LAG_GROWTH(input, "Sector_Avg_Price", v[0], 1);		   		
-	v[2]=V("government_real_annual_input_growth");
+	v[1]=LAG_GROWTH(input, "Sector_Avg_Price", v[0], 1);	
+	v[2]=norm(V("government_real_annual_input_growth"),V("government_real_annual_input_sd")) ;	
 	v[3]= fmod((double) t-1,v[0]);
 	if(v[3]==0)
 		v[4]=CURRENT*v[0]*(1+v[2]+v[1]);
@@ -363,10 +363,21 @@ EQUATION("Government_Fiscal_Multiplier")
 	v[1]=LAG_GROWTH(country, "Country_GDP",V("annual_frequency"));
 	v[2]= fmod((double) t-1,V("annual_frequency"));
 	if(v[2]==0)
+		
 		v[3]= v[0]!=0? v[1]/v[0] : 0;
 	else
-		v[3]=CURRENT;
+		v[3]=v[0]!=0? v[1]/v[0] : 0;
 RESULT(v[3])
+
+EQUATION("Government_Fiscal_Multiplier_2")
+	v[0]=LAG_GROWTH(p, "Government_Effective_Expenses",V("annual_frequency"),V("annual_frequency"));
+	v[1]=LAG_GROWTH(country, "Country_GDP",2*V("annual_frequency"));
+	v[3]=v[0]!=0? v[1]/v[0] : 0;
+RESULT(v[3])
+
+EQUATION("Government_Expenses_Growth")
+	v[0]=LAG_GROWTH(p, "Government_Effective_Expenses",V("annual_frequency"));
+RESULT(v[0])
 
 EQUATION("Government_Investment_GDP_Ratio")
 	v[1]=V("Government_Effective_Investment");
@@ -390,6 +401,20 @@ RESULT(v[3])
 EQUATION("Government_Accumulated_RND_Expenses")
 RESULT(CURRENT+V("Government_RND_Expenses"))
 
+EQUATION("Probability_Radical_Innovation")
+v[0]=V("Government_Accumulated_Real_Investment");
+v[1]=V("Country_Real_GDP");
+v[2]=V("x1");
+v[3]=V("x2");
+v[4]=1/(1+exp(-v[2]*((v[0]/v[1])-v[3])));
+v[5]=V("radical_innovation");
+if(RND<v[4]) 
+	{
+	WRITES(consumption, "sector_tech_opportunity_productivity", CURRENT*(1+v[5]));
+	WRITES(capital, "sector_tech_opportunity_productivity", CURRENT*(1+v[5]));
+	WRITES(input, "sector_tech_opportunity_productivity", CURRENT*(1+v[5]));
+	}
+RESULT(v[4])
 
 
 
