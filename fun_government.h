@@ -9,11 +9,21 @@ If there are no maximum expenses, it is adjusted by average productivity growth 
 	v[0]=V("annual_frequency");								
 	v[1]=LAG_GROWTH(country, "Country_Consumer_Price_Index", v[0], 1);		   	
 	v[2]=norm(V("government_real_annual_wage_growth"),V("government_real_annual_wage_sd")) ;
+		
+	v[9]=V("government_wages_shock_begin");          				//defines when the shock happens
+	v[10]=V("government_wages_shock_duration");       				//defines how long the shock lasts
+	v[11]=V("government_wages_shock_size");           				//defines the size, in percentage, of the shock
+	if(t>=v[9]&&t<v[9]+v[10]&&v[10]!=0)
+		v[12]=CURRENT*v[0]*(1+v[11]+v[1]);
+	else
+		v[12]=CURRENT*v[0]*(1+v[2]+v[1]);
+	
 	v[3]= fmod((double) t-1,v[0]);
 	if(v[3]==0)
-		v[4]=CURRENT*v[0]*(1+v[2]+v[1]);
+		v[4]=v[12];
 	else
 		v[4]=CURRENT*v[0];
+	
 	v[5]=v[4]/v[0];
 RESULT(max(0,v[5]))
 
@@ -61,11 +71,21 @@ Adjusted by a desired real growth rate and avg capital price growth
 	v[0]=V("annual_frequency");								
 	v[1]=LAG_GROWTH(capital, "Sector_Avg_Price", v[0], 1);		
 	v[2]=norm(V("government_real_annual_investment_growth"),V("government_real_annual_investment_sd")) ;	
+	
+	v[9]=V("government_investment_shock_begin");          				//defines when the shock happens
+	v[10]=V("government_investment_shock_duration");       				//defines how long the shock lasts
+	v[11]=V("government_investment_shock_size");           				//defines the size, in percentage, of the shock
+	if(t>=v[9]&&t<v[9]+v[10]&&v[10]!=0)
+		v[12]=CURRENT*v[0]*(1+v[11]+v[1]);
+	else
+		v[12]=CURRENT*v[0]*(1+v[2]+v[1]);
+	
 	v[3]= fmod((double) t-1,v[0]);
 	if(v[3]==0)
-		v[4]=CURRENT*v[0]*(1+v[2]+v[1]);
+		v[4]=v[12];
 	else
 		v[4]=CURRENT*v[0];
+	
 	v[5]=v[4]/v[0];
 RESULT(max(0,v[5]))
 
@@ -246,7 +266,7 @@ else
 {
 	v[7]=V("switch_government_priority_scheme");
 	
-	if(v[7]==0)//no priority, effective expenses are proportional to desired. No seed for switch_extra_gov_expenses
+	if(v[7]==0)//no priority, effective expenses are proportional to desired. No need for switch_extra_gov_expenses
 		{
 		v[8]= v[6]!=0? v[0]*v[1]/v[6] : 0;								
 		v[9]= v[6]!=0? v[0]*v[2]/v[6] : 0;								
@@ -370,9 +390,14 @@ EQUATION("Government_Fiscal_Multiplier")
 RESULT(v[3])
 
 EQUATION("Government_Fiscal_Multiplier_2")
+	if(t>=100)
+	{
 	v[0]=LAG_GROWTH(p, "Government_Effective_Expenses",V("annual_frequency"),V("annual_frequency"));
 	v[1]=LAG_GROWTH(country, "Country_GDP",2*V("annual_frequency"));
 	v[3]=v[0]!=0? v[1]/v[0] : 0;
+	}
+	else
+		v[3]=0;
 RESULT(v[3])
 
 EQUATION("Government_Expenses_Growth")

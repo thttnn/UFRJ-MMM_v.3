@@ -355,10 +355,10 @@ New productive capacity in aquisition of new equipment to replace obsolete ones.
 				v[15]=v[0]-v[14];									// subtract the replacement cost from the available funds to replacement. At the end this will be available funds after replacemenr
 				v[23]=(v[11]*(1+v[31]))/(v[10]*((1/(v[17]))-(1/(v[8]))));		// calculates the payback
                  
-				if(v[8]>v[17] && v[20]<=v[15] && v[23]<=v[13])		// if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
+				if(v[8]>v[17] && v[11]<=v[15] && v[23]<=v[13])		// if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
 					{
 					WRITES(cur, "capital_good_to_replace",1);		// mark the current capital good to replace
-					v[14]=v[14]+v[20];								// sum up the replacement cost
+					v[14]=v[14]+v[11];								// sum up the replacement cost
 					v[16]=v[16]+v[18];         						// sum up the productive capacity to replace
 					}
 				else												// else

@@ -790,7 +790,7 @@ Param: begin_expenses_ceiling_rule 0 n + n n	-1
 Param: begin_flexible_exchange_rate 0 n + n n	-1
 Param: begin_flexible_surplus_target 0 n + n n	0
 Param: begin_monetary_policy 0 n + n n	0
-Param: begin_surplus_target_rule 0 n + n n	-1
+Param: begin_surplus_target_rule 0 n + n n	0
 Param: country_initial_depreciation_share_GDP 0 n + n n	0.1
 Param: country_initial_exports_share_GDP 0 n + n n	0.1
 Param: country_initial_government_share_GDP 0 n + n n	0.2
@@ -1149,7 +1149,7 @@ Param: sector_external_price_sd 0 n + n n	0	0	0
 Param: sector_external_price_shock_begin 0 n + n n	400	400	400
 Param: sector_external_price_shock_duration 0 n + n n	0	0	0
 Param: sector_external_price_shock_size 0 n + n n	0.02	0.02	0.02
-Param: sector_external_price_weight 0 n + n n	1	1	1
+Param: sector_external_price_weight 0 n + n n	0	0	0
 Param: sector_financial_cost_passtrough 0 n + n n	1	1	1
 Param: sector_indirect_tax_rate 0 n + n n	0.05	0.05	0.05
 Param: sector_initial_debt_rate 0 n + n n	0.4	0.4	0.4
@@ -1173,12 +1173,12 @@ Param: sector_markup_adjustment 0 n + n n	0	0	0
 Param: sector_number_object_firms 0 n + n n	100	40	60
 Param: sector_passthrough_inflation 0 s + n n	0.8	0.8	0.8
 Param: sector_passthrough_productivity 0 s + n n	1	1	1
-Param: sector_payback_period 0 n + n n	30	30	30
+Param: sector_payback_period 0 n + n n	20	20	20
 Param: sector_price_frequency 0 n + n n	1	1	1
 Param: sector_profits_distribution_rate 0 n + n n	0.8	0.8	0.8
 Param: sector_rnd_revenue_proportion 0 n + n n	0.01	0.01	0.01
 Param: sector_std_dev_innovation 0 n + n n	0.01	0.01	0.01
-Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5
+Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.1
 Param: sector_tech_opportunity_productivity 0 n + n n	0.0025	0.0025	0.0025
 Param: sector_tech_opportunity_quality 0 n + n n	0.0025	0.0025	0.0025
 Var: Sector_Avg_Competitiveness 1 n + n n	1	1	1
@@ -1276,8 +1276,8 @@ Var: Firm_Depreciated_Productive_Capacity 0 n + n n
 Var: Firm_Max_Debt_Rate 1 n + n n	0.5	0.5	0.5
 Var: Firm_Desired_Expansion_Investment_Expenses 0 n + n n
 Var: Firm_Desired_Investment_Expenses 0 n + n n
-Var: Firm_Desired_Markup 1 n + n n	0	0	0
-Var: Firm_Desired_Price 0 n + n n
+Var: Firm_Desired_Markup 1 s + n n	0	0	0
+Var: Firm_Desired_Price 0 s + n n
 Var: Firm_Desired_Replacement_Investment_Expenses 0 n + n n
 Var: Firm_Distributed_Profits 0 n + n n
 Var: Firm_Effective_Capital_Goods_Expansion 0 n + n n
@@ -1302,7 +1302,7 @@ Var: Firm_Imitation_Quality 0 n + n n
 Var: Firm_Indirect_Tax 0 n + n n
 Var: Firm_Innovation_Productivity 0 n + n n
 Var: Firm_Innovation_Quality 0 n + n n
-Var: Firm_Input_Cost 0 n + n n
+Var: Firm_Input_Cost 0 s + n n
 Var: Firm_Input_Demand_Next_Period 0 n + n n
 Var: Firm_Interest_Payment 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Firm_Interest_Rate_Long_Term 0 n + n n
@@ -1341,9 +1341,9 @@ Var: Firm_Stock_Loans 1 n + n n	0	0	0
 Var: Firm_Stock_Loans_Long_Term 0 n + n n
 Var: Firm_Stock_Loans_Short_Term 0 n + n n
 Var: Firm_Total_Funds 0 n + n n
-Var: Firm_Unit_Financial_Cost 0 n + n n
-Var: Firm_Variable_Cost 1 n + n n	0	0	0
-Var: Firm_Wage 1 n + n n	0	0	0
+Var: Firm_Unit_Financial_Cost 0 s + n n
+Var: Firm_Variable_Cost 1 s + n n	0	0	0
+Var: Firm_Wage 1 s + n n	0	0	0
 Var: Firm_Input_Imports 0 n + n n
 
 Object: CAPITALS C	1	1	1
@@ -1501,7 +1501,7 @@ Var: MGDP 0 s + n n
 Var: XGDP 0 s + n n
 Var: DX_GDP 0 s + n n
 
-SIM_NUM 5
+SIM_NUM 1
 SEED 1
 MAX_STEP 500
 EQUATION fun_micro_macro_v.3.6.cpp
@@ -1562,7 +1562,7 @@ END_DESCRIPTION
 Parameter_begin_surplus_target_rule
 
 _INIT_
-All 1 instances equal to -1
+All 1 instances equal to 0
 END_DESCRIPTION
 
 Parameter_country_initial_depreciation_share_GDP
@@ -3193,6 +3193,8 @@ END_DESCRIPTION
 
 Parameter_sector_expectations
 determines the sector expectation parameter to be used in expected demand calculation
+_INIT_
+All 3 instances equal to 0.3
 END_DESCRIPTION
 
 Parameter_sector_exports_coefficient
@@ -3246,7 +3248,7 @@ END_DESCRIPTION
 Parameter_sector_external_price_weight
 
 _INIT_
-All 3 instances equal to 1
+All 3 instances equal to 0
 END_DESCRIPTION
 
 Parameter_sector_financial_cost_passtrough
@@ -3355,6 +3357,8 @@ END_DESCRIPTION
 
 Parameter_sector_number_object_firms
 detemmines the initial number of firmsvery important parameter in calibration
+_INIT_
+All 3 instances equal to 100
 END_DESCRIPTION
 
 Parameter_sector_passthrough_inflation
@@ -3371,6 +3375,8 @@ END_DESCRIPTION
 
 Parameter_sector_payback_period
 determines how many periods the firm will calculate the payback in replacement investment
+_INIT_
+All 3 instances equal to 20
 END_DESCRIPTION
 
 Parameter_sector_price_frequency

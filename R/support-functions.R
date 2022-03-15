@@ -1055,6 +1055,76 @@ plot_bpf <- function( x, pl, pu, nfix, mask, resc = NA, mrk = -1,
           legend = leg, lty = lty, lwd = 2, col = col )
 }
 
+#
+# ====== function [] = plot_trend ======
+# Output:
+#   Trended of filtered time series plot of multiple experiments
+#
+# Input:
+#   x: list of experiments containing 1 time series each
+#   resc: vextor indicating rescaling factors for experiments (NA=no rescale)
+#   pl, pu, nfix: BK band-pass filter parameters
+#   mask: vector with the time mask to plot
+#   mrk: plot vertical dotted lin in timestep (only if >0)
+#	  leg: vector of experiment names
+#	  col, lty: vectors of experiments colors and line types
+#   xlab, ylab: label of x and y axes
+#   tit, subtit: title/subtitle of the plot
+#
+
+plot_trend <- function( x, pl, pu, nfix, mask, resc = NA, mrk = -1,
+                      xlab = "", ylab = "", tit = "", subtit = "",
+                      leg = NULL, col = NULL, lty = NULL ) {
+  
+  if( ! is.list( x ) )
+    x <- list( x )
+  
+  nExp <- length( x )
+  
+  # fill default values
+  if( is.null( leg ) )
+    leg <- 1 : nExp
+  if( is.null( col ) )
+    col <- rep( "black", nExp )
+  if( is.null( lty ) )
+    lty <- rep( "solid", nExp )
+  
+  # produce bpf-filtered series & find max plot values
+  x.plot <- list()
+  maxX <- scaleY <- vector( "numeric" )
+  for( k in 1 : nExp ) {
+    bpf <- bkfilter( x[[ k ]], pl = pl, pu = pu, nfix = nfix )
+    x.plot[[ k ]] <- bpf$trend[ mask ][ ! is.nan( bpf$trend[ mask ] ) ]
+    maxX[ k ] <- max( abs( x.plot[[ k ]] ), na.rm = TRUE )
+  }
+  maxY <- max( maxX, na.rm = TRUE )
+  for( k in 1 : nExp )
+    if( is.na( resc[ k ] ) || resc[ k ] <= 0 )
+      scaleY[ k ] <- 1                  # no rescaling
+  else
+    scaleY[ k ] <- resc[ k ] * maxY / maxX[ k ]
+  
+  # adjust margins for legends
+  ylim <- findYlim( - maxY, maxY )
+  
+  # plot frame & first experiment
+  plot( x.plot[[ 1 ]] * scaleY[ 1 ], ylim = ylim, type = "l",
+        col = col[ 1 ], lty = lty[ 1 ], main = tit, sub = subtit,
+        xlab = xlab, ylab = ylab )
+  
+  # plot the rest
+  if( nExp > 1 )
+    for( k in 2 : nExp )
+      lines( x.plot[[ k ]] * scaleY[ k ], col = col[ k ], lty = lty[ k ] )
+  
+  # plot regime transition mark
+  if( mrk > 0 )
+    lines( x = c( mrk, mrk ), y = ylim, lty = 3, col = "black" )
+  
+  legend( x = "bottomleft", inset = 0.0, cex = 0.4,
+          legend = leg, lty = lty, lwd = 2, col = col )
+}
+
 
 #
 # ====== function [] = plot_xy ======

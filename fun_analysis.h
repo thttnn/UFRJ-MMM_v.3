@@ -91,6 +91,12 @@ RESULT(VS(country, "Country_Capital_Stock")/V("P"))
 EQUATION("G_r")//Quarterly Real Government Expenses
 RESULT(VS(government, "Government_Effective_Expenses")/V("P"))
 
+EQUATION("GW_r")//Quarterly Real Government Wages
+RESULT(VS(government, "Government_Effective_Wages")/V("P"))
+
+EQUATION("GI_r")//Quarterly Real Government Investment
+RESULT(VS(government, "Government_Effective_Investment")/V("P"))
+
 EQUATION("PROF_r")//Real Profits
 RESULT(VS(country, "Country_Total_Profits")/V("P"))
 
@@ -105,6 +111,8 @@ RESULT(VS(country, "Country_Nominal_Exports")/V("P"))
 
 EQUATION("NX_r")//Quarterly Real Net Exports
 RESULT(V("X_r")-V("M_r"))
+
+
 
 
 /*****FINANCIAL STATS*****/
