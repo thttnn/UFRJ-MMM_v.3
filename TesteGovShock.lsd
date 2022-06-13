@@ -535,7 +535,6 @@ Label Root
 			Var: Sector_Profits
 			Var: Sector_Propensity_Import_Inputs
 			Var: Sector_Real_Exports
-			Var: Sector_SD_Investment_Rate
 			Var: Sector_Sales
 			Var: Sector_Short_Term_Rate
 			Var: Sector_Speculative_Normalized_Share
@@ -1242,7 +1241,6 @@ Var: Sector_Profit_Rate 0 s + n n
 Var: Sector_Profits 0 s + n n
 Var: Sector_Propensity_Import_Inputs 1 s + n n	0	0	0
 Var: Sector_Real_Exports 0 s + n n
-Var: Sector_SD_Investment_Rate 0 s + n n
 Var: Sector_Sales 0 n + n n
 Var: Sector_Short_Term_Rate 0 s + n n
 Var: Sector_Speculative_Normalized_Share 0 s + n n
@@ -1283,7 +1281,7 @@ Var: Firm_Demand_Capital_Goods_Replacement 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Firm_Demand_Loans 0 n + n n
 Var: Firm_Demand_Productive_Capacity_Expansion 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Firm_Demand_Productive_Capacity_Replacement 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Deposits_Return 0 n + n n
+Var: Firm_Deposits_Return 0 s + n n
 Var: Firm_Depreciated_Productive_Capacity 0 n + n n
 Var: Firm_Max_Debt_Rate 1 n + n n	0.5	0.5	0.5
 Var: Firm_Desired_Expansion_Investment_Expenses 0 n + n n
@@ -1301,7 +1299,7 @@ Var: Firm_Effective_Market_Share 1 n + n n	0	0	0
 Var: Firm_Effective_Markup 0 n + n n
 Var: Firm_Effective_Orders 12 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Firm_Effective_Orders_Capital_Goods 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Effective_Production 0 n + n n
+Var: Firm_Effective_Production 0 s + n n
 Var: Firm_Effective_Productive_Capacity_Variation 0 n + n n
 Var: Firm_Expected_Demand 0 n + n n
 Var: Firm_Expected_Sales_Long_Term 0 n + n n
@@ -1316,7 +1314,7 @@ Var: Firm_Innovation_Productivity 0 n + n n
 Var: Firm_Innovation_Quality 0 n + n n
 Var: Firm_Input_Cost 0 s + n n
 Var: Firm_Input_Demand_Next_Period 0 n + n n
-Var: Firm_Interest_Payment 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Interest_Payment 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Firm_Interest_Rate_Long_Term 0 n + n n
 Var: Firm_Interest_Rate_Short_Term 0 n + n n
 Var: Firm_Internal_Finance_Rate 0 n + n n
@@ -1331,7 +1329,7 @@ Var: Firm_Market_Share 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Firm_Max_Productivity 6 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
 Var: Firm_Modernization_Rate 0 n + n n
 Var: Firm_Net_Profits 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Net_Revenue 0 n + n n
+Var: Firm_Net_Revenue 0 s + n n
 Var: Firm_Planned_Production 0 n + n n
 Var: Firm_Price 1 n + n n	1	1	1
 Var: Firm_Price_Period 0 n + n n
@@ -3674,10 +3672,6 @@ Variable_Sector_Propensity_Import_Inputs
 END_DESCRIPTION
 
 Variable_Sector_Real_Exports
-
-END_DESCRIPTION
-
-Variable_Sector_SD_Investment_Rate
 
 END_DESCRIPTION
 

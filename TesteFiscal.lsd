@@ -1501,7 +1501,7 @@ Var: MGDP 0 s + n n
 Var: XGDP 0 s + n n
 Var: DX_GDP 0 s + n n
 
-SIM_NUM 5
+SIM_NUM 1
 SEED 1
 MAX_STEP 500
 EQUATION fun_micro_macro_v.3.6.cpp
