@@ -1,35 +1,35 @@
 /*************************************************************
 
-	LSD 8.0 - September 2021
+	LSD 8.0 - May 2021
 	written by Marco Valente, Universita' dell'Aquila
 	and by Marcelo Pereira, University of Campinas
 
 	Copyright Marco Valente and Marcelo Pereira
 	LSD is distributed under the GNU General Public License
-
+	
 	See Readme.txt for copyright information of
 	third parties' code used in LSD
-
+	
  *************************************************************/
 
 /*************************************************************
  COMMON.H
  Global definitions common between LMM and LSD Browser
-
+ 
  Relevant flags (when defined):
-
- - _LMM_: Model Manager executable
- - _FUN_: user model equation file
- - _NW_: No Window executable
- - _NP_: no parallel (multi-task) processing
- - _NT_: no signal trapping (better when debugging in GDB)
+ 
+ - LMM: Model Manager executable
+ - FUN: user model equation file
+ - NW: No Window executable
+ - NP: no parallel (multi-task) processing
+ - NT: no signal trapping (better when debugging in GDB)
  *************************************************************/
 
 // LSD version strings, for About... boxes and code testing
 #define _LSD_MAJOR_ 8
 #define _LSD_MINOR_ 0
-#define _LSD_VERSION_ "8.0-beta-4"
-#define _LSD_DATE_ "September 30 2021"   // __DATE__
+#define _LSD_VERSION_ "8.0-beta-3"
+#define _LSD_DATE_ "May 17 2021"   // __DATE__
 
 // standard libraries used
 #include <cstdlib>
@@ -57,25 +57,21 @@
 #undef DELETE
 #undef THIS
 #else
-#include <unistd.h>
-#include <signal.h>
-#include <errno.h>
-#include <sys/wait.h>
-#include <wordexp.h>
+#include <unistd.h>	
 #endif
 
 // global constants
-#define MAX_BUFF_SIZE 10000				// standard Tcl buffer size (>9999)
-#define MAX_PATH_LENGTH 1000			// maximum path length (>999)
+#define TCL_BUFF_STR 3000				// standard Tcl buffer size (>1000)
+#define MAX_PATH_LENGTH 500				// maximum path length
 #define MAX_LINE_SIZE 1000				// max size of a text line to read from files (>999)
 #define MAX_ELEM_LENGTH 100				// maximum element ( object, variable ) name length (>99)
 #define MAX_FILE_SIZE 1000000			// max number of bytes to read from files
 #define MAX_FILE_TRY 100000				// max number of lines to read from files
 
 // platform codes
-#define _LIN_	1
-#define _MAC_	2
-#define _WIN_	3
+#define LINUX	1
+#define MAC		2
+#define WINDOWS	3
 
 // Choose directory/file separator
 #define foldersep( dir ) ( dir[ 0 ] == '\0' ? "" : "/" )
@@ -119,21 +115,15 @@
 							  "0", "0", "Work", \
 							  "$DefaultDbgExe", "1", "#", \
 							  "$DefaultTheme" }
-#define MODEL_INFO_NUM 16
+#define MODEL_INFO_NUM 11
 #define MODEL_INFO_NAME { "modelName", "modelVersion", "modelDate", \
 						  "lsdGeom", "logGeom", "strGeom", \
 						  "daGeom", "debGeom", "latGeom", \
-						  "pltGeom", "dapGeom", "lastConf", \
-						  "lastObj", "lastList", "lastItem", "lastFirst" }
+						  "pltGeom", "dapGeom" }
 #define MODEL_INFO_DEFAULT { "(no name)", "1.0", "[ current_date ]", \
 							 "#", "#", "#", \
 							 "#", "#", "#", \
-							 "#", "#", "#", \
-							 "Root", "1", "0", "0" }
-#define LSD_NW_NUM 12
-#define LSD_NW_SRC { "lsdmain.cpp", "common.cpp", "file.cpp", "nets.cpp", \
-					 "object.cpp", "util.cpp", "variab.cpp", "check.h", \
-					 "common.h", "decl.h", "fun_head.h", "fun_head_fast.h" }
+							 "#", "#" };
 #define LSD_DIR_NUM 8
 #define LSD_DIR_NAME { "src", "gnu", "installer", "Manual", "LMM.app", "Rpkg", "lwi", "___" }
 #define LSD_MIN_NUM 3
@@ -150,7 +140,7 @@
 using namespace std;
 
 // classes pre-definitions
-struct object;
+struct object; 
 struct variable;
 struct bridge;
 struct mnode;
@@ -163,18 +153,13 @@ typedef pair < string, bridge * > b_pairT;
 typedef pair < double, object * > o_pairT;
 typedef pair < string, variable * > v_pairT;
 typedef vector < object * > o_vecT;
+typedef vector < string > s_vecT;
 typedef unordered_map < string, eq_funcT > eq_mapT;
 typedef unordered_map < string, bridge * > b_mapT;
 typedef unordered_map < double, object * > o_mapT;
 typedef unordered_map < string, string > p_mapT;
 typedef unordered_map < string, variable * > v_mapT;
 typedef unordered_set < object * > o_setT;
-
-#ifdef _WIN32
-typedef HANDLE handleT;
-#else
-typedef pid_t handleT;
-#endif
 
 // classes definitions
 struct object
@@ -192,110 +177,112 @@ struct object
 	netNode *node;						// pointer to network node data structure
 	void *cext;							// pointer to a C++ object extension to the LSD object
 	bool *del_flag;						// address of flag to signal deletion
-
+	
 	o_vecT hooks;
 	b_mapT b_map;						// fast lookup map to object bridges
 	v_mapT v_map;						// fast lookup map to variables
 
-#ifndef _NP_
+#ifndef NP
 	mutex parallel_comp;				// mutex lock for parallel computations
 #endif
 
-	bool load_param( const char *file_name, int repl, FILE *f );
+	bool load_param( char *file_name, int repl, FILE *f );
 	bool load_struct( FILE *f );
 	bool under_computation( void );
-	bool under_comput_var( const char *lab );
-	bridge *search_bridge( const char *lab, bool no_error = false );
-	double av( const char *lab1, int lag = 0, bool cond = false, const char *lab2 = "", const char *lop = "", double value = NAN );
-	double cal( const char *l, int lag = 0 );
-	double cal( object *caller, const char *l, int lag = 0 );
-	double cal( object *caller, const char *l, int lag, bool force_search );
-	double count( const char *lab1, int lag = 0, bool cond = false, const char *lab2 = "", const char *lop = "", double value = NAN );
-	double count_all( const char *lab1, int lag = 0, bool cond = false, const char *lab2 = "", const char *lop = "", double value = NAN );
-	double increment( const char *lab, double value );
-	double initturbo( const char *label, double num );
-	double initturbo_cond( const char *label );
-	double init_stub_net( const char *lab, const char* gen, long numNodes = 0, long par1 = 0, double par2 = 0.0 );
-	double interact( const char *text, double v, double *tv, int i, int j, int h, int k,
+	bool under_comput_var( char const *lab );
+	bridge *search_bridge( char const *lab, bool no_error = false );
+	double av( char const *lab1, int lag = 0, bool cond = false, char const *lab2 = "", char const *lop = "", double value = NAN );
+	double cal( char const *l, int lag = 0 );
+	double cal( object *caller, char const *l, int lag = 0 );
+	double cal( object *caller, char const *l, int lag, bool force_search );
+	double count( char const *lab1, int lag = 0, bool cond = false, char const *lab2 = "", char const *lop = "", double value = NAN );
+	double count_all( char const *lab1, int lag = 0, bool cond = false, char const *lab2 = "", char const *lop = "", double value = NAN );
+	double increment( char const *lab, double value );
+	double initturbo( char const *label, double num );
+	double initturbo_cond( char const *label );
+	double init_stub_net( char const *lab, const char* gen, long numNodes = 0, long par1 = 0, double par2 = 0.0 );
+	double interact( char const *text, double v, double *tv, int i, int j, int h, int k,
 		object *cur, object *cur1, object *cur2, object *cur3, object *cur4, object *cur5,
 		object *cur6, object *cur7, object *cur8, object *cur9, netLink *curl, netLink *curl1,
-		netLink *curl2, netLink *curl3, netLink *curl4, netLink *curl5, netLink *curl6,
+		netLink *curl2, netLink *curl3, netLink *curl4, netLink *curl5, netLink *curl6, 
 		netLink *curl7, netLink *curl8, netLink *curl9 );
-	double last_cal( const char *lab );
-	double med( const char *lab1, int lag = 0, bool cond = false, const char *lab2 = "", const char *lop = "", double value = NAN );
-	double multiply( const char *lab, double value );
-	double overall_max( const char *lab1, int lag = 0, bool cond = false, const char *lab2 = "", const char *lop = "", double value = NAN );
-	double overall_min( const char *lab1, int lag = 0, bool cond = false, const char *lab2 = "", const char *lop = "", double value = NAN );
-	double perc( const char *lab1, double p, int lag = 0, bool cond = false, const char *lab2 = "", const char *lop = "", double value = NAN );
-	double read_file_net( const char *lab, const char *dir = "", const char *base_name = "net", int serial = 1, const char *ext = "net" );
-	double recal( const char *l );
-	double sd( const char *lab1, int lag = 0, bool cond = false, const char *lab2 = "", const char *lop = "", double value = NAN );
+	double last_cal( char const *lab );
+	double med( char const *lab1, int lag = 0, bool cond = false, char const *lab2 = "", char const *lop = "", double value = NAN );
+	double multiply( char const *lab, double value );
+	double overall_max( char const *lab1, int lag = 0, bool cond = false, char const *lab2 = "", char const *lop = "", double value = NAN );
+	double overall_min( char const *lab1, int lag = 0, bool cond = false, char const *lab2 = "", char const *lop = "", double value = NAN );
+	double perc( char const *lab1, double p, int lag = 0, bool cond = false, char const *lab2 = "", char const *lop = "", double value = NAN );
+	double read_file_net( char const *lab, char const *dir = "", char const *base_name = "net", int serial = 1, char const *ext = "net" );
+	double recal( char const *l );
+	double sd( char const *lab1, int lag = 0, bool cond = false, char const *lab2 = "", char const *lop = "", double value = NAN );
 	double search_inst( object *obj = NULL, bool fun = true );
-	double stat( const char *lab1, double *v = NULL, int lag = 0, bool cond = false, const char *lab2 = "", const char *lop = "", double value = NAN );
-	double stats_net( const char *lab, double *r );
-	double sum( const char *lab1, int lag = 0, bool cond = false, const char *lab2 = "", const char *lop = "", double value = NAN );
+	double stat( char const *lab1, double *v = NULL, int lag = 0, bool cond = false, char const *lab2 = "", char const *lop = "", double value = NAN );
+	double stats_net( char const *lab, double *r );
+	double sum( char const *lab1, int lag = 0, bool cond = false, char const *lab2 = "", char const *lop = "", double value = NAN );
 	double to_delete( void );
-	double whg_av( const char *lab1, const char *lab2, int lag = 0, bool cond = false, const char *lab3 = "", const char *lop = "", double value = NAN );
-	double write( const char *lab, double value, int time, int lag = 0 );
-	double write_file_net( const char *lab, const char *dir = "", const char *base_name = "net", int serial = 1, bool append = false );
-	long init_circle_net( const char *lab, long numNodes, long outDeg );
-	long init_connect_net( const char *lab, long numNodes );
-	long init_discon_net( const char *lab, long numNodes );
-	long init_lattice_net( int nRow, int nCol, const char *lab, int eightNeigbr );
-	long init_random_dir_net( const char *lab, long numNodes, long numLinks );
-	long init_random_undir_net( const char *lab, long numNodes, long numLinks );
-	long init_renyi_erdos_net( const char *lab, long numNodes, double linkProb );
-	long init_scale_free_net( const char *lab, long numNodes, long outDeg, double expLink );
-	long init_small_world_net( const char *lab, long numNodes, long outDeg, double rho );
-	long init_star_net( const char *lab, long numNodes );
-	long init_uniform_net( const char *lab, long numNodes, long outDeg );
+	double whg_av( char const *lab1, char const *lab2, int lag = 0, bool cond = false, char const *lab3 = "", char const *lop = "", double value = NAN );
+	double write( char const *lab, double value, int time, int lag = 0 );
+	double write_file_net( char const *lab, char const *dir = "", char const *base_name = "net", int serial = 1, bool append = false );
+	long init_circle_net( char const *lab, long numNodes, long outDeg );
+	long init_connect_net( char const *lab, long numNodes );
+	long init_discon_net( char const *lab, long numNodes );
+	long init_lattice_net( int nRow, int nCol, char const *lab, int eightNeigbr );
+	long init_random_dir_net( char const *lab, long numNodes, long numLinks );
+	long init_random_undir_net( char const *lab, long numNodes, long numLinks );
+	long init_renyi_erdos_net( char const *lab, long numNodes, double linkProb );
+	long init_scale_free_net( char const *lab, long numNodes, long outDeg, double expLink );
+	long init_small_world_net( char const *lab, long numNodes, long outDeg, double rho );
+	long init_star_net( char const *lab, long numNodes );
+	long init_uniform_net( char const *lab, long numNodes, long outDeg );
 	netLink *add_link_net( object *destPtr, double weight = 0, double probTo = 1 );
-	netLink *draw_link_net( void );
-	netLink *search_link_net( long id );
-	object *add_n_objects2( const char *lab, int n, int t_update = -1 );
-	object *add_n_objects2( const char *lab, int n, object *ex, int t_update = -1 );
-	object *add_node_net( long id = -1, const char *nodeName = "", bool silent = false );
-	object *draw_node_net( const char *lab );
-	object *draw_rnd( const char *lo );
-	object *draw_rnd( const char *lo, const char *lv, int lag = 0 );
-	object *draw_rnd( const char *lo, const char *lv, int lag, double tot );
-	object *hyper_next( const char *lab );
+	netLink *draw_link_net( void ); 
+	netLink *search_link_net( long id ); 
+	object *add_n_objects2( char const *lab, int n, int t_update = -1 );
+	object *add_n_objects2( char const *lab, int n, object *ex, int t_update = -1 );
+	object *add_node_net( long id = -1, char const *nodeName = "", bool silent = false );
+	object *draw_node_net( char const *lab ); 
+	object *draw_rnd( char const *lo );
+	object *draw_rnd( char const *lo, char const *lv, int lag = 0 );
+	object *draw_rnd( char const *lo, char const *lv, int lag, double tot );
+	object *hyper_next( char const *lab );
 	object *hyper_next( void );
 	object *lat_down( void );
 	object *lat_left( void );
 	object *lat_right( void );
 	object *lat_up( void );
-	object *lsdqsort( const char *obj, const char *var, const char *direction, int lag = 0 );
-	object *lsdqsort( const char *obj, const char *var1, const char *var2, const char *direction, int lag = 0 );
-	object *search( const char *lab, bool no_search = false );
-	object *search_err( const char *lab, bool no_search, const char *errmsg );
-	object *search_node_net( const char *lab, long id );
-	object *search_var_cond( const char *lab, double value, int lag = 0 );
-	object *shuffle_nodes_net( const char *lab );
-	object *turbosearch( const char *label, double tot, double num );
-	object *turbosearch_cond( const char *label, double value );
-	variable *add_empty_var( const char *str );
-	variable *search_var( object *caller, const char *label, bool no_error = false, bool no_search = false, bool search_sons = false );
-	variable *search_var_err( object *caller, const char *label, bool no_search, bool search_sons, const char *errmsg );
-	void add_obj( const char *label, int num, int propagate );
+	object *lsdqsort( char const *obj, char const *var, char const *direction, int lag = 0 );
+	object *lsdqsort( char const *obj, char const *var1, char const *var2, char const *direction, int lag = 0 );
+	object *search( char const *lab, bool no_search = false );
+	object *search_err( char const *lab, bool no_search, char const *errmsg );
+	object *search_node_net( char const *lab, long id ); 
+	object *search_var_cond( char const *lab, double value, int lag = 0 );
+	object *shuffle_nodes_net( char const *lab );
+	object *turbosearch( char const *label, double tot, double num );
+	object *turbosearch_cond( char const *label, double value );
+	variable *add_empty_var( char const *str );
+	variable *search_var( object *caller, char const *label, bool no_error = false, bool no_search = false, bool search_sons = false );
+	variable *search_var_err( object *caller, char const *label, bool no_search, bool search_sons, char const *errmsg );
+	void add_obj( char const *label, int num, int propagate );
 	void add_var_from_example( variable *example );
-	void chg_lab( const char *lab );
-	void chg_var_lab( const char *old, const char *n );
+	void chg_lab( char const *lab );
+	void chg_var_lab( char const *old, char const *n );
 	void collect_cemetery( variable *caller = NULL );
 	void delete_link_net( netLink *ptr );
-	void delete_net( const char *lab );
+	void delete_net( char const *lab );
 	void delete_node_net( void );
 	void delete_obj( variable *caller = NULL );
-	void delete_var( const char *lab );
+	void delete_var( char const *lab );
 	void empty( void );
 	void emptyturbo( void );			// remove turbo search structure
-	void init( object *_up, const char *_label, bool _to_compute = true );
-	void name_node_net( const char *nodeName );
+	void init( object *_up, char const *_label, bool _to_compute = true );
+	void name_node_net( char const *nodeName );
 	void recreate_maps( void );
 	void replicate( int num, bool propagate = false );
 	void save_param( FILE *f );
-	void save_struct( FILE *f, const char *tab );
+	void save_struct( FILE *f, char const *tab );
 	void search_inst( object *obj, long *pos, long *checked );
+	void sort_asc( object *from, char *l_var );
+	void sort_desc( object *from, char *l_var );
 	void update( bool recurse, bool user );
 };
 
@@ -328,8 +315,8 @@ struct variable
 	double deb_cnd_val;
 	object *up;
 	variable *next;
-
-#ifndef _NP_
+	
+#ifndef NP
 	mutex parallel_comp;				// mutex lock for parallel computation
 #endif
 
@@ -352,10 +339,10 @@ struct bridge
 	bridge *next;
 	mnode *mn;
 	object *head;
-	char *search_var;					// current initialized search variable
-
+	char *search_var;					// current initialized search variable 
+	
 	o_mapT o_map;						// fast lookup map to objects
-
+	
 	bridge( const char *lab );			// constructor
 	bridge( const bridge &b );			// copy constructor
 	~bridge( void );					// destructor
@@ -382,8 +369,8 @@ struct netNode							// network node data
 	long serNum;						// node serial number (initial order, fixed )
 	netLink *first;						// first link in the linked list of links
 	netLink *last;						// last link in the linked list of links
-
-	netNode( long nodeId = -1, const char nodeName[ ] = "", double nodeProb = 1 );
+	
+	netNode( long nodeId = -1, char const nodeName[ ] = "", double nodeProb = 1 );
 										// constructor
 	~netNode( void );					// destructor
 };
@@ -398,16 +385,16 @@ struct netLink							// individual outgoing link
 	netLink *prev;						// pointer to previous link (NULL if first )
 	object *ptrFrom;					// network node containing the link
 	object *ptrTo;						// pointer to destination number
-
-	netLink( object *origNode, object *destNode, double linkWeight = 0, double destProb = 1 );
+	
+	netLink( object *origNode, object *destNode, double linkWeight = 0, double destProb = 1 ); 
 										// constructor
 	~netLink( void ); 					// destructor
 };
 
 struct store
 {
-	char label[ MAX_ELEM_LENGTH ];
-	char tag[ MAX_ELEM_LENGTH ];
+	char label[ MAX_ELEM_LENGTH + 1 ];
+	char tag[ MAX_ELEM_LENGTH + 1 ];
 	double *data;
 	int end;
 	int rank;
@@ -439,21 +426,21 @@ struct sense
 };
 
 struct design 							// design of experiment object
-{
+{ 
 	int typ, tab, n, k, *par, *lag;		// experiment parameters
-	double *hi, *lo, **ptr;
+	double *hi, *lo, **ptr; 
 	char **lab;
 	bool *intg;
 
-	design( sense *rsens, int typ, const char *fname, const char *dest_path,
-			int findex, int samples, int factors = 0, int jump = 2, int trajs = 4 );
+	design( sense *rsens, int typ = 1, char const *fname = "", int findex = 1, 
+			int samples = 0, int factors = 0, int jump = 2, int trajs = 4 );	
 										// constructor
 	~design( void );					// destructor
 };
 
 struct lsdstack
 {
-	char label[ MAX_ELEM_LENGTH ];
+	char label[ MAX_ELEM_LENGTH + 1 ];
 	int ns;
 	lsdstack *next;
 	lsdstack *prev;
@@ -471,13 +458,13 @@ class result							// results file object
 
 	void title_recursive( object *r, int i );	// write file header (recursively)
 	void data_recursive( object *r, int i );	// save a single time step (recursively)
-
+	
 	public:
-
-	result( const char *fname, const char *fmode, bool dozip = false, bool docsv = false );
+	
+	result( char const *fname, char const *fmode, bool dozip = false, bool docsv = false );
 										// constructor
 	~result( void );					// destructor
-
+	
 	void data( object *root, int initstep, int endtstep = 0 );	// write data
 	void title( object *root, int flag );	// write file header
 };
@@ -486,30 +473,19 @@ struct profile							// profiled variable object
 {
 	unsigned int comp;
 	unsigned long long ticks;
-
-	profile( ) { ticks = 0; comp = 0; };// constructor
+	
+	profile( ) { ticks = 0; comp = 0; };	// constructor
 };
 
-struct nolh								// near-orthogonal Latin hypercube description
-{
-	int kMin;
-	int kMax;
-	int n1;
-	int n2;
-	int loLevel;
-	int hiLevel;
-	int *table;
-};
-
-#ifndef _NP_
+#ifndef NP
 struct worker							// multi-thread parallel worker data structure
 {
 	bool free;
 	bool running;
 	bool user_excpt;
-	char err_msg1[ MAX_BUFF_SIZE ];
-	char err_msg2[ MAX_BUFF_SIZE ];
-	char err_msg3[ MAX_BUFF_SIZE ];
+	char err_msg1[ TCL_BUFF_STR ];
+	char err_msg2[ TCL_BUFF_STR ];
+	char err_msg3[ TCL_BUFF_STR ];
 	condition_variable run;
 	exception_ptr pexcpt;
 	int signum;
@@ -518,10 +494,10 @@ struct worker							// multi-thread parallel worker data structure
 	thread thr;
 	thread::id thr_id;
 	variable *var;
-
+	
 	worker( void );						// constructor
 	~worker( void );					// destructor
-
+	
 	bool check( void );					// handle worker problems
 	static void signal_wrapper( int signun );	// wrapper for signal_handler
 	void cal( variable *var );			// start worker calculation
@@ -533,7 +509,7 @@ struct worker							// multi-thread parallel worker data structure
 
 // standalone C functions/procedures (visible to the users)
 void msleep( unsigned msec = 1000 );	// sleep process for milliseconds
-void plog( const char *msg, ... );		// write on log window
+void plog( char const *msg, char const *tag = "", ... );	// write on log window
 
 
 // common global variables (visible to the users)
@@ -543,67 +519,45 @@ extern int quit;						// simulation termination control flag
 
 
 // prevent exposing internals in users' fun_xxx.cpp
-#ifndef _FUN_
+#ifndef FUN
 
 // common standalone internal C functions/procedures (not visible to the users)
-bool compile_run( bool run, bool nw = false );
-bool expr_eq( const char *tcl_exp, const char *c_str );
-bool eval_bool( const char *tcl_exp );
-bool exists_var( const char *lab );
-bool exists_window( const char *lab );
 bool get_bool( const char *tcl_var, bool *var = NULL );
 bool load_lmm_options( void );
 bool load_model_info( const char *path );
-bool make_no_window( void );
 bool set_env( bool set );
-bool strwsp( const char *str );
-bool use_eigen( void );
 bool valid_label( const char *lab );
-char *clean_file( const char *file );
+bool strwsp( const char *str );
+char *clean_file( char *file );
 char *clean_path( char *path );
-char *eval_str( const char *tcl_exp, char *var, int var_size );
-char *get_str( const char *tcl_var, char *var, int var_size );
+char *get_str( const char *tcl_var, char *var = NULL, int var_size = 0 );
 char *search_lsd_root( char *start_path );
-char *strcatn( char *d, const char *s, size_t dSz );
-char *strcpyn( char *d, const char *s, size_t dSz );
-char *strtcl( char *out, const char *text, int outSz );
+char *strtcl( char *out, char const *text, int outSz );
 char *strupr( char *s );
-const char *eval_str( const char *tcl_exp );
-const char *get_fun_name( char *str, int str_sz, bool nw = false );
-const char *get_str( const char *tcl_var );
 const char *signal_name( int signum );
-double eval_double( const char *tcl_exp );
 double get_double( const char *tcl_var, double *var = NULL );
-int deb( object *r, object *c, const char *lab, double *res, bool interact = false, const char *hl_var = "" );
-int eval_int( const char *tcl_exp );
+int deb( object *r, object *c, char const *lab, double *res, bool interact = false, const char *hl_var = "" );
 int get_int( const char *tcl_var, int *var = NULL );
-int kill_system( int id );
-int lsdmain( int argn, const char **argv );
+int lsdmain( int argn, char **argv );
 int strcln( char *out, const char *str, int outSz );
 int strlf( char *out, const char *str, int outSz );
 int strtrim( char *out, const char *str, int outSz );
 int strwrap( char *out, const char *str, int outSz, int wid );
-int run_system( const char *cmd, int id = -1 );
-long eval_long( const char *tcl_exp );
 long get_long( const char *tcl_var, long *var = NULL );
 string win_path( string filepath );
-void check_option_files( bool sys = false );
+void check_option_files( bool sys );
 void clean_spaces( char *s );
 void cmd( const char *cm, ... );
-void exception_handler( int signum, const char *what = NULL );
-void handle_signals( void ( * handler ) ( int signum ) );
+void handle_signals( void ( * handler )( int signum ) );
 void init_tcl_tk( const char *exec, const char *tcl_app_name );
-void log_tcl_error( bool show, const char *cm, const char *message, ... );
-void make_makefile( bool nw = false );
+void log_tcl_error( const char *cm, const char *message );
 void myexit( int v );
 void print_stack( void );
-void show_comp_result( bool nw = false );
-void show_tcl_error( const char *boxTitle, const char *errMsg, ... );
 void signal_handler( int signum );
 void update_lmm_options( bool justLmmGeom = false );
-void update_model_info( bool fix = false );
+void update_model_info( void );
 
-#ifdef _LMM_
+#ifdef LMM
 bool discard_change( void );
 #else
 bool discard_change( bool checkSense = true, bool senseOnly = false, const char title[ ] = "" );
@@ -617,6 +571,8 @@ extern char *exec_path;					// path of executable file
 extern char *rootLsd;					// path of LSD root directory
 extern char equation_name[ ];			// equation file name
 extern char err_file[ ];				// error log file name
+extern char msg[ ];						// auxiliary Tcl buffer
+extern int choice;						// Tcl menu control variable (main window)
 extern int stop;						// activity interruption flag (Tcl boolean)
 extern lsdstack *stacklog;				// LSD stack
 
@@ -629,16 +585,14 @@ extern const char *signal_names[ ];
 extern const char *wnd_names[ ];		// LSD main windows' names
 extern const int signals[ ];			// handled system signal numbers
 
-// multi-threading control
-#ifndef _NP_
-extern mutex lock_run_pids;				// lock run_pids for parallel updating
+// multi-threading control 
+#ifndef NP
 extern thread::id main_thread;			// LSD main thread ID
-extern vector < handleT > run_pids;		// parallel running instances process id's
 extern worker *workers;					// multi-thread parallel worker data
 #endif
 
 // Tcl/Tk specific definitions (for the windowed version only)
-#ifndef _NW_
+#ifndef NW
 
 #include <tk.h>
 
@@ -651,3 +605,4 @@ int Tcl_log_tcl_error( ClientData cdata, Tcl_Interp *inter, int argc, const char
 #endif
 
 #endif
+
