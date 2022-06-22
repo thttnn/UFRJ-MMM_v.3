@@ -868,7 +868,7 @@ Param: switch_foroward_looking 0 n + n n	1
 Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	0.5	0.1
 Param: class_debt_rate_adjustment 0 n + n n	0	0	0
-Param: class_direct_tax 0 s + n n	0.3	0.3	0.3
+Param: class_direct_tax 0 s + n n	0.3	0.2	0.1
 Param: class_id 0 n + n n	1	2	3
 Param: class_import_elasticity_price 0 n + n n	0.5	0.7	0.9
 Param: class_initial_propensity_import 0 n + n n	0	0	0

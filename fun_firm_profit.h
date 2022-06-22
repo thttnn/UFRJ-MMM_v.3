@@ -1,4 +1,5 @@
 
+
 EQUATION("Firm_Revenue")
 RESULT(V("Firm_Sales")*V("Firm_Price"))
 
