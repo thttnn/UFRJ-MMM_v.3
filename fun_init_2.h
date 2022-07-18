@@ -244,6 +244,7 @@ CYCLE(cur, "SECTORS")
 	WRITELLS(cur, "Sector_Number_Firms", v[152], 0, 1);
 	WRITELLS(cur, "Sector_Avg_Productivity", v[159], 0, 1);
 	WRITELLS(cur, "Sector_Max_Productivity", v[159], 0, 1);
+	WRITELLS(cur, "Sector_Min_Input", v[154], 0, 1);
 	WRITELLS(cur, "Sector_Avg_Wage", v[188], 0, 1);
 	WRITELLS(cur, "Sector_Max_Quality", v[167], 0, 1);
 	WRITELLS(cur, "Sector_Propensity_Import_Inputs", v[155], 0, 1);
@@ -282,6 +283,7 @@ CYCLE(cur, "SECTORS")
 	WRITELLS(cur1, "Firm_Liquidity_Preference", v[163], 0, 1);
 	WRITELLS(cur1, "Firm_Capital", v[181]/v[152], 0, 1);
 	WRITELLS(cur1, "Firm_Stock_Loans", v[183]/v[152], 0, 1);
+	WRITELLS(cur1, "Firm_Input_Tech_Coefficient", v[154], 0, 1);
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Demand_Capital_Goods_Expansion", 0, 0, i);
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Demand_Capital_Goods_Replacement", 0, 0, i);
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Frontier_Productivity", v[159], 0, i);

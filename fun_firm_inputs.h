@@ -5,7 +5,7 @@ EQUATION("Firm_Available_Inputs_Ratio")
 This variable defines the ratio between available inputs and inputs demanded for each sector in order to fulfil desired production.
 */
 	v[0]=V("Firm_Planned_Production");                      
-	v[1]=V("sector_input_tech_coefficient");	
+	v[1]=VL("Firm_Input_Tech_Coefficient",1);	
 	v[2]=v[0]*v[1];                        					//total amount of imputs to required to fulfil planned production
 	v[3]=VL("Firm_Stock_Inputs",1);                   		//stock of remaining imputs from the last period	
 	if(v[2]>0)                                         		//if required imputs is a positive value
@@ -35,7 +35,7 @@ The intermediate goods sectors demand exactly the amount they will need to produ
 */
 
 	v[0]=V("Firm_Planned_Production");                     	//firm's planned production for the current period
-	v[1]=V("sector_input_tech_coefficient");           		//input technical coefficient
+	v[1]=VL("Firm_Input_Tech_Coefficient",1);           	//input technical coefficient
 	v[2]=V("id_intermediate_goods_sector");           		//identifies intermediate good sectors
 	
 	v[5]=VL("Firm_Effective_Orders", 1);                   	//firm's effective orders lagged 1 
@@ -75,7 +75,7 @@ The stock of inputs of each firm at the end of the period is calculated by summi
 	v[3]=VS(input,"Sector_Demand_Met_By_Imports");        //identifies if firms were capable of inporting the amount not mey by the domestic production
 	v[4]=v[2]+(1-v[2])*v[3];                              //percentage of the demand met by the domestic production and by the external producers                     
 	v[5]=V("Firm_Input_Imports");
-	v[6]=V("sector_input_tech_coefficient");              //input technical coefficient               			 
+	v[6]=VL("Firm_Input_Tech_Coefficient",1);                //input technical coefficient               			 
 	v[7]=V("Firm_Effective_Production");                  //firm's effective production   
 	v[8]=VL("Firm_Stock_Inputs", 1);	                  //firm's stock of inputs in the last period
 	v[9]=v[8]+v[1]*v[4]+v[5]-(v[6]*v[7]);                 //the current stock of inputs is the stock in the last period plus the amount of the demand for the next period that was effetivly met, minus the amount used in effective production                 

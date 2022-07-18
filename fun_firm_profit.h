@@ -92,6 +92,21 @@ Firm interest receivment on deposits
 RESULT(v[2])
 
 
+EQUATION("Firm_RND_Expenses")
+/*
+Firm interest receivment on deposits
+*/
+	v[0]=V("Firm_Net_Revenue");
+	v[1]=V("sector_productivity_imitation_share"); 
+	v[2]=V("sector_productivity_innovation_share");
+	v[3]=V("sector_quality_imitation_share");
+	v[4]=V("sector_quality_innovation_share");
+	v[5]=V("sector_input_imitation_share");
+	v[6]=V("sector_input_innovation_share");
+	v[7]=v[0]*(v[1]+v[2]+v[3]+v[4]+v[5]+v[6]);
+RESULT(v[7])
+
+
 EQUATION("Firm_Net_Profits")
 /*
 Firm profit, including
@@ -102,8 +117,7 @@ Firm profit, including
 	v[2]=V("Firm_Variable_Cost");                                     //firm's variable cost	
 	v[3]=v[1]*v[2];													  //production cost
 
-	v[4]=V("sector_rnd_revenue_proportion");						  //share of net profits to allocate in R&D
-	v[5]=v[0]*v[4];													  //R&d expenses
+	v[5]=V("Firm_RND_Expenses");									  //R&d expenses
 	
 	v[9]=v[0]-v[3]-v[5];										  	  //firm profits
 	
@@ -143,7 +157,6 @@ Firm profit, including
 	WRITE("Firm_Profit_Rate", v[18]);
 RESULT(v[12])
 
-EQUATION_DUMMY("Firm_RND_Expenses", "Firm_Net_Profits" )
 EQUATION_DUMMY("Firm_Profits", "Firm_Net_Profits" )
 EQUATION_DUMMY("Firm_Liquidity_Rate", "Firm_Net_Profits" )
 EQUATION_DUMMY("Firm_Distributed_Profits", "Firm_Net_Profits" )

@@ -120,14 +120,14 @@ V("Sector_Sales");
 V("Firm_Stock_Inventories");                               
 V("Firm_Effective_Market_Share");                           
 V("Firm_Revenue");  
-V("Firm_Net_Revenue");                                        
+V("Firm_Net_Revenue");  
+V("Firm_RND_Expenses");                                       
 V("Firm_Indirect_Tax");                                     							   										   	                             		           		
 V("Firm_Interest_Payment");
 V("Firm_Debt_Payment");
 V("Firm_Financial_Obligations");
 V("Firm_Deposits_Return");
-V("Firm_Net_Profits");
-V("Firm_RND_Expenses");                                      
+V("Firm_Net_Profits");                                
 V("Firm_Retained_Profits");                                 
 V("Firm_Distributed_Profits");                             
 V("Firm_Profit_Rate");	                     		                                   		                                 		
@@ -136,10 +136,15 @@ V("Sector_Extra_Imports");
 V("Sector_Demand_Met_By_Imports");                            		
 
 /*****R&D*****/
+V("Firm_Innovation_Quality");                          
+V("Firm_Imitation_Quality");  
+V("Firm_Innovation_Input");                          
+V("Firm_Imitation_Input");  
 V("Firm_Innovation_Productivity");                          
 V("Firm_Imitation_Productivity");                           
 V("Firm_Frontier_Productivity");                            
-V("Firm_Quality");										   	
+V("Firm_Quality");	
+V("Firm_Input_Tech_Coefficient"); 									   	
 
 /*****CAPITAL AND INVESTMENT DECISIONS*****/
 V("Firm_Investment_Period");						   		

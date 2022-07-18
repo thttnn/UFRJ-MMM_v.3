@@ -46,7 +46,7 @@ Unitary costs of the inputs. It's given by the domestic input price plus the ext
 	v[0]=VL("Sector_Propensity_Import_Inputs",1);
 	v[1]=VLS(input,"Sector_Avg_Price",1);                 //intermediate sector average price
 	v[2]=VLS(input,"Sector_External_Price",1);            //sector external price
-	v[3]=V("sector_input_tech_coefficient");              //input technical relationship 
+	v[3]=VL("Firm_Input_Tech_Coefficient",1);            //input technical relationship 
 	v[5]=V("Country_Exchange_Rate");                      //exchange rate
 	v[8]=v[1]*v[3]*(1-v[0])+v[3]*v[0]*v[2]*v[5];     	  //input cost will be the amount demanded domesticaly multiplied by domestic price plus the amount demanded externally miltiplied by the external price
 RESULT(v[8])
