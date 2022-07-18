@@ -11,6 +11,17 @@ If there are no maximum expenses, it is adjusted by average productivity growth 
 RESULT(max(0,v[2]))
 
 
+EQUATION("Government_Desired_Energy")
+/*
+Priority expenses.
+If there are no maximum expenses, it is adjusted by average productivity growth and inflation.
+*/                                     
+	v[0]= LAG_GROWTH(consumption, "Country_Consumer_Price_Index", 1, 1);		   		
+	v[1]=V("government_real_energy_growth");
+	v[2]=CURRENT*(1+v[0]+v[1]);
+RESULT(max(0,v[2]))
+
+
 EQUATION("Government_Desired_Unemployment_Benefits")
 /*
 Counter-cyclical Expenses
@@ -192,6 +203,7 @@ v[2]=V("Government_Desired_Unemployment_Benefits");
 v[3]=V("Government_Desired_Consumption");
 v[4]=V("Government_Desired_Investment");
 v[5]=V("Government_Desired_Inputs");
+v[6]=V("Government_Desired_Energy");
 
 if(v[0]==-1)                                               //no fiscal rule
 {
@@ -200,30 +212,34 @@ if(v[0]==-1)                                               //no fiscal rule
 	v[10]=v[3];                                            //government consumption equal desired
 	v[11]=v[5];                                            //government intermediate equal desired
 	v[15]=v[4];                                            //government investment demand equals desired
+	v[16]=v[6];                                            //government energy demand equals desired
 }
 else
 {
 		v[8]=min(v[0],v[1]);								   //government wages is desired limited by maximum expenses
-		v[9]=min(v[2],(v[0]-v[8]));    						   //government unemployment benefits is desired limited by maximum expenses minus wages
-		v[10]=min(v[3],(v[0]-v[8]-v[9]));       			   //government consumption is desired limited by maximum expenses minus wages and benefits
-		v[11]=min(v[5],(v[0]-v[8]-v[9]-v[10]));        		   //government intermediate is desired limited by maximum expenses minus wages and benefits
-		v[12]=min(v[4],(v[0]-v[8]-v[9]-v[10]-v[11]));          //government investment is desired limited by maximum expenses minus wages and benefits
-		v[14]=max(0,(v[0]-(v[8]+v[9]+v[10]+v[11]+v[12])));
+		v[16]=min(v[6],(v[0]-v[8]));						   //government energy demand		
+		v[9]=min(v[2],(v[0]-v[8]-v[16]));    						   //government unemployment benefits is desired limited by maximum expenses minus wages
+		v[10]=min(v[3],(v[0]-v[8]-v[9]-v[16]));       			   //government consumption is desired limited by maximum expenses minus wages and benefits
+		v[11]=min(v[5],(v[0]-v[8]-v[9]-v[10]-v[16]));        		   //government intermediate is desired limited by maximum expenses minus wages and benefits
+		v[12]=min(v[4],(v[0]-v[8]-v[9]-v[10]-v[11]-v[16]));          //government investment is desired limited by maximum expenses minus wages and benefits
+		v[14]=max(0,(v[0]-(v[8]+v[9]+v[10]+v[11]+v[12]-v[16])));     //remaining fiscal space
 		if(V("switch_extra_gov_expenses")==1)
 			v[15]=v[12]+v[14];
 		else
 			v[15]=v[12];	
 }
 WRITE("Government_Effective_Wages", max(0,v[8]));
+WRITE("Government_Effective_Energy", max(0,v[16]));
 WRITE("Government_Effective_Unemployment_Benefits",  max(0,v[9]));
 WRITE("Government_Effective_Consumption",  max(0,v[10]));
 WRITE("Government_Effective_Investment",  max(0,v[15]));
 WRITE("Government_Effective_Inputs",  max(0,v[11]));
-WRITE("Government_Desired_Expenses",  v[1]+v[2]+v[3]+v[4]+v[5]);
-v[13]=max(0,(v[8]+v[9]+v[10]+v[11]+v[15]));
+WRITE("Government_Desired_Expenses",  v[1]+v[2]+v[3]+v[4]+v[5]+v[6]);
+v[13]=max(0,(v[8]+v[9]+v[10]+v[11]+v[15]+v[16]));
 RESULT(v[13])
 
 EQUATION_DUMMY("Government_Effective_Wages","Government_Effective_Expenses")
+EQUATION_DUMMY("Government_Effective_Energy","Government_Effective_Expenses")
 EQUATION_DUMMY("Government_Effective_Unemployment_Benefits","Government_Effective_Expenses")
 EQUATION_DUMMY("Government_Effective_Consumption","Government_Effective_Expenses")
 EQUATION_DUMMY("Government_Effective_Investment","Government_Effective_Expenses")

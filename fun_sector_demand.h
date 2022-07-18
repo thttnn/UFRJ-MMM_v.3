@@ -63,7 +63,9 @@ This variable also writes an analysis variable that evaluates the relative weigh
 	if(V("id_consumption_goods_sector")==1)
 		v[0]=V("Country_Domestic_Consumption_Demand");                                                          
 	if(V("id_capital_goods_sector")==1)
-		v[0]=V("Country_Domestic_Capital_Goods_Demand");                                                    
+		v[0]=V("Country_Domestic_Capital_Goods_Demand"); 
+	if(V("id_energy_sector")==1)
+		v[0]=V("Country_Domestic_Energy_Demand"); 	
 	v[1]=V("Sector_Real_Exports");                                                              
 	v[2]=v[0]+v[1];   
 	v[4]=V("sector_initial_demand");

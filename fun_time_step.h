@@ -73,7 +73,8 @@ V("Firm_Effective_Orders_Capital_Goods");
 
 /*****PLANNED PRODUCTION*****/
 V("Firm_Expected_Demand");                                   
-V("Firm_Planned_Production");                              
+V("Firm_Planned_Production");      
+V("Firm_Energy_Demand");                        
 
 /*****EFFECTIVE PRODUCTION AND INPUT DEMAND*****/
 V("Firm_Available_Inputs_Ratio");                       	
@@ -136,6 +137,8 @@ V("Sector_Extra_Imports");
 V("Sector_Demand_Met_By_Imports");                            		
 
 /*****R&D*****/
+V("Firm_Innovation_Energy_Intensity");                          
+V("Firm_Imitation_Energy_Intensity");  
 V("Firm_Innovation_Quality");                          
 V("Firm_Imitation_Quality");  
 V("Firm_Innovation_Input");                          
@@ -144,7 +147,8 @@ V("Firm_Innovation_Productivity");
 V("Firm_Imitation_Productivity");                           
 V("Firm_Frontier_Productivity");                            
 V("Firm_Quality");	
-V("Firm_Input_Tech_Coefficient"); 									   	
+V("Firm_Input_Tech_Coefficient"); 
+V("Firm_Energy_Intensity"); 											   	
 
 /*****CAPITAL AND INVESTMENT DECISIONS*****/
 V("Firm_Investment_Period");						   		

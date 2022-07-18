@@ -54,12 +54,14 @@ RESULT(v[8])
 
 EQUATION("Firm_Variable_Cost")
 /*
-Variable unit cost is the wage cost (nominal wages over productivity) plus intermediate costs
+Variable unit cost is the wage cost (nominal wages over productivity) plus intermediate costs (inputs and energy)
 */
 	v[0]=V("Firm_Input_Cost");
 	v[1]=V("Firm_Wage");
 	v[2]=VL("Firm_Avg_Productivity",1);
-	v[3]= v[2]!=0? (v[1]/v[2])+v[0] : v[0];
+	v[4]=V("sector_energy_intensity");
+	v[5]=VLS(energy,"Sector_Avg_Price",1); 
+	v[3]= v[2]!=0? (v[1]/v[2])+v[0]+v[4]*v[5] : v[0];
 RESULT(v[3])
 
 

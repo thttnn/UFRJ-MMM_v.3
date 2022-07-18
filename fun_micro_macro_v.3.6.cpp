@@ -13,6 +13,7 @@ object *financial;
 object *consumption;
 object *capital;
 object *input;
+object *energy;
 object *centralbank;
 object *aclass;
 object *bclass;
