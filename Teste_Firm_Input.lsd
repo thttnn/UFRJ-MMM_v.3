@@ -457,7 +457,6 @@ Label Root
 			Param: sector_initial_productivity
 			Param: sector_initial_profit_rate
 			Param: sector_initial_quality
-			Param: sector_innovation_proportion
 			Param: sector_initial_propensity_import_inputs
 			Param: sector_input_tech_coefficient
 			Param: sector_investment_frequency
@@ -470,7 +469,6 @@ Label Root
 			Param: sector_payback_period
 			Param: sector_price_frequency
 			Param: sector_profits_distribution_rate
-			Param: sector_rnd_revenue_proportion
 			Param: sector_std_dev_innovation
 			Param: sector_strategic_price_weight
 			Param: sector_tech_opportunity_productivity
@@ -1160,7 +1158,6 @@ Param: sector_initial_price 0 n + n n	1	2	1
 Param: sector_initial_productivity 0 n + n n	1	1	1
 Param: sector_initial_profit_rate 0 n + n n	0.3	0.6	0.3
 Param: sector_initial_quality 0 n + n n	1	1	1
-Param: sector_innovation_proportion 0 n + n n	0.5	0.5	0.5
 Param: sector_initial_propensity_import_inputs 0 n + n n	0.05	0.05	0.05
 Param: sector_input_tech_coefficient 0 n + n n	0.4	0.4	0.4
 Param: sector_investment_frequency 0 n + n n	4	4	4
@@ -1173,7 +1170,6 @@ Param: sector_passthrough_productivity 0 s + n n	0.8	0.8	0.8
 Param: sector_payback_period 0 n + n n	20	20	20
 Param: sector_price_frequency 0 n + n n	1	1	1
 Param: sector_profits_distribution_rate 0 n + n n	0.8	0.8	0.8
-Param: sector_rnd_revenue_proportion 0 n + n n	0.01	0.01	0.01
 Param: sector_std_dev_innovation 0 n + n n	0.01	0.01	0.01
 Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5
 Param: sector_tech_opportunity_productivity 0 n + n n	0.0025	0.0025	0.0025
@@ -3285,12 +3281,6 @@ Parameter_sector_initial_quality
 determines sector's initial quality
 END_DESCRIPTION
 
-Parameter_sector_innovation_proportion
-determines the share of RND expenses allocated to innovation
-_INIT_
-A
-END_DESCRIPTION
-
 Parameter_sector_initial_propensity_import_inputs
 determines the initial sahre of imputs that must be imported
 _INIT_
@@ -3353,12 +3343,6 @@ END_DESCRIPTION
 
 Parameter_sector_profits_distribution_rate
 determines the sector (and firms) profits distribution rateis actually calculated during calibration
-END_DESCRIPTION
-
-Parameter_sector_rnd_revenue_proportion
-determines the share of revenue to be allocated in RND expenses
-_INIT_
-All 3 instances equal to 0.01
 END_DESCRIPTION
 
 Parameter_sector_std_dev_innovation
