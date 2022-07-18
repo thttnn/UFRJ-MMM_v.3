@@ -190,11 +190,11 @@ CYCLE(cur, "SECTORS")
 	v[159]=VS(cur, "sector_initial_productivity");
 	v[160]=VS(cur, "sector_indirect_tax_rate");
 	v[161]=VS(cur, "sector_productivity_imitation_share")+
-	VS(cur, "sector_productivity_innovation_share")+
-	VS(cur, "sector_quality_imitation_share")+
-	VS(cur, "sector_quality_innovation_share")+
-	VS(cur, "sector_input_imitation_share")+
-	VS(cur, "sector_input_innovation_share");
+		   VS(cur, "sector_productivity_innovation_share")+
+		   VS(cur, "sector_quality_imitation_share")+
+		   VS(cur, "sector_quality_innovation_share")+
+		   VS(cur, "sector_input_imitation_share")+
+		   VS(cur, "sector_input_innovation_share");
 	v[162]=VS(cur, "sector_initial_debt_rate");
 	v[163]=VS(cur, "sector_initial_liquidity_preference");
 	v[164]=VS(cur, "sector_initial_profit_rate");

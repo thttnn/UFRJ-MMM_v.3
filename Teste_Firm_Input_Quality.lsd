@@ -1135,7 +1135,7 @@ Param: sector_desired_inventories_proportion 0 n + n n	0.1	0.1	0.1
 Param: sector_desired_market_share 0 n + n n	0.1	0.25	0.15
 Param: sector_elascitity_delay 0 n + n n	0.25	0.25	0.25
 Param: sector_elasticity_price 0 n + n n	1	1	1
-Param: sector_elasticity_quality 0 n + n n	0.5	0.5	0.5
+Param: sector_elasticity_quality 0 n + n n	0.5	0.5	0
 Param: sector_expectations 0 n + n n	0.3	0.3	0.3
 Param: sector_exports_coefficient 0 s + n n	0	0	0
 Param: sector_exports_elasticity_income 0 n + n n	0.5	0.5	0.5
@@ -1189,7 +1189,7 @@ Var: Sector_Avg_Max_Debt_Rate 0 s + n n
 Var: Sector_Avg_Modernization_Rate 0 s + n n
 Var: Sector_Avg_Price 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Sector_Avg_Productivity 1 s + n n	0	0	0
-Var: Sector_Avg_Quality 5 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Var: Sector_Avg_Quality 5 s + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
 Var: Sector_Avg_Wage 1 s + n n	0	0	0
 Var: Sector_Bargain_Power 1 s + n n	0	0	0
 Var: Sector_Capacity_Utilization 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
@@ -1507,7 +1507,7 @@ Var: DX_GDP 0 s + n n
 Var: PROF_r 0 s + n n
 Var: WAGE_r 0 s + n n
 
-SIM_NUM 5
+SIM_NUM 1
 SEED 1
 MAX_STEP 600
 EQUATION fun_micro_macro_v.3.6.cpp

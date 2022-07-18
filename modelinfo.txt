@@ -9,8 +9,8 @@ MMM_v.3.6
 #
 595x445+1061+7
 720x540+321+419
-Teste_Firm_Input.lsd
+Teste_Firm_Input_Quality.lsd
 SECTORS
 1
-49
-0.7377049180327869
+68
+0.39344262295081966
