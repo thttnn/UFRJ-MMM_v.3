@@ -23,7 +23,7 @@ The new quality is the maximum among the previous one and the ones possibly obta
 RESULT(v[3])
 
 
-EQUATION("Firm_Input_Tech_Coefficient")
+EQUATION("Firm_Frontier_Input_Tech_Coefficient")
 /*
 The new tech coefficient is the minimum among the previous one and the ones possibly obtained imitation and innovation. 
 */
@@ -34,7 +34,7 @@ The new tech coefficient is the minimum among the previous one and the ones poss
 RESULT(v[3])
 
 
-EQUATION("Firm_Energy_Intensity")
+EQUATION("Firm_Frontier_Energy_Intensity")
 /*
 The new energy intensity is the minimum among the previous one and the ones possibly obtained imitation and innovation. 
 */
@@ -127,7 +127,7 @@ Imitation process. The sucess depends on the amount of recources alocated to imi
 	if(RND<v[3])                              			//draws a random number. if it is lower then imitation probability
      	v[5]=VL("Sector_Min_Input", 1);				    //imitation has succeded and the firm can copy the maximum quality of the sector in the last period
   	else                                      			//if the random number is not lower than imitation probability
-     	v[5]=VL("Firm_Input_Tech_Coefficient", 1);											//imitation failed and return a quality zero
+     	v[5]=VL("Firm_Avg_Input_Tech_Coefficient", 1);											//imitation failed and return a quality zero
 RESULT(v[5])
 
 
@@ -148,11 +148,11 @@ Innovation process. The sucess depends on the amount ou recources alocated to in
 		v[8]=exp(norm(v[7],v[4]));						//the innovation quality will be a draw from a normal distribution with average depending of the tech regime and std. dev fixed
 		}
 	else                                        		//if the random number is not lower then the innovation probability
-		v[8]=VL("Firm_Input_Tech_Coefficient", 1);										//innovation failed and the quality is zero
+		v[8]=VL("Firm_Avg_Input_Tech_Coefficient", 1);										//innovation failed and the quality is zero
 RESULT(v[8])
 
 EQUATION("Sector_Min_Input")
-RESULT(MIN("Firm_Input_Tech_Coefficient"))
+RESULT(MIN("Firm_Avg_Input_Tech_Coefficient"))
 
 
 EQUATION("Firm_Imitation_Energy_Intensity")
@@ -166,7 +166,7 @@ Imitation process. The sucess depends on the amount of recources alocated to imi
 	if(RND<v[3])                              			//draws a random number. if it is lower then imitation probability
      	v[5]=VL("Sector_Min_Energy_Intensity", 1);			    //imitation has succeded and the firm can copy the maximum quality of the sector in the last period
   	else                                      			//if the random number is not lower than imitation probability
-     	v[5]=VL("Firm_Energy_Intensity", 1);			//imitation failed and return a quality zero
+     	v[5]=VL("Firm_Avg_Energy_Intensity", 1);			//imitation failed and return a quality zero
 RESULT(v[5])
 
 
@@ -187,11 +187,11 @@ Innovation process. The sucess depends on the amount ou recources alocated to in
 		v[8]=exp(norm(v[7],v[4]));						//the innovation quality will be a draw from a normal distribution with average depending of the tech regime and std. dev fixed
 		}
 	else                                        		//if the random number is not lower then the innovation probability
-		v[8]=VL("Firm_Energy_Intensity", 1);			//innovation failed and the quality is zero
+		v[8]=VL("Firm_Avg_Energy_Intensity", 1);			//innovation failed and the quality is zero
 RESULT(v[8])
 
 EQUATION("Sector_Min_Energy_Intensity")
-RESULT(MIN("Firm_Energy_Intensity"))
+RESULT(MIN("Firm_Avg_Energy_Intensity"))
 
 
 

@@ -220,7 +220,7 @@ RESULT(v[8])
 
 EQUATION("Firm_Desired_Replacement_Investment_Expenses")
 /*
-Nominal value of derired new capital goods for modernization replacement
+Nominal value of desired new capital goods for modernization replacement
 */
  v[1]=V("sector_investment_frequency");
  v[3]=V("Firm_Investment_Period");
@@ -247,18 +247,18 @@ Nominal value of derired new capital goods for modernization replacement
   if(v[3]==1)																																											// if it is investment period for the firm
   {
   v[16]=0;																																												// initializes the CYCLE for productive capacity
-  SORT("CAPITALS","Capital_Good_Productivity","UP");																								// sort capital goods from the lowest to highest 
-   CYCLE(cur, "CAPITALS")																																					// CYCLE trought capital goods
+  SORT("CAPITALS","Capital_Good_Productivity","UP");				// sort capital goods from the lowest to highest 
+   CYCLE(cur, "CAPITALS")											// CYCLE trought capital goods
    {
-     v[19]=VS(cur, "capital_good_depreciation_period");																										// capital good date of birth
-     if((double)t!=v[19] && (double)t < v[19]-v[1])																					// if the capitalgood was not created in the current period nor will depreciate in the next investment period
+	   v[19]=VS(cur, "capital_good_depreciation_period");		    // capital good date of birth
+     if((double)t!=v[19] && (double)t < v[19]-v[1])					// if the capitalgood was not created in the current period nor will depreciate in the next investment period
      {
-     v[17]=VS(cur, "Capital_Good_Productivity");																									// current capital good productivivty
-     v[18]=VS(cur, "capital_good_productive_capacity");   																				// current capital good productive capacity  
-     v[23]=(v[11]*(1+v[31]))/(v[10]*((1/(v[17]))-(1/(v[8]))));																								// calculates the payback           
-         if(v[8]>v[17] && v[23]<=v[13])																														// if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
-        	v[16]=v[16]+v[18];         																															// sum up the productive capacity to replace
-         else																																											// else
+     v[17]=VS(cur, "Capital_Good_Productivity");				   // current capital good productivivty
+     v[18]=VS(cur, "capital_good_productive_capacity");   		   // current capital good productive capacity  
+     v[23]=(v[11]*(1+v[31]))/(v[10]*((1/(v[17]))-(1/(v[8]))));	   // calculates the payback for productivity 
+         if(v[8]>v[17] && v[23]<=v[13])				   			   // if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
+        	v[16]=v[16]+v[18];         							   // sum up the productive capacity to replace
+         else													   // else
          	v[16]=v[16]; 																																						// do not sum replacement cost  
       }
       else																																												// else

@@ -9,7 +9,7 @@ MMM_v.3.6
 #
 595x445+1061+7
 720x540+321+419
-Teste_4_sectors.lsd
+Teste_4_sectors_CAPITAL_TECH.lsd
 SECTORS
 1
 0

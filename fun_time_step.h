@@ -85,6 +85,8 @@ V("Firm_Effective_Production");
 V("Sector_Effective_Production");                           
 V("Capital_Good_Production");                           	
 V("Firm_Avg_Productivity"); 
+V("Firm_Avg_Input_Tech_Coefficient"); 
+V("Firm_Avg_Energy_Intensity"); 
 V("Firm_Capacity_Utilization");	
 V("Sector_Capacity_Utilization");		
 V("Country_Capacity_Utilization");							
@@ -147,8 +149,10 @@ V("Firm_Innovation_Productivity");
 V("Firm_Imitation_Productivity");                           
 V("Firm_Frontier_Productivity");                            
 V("Firm_Quality");	
-V("Firm_Input_Tech_Coefficient"); 
-V("Firm_Energy_Intensity"); 											   	
+V("Firm_Frontier_Input_Tech_Coefficient"); 
+V("Firm_Frontier_Energy_Intensity"); 
+V("Capital_Good_Input_Tech_Coefficient"); 
+V("Capital_Good_Energy_Intensity"); 												   	
 
 /*****CAPITAL AND INVESTMENT DECISIONS*****/
 V("Firm_Investment_Period");						   		
