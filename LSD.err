@@ -581,3 +581,215 @@ set res [ winfo exists "%s" ]
 Message:
 can't read "list": no such variable
 -----
+
+
+====================> NEW TCL SESSION
+
+(07/19/22 14:57:28)
+Command:
+if { %s eq ".chgelem" } { 			set list .chgelem.listused_%s 		} else { 			set list .listused_%s 		}
+Message:
+invalid character "."
+in expression " . eq ".chgelem" "
+-----
+
+(07/19/22 14:57:28)
+Command:
+set res [ winfo exists "%s" ]
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+newtop $list "Used In" "destroytop $list"
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+ttk::frame $list.lf 
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+ttk::label $list.lf.l1 -text "Equations using"
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+ttk::label $list.lf.l2 -style hl.TLabel -text "%s"
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+pack $list.lf.l1 $list.lf.l2
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+ttk::frame $list.l
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+ttk::scrollbar $list.l.v_scroll -command "$list.l.l yview"
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+ttk::listbox $list.l.l -width 25 -selectmode single -yscroll "$list.l.v_scroll set" -dark $darkTheme
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+pack $list.l.l  $list.l.v_scroll -side left -fill y
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+mouse_wheel $list.l.l
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+bind $list.l.l <Home> "selectinlist $list.l.l 0; break"
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+bind $list.l.l <End> "selectinlist $list.l.l end; break"
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+ttk::label $list.l3 -justify center -text "(double-click to
+observe the element)"
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+pack $list.lf $list.l $list.l3 -padx 5 -pady 5 -expand yes -fill both
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+done $list b "destroytop $list"
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+$list.l.l insert end %s
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+$list.l.l insert end %s
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+$list.l.l insert end %s
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+$list.l.l insert end %s
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+$list.l.l insert end %s
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+$list.l.l insert end %s
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+$list.l.l insert end %s
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+bind $list <Double-Button-1> { set bidi [ selection get ]; set done 8; set choice 55 }
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+showtop $list
+Message:
+can't read "list": no such variable
+-----
+
+(07/19/22 14:57:28)
+Command:
+mousewarpto $list.b.ok
+Message:
+can't read "list": no such variable
+-----
+
+
+====================> NEW TCL SESSION
+
+(07/19/22 14:59:15)
+Command:
+if { %s eq ".chgelem" } { 			set list .chgelem.listused_%s 		} else { 			set list .listused_%s 		}
+Message:
+invalid character "."
+in expression " . eq ".chgelem" "
+-----
+
+(07/19/22 14:59:15)
+Command:
+set res [ winfo exists "%s" ]
+Message:
+can't read "list": no such variable
+-----

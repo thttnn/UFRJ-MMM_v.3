@@ -86,38 +86,48 @@ RESULT(v[6])
 EQUATION("Firm_Avg_Input_Tech_Coefficient")
 /*
 Firm's productivity will be an average of each capital good productivity weighted by their repective production	
-*/
-	v[0]=V("Firm_Effective_Production");                                		//firm's effective production
-	v[1]=VL("Firm_Avg_Input_Tech_Coefficient", 1);                           	//firm's average productivity in the last period
-	v[2]=0;                                                        				//initializes the CYCLE
-	v[3]=0;                                                        				//initializes the CYCLE
-	CYCLE(cur, "CAPITALS")                                          			//CYCLE trought firm's capital goods
-	{
-		v[4]=VS(cur, "Capital_Good_Input_Tech_Coefficient");                   	//capital good productivity
-		v[5]=VS(cur, "Capital_Good_Production");                    			//capital good production
-		v[2]=v[2]+v[4]*v[5];                                        			//sums up the product of each capital good productivity and production
-		v[3]=v[3]+v[5];                                             			//sums up the production of each capital good
-	}
-	v[6]= v[3]!=0? v[2]/v[3] : v[1];                                            //firm's average productivity will be the average of each capital good productivity weighted by its respective production
-RESULT(v[6])
+*/        
+v[0]=v[1]=0;
+CYCLE(cur, "CAPITALS")
+{             
+	v[2]=VS(cur,"capital_good_input_tech_coefficient");
+	if(v[2]!=0)
+		{
+		v[0]=v[0]+v[2];
+		v[1]=v[1]+1;
+		}
+	else
+		{
+		v[0]=v[0];
+		v[1]=v[1];
+		}
+}
+v[3]=VL("Firm_Avg_Input_Tech_Coefficient",1);
+v[4]=v[1]!=0? v[0]/v[1]: v[3];
+RESULT(v[4])
 
 EQUATION("Firm_Avg_Energy_Intensity")
 /*
 Firm's productivity will be an average of each capital good productivity weighted by their repective production	
 */
-	v[0]=V("Firm_Effective_Production");                                		//firm's effective production
-	v[1]=VL("Firm_Avg_Energy_Intensity", 1);                           			//firm's average productivity in the last period
-	v[2]=0;                                                        				//initializes the CYCLE
-	v[3]=0;                                                        				//initializes the CYCLE
-	CYCLE(cur, "CAPITALS")                                          			//CYCLE trought firm's capital goods
-	{
-		v[4]=VS(cur, "Capital_Good_Energy_Intensity");                   		//capital good productivity
-		v[5]=VS(cur, "Capital_Good_Production");                    			//capital good production
-		v[2]=v[2]+v[4]*v[5];                                        			//sums up the product of each capital good productivity and production
-		v[3]=v[3]+v[5];                                             			//sums up the production of each capital good
-	}
-	v[6]= v[3]!=0? v[2]/v[3] : v[1];                                            //firm's average productivity will be the average of each capital good productivity weighted by its respective production
-RESULT(v[6])
+v[0]=v[1]=0;
+CYCLE(cur, "CAPITALS")
+{             
+	v[2]=VS(cur,"capital_good_energy_intensity");
+	if(v[2]!=0)
+		{
+		v[0]=v[0]+v[2];
+		v[1]=v[1]+1;
+		}
+	else
+		{
+		v[0]=v[0];
+		v[1]=v[1];
+		}
+}
+v[3]=VL("Firm_Avg_Energy_Intensity",1);
+v[4]=v[1]!=0? v[0]/v[1]: v[3];
+RESULT(v[4])
 
 
 EQUATION("Firm_Capacity_Utilization")

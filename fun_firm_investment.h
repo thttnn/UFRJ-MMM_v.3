@@ -86,6 +86,8 @@ In this variable, the firm receive the new capital goods ordered in the last inv
 	v[1]=VL("Firm_Frontier_Productivity",v[0]);									//available technology when the capital good was ordered
 	v[2]=V("Firm_Effective_Capital_Goods_Expansion");	
 	v[3]=V("Firm_Effective_Capital_Goods_Replacement");	
+	v[4]=VL("Firm_Frontier_Input_Tech_Coefficient",v[0]);
+	v[7]=VL("Firm_Frontier_Energy_Intensity",v[0]);
 	v[5]=V("sector_capital_output_ratio");										//amount of Capital Goods bought
 	v[8]=uniform_int(30, 50);
 	
@@ -95,6 +97,8 @@ In this variable, the firm receive the new capital goods ordered in the last inv
 			{
 			cur=ADDOBJ("CAPITALS");												//create new capital objects
 			WRITES(cur, "capital_good_productivity_initial", v[1]);				//writes the new capital productivity as the frontier productivity when it was ordered
+			WRITES(cur, "capital_good_energy_intensity", v[7]);				//writes the new capital productivity as the frontier productivity when it was ordered
+			WRITES(cur, "capital_good_input_tech_coefficient", v[4]);				//writes the new capital productivity as the frontier productivity when it was ordered
 			WRITES(cur, "capital_good_productive_capacity", (1/v[5]));			//writes the productive capacity as the inverse of current capital output ratio of the sector
 			WRITES(cur, "capital_good_date_birth", t);							//writes the new capital date of birth as the current time period
 			WRITES(cur, "capital_good_to_replace", 0);							//writes the parameter that identifies the capital goods to be replaced as zero
@@ -114,6 +118,8 @@ In this variable, the firm receive the new capital goods ordered in the last inv
      		if(v[10]==1&&v[3]>0)
      			{
      			WRITES(cur, "capital_good_productivity_initial", v[1]);				//writes the new capital productivity as the frontier productivity when it was ordered
+				WRITES(cur, "capital_good_energy_intensity", v[7]);				//writes the new capital productivity as the frontier productivity when it was ordered
+				WRITES(cur, "capital_good_input_tech_coefficient", v[4]);				//writes the new capital productivity as the frontier productivity when it was ordered
 				WRITES(cur, "capital_good_date_birth", t);							//writes the new capital date of birth as the current time period
 				WRITES(cur, "capital_good_to_replace", 0);							//writes the parameter that identifies the capital goods to be replaced as zero
 				WRITES(cur, "capital_good_to_depreciate", 0);
@@ -228,9 +234,9 @@ Nominal value of desired new capital goods for modernization replacement
  v[2]=V("Firm_Frontier_Productivity");
  v[3]=MAX("Capital_Good_Productivity");
  v[4]=V("Firm_Frontier_Input_Tech_Coefficient");
- v[5]=MIN("Capital_Good_Input_Tech_Coefficient");
+ v[5]=MIN("capital_good_input_tech_coefficient");
  v[6]=V("Firm_Frontier_Energy_Intensity");
- v[7]=MIN("Capital_Good_Energy_Intensity");
+ v[7]=MIN("capital_good_energy_intensity");
  
  v[8]=max(v[2],v[3]);
  v[9]=min(v[4],v[5]);
@@ -260,15 +266,15 @@ Nominal value of desired new capital goods for modernization replacement
      {
      v[18]=VS(cur, "capital_good_productive_capacity");   		   // current capital good productive capacity  
      v[19]=VS(cur, "Capital_Good_Productivity");				   // current capital good productivivty
-	 v[20]=VS(cur, "Capital_Good_Input_Tech_Coefficient");		   // current capital good input coefficient
-	 v[21]=VS(cur, "Capital_Good_Energy_Intensity");			   // current capital good energy intensity
+	 v[20]=VS(cur, "capital_good_input_tech_coefficient");		   // current capital good input coefficient
+	 v[21]=VS(cur, "capital_good_energy_intensity");			   // current capital good energy intensity
 	 
 	
 	 v[23]=(1/v[19]-1/v[8])>0? (v[11]*(1+v[31]))/(v[15]*((1/(v[19]))-(1/(v[8])))) : v[14];	   // calculates the payback for productivity 
      v[24]=v[20]-v[9]>0? (v[11]*(1+v[31]))/(v[12]*(v[20]-v[9])) : v[14];	               // calculates the payback for inputs 
 	 v[25]=v[21]-v[10]>0? (v[11]*(1+v[31]))/(v[13]*(v[21]-v[10])) : v[14];	               // calculates the payback for energy 
 
-		if(v[23]<v[14])			   // if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
+		if(v[23]<v[14]||v[24]<v[14]||v[25]<v[14])			   // if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
         	v[16]=v[16]+v[18];         							   // sum up the productive capacity to replace
          else													   // else
          	v[16]=v[16]; 																																						// do not sum replacement cost  
@@ -337,9 +343,9 @@ New productive capacity in aquisition of new equipment to replace obsolete ones.
  v[2]=V("Firm_Frontier_Productivity");
  v[3]=MAX("Capital_Good_Productivity");
  v[4]=V("Firm_Frontier_Input_Tech_Coefficient");
- v[5]=MIN("Capital_Good_Input_Tech_Coefficient");
+ v[5]=MIN("capital_good_input_tech_coefficient");
  v[6]=V("Firm_Frontier_Energy_Intensity");
- v[7]=MIN("Capital_Good_Energy_Intensity");
+ v[7]=MIN("capital_good_energy_intensity");
  
  v[8]=max(v[2],v[3]);
  v[9]=min(v[4],v[5]);
@@ -375,8 +381,8 @@ New productive capacity in aquisition of new equipment to replace obsolete ones.
 				{
 				v[20]=VS(cur, "Capital_Good_Productivity");			// current capital good productivivty
 				v[21]=VS(cur, "capital_good_productive_capacity");  // current capital good productive capacity  
-				v[22]=VS(cur, "Capital_Good_Input_Tech_Coefficient");		   // current capital good input coefficient
-				v[23]=VS(cur, "Capital_Good_Energy_Intensity");			   // current capital good energy intensity
+				v[22]=VS(cur, "capital_good_input_tech_coefficient");		   // current capital good input coefficient
+				v[23]=VS(cur, "capital_good_energy_intensity");			   // current capital good energy intensity
 				
 				
 				v[24]=v[21]*v[17]*v[11];							// current nominal cost of new capital goods to replace that amount of productive capacity
@@ -385,7 +391,7 @@ New productive capacity in aquisition of new equipment to replace obsolete ones.
 				v[27]=v[23]-v[10]>0? (v[11]*(1+v[31]))/(v[13]*(v[23]-v[10])) : v[14];	            // calculates the payback for energy 
 				
 				
-				if(v[24]<=v[28] && (v[25]<v[14]))		// if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
+				if(v[24]<=v[28] && (v[25]<v[14]||v[25]<v[14]||v[26]<v[14]))		// if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
 					{
 					WRITES(cur, "capital_good_to_replace",1);		// mark the current capital good to replace
 					v[32]=v[32]+v[24];								// sum up the replacement cost

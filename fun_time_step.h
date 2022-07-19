@@ -151,8 +151,6 @@ V("Firm_Frontier_Productivity");
 V("Firm_Quality");	
 V("Firm_Frontier_Input_Tech_Coefficient"); 
 V("Firm_Frontier_Energy_Intensity"); 
-V("Capital_Good_Input_Tech_Coefficient"); 
-V("Capital_Good_Energy_Intensity"); 												   	
 
 /*****CAPITAL AND INVESTMENT DECISIONS*****/
 V("Firm_Investment_Period");						   		

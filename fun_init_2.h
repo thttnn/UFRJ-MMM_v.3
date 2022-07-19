@@ -320,11 +320,11 @@ CYCLE(cur, "SECTORS")
 	WRITELLS(cur1, "Firm_Stock_Loans", v[183]/v[152], 0, 1);
 	WRITELLS(cur1, "Firm_Avg_Input_Tech_Coefficient", v[154], 0, 1);
 	WRITELLS(cur1, "Firm_Avg_Energy_Intensity", v[320], 0, 1);
-	WRITELLS(cur1, "Firm_Frontier_Input_Tech_Coefficient", v[154], 0, 1);
-	WRITELLS(cur1, "Firm_Frontier_Energy_Intensity", v[320], 0, 1);
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Demand_Capital_Goods_Expansion", 0, 0, i);
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Demand_Capital_Goods_Replacement", 0, 0, i);
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Frontier_Productivity", v[159], 0, i);
+	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Frontier_Input_Tech_Coefficient", v[154], 0, i);
+	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Frontier_Energy_Intensity", v[320], 0, i);
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Productive_Capacity", v[197]/v[152], 0, i);
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Interest_Payment", v[185]/v[152], 0, i);
 	for(i=1;i<=v[151];i++)		WRITELLS(cur1, "Firm_Debt_Rate", v[162], 0, i);
@@ -338,7 +338,9 @@ CYCLE(cur, "SECTORS")
 	cur2=SEARCHS(cur1, "CAPITALS");														
 	WRITELLS(cur2, "Capital_Good_Acumulated_Production", 0, 0, 1);      				
 	WRITES(cur2, "capital_good_productive_capacity", 1/v[158]);     					
-	WRITES(cur2, "capital_good_productivity_initial", v[159]);       		  			
+	WRITES(cur2, "capital_good_productivity_initial", v[159]);  
+	WRITES(cur2, "capital_good_input_tech_coefficient", v[154]);
+	WRITES(cur2, "capital_good_energy_intensity", v[320]);	
 	WRITES(cur2, "capital_good_to_replace", 0);
 	WRITES(cur2, "capital_good_date_birth", 0);
 	WRITES(cur2, "id_capital_good_number", 1);    

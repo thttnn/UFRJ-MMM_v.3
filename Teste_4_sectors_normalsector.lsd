@@ -302,8 +302,8 @@ Label Root
 					Var: Capital_Good_Acumulated_Production
 					Var: Capital_Good_Production
 					Var: Capital_Good_Productivity
-					Var: Capital_Good_Energy_Intensity
-					Var: Capital_Good_Input_Tech_Coefficient
+					Param: capital_good_energy_intensity
+					Param: capital_good_input_tech_coefficient
 
 				}
 
@@ -1078,7 +1078,7 @@ Param: cb_target_capacity 0 n + n n	0.15
 Param: cb_target_credit_growth 0 n + n n	0.01
 Param: cb_target_debt_rate 0 n + n n	0.5
 Param: cb_target_reserves 0 n + n n	0
-Var: Central_Bank_Basic_Interest_Rate 1 s + d n	0
+Var: Central_Bank_Basic_Interest_Rate 1 s + n n	0
 Param: cb_credibility 0 s + n n	0
 Param: cb_credibility_adjustment 0 n + n n	0
 Param: cb_credibility_tolerance 0 n + n n	0.5
@@ -1186,9 +1186,9 @@ Param: sector_initial_productivity 0 n + n n	1	1	1	1
 Param: sector_initial_profit_rate 0 n + n n	0.2	0.5	0.1	0.1
 Param: sector_initial_propensity_import_inputs 0 n + n n	0.05	0.05	0.05	0.05
 Param: sector_initial_quality 0 n + n n	1	1	1	1
-Param: sector_input_imitation_share 0 n + n n	0	0	0	0
+Param: sector_input_imitation_share 0 n + n n	0.005	0.005	0.005	0.005
 Param: sector_input_import_elasticity_price 0 n + n n	0	0	0	0
-Param: sector_input_innovation_share 0 n + n n	0	0	0	0
+Param: sector_input_innovation_share 0 n + n n	0.005	0.005	0.005	0.005
 Param: sector_input_tech_coefficient 0 n + n n	0.3	0.3	0.3	0.3
 Param: sector_investment_frequency 0 n + n n	4	4	4	4
 Param: sector_learning_adjustment 0 n + n n	0	0	0	0
@@ -1206,7 +1206,7 @@ Param: sector_quality_imitation_share 0 n + n n	0.005	0.005	0.005	0.005
 Param: sector_quality_innovation_share 0 n + n n	0.005	0.005	0.005	0.005
 Param: sector_std_dev_innovation 0 n + n n	0.01	0.01	0.01	0.01
 Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5	0.5
-Param: sector_tech_opportunity_input 0 n + n n	0.001	0.001	0.001	0.001
+Param: sector_tech_opportunity_input 0 n + n n	0.0005	0.0005	0.0005	0.0005
 Param: sector_tech_opportunity_productivity 0 n + n n	0.0025	0.0025	0.0025	0.0025
 Param: sector_tech_opportunity_quality 0 n + n n	0.0025	0.0025	0.0025	0.0025
 Var: Sector_Avg_Competitiveness 1 n + n n	1	1	1	1
@@ -1270,9 +1270,9 @@ Var: Sector_Turbulence 0 s + n n
 Param: switch_entry 0 n + n n	1	1	1	1
 Param: switch_extra_imports 0 n + n n	0	0	0	0
 Var: Sector_Min_Energy_Intensity 1 n + n n	0	0	0	0
-Param: sector_energy_imitation_share 0 n + n n	0	0	0	0
-Param: sector_energy_innovation_share 0 n + n n	0	0	0	0
-Param: sector_tech_opportunity_energy 0 n + n n	0	0	0	0
+Param: sector_energy_imitation_share 0 n + n n	0.005	0.005	0.005	0.005
+Param: sector_energy_innovation_share 0 n + n n	0.005	0.005	0.005	0.005
+Param: sector_tech_opportunity_energy 0 n + n n	0.0005	0.0005	0.0005	0.0005
 
 Object: FIRMS C	1	1	1	1
 Param: firm_bank 0 n + n n	0	0	0	0
@@ -1287,7 +1287,7 @@ Var: Firm_Available_Funds_Replacement 0 n + n n
 Var: Firm_Available_Inputs_Ratio 0 n + n n
 Var: Firm_Available_Loans 0 n + n n
 Var: Firm_Avg_Debt_Rate 1 n + n n	0	0	0	0
-Var: Firm_Avg_Productivity 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Avg_Productivity 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Firm_Capacity_Utilization 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Firm_Capital 1 n + n n	0	0	0	0
 Var: Firm_Competitiveness 1 n + n n	1	1	1	1
@@ -1383,8 +1383,8 @@ Var: Firm_Imitation_Energy_Intensity 0 n + n n
 Var: Firm_Innovation_Energy_Intensity 0 n + n n
 Var: Firm_Avg_Energy_Intensity 1 s + n n	0	0	0	0
 Var: Firm_Avg_Input_Tech_Coefficient 1 s + n n	0	0	0	0
-Var: Firm_Frontier_Energy_Intensity 1 s + n n	0	0	0	0
-Var: Firm_Frontier_Input_Tech_Coefficient 1 s + n n	0	0	0	0
+Var: Firm_Frontier_Energy_Intensity 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Frontier_Input_Tech_Coefficient 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 
 Object: CAPITALS C	1	1	1	1
 Param: capital_good_date_birth 0 n + n n	-59	-59	-59	-59
@@ -1397,8 +1397,8 @@ Param: id_capital_good_number 0 n + n n	1	1	1	1
 Var: Capital_Good_Acumulated_Production 1 n + n n	0	0	0	0
 Var: Capital_Good_Production 0 n + n n
 Var: Capital_Good_Productivity 0 n + n n
-Var: Capital_Good_Energy_Intensity 0 n + n n
-Var: Capital_Good_Input_Tech_Coefficient 0 n + n n
+Param: capital_good_energy_intensity 0 n + n n	0	0	0	0
+Param: capital_good_input_tech_coefficient 0 n + n n	0	0	0	0
 
 Object: FIRM_LOANS C	1	1	1	1
 Param: firm_loan_fixed_amortization 0 n + n n	0	0	0	0
@@ -1547,7 +1547,7 @@ Var: WAGE_r 0 s + n n
 
 SIM_NUM 1
 SEED 1
-MAX_STEP 600
+MAX_STEP 600 100 0 0 0 0 0
 EQUATION fun_micro_macro_v.3.6.cpp
 MODELREPORT report_Sim1.html
 
@@ -3485,7 +3485,7 @@ END_DESCRIPTION
 Parameter_sector_tech_opportunity_input
 
 _INIT_
-All 3 instances equal to 0.001
+All 4 instances equal to 0
 END_DESCRIPTION
 
 Parameter_sector_tech_opportunity_productivity
@@ -3769,19 +3769,19 @@ END_DESCRIPTION
 Parameter_sector_energy_imitation_share
 
 _INIT_
-All 4 instances equal to 0
+All 4 instances equal to 0.005
 END_DESCRIPTION
 
 Parameter_sector_energy_innovation_share
 
 _INIT_
-All 4 instances equal to 0
+All 4 instances equal to 0.005
 END_DESCRIPTION
 
 Parameter_sector_tech_opportunity_energy
 
 _INIT_
-All 4 instances equal to 0
+All 4 instances equal to 0.001
 END_DESCRIPTION
 
 Object_FIRMS
@@ -4314,12 +4314,16 @@ Variable_Capital_Good_Productivity
 
 END_DESCRIPTION
 
-Variable_Capital_Good_Energy_Intensity
-Change Later with modernization investmentChange Later with modernization investment
+Parameter_capital_good_energy_intensity
+
+_INIT_
+All 4 instances equal to 0
 END_DESCRIPTION
 
-Variable_Capital_Good_Input_Tech_Coefficient
-Change Later with modernization investmentChange Later with modernization investment
+Parameter_capital_good_input_tech_coefficient
+
+_INIT_
+All 4 instances equal to 0
 END_DESCRIPTION
 
 Object_FIRM_LOANS

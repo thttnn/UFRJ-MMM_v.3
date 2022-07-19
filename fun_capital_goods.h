@@ -32,17 +32,3 @@ Capital good's productivity increase with accumulated production due to a learni
 RESULT(v[6])
 
 
-EQUATION("Capital_Good_Input_Tech_Coefficient")
-/*
-Change Later with modernization investment
-*/   
-	v[1]=V("Firm_Frontier_Input_Tech_Coefficient");                 
-RESULT(v[1])
-
-
-EQUATION("Capital_Good_Energy_Intensity")
-/*
-Change Later with modernization investment
-*/   
-	v[1]=V("Firm_Frontier_Energy_Intensity");                 
-RESULT(v[1])
