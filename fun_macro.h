@@ -389,6 +389,16 @@ Annual Nominal GDP growth rate.
 RESULT(v[3])
 
 
+EQUATION("Country_Carbon_Intensity")
+/*
+Annual Nominal GDP growth rate.
+*/
+	v[1]=V("Country_Real_GDP");
+	v[2]=V("Country_Emissions");
+	v[3]= v[1]!=0? v[2]/v[1] : 0;
+RESULT(v[3])
+
+
 EQUATION("Country_Annual_Growth")
 /*
 Annual Nominal GDP growth rate.
@@ -460,6 +470,9 @@ RESULT(1-V("Country_Capacity_Utilization"))
 
 EQUATION("Country_Inventories")
 RESULT(WHTAVE("Sector_Avg_Price","Sector_Inventories"))
+
+EQUATION("Country_Emissions")
+RESULT(SUM("Sector_Emissions"))
 
 
 EQUATION("Country_Inventories_Variation")

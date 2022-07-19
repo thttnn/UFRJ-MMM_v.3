@@ -234,6 +234,7 @@ CYCLE(cur, "SECTORS")
 	v[167]=VS(cur, "sector_initial_quality");
 	v[168]=VS(cur, "sector_desired_inventories_proportion");
 	v[169]=VS(cur, "sector_price_frequency");
+	v[350]=VS(cur, "sector_initial_carbon_intensity");
 	
 	v[170]=v[150]*v[153];											//sector revenue
 	v[171]=v[150]*v[153]*v[160];									//sector taxation
@@ -321,6 +322,7 @@ CYCLE(cur, "SECTORS")
 	WRITELLS(cur1, "Firm_Stock_Loans", v[183]/v[152], 0, 1);
 	WRITELLS(cur1, "Firm_Avg_Input_Tech_Coefficient", v[154], 0, 1);
 	WRITELLS(cur1, "Firm_Avg_Energy_Intensity", v[320], 0, 1);
+	WRITELLS(cur1, "Firm_Avg_Carbon_Intensity", v[350], 0, 1);
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Demand_Capital_Goods_Expansion", 0, 0, i);
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Demand_Capital_Goods_Replacement", 0, 0, i);
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Frontier_Productivity", v[159], 0, i);
@@ -342,6 +344,7 @@ CYCLE(cur, "SECTORS")
 	WRITES(cur2, "capital_good_productivity_initial", v[159]);  
 	WRITES(cur2, "capital_good_input_tech_coefficient", v[154]);
 	WRITES(cur2, "capital_good_energy_intensity", v[320]);	
+	WRITES(cur2, "capital_good_carbon_intensity", v[350]);
 	WRITES(cur2, "capital_good_to_replace", 0);
 	WRITES(cur2, "capital_good_date_birth", 0);
 	WRITES(cur2, "id_capital_good_number", 1);    

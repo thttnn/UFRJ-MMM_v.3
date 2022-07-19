@@ -9,8 +9,8 @@ MMM_v.3.6
 #
 595x445+1056+10
 720x540+321+419
-Teste_4_sectors_normalsector_householdenergy.lsd
+Teste_4_sectors_normalsector_householdenergy_carbon.lsd
 COUNTRY
 1
-84
-0.632183908045977
+88
+0.6404494382022472

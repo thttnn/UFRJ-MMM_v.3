@@ -50,18 +50,21 @@ The actual production of each sector will be determined by the constraint impose
 	v[1]=V("Firm_Available_Inputs_Ratio");
 	v[2]=v[1]*v[0];                                                                            		//effective planned production, constrained by the ratio of available inputs
 	SORT("CAPITALS", "Capital_Good_Productivity", "DOWN");                                        	//rule for the use of capital goods, sorts firm's capital goods by productivity in a decreasing order
-	v[3]=0;                                                                                      	//initializes the CYCLE
+	v[3]=v[7]=0;                                                                                      	//initializes the CYCLE
 	CYCLE(cur, "CAPITALS")                                                                        	//CYCLE trought the capital goods of the firm
 	{
 		v[4]=VS(cur, "capital_good_productive_capacity");                                          	//capital productivity capacity
+		v[8]=VS(cur, "capital_good_carbon_intensity");
 		v[5]=max(0,(min(v[4], v[2])));                                                             	//maximum capacity of each capital goods, constrained by effective planned production, and it can not be negative
 		WRITES(cur, "Capital_Good_Production", v[5]);                                              	//the capacity of each capital goods is in fact its production
 		v[2]=v[2]-v[5];                                                                            	//it subracts the production of the first capital good from the effective planned production before going to the next capital good
-		v[3]=v[3]+v[5];                                                                            	//sums up the production of each capital good to determine firm's effective production
+		v[3]=v[3]+v[5]; 																			//sums up the production of each capital good to determine firm's effective production
+		v[7]=v[7]+v[5]*v[8];
 	}
+	WRITE("Firm_Emissions", v[7]);  
 RESULT(v[3])
 
-
+EQUATION_DUMMY("Firm_Emissions", "Firm_Effective_Production")
 EQUATION_DUMMY("Capital_Good_Production", "Firm_Effective_Production")
 
 
@@ -126,6 +129,30 @@ CYCLE(cur, "CAPITALS")
 		}
 }
 v[3]=VL("Firm_Avg_Energy_Intensity",1);
+v[4]=v[1]!=0? v[0]/v[1]: v[3];
+RESULT(v[4])
+
+
+EQUATION("Firm_Avg_Carbon_Intensity")
+/*
+Firm's productivity will be an average of each capital good productivity weighted by their repective production	
+*/
+v[0]=v[1]=0;
+CYCLE(cur, "CAPITALS")
+{             
+	v[2]=VS(cur,"capital_good_carbon_intensity");
+	if(v[2]!=0)
+		{
+		v[0]=v[0]+v[2];
+		v[1]=v[1]+1;
+		}
+	else
+		{
+		v[0]=v[0];
+		v[1]=v[1];
+		}
+}
+v[3]=VL("Firm_Avg_Carbon_Intensity",1);
 v[4]=v[1]!=0? v[0]/v[1]: v[3];
 RESULT(v[4])
 

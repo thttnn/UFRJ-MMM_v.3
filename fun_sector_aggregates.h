@@ -166,6 +166,9 @@ RESULT(SUM("Firm_Stock_Deposits"))
 EQUATION("Sector_Effective_Loans")
 RESULT(SUM("Firm_Effective_Loans"))
 
+EQUATION("Sector_Emissions")                                                               
+RESULT(SUM("Firm_Emissions"))
+
 EQUATION("Sector_Demand_Met")
 /*
 Percentage of demand fulfilled by each sector
