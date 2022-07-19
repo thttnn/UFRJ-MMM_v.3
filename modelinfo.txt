@@ -13,4 +13,4 @@ Teste_4_sectors_normalsector_householdenergy.lsd
 COUNTRY
 1
 84
-0.6235294117647059
+0.632183908045977

@@ -379,6 +379,16 @@ Real quarterly GDP is the nominal GDP over the price index.
 RESULT(v[2])
 
 
+EQUATION("Country_Energy_Intensity")
+/*
+Annual Nominal GDP growth rate.
+*/
+	v[1]=V("Country_Real_GDP");
+	v[2]=VS(energy, "Sector_Effective_Production");
+	v[3]= v[1]!=0? v[2]/v[1] : 0;
+RESULT(v[3])
+
+
 EQUATION("Country_Annual_Growth")
 /*
 Annual Nominal GDP growth rate.
@@ -429,6 +439,9 @@ RESULT(VS(capital, "Sector_Sales")*VS(capital, "Sector_Avg_Price"))
 
 EQUATION("Country_Nominal_Input_Production")
 RESULT(VS(input, "Sector_Sales")*VS(input, "Sector_Avg_Price"))
+
+EQUATION("Country_Nominal_Energy_Production")
+RESULT(VS(energy, "Sector_Sales")*VS(energy, "Sector_Avg_Price"))
 
 EQUATION("Country_Total_Nominal_Production")
 RESULT(WHTAVE("Sector_Avg_Price","Sector_Sales"))

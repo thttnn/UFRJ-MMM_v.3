@@ -269,6 +269,7 @@ V("Country_Likelihood_Crisis");
 V("Sector_Employment");                                 						    	
 V("Sector_Idle_Capacity");									
 V("Country_Idle_Capacity");  
+V("Country_Energy_Intensity"); 
                                     	
 
 /*****ANALYSIS*****/

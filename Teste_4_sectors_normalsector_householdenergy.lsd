@@ -795,6 +795,8 @@ Label Root
 		Param: switch_foroward_looking
 		Var: Country_Domestic_Energy_Demand
 		Param: country_initial_energy_consumption_share_GDP
+		Var: Country_Nominal_Energy_Production
+		Var: Country_Energy_Intensity
 
 	}
 
@@ -896,6 +898,8 @@ Var: Country_Industrial_Profit_Share 0 s + n n
 Param: switch_foroward_looking 0 n + n n	1
 Var: Country_Domestic_Energy_Demand 0 s + n n
 Param: country_initial_energy_consumption_share_GDP 0 n + n n	0.1
+Var: Country_Nominal_Energy_Production 0 s + n n
+Var: Country_Energy_Intensity 0 s + n n
 
 Object: CLASSES C	3
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	0.5	0.1
@@ -1171,7 +1175,7 @@ Param: sector_desired_market_share 0 n + n n	0.1	0.25	0.15	0.15
 Param: sector_elascitity_delay 0 n + n n	0.25	0.25	0.25	0.25
 Param: sector_elasticity_price 0 n + n n	1	1	1	1
 Param: sector_elasticity_quality 0 n + n n	0.5	0.5	0.5	0.5
-Param: sector_energy_intensity 0 n + n n	0.2	0.2	0.2	0.2
+Param: sector_energy_intensity 0 n + n n	0.1	0.1	0.1	0.1
 Param: sector_expectations 0 n + n n	0.3	0.3	0.3	0.3
 Param: sector_exports_coefficient 0 s + n n	0	0	0	0
 Param: sector_exports_elasticity_income 0 n + n n	0.5	0.5	0.5	0.5
@@ -1959,6 +1963,14 @@ Parameter_country_initial_energy_consumption_share_GDP
 
 _INIT_
 All 1 instances equal to 0.1
+END_DESCRIPTION
+
+Variable_Country_Nominal_Energy_Production
+
+END_DESCRIPTION
+
+Variable_Country_Energy_Intensity
+
 END_DESCRIPTION
 
 Object_CLASSES
@@ -3277,7 +3289,7 @@ END_DESCRIPTION
 Parameter_sector_energy_intensity
 
 _INIT_
-All 4 instances equal to 0.2
+All 4 instances equal to 0.1
 END_DESCRIPTION
 
 Parameter_sector_expectations
