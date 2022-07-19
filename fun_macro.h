@@ -125,7 +125,11 @@ EQUATION("Country_Domestic_Energy_Demand")
 	v[4]=VS(energy, "Sector_Avg_Price");
 	v[5]=V("Government_Effective_Energy");
 	v[6]= v[4]!=0? v[5]/v[4] : 0;
-	v[7]=v[1]+v[6];
+	
+	v[8]=0;                                                 			//initializes the CYCLE
+	CYCLE(cur, "CLASSES")                                   			//CYCLE trought the sectors
+		v[8]=v[8]+SUMS(cur, "Class_Real_Energy_Demand");
+	v[7]=v[1]+v[6]+v[8];
 RESULT(v[7])
 
 
@@ -150,14 +154,17 @@ Average Price of the consumption goods sector
 	v[0]=VS(consumption, "Sector_Avg_Price");
 	v[1]=VS(consumption, "Sector_External_Price");
 	v[2]=VS(external, "Country_Exchange_Rate");
-	v[3]=0;
+	v[10]=VS(energy, "Sector_Avg_Price");
+	v[3]=v[8]=0;
 	CYCLE(cur, "CLASSES")
 	{
 		v[5]=VS(cur, "Class_Imports_Share");
 		v[6]=VLS(cur, "Class_Income_Share",1);
-		v[3]=v[3]+v[5]*v[6];		
+		v[7]=VS(cur, "class_propensity_to_energy");
+		v[3]=v[3]+v[5]*v[6];
+		v[8]=v[8]+v[7]*v[6];
 	}
-	v[4]=v[0]*(1-v[3])+v[1]*v[2]*v[3];
+	v[4]=(v[0]*(1-v[3])+v[1]*v[2]*v[3])*(1-v[8]) + v[8]*v[10];
 RESULT(v[4])
 
 

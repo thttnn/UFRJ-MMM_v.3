@@ -7,10 +7,10 @@ MMM_v.3.6
 722x469+821+296
 740x894+52+36
 #
-595x445+1022+8
+595x445+1056+10
 720x540+321+419
-Teste_4_sectors_normalsector.lsd
-SECTORS
+Teste_4_sectors_normalsector_householdenergy.lsd
+COUNTRY
 1
-0
-0.0
+84
+0.6235294117647059

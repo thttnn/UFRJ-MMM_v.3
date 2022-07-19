@@ -19,6 +19,7 @@ v[0]=VS(country, "annual_frequency");
 v[1]=VS(country, "country_initial_depreciation_share_GDP");
 v[2]=VS(country, "country_initial_government_share_GDP");
 v[3]=VS(country, "country_initial_exports_share_GDP");
+v[4]=VS(country, "country_initial_energy_consumption_share_GDP");
 //CONSUMPTION PARAMETERS
 v[10]=VS(consumption, "sector_initial_depreciation_scale");
 v[11]=VS(consumption, "sector_investment_frequency");
@@ -172,10 +173,10 @@ v[70]=VS(centralbank, "cb_target_annual_inflation");
 
 	//SECTORAL DEMAND CALCULATION
 	v[140]=v[100]*(1-v[1]-v[2]-v[3])-v[103];														//nominal domestic consumption
-	v[141]=(v[140]/v[13])+v[128]+v[109];															//real consumption demand
+	v[141]=((v[140]-v[100]*v[4])/v[13])+v[128]+v[109];															//real consumption demand
 	v[142]=(v[20]*v[22]/v[21])+(v[30]*v[32]/v[31])+(v[10]*v[12]/v[11])+v[129]+v[110];				//real capital demand
 	v[143]=v[141]*v[14]*(1-v[15]) + v[142]*v[24]*(1-v[25]) + v[130] + v[111];                       //exogenous determinants of input demand
-	v[144]=v[141]*v[18] + v[142]*v[28] + v[132] + v[115];                                           //exogenous determinants of energy demand
+	v[144]=v[141]*v[18] + v[142]*v[28] + v[132] + v[115] +v[100]*v[4]/v[13];                                           //exogenous determinants of energy demand
 	v[145]=(v[143]*(1-v[38]) + v[144]*v[304]*(1-v[305]))/
 			((1-v[38])-(1-v[308])*v[34]*(1-v[35]) - v[38]*v[304]*(1-v[305]));						//real input demand
 	v[146]=(v[144] + v[145]*v[38])/(1-v[308]);
@@ -509,7 +510,8 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 		v[252]+=v[250];												//total induced savings
 		
 		LOG("\nClass %.0f",SEARCH_INST(cur));LOG(" Propensity to Import %f.",v[248]);
-		WRITES(cur, "class_direct_tax", v[234]);//same tax rate 
+		WRITES(cur, "class_direct_tax", v[234]); 
+		WRITES(cur, "class_propensity_to_energy", v[100]*v[4]/v[141]);//same propensity to consume energy
 		WRITES(cur, "class_initial_propensity_import", v[248]);
 		WRITELLS(cur, "Class_Stock_Deposits", v[225]*v[241], 0, 1);
 		//WRITELLS(cur, "Class_Stock_Deposits", 0, 0, 1);

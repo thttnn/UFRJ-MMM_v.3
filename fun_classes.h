@@ -50,17 +50,16 @@ Class real domestic conumption is based on average past real disposable income f
 	v[1]=V("class_propensity_to_spend");          				//class propensity to consume on income
   	v[2]=V("Class_Real_Autonomous_Consumption");    			//class autonomous consumption
 	v[4]=V("Class_Imports_Share");
-  	v[3]=v[0]*v[1]*(1-v[4])+v[2];                            	//class real desired consumption
+	v[6]=V("class_propensity_to_energy");
+	v[3]=v[0]*v[1]*(1-v[6])*(1-v[4])+v[2];                            	//class real desired consumption
+	v[5]=v[0]*v[1]*(1-v[6])*v[4];
+	v[7]=v[0]*v[1]*v[6];
+	WRITE("Class_Real_Desired_Imported_Consumption",v[5]);
+	WRITE("Class_Real_Desired_Energy_Consumption",v[7]);
 RESULT(v[3])
 
-
-EQUATION("Class_Real_Desired_Imported_Consumption")
-	
-	v[0]=V("Class_Avg_Real_Income");
-	v[1]=V("class_propensity_to_spend");						//class propensity to import
-	v[2]=V("Class_Imports_Share");
-	v[3]=v[0]*v[1]*v[2];
-RESULT(v[3])
+EQUATION_DUMMY("Class_Real_Desired_Imported_Consumption", "Class_Real_Desired_Domestic_Consumption")
+EQUATION_DUMMY("Class_Real_Desired_Energy_Consumption", "Class_Real_Desired_Domestic_Consumption")
 	
 
 EQUATION("Class_Desired_Expenses")
@@ -72,7 +71,9 @@ Class' nominal desired expenses depends on effective domestic consumption times 
 	v[2]=VS(external,"Country_Exchange_Rate");                      //exchange rate
 	v[3]=VS(consumption, "Sector_Avg_Price");                       //sector average price
 	v[4]=VS(consumption, "Sector_External_Price");                  //sector external price
-	v[5]=v[0]*v[3] + v[1]*v[2]*v[4];     					 		//total nominal expenses                  	
+	v[6]=VS(energy, "Sector_Avg_Price");
+	v[7]=V("Class_Real_Desired_Energy_Consumption");
+	v[5]=v[0]*v[3] + v[1]*v[2]*v[4] + v[7]*v[6];     			    //total nominal expenses                  	
 RESULT(v[5])
 
 
@@ -315,15 +316,23 @@ Class effective external domestic consumption, depending on desired level of imp
 	v[5]=VS(external,"Country_Exchange_Rate");                  //exchange rate
 	v[6]=v[3]*v[1];												//nominal desired expenses in domestic consumption
 	v[7]=v[4]*v[2]*v[5];										//nominal desired expenses in imported consumption
-	v[8]=min(v[0],v[6]);										//effective domestic expenses 
+	v[12]=VS(energy, "Sector_Avg_Price");
+	v[13]=V("Class_Real_Desired_Energy_Consumption");
+	v[14]=v[12]*v[13];
+	
+	v[15]=min(v[0],v[14]);                                       //effective expenses in energy
+	v[16]=v[15]/v[12];                                           //eeffective real energy demand
+	WRITE("Class_Real_Energy_Demand", v[16]);
+	v[8]=min(v[0]-v[15],v[6]);									 //effective domestic expenses 
 	v[9]=v[8]/v[1];												//real effective domestic consumption
-	v[10]=min(v[7],v[0]-v[8]);									//effective imported expenses
+	v[10]=min(v[7],v[0]-v[15]-v[8]);									//effective imported expenses
 	v[11]=v[10]/(v[2]*v[5]);									//real effective imported consumption
-
 	WRITE("Class_Real_Imported_Consumption_Demand", v[11]);
 RESULT(v[9])
 
 EQUATION_DUMMY("Class_Real_Imported_Consumption_Demand", "Class_Real_Domestic_Consumption_Demand")
+EQUATION_DUMMY("Class_Real_Energy_Demand", "Class_Real_Domestic_Consumption_Demand")
+
 	
 
 EQUATION("Class_Effective_Real_Domestic_Consumption")
@@ -335,6 +344,15 @@ Class effective real domestic consumption, depending on how much the domestic co
 	v[2]=v[0]*v[1];
 RESULT(v[2])
 
+
+EQUATION("Class_Effective_Real_Energy_Consumption")
+/*
+Class effective real domestic consumption, depending on how much the domestic consumption goods sector was able to meet demand.
+*/
+	v[0]=VS(energy,"Sector_Demand_Met");                    //percentage of the total demand met by the sector
+	v[1]=V("Class_Real_Energy_Demand");			            //real demand    
+	v[2]=v[0]*v[1];
+RESULT(v[2])
 
 EQUATION("Class_Effective_Real_Imported_Consumption")
 /*
@@ -358,7 +376,9 @@ Class effective expenses is the sum of effective domestic consumption and effect
 	v[2]=VS(external,"Country_Exchange_Rate");																					 
 	v[3]=V("Class_Effective_Real_Domestic_Consumption");		 //effective real domestic consumption
 	v[4]=V("Class_Effective_Real_Imported_Consumption"); 	     //effective real imports
-	v[5]=v[0]*v[3] + v[1]*v[2]*v[4];							 //effective nominal expenses		
+	v[6]=V("Class_Effective_Real_Energy_Consumption");
+	v[7]=VS(energy, "Sector_Avg_Price");
+	v[5]=v[0]*v[3] + v[1]*v[2]*v[4] + v[6]*v[7];				 //effective nominal expenses		
 RESULT(v[5])
 
 
