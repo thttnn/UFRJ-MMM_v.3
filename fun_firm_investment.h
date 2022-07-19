@@ -222,19 +222,24 @@ EQUATION("Firm_Desired_Replacement_Investment_Expenses")
 /*
 Nominal value of desired new capital goods for modernization replacement
 */
+ v[0]=V("Firm_Investment_Period");
  v[1]=V("sector_investment_frequency");
- v[3]=V("Firm_Investment_Period");
- v[4]=V("Firm_Frontier_Productivity");
- v[5]=V("sector_learning_adjustment");
- v[6]=V("sector_antecipation");
- v[7]=V("Firm_Max_Productivity");
- v[8]=max(v[4]*(1+v[6]*v[5]),v[7]);
  
- v[9]=V("sector_capital_duration");
- v[10]=V("Firm_Wage");
+ v[2]=V("Firm_Frontier_Productivity");
+ v[3]=MAX("Capital_Good_Productivity");
+ v[4]=V("Firm_Frontier_Input_Tech_Coefficient");
+ v[5]=MIN("Capital_Good_Input_Tech_Coefficient");
+ v[6]=V("Firm_Frontier_Energy_Intensity");
+ v[7]=MIN("Capital_Good_Energy_Intensity");
+ 
+ v[8]=max(v[2],v[3]);
+ v[9]=min(v[4],v[5]);
+ v[10]=min(v[6],v[7]);
  v[11]=V("Country_Capital_Goods_Price");
- v[12]=V("sector_capital_output_ratio");
- v[13]=V("sector_payback_period");
+ v[12]=VS(input, "Sector_Avg_Price");
+ v[13]=VS(energy, "Sector_Avg_Price");
+ v[14]=V("sector_payback_period");
+ v[15]=V("Firm_Wage");
  
  v[30]=V("switch_interest_investment");
 	if(v[30]==0)//no interest
@@ -244,19 +249,26 @@ Nominal value of desired new capital goods for modernization replacement
 	if(v[30]==2)//use firm interest
 	v[31]=V("Firm_Interest_Rate_Long_Term");
   				
-  if(v[3]==1)																																											// if it is investment period for the firm
+  if(v[0]==1)																																											// if it is investment period for the firm
   {
   v[16]=0;																																												// initializes the CYCLE for productive capacity
   SORT("CAPITALS","Capital_Good_Productivity","UP");				// sort capital goods from the lowest to highest 
    CYCLE(cur, "CAPITALS")											// CYCLE trought capital goods
    {
-	   v[19]=VS(cur, "capital_good_depreciation_period");		    // capital good date of birth
-     if((double)t!=v[19] && (double)t < v[19]-v[1])					// if the capitalgood was not created in the current period nor will depreciate in the next investment period
+	 v[17]=VS(cur, "capital_good_depreciation_period");		       // capital good date of birth
+     if((double)t!=v[17] && (double)t < v[17]-v[1])				   // if the capitalgood was not created in the current period nor will depreciate in the next investment period
      {
-     v[17]=VS(cur, "Capital_Good_Productivity");				   // current capital good productivivty
      v[18]=VS(cur, "capital_good_productive_capacity");   		   // current capital good productive capacity  
-     v[23]=(v[11]*(1+v[31]))/(v[10]*((1/(v[17]))-(1/(v[8]))));	   // calculates the payback for productivity 
-         if(v[8]>v[17] && v[23]<=v[13])				   			   // if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
+     v[19]=VS(cur, "Capital_Good_Productivity");				   // current capital good productivivty
+	 v[20]=VS(cur, "Capital_Good_Input_Tech_Coefficient");		   // current capital good input coefficient
+	 v[21]=VS(cur, "Capital_Good_Energy_Intensity");			   // current capital good energy intensity
+	 
+	
+	 v[23]=(1/v[19]-1/v[8])>0? (v[11]*(1+v[31]))/(v[15]*((1/(v[19]))-(1/(v[8])))) : v[14];	   // calculates the payback for productivity 
+     v[24]=v[20]-v[9]>0? (v[11]*(1+v[31]))/(v[12]*(v[20]-v[9])) : v[14];	               // calculates the payback for inputs 
+	 v[25]=v[21]-v[10]>0? (v[11]*(1+v[31]))/(v[13]*(v[21]-v[10])) : v[14];	               // calculates the payback for energy 
+
+		if(v[23]<v[14])			   // if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
         	v[16]=v[16]+v[18];         							   // sum up the productive capacity to replace
          else													   // else
          	v[16]=v[16]; 																																						// do not sum replacement cost  
@@ -268,8 +280,9 @@ Nominal value of desired new capital goods for modernization replacement
   else																																														// if it is not investmnet period for the firm
   v[16]=0;																																												// productive capacity to replace is zero
   
-  v[17]=v[16]*v[11]*v[12];																																				// nominal desired expenses
-RESULT(v[17])
+  v[28]=V("sector_capital_output_ratio");
+  v[29]=v[16]*v[11]*v[28];																																				// nominal desired expenses
+RESULT(v[29])
 
 
 EQUATION("Firm_Desired_Investment_Expenses")
@@ -317,19 +330,30 @@ EQUATION("Firm_Demand_Productive_Capacity_Replacement")
 /*
 New productive capacity in aquisition of new equipment to replace obsolete ones.
 */
-	v[0]=V("Firm_Available_Funds_Replacement");
-	v[1]=V("sector_investment_frequency");
-	v[3]=V("Firm_Investment_Period");
-	v[4]=V("Firm_Frontier_Productivity");
-	v[5]=V("sector_learning_adjustment");
-	v[6]=V("sector_antecipation");
-	v[7]=V("Firm_Max_Productivity");
-	v[8]=max(v[4]*(1+v[6]*v[5]),v[7]);
-	v[9]=V("sector_capital_duration");
-	v[10]=V("Firm_Wage");
-	v[11]=V("Country_Capital_Goods_Price");
-	v[12]=V("sector_capital_output_ratio");
-	v[13]=V("sector_payback_period");
+
+ v[0]=V("Firm_Investment_Period");
+ v[1]=V("sector_investment_frequency");
+ 
+ v[2]=V("Firm_Frontier_Productivity");
+ v[3]=MAX("Capital_Good_Productivity");
+ v[4]=V("Firm_Frontier_Input_Tech_Coefficient");
+ v[5]=MIN("Capital_Good_Input_Tech_Coefficient");
+ v[6]=V("Firm_Frontier_Energy_Intensity");
+ v[7]=MIN("Capital_Good_Energy_Intensity");
+ 
+ v[8]=max(v[2],v[3]);
+ v[9]=min(v[4],v[5]);
+ v[10]=min(v[6],v[7]);
+ v[11]=V("Country_Capital_Goods_Price");
+ v[12]=VS(input, "Sector_Avg_Price");
+ v[13]=VS(energy, "Sector_Avg_Price");
+ v[14]=V("sector_payback_period");
+ v[15]=V("Firm_Wage");
+ 
+ v[16]=V("Firm_Available_Funds_Replacement");
+ v[17]=V("sector_capital_output_ratio");
+ v[18]=V("sector_capital_duration");
+	
 	v[30]=V("switch_interest_investment");
 	if(v[30]==0)//no interest
 		v[31]=0;
@@ -338,51 +362,60 @@ New productive capacity in aquisition of new equipment to replace obsolete ones.
 	if(v[30]==2)//use firm interest
 		v[31]=V("Firm_Interest_Rate_Long_Term");
   				
-	if(v[3]==1)														// if it is investment period for the firm
+	if(v[0]==1)														// if it is investment period for the firm
 	{
-		v[14]=0;													// initializes the CYCLE for expenses 
-		v[15]=v[0];													// count available funds
-		v[16]=0;													// initializes the CYCLE for productive capacity
+		v[32]=0;													// initializes the CYCLE for expenses 
+		v[28]=v[16];													// count available funds
+		v[29]=0;													// initializes the CYCLE for productive capacity
 		SORT("CAPITALS","Capital_Good_Productivity","UP");			// sort capital goods from the lowest to highest 
 		CYCLE(cur, "CAPITALS")										// CYCLE trought capital goods
 		{
 			v[19]=VS(cur, "capital_good_depreciation_period");		// capital good date of birth
 			if((double)t!=v[19] && (double)t < v[19]-v[1])			// if the capitalgood was not created in the current period nor will depreciate in the next investment period
 				{
-				v[17]=VS(cur, "Capital_Good_Productivity");			// current capital good productivivty
-				v[18]=VS(cur, "capital_good_productive_capacity");  // current capital good productive capacity  
-				v[20]=v[18]*v[12]*v[11];							// current nominal cost of new capital goods to replace that amount of productive capacity
-				v[15]=v[0]-v[14];									// subtract the replacement cost from the available funds to replacement. At the end this will be available funds after replacemenr
-				v[23]=(v[11]*(1+v[31]))/(v[10]*((1/(v[17]))-(1/(v[8]))));		// calculates the payback
-                 
-				if(v[8]>v[17] && v[20]<=v[15] && v[23]<=v[13])		// if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
+				v[20]=VS(cur, "Capital_Good_Productivity");			// current capital good productivivty
+				v[21]=VS(cur, "capital_good_productive_capacity");  // current capital good productive capacity  
+				v[22]=VS(cur, "Capital_Good_Input_Tech_Coefficient");		   // current capital good input coefficient
+				v[23]=VS(cur, "Capital_Good_Energy_Intensity");			   // current capital good energy intensity
+				
+				
+				v[24]=v[21]*v[17]*v[11];							// current nominal cost of new capital goods to replace that amount of productive capacity
+				v[25]=(1/v[20]-1/v[8])>0? (v[11]*(1+v[31]))/(v[15]*((1/(v[20]))-(1/(v[8])))) : v[14];	// calculates the payback
+                v[26]=v[22]-v[9]>0? (v[11]*(1+v[31]))/(v[12]*(v[22]-v[9])) : v[14];	            // calculates the payback for inputs 
+				v[27]=v[23]-v[10]>0? (v[11]*(1+v[31]))/(v[13]*(v[23]-v[10])) : v[14];	            // calculates the payback for energy 
+				
+				
+				if(v[24]<=v[28] && (v[25]<v[14]))		// if the cost of replacement is lower than current available funds and the paybakc calculus  is lower than the payback parameter
 					{
 					WRITES(cur, "capital_good_to_replace",1);		// mark the current capital good to replace
-					v[14]=v[14]+v[20];								// sum up the replacement cost
-					v[16]=v[16]+v[18];         						// sum up the productive capacity to replace
+					v[32]=v[32]+v[24];								// sum up the replacement cost
+					v[28]=v[28]-v[24];								// subtract the replacement cost from the available funds to replacement. At the end this will be available funds after replacemenr
+					v[29]=v[29]+v[21];         						// sum up the productive capacity to replace
 					}
 				else												// else
 					{
 					WRITES(cur, "capital_good_to_replace",0);		// do not mark the current capital good to replace
-					v[16]=v[16]; 									// do not sum replacement cost
-					v[14]=v[14];									// do not sum productive capacity to replace
+					v[29]=v[29]; 									// do not sum replacement cost
+					v[32]=v[32];
+					v[28]=v[28];						// do not sum productive capacity to replace
 					} 
 				}
 			else													// else
 				{
 				WRITES(cur, "capital_good_to_replace",0);			// do not mark the current capital good to replace
-				v[16]=v[16]; 										// do not sum replacement cost
-				v[14]=v[14];										// do not sum productive capacity to replace
+				v[29]=v[29]; 										// do not sum replacement cost
+				v[32]=v[32];
+				v[28]=v[28];				// do not sum productive capacity to replace
 				} 
 		}
 	}
 	else															// if it is not investmnet period for the firm
 		{
-		v[14]=0;      												// nominal replacement expenses is zero																																								
-		v[15]=v[0];													// available funds after replacement is the amount available before
-		v[16]=0;													// productive capacity to replace is zero
+		v[32]=0;      												// nominal replacement expenses is zero																																								
+		v[28]=v[16];												// available funds after replacement is the amount available before
+		v[29]=0;													// productive capacity to replace is zero
 		}	
-RESULT(v[16])
+RESULT(v[29])
 
 
 EQUATION("Firm_Replacement_Expenses")

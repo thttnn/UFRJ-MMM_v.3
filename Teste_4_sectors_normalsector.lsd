@@ -1155,12 +1155,12 @@ Param: sector_capital_duration 0 n + n n	40	40	40	40
 Param: sector_capital_output_ratio 0 n + n n	1	1	1	1
 Param: sector_competitiveness_adjustment 0 n + n n	1	1	1	1
 Param: sector_debt_rate_adjustment 0 n + n n	0	0	0	0
-Param: sector_desired_degree_capacity_utilization 0 n + n n	0.95	0.95	0.95	0.75
-Param: sector_desired_inventories_proportion 0 n + n n	0.1	0.1	0.1	0
+Param: sector_desired_degree_capacity_utilization 0 n + n n	0.95	0.95	0.95	0.95
+Param: sector_desired_inventories_proportion 0 n + n n	0.1	0.1	0.1	0.1
 Param: sector_desired_market_share 0 n + n n	0.1	0.25	0.15	0.15
 Param: sector_elascitity_delay 0 n + n n	0.25	0.25	0.25	0.25
 Param: sector_elasticity_price 0 n + n n	1	1	1	1
-Param: sector_elasticity_quality 0 n + n n	0.5	0.5	0	0
+Param: sector_elasticity_quality 0 n + n n	0.5	0.5	0.5	0.5
 Param: sector_energy_intensity 0 n + n n	0.2	0.2	0.2	0.2
 Param: sector_expectations 0 n + n n	0.3	0.3	0.3	0.3
 Param: sector_exports_coefficient 0 s + n n	0	0	0	0
@@ -1177,8 +1177,8 @@ Param: sector_financial_cost_passtrough 0 n + n n	1	1	1	1
 Param: sector_indirect_tax_rate 0 n + n n	0.05	0.05	0.05	0.05
 Param: sector_initial_debt_rate 0 n + n n	0.4	0.4	0.4	0.4
 Param: sector_initial_demand 0 n + n n	0	0	0	0
-Param: sector_initial_depreciation_scale 0 n + n n	1	1	1	0
-Param: sector_initial_exports_share 0 n + n n	0.3	0.3	0.4	0
+Param: sector_initial_depreciation_scale 0 n + n n	1	1	1	1
+Param: sector_initial_exports_share 0 n + n n	0.3	0.3	0.3	0.1
 Param: sector_initial_external_price 0 n + n n	1	2	1	1
 Param: sector_initial_liquidity_preference 0 n + n n	0.05	0.05	0.05	0.05
 Param: sector_initial_price 0 n + n n	1	2	1	1
@@ -1194,7 +1194,7 @@ Param: sector_investment_frequency 0 n + n n	4	4	4	4
 Param: sector_learning_adjustment 0 n + n n	0	0	0	0
 Param: sector_liquidity_preference_adjustment 0 n + n n	0	0	0	0
 Param: sector_markup_adjustment 0 n + n n	0.001	0.001	0.001	0.001
-Param: sector_number_object_firms 0 n + n n	100	40	60	1
+Param: sector_number_object_firms 0 n + n n	100	40	60	50
 Param: sector_passthrough_inflation 0 s + n n	0.8	0.8	0.8	0.8
 Param: sector_passthrough_productivity 0 s + n n	0.8	0.8	0.8	0.8
 Param: sector_payback_period 0 n + n n	8	8	8	8
@@ -1243,11 +1243,11 @@ Var: Sector_Hedge_Normalized_Share 0 s + n n
 Var: Sector_Hedge_Share 0 s + n n
 Var: Sector_Idle_Capacity 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Sector_Inventories 1 n + n n	0	0	0	0
-Var: Sector_Max_Productivity 1 n + n n	1	1	1	1
-Var: Sector_Max_Quality 1 n + n n	1	1	1	1
+Var: Sector_Max_Productivity 1 n + n n	0	0	0	0
+Var: Sector_Max_Quality 1 n + n n	0	0	0	0
 Var: Sector_Min_Input 1 n + n n	0	0	0	0
 Var: Sector_Normalized_HHI 0 n + n n
-Var: Sector_Number_Firms 1 s + n n	20	20	20	20
+Var: Sector_Number_Firms 1 s + n n	0	0	0	0
 Var: Sector_Participation 0 s + n n
 Var: Sector_Ponzi_Normalized_Share 0 s + n n
 Var: Sector_Ponzi_Share 0 s + n n
@@ -1267,7 +1267,7 @@ Var: Sector_Stock_Deposits 0 s + n n
 Var: Sector_Stock_Loans 1 s + n n	0	0	0	0
 Var: Sector_Taxation 0 n + n n
 Var: Sector_Turbulence 0 s + n n
-Param: switch_entry 0 n + n n	1	1	1	0
+Param: switch_entry 0 n + n n	1	1	1	1
 Param: switch_extra_imports 0 n + n n	0	0	0	0
 Var: Sector_Min_Energy_Intensity 1 n + n n	0	0	0	0
 Param: sector_energy_imitation_share 0 n + n n	0	0	0	0
