@@ -67,6 +67,21 @@ WRITES(cur, "Bank_Number_Clients", v[10]);
 }	
 RESULT(0)
 
+
+EQUATION("Technical_Carbon_Intensity")
+/*
+*/
+v[0]=CURRENT;                 										
+	v[1]=LAG_GROWTH(capital, "Sector_Avg_Quality", 1, 1);
+	v[2]=V("carbon_intensity_adjustment");				
+		if(v[1]>0) 													
+			v[4]=v[0]*(1-v[1]*v[2]); 								
+		if(v[1]==0)													
+			v[4]=v[0];												
+		if(v[1]<0)													
+			v[4]=v[0]*(1-v[1]*v[2]);							 														                                            		
+RESULT(max(0,v[4]))
+
 	
 EQUATION("Country_Domestic_Intermediate_Demand")
 /*

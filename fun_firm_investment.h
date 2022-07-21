@@ -90,7 +90,8 @@ In this variable, the firm receive the new capital goods ordered in the last inv
 	v[7]=VL("Firm_Frontier_Energy_Intensity",v[0]);
 	v[5]=V("sector_capital_output_ratio");										//amount of Capital Goods bought
 	v[8]=uniform_int(30, 50);
-	v[15]=V("sector_initial_carbon_intensity");
+	v[16]=V("Technical_Carbon_Intensity");
+
 	
 	if(v[2]>0)
 		{
@@ -104,7 +105,7 @@ In this variable, the firm receive the new capital goods ordered in the last inv
 			WRITES(cur, "capital_good_date_birth", t);							//writes the new capital date of birth as the current time period
 			WRITES(cur, "capital_good_to_replace", 0);							//writes the parameter that identifies the capital goods to be replaced as zero
 			WRITES(cur, "capital_good_to_depreciate", 0);
-			WRITES(cur, "capital_good_carbon_intensity", v[15]);
+			WRITES(cur, "capital_good_carbon_intensity", v[16]);
 			WRITES(cur, "capital_good_depreciation_period", (t+v[8]));
 			WRITELS(cur, "Capital_Good_Acumulated_Production", 0, 1);			//writes the past acumulated production of the current new capital as zero
 			v[6]=v[6]+1;
@@ -125,7 +126,7 @@ In this variable, the firm receive the new capital goods ordered in the last inv
 				WRITES(cur, "capital_good_date_birth", t);							//writes the new capital date of birth as the current time period
 				WRITES(cur, "capital_good_to_replace", 0);							//writes the parameter that identifies the capital goods to be replaced as zero
 				WRITES(cur, "capital_good_to_depreciate", 0);
-				WRITES(cur, "capital_good_carbon_intensity", v[15]);
+				WRITES(cur, "capital_good_carbon_intensity", v[16]);
 				WRITES(cur, "capital_good_depreciation_period", (t+v[8]));
 				WRITELS(cur, "Capital_Good_Acumulated_Production", 0, 1);			//writes the past acumulated production of the current new capital as zero
      			v[3]=v[3]-1;
