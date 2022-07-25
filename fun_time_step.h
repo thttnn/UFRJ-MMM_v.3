@@ -145,6 +145,8 @@ V("Sector_Extra_Imports");
 V("Sector_Demand_Met_By_Imports");                            		
 
 /*****R&D*****/
+V("Firm_Desired_Market_Share");
+V("Firm_Innovation_RND_Share");
 V("Firm_Innovation_Energy_Intensity");                          
 V("Firm_Imitation_Energy_Intensity");  
 V("Firm_Innovation_Quality");                          

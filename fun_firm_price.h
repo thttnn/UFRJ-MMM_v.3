@@ -161,3 +161,13 @@ Effective Markup is the Effective Price over the Variable Cost
 	v[1]=V("Firm_Variable_Cost");
 	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
+
+
+EQUATION("Firm_Desired_Market_Share")
+/*
+Desired Market Share is a simple average between last period's desired market share and firm's average market share
+*/
+	v[1]=CURRENT;
+	v[2]=LAG_AVE(p, "Firm_Market_Share", V("annual_frequency"));                                           								//if the rest of the above division is zero, adjust desired market share
+	v[3]=(v[1]+v[2])/2;                                         								                         									//firm's desired market share will be equal to the last period's
+RESULT(v[3])

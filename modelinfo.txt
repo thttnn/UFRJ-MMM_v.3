@@ -1,15 +1,15 @@
 MMM_v.3.6
 1.0
 27 April, 2020
-420x630+2+8
-620x360+429+404
-614x360+432+8:1.2+1.0
-722x469+1054+488
+421x630+3+9
+620x360+472+436
+614x360+479+30:1.2+1.0
+722x469+309+109
 740x894+52+36
 #
-595x445+1062+9
-720x540+321+419
-Teste_4_sectors_normalsector_householdenergy_carbon_change.lsd
+595x445+485+61
+720x540+211+92
+Teste_4_sectors_normalsector_householdenergy_carbon_change_rndchange.lsd
 SECTORS
 1
 0

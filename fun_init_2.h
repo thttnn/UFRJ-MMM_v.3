@@ -323,6 +323,9 @@ CYCLE(cur, "SECTORS")
 	WRITELLS(cur1, "Firm_Avg_Input_Tech_Coefficient", v[154], 0, 1);
 	WRITELLS(cur1, "Firm_Avg_Energy_Intensity", v[320], 0, 1);
 	WRITELLS(cur1, "Firm_Avg_Carbon_Intensity", v[350], 0, 1);
+	WRITELLS(cur1, "Firm_Innovation_RND_Share", 0.5, 0, 1);
+	WRITELLS(cur1, "Firm_Desired_Market_Share", 2/v[152], 0, 1);
+
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Demand_Capital_Goods_Expansion", 0, 0, i);
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Demand_Capital_Goods_Replacement", 0, 0, i);
 	for(i=1;i<=v[151];i++) 		WRITELLS(cur1, "Firm_Frontier_Productivity", v[159], 0, i);

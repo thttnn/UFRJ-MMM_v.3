@@ -1,6 +1,24 @@
 /*****INNOVATION/IMITATION*****/
 
 
+EQUATION("Firm_Innovation_RND_Share")
+/*
+This variable defines the allocation of expenses between innovation and imitation.
+If the firm is gaining market share, it decreases imitation and increases innovation. The opposite is valid.
+*/
+	v[0]=AVES(PARENT, "Firm_Market_Share");
+	v[1]=V("Firm_Desired_Market_Share");                //desired market-share 
+	v[2]=LAG_AVE(p, "Firm_Market_Share", V("annual_frequency"));                 //firm average market share in the last period   
+	v[3]=VL("Firm_Innovation_RND_Share",1);				//last period share (initial alocation is 0.5
+	v[4]=V("innovation_imitation_adjustment");			//adjustment parameter							
+
+	if (v[2]>=v[0])										//if current avg market share is lower than desired												
+		v[5]=v[3]+v[4];									//reduces process rnd allocation
+	else
+		v[5]=v[3]-v[4];	
+RESULT(min(1,max(0,v[5])))
+
+
 EQUATION("Firm_Frontier_Productivity")
 /*
 The new productivity is the maximum among the previous one and the ones possibly obtained imitation and innovation.  
@@ -50,7 +68,9 @@ Imitation process. The sucess depends on the amount of recources alocated to imi
 */
 	v[0]=V("Firm_Net_Revenue")/V("Firm_Price");         //firm's real RND expenses                       
 	v[1]=V("sector_productivity_imitation_share");    		//firm's share of RND expenses destinated to innovation
-	v[2]=(v[0]*v[1]);                               //amount of recources for imitation
+	v[9]=V("sector_productivity_innovation_share");
+	v[10]=V("Firm_Innovation_RND_Share");
+	v[2]=(v[0]*(v[1]+v[9])*(1-v[10]));                               //amount of recources for imitation
 	v[3]=1-exp(-v[2]);                   			//probability of success of the imitation depends on amount of recources available
 	if(RND<v[3])                              		//draws a random number. if it is lower then imitation probability
      	v[4]=VL("Sector_Max_Productivity", 1);  	//imitation has succeded and the firm can copy the maximum probability of the sector in the last perio
@@ -65,7 +85,9 @@ Innovation process. The sucess depends on the amount ou recources alocated to in
 */
 	v[0]=V("Firm_Net_Revenue")/V("Firm_Price");         //firm's real RND expenses                       
 	v[1]=V("sector_productivity_innovation_share");    			//firm's share of RND expenses destinated to innovation
-	v[2]=(v[0]*v[1]);                           		//amount of recources for innovation
+	v[9]=V("sector_productivity_imitation_share");
+	v[10]=V("Firm_Innovation_RND_Share");
+	v[2]=(v[0]*(v[1]+v[9])*v[10]);                           		//amount of recources for innovation
 	v[3]=1-exp(-v[2]);                     				//probability of success of the innovation depends on the parameter and the amount of recources available  
 	if(RND<v[3])                                		//draws a random nuumber. if it is lower then innovation probability 
 		{
@@ -86,7 +108,9 @@ Imitation process. The sucess depends on the amount of recources alocated to imi
 */
 	v[0]=V("Firm_Net_Revenue")/V("Firm_Price");         //firm's real RND expenses                       
 	v[1]=V("sector_quality_imitation_share");    			//firm's share of RND expenses destinated to innovation
-	v[2]=(v[0]*v[1]);                             	//amount of recources for imitation
+	v[9]=V("sector_quality_innovation_share");
+	v[10]=V("Firm_Innovation_RND_Share");
+	v[2]=(v[0]*(v[1]+v[9])*(1-v[10]));                              	//amount of recources for imitation
 	v[3]=1-exp(-v[2]);                   				//probability of success of the imitation depends on amount of recources available
 	if(RND<v[3])                              			//draws a random number. if it is lower then imitation probability
      	v[5]=VL("Sector_Max_Quality", 1);				//imitation has succeded and the firm can copy the maximum quality of the sector in the last period
@@ -101,7 +125,9 @@ Innovation process. The sucess depends on the amount ou recources alocated to in
 */
 	v[0]=V("Firm_Net_Revenue")/V("Firm_Price");         //firm's real RND expenses                       
 	v[1]=V("sector_quality_innovation_share");    			//firm's share of RND expenses destinated to innovation
-	v[2]=(v[0]*v[1]);                           		//amount of recources for innovation
+	v[9]=V("sector_quality_imitation_share");
+	v[10]=V("Firm_Innovation_RND_Share");
+	v[2]=(v[0]*(v[1]+v[9])*v[10]);                           		//amount of recources for innovation
 	v[3]=1-exp(-v[2]);                     				//probability of success of the innovation depends on the parameter and the amount of recources available  
 	if(RND<v[3])                                		//draws a random nuumber. if it is lower then innovation probability 
 		{
@@ -122,7 +148,9 @@ Imitation process. The sucess depends on the amount of recources alocated to imi
 */
 	v[0]=V("Firm_Net_Revenue")/V("Firm_Price");         //firm's real RND expenses                       
 	v[1]=V("sector_input_imitation_share");    			//firm's share of RND expenses destinated to innovation
-	v[2]=(v[0]*v[1]);                           	//amount of recources for imitation
+	v[9]=V("sector_input_innovation_share");
+	v[10]=V("Firm_Innovation_RND_Share");
+	v[2]=(v[0]*(v[1]+v[9])*(1-v[10]));                                	//amount of recources for imitation
 	v[3]=1-exp(-v[2]);                   				//probability of success of the imitation depends on amount of recources available
 	if(RND<v[3])                              			//draws a random number. if it is lower then imitation probability
      	v[5]=VL("Sector_Min_Input", 1);				    //imitation has succeded and the firm can copy the maximum quality of the sector in the last period
@@ -137,7 +165,9 @@ Innovation process. The sucess depends on the amount ou recources alocated to in
 */
 	v[0]=V("Firm_Net_Revenue")/V("Firm_Price");         //firm's real RND expenses                       
 	v[1]=V("sector_input_innovation_share");    			//firm's share of RND expenses destinated to innovation
-	v[2]=(v[0]*v[1]);                           		//amount of recources for innovation
+	v[9]=V("sector_input_imitation_share");
+	v[10]=V("Firm_Innovation_RND_Share");
+	v[2]=(v[0]*(v[1]+v[9])*v[10]);                          		//amount of recources for innovation
 	v[3]=1-exp(-v[2]);                     				//probability of success of the innovation depends on the parameter and the amount of recources available  
 	if(RND<v[3])                                		//draws a random nuumber. if it is lower then innovation probability 
 		{
@@ -161,7 +191,9 @@ Imitation process. The sucess depends on the amount of recources alocated to imi
 */
 	v[0]=V("Firm_Net_Revenue")/V("Firm_Price");         //firm's real RND expenses                       
 	v[1]=V("sector_energy_imitation_share");    		//firm's share of RND expenses destinated to innovation
-	v[2]=(v[0]*v[1]);                           		//amount of recources for imitation
+	v[9]=V("sector_energy_innovation_share");
+	v[10]=V("Firm_Innovation_RND_Share");
+	v[2]=(v[0]*(v[1]+v[9])*(1-v[10]));                           		//amount of recources for imitation
 	v[3]=1-exp(-v[2]);                   				//probability of success of the imitation depends on amount of recources available
 	if(RND<v[3])                              			//draws a random number. if it is lower then imitation probability
      	v[5]=VL("Sector_Min_Energy_Intensity", 1);			    //imitation has succeded and the firm can copy the maximum quality of the sector in the last period
@@ -176,7 +208,9 @@ Innovation process. The sucess depends on the amount ou recources alocated to in
 */
 	v[0]=V("Firm_Net_Revenue")/V("Firm_Price");         //firm's real RND expenses                       
 	v[1]=V("sector_energy_innovation_share");    		//firm's share of RND expenses destinated to innovation
-	v[2]=(v[0]*v[1]);                           		//amount of recources for innovation
+	v[9]=V("sector_energy_imitation_share");
+	v[10]=V("Firm_Innovation_RND_Share");
+	v[2]=(v[0]*(v[1]+v[9])*v[10]);                           		//amount of recources for innovation
 	v[3]=1-exp(-v[2]);                     				//probability of success of the innovation depends on the parameter and the amount of recources available  
 	if(RND<v[3])                                		//draws a random nuumber. if it is lower then innovation probability 
 		{

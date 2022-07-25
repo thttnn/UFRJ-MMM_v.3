@@ -793,3 +793,52 @@ set res [ winfo exists "%s" ]
 Message:
 can't read "list": no such variable
 -----
+
+
+====================> NEW TCL SESSION
+
+(07/25/22 14:34:37)
+Command:
+if { %s eq ".chgelem" } { 			set list .chgelem.listused_%s 		} else { 			set list .listused_%s 		}
+Message:
+missing operand at _@_
+in expression "  _@_eq ".chgelem" "
+-----
+
+(07/25/22 14:34:45)
+Command:
+if { %s eq ".chgelem" } { 			set list .chgelem.listused_%s 		} else { 			set list .listused_%s 		}
+Message:
+invalid character "."
+in expression " .chgelem eq ".chgelem" "
+-----
+
+(07/25/22 14:34:45)
+Command:
+set res [ winfo exists "%s" ]
+Message:
+can't read "list": no such variable
+-----
+
+(07/25/22 14:34:51)
+Command:
+if { %s eq ".chgelem" } { 			set list .chgelem.listused_%s 		} else { 			set list .listused_%s 		}
+Message:
+missing operand at _@_
+in expression "  _@_eq ".chgelem" "
+-----
+
+(07/25/22 14:37:01)
+Command:
+if { %s eq ".chgelem" } { 			set list .chgelem.listused_%s 		} else { 			set list .listused_%s 		}
+Message:
+invalid character "."
+in expression " . eq ".chgelem" "
+-----
+
+(07/25/22 14:37:01)
+Command:
+set res [ winfo exists "%s" ]
+Message:
+can't read "list": no such variable
+-----

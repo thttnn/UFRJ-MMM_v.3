@@ -436,6 +436,8 @@ Label Root
 				Var: Firm_Frontier_Input_Tech_Coefficient
 				Var: Firm_Avg_Carbon_Intensity
 				Var: Firm_Emissions
+				Var: Firm_Innovation_RND_Share
+				Var: Firm_Desired_Market_Share
 
 			}
 
@@ -443,8 +445,8 @@ Label Root
 			Param: id_consumption_goods_sector
 			Param: id_energy_sector
 			Param: id_intermediate_goods_sector
+			Param: innovation_imitation_adjustment
 			Param: sector_antecipation
-			Param: sector_bargain_power_adjustment
 			Param: sector_bargain_power_inflaton_adjustment
 			Param: sector_bargain_power_productivity_adjustment
 			Param: sector_capital_duration
@@ -457,6 +459,8 @@ Label Root
 			Param: sector_elascitity_delay
 			Param: sector_elasticity_price
 			Param: sector_elasticity_quality
+			Param: sector_energy_imitation_share
+			Param: sector_energy_innovation_share
 			Param: sector_energy_intensity
 			Param: sector_expectations
 			Param: sector_exports_coefficient
@@ -471,6 +475,7 @@ Label Root
 			Param: sector_external_price_weight
 			Param: sector_financial_cost_passtrough
 			Param: sector_indirect_tax_rate
+			Param: sector_initial_carbon_intensity
 			Param: sector_initial_debt_rate
 			Param: sector_initial_demand
 			Param: sector_initial_depreciation_scale
@@ -502,9 +507,12 @@ Label Root
 			Param: sector_quality_innovation_share
 			Param: sector_std_dev_innovation
 			Param: sector_strategic_price_weight
+			Param: sector_tech_opportunity_energy
 			Param: sector_tech_opportunity_input
 			Param: sector_tech_opportunity_productivity
 			Param: sector_tech_opportunity_quality
+			Param: switch_entry
+			Param: switch_extra_imports
 			Var: Sector_Avg_Competitiveness
 			Var: Sector_Avg_Debt_Rate
 			Var: Sector_Avg_External_Finance_Rate
@@ -529,6 +537,7 @@ Label Root
 			Var: Sector_Effective_Loans
 			Var: Sector_Effective_Orders
 			Var: Sector_Effective_Production
+			Var: Sector_Emissions
 			Var: Sector_Employment
 			Var: Sector_Entry_Condition
 			Var: Sector_Entry_Deposits_Needed
@@ -541,6 +550,7 @@ Label Root
 			Var: Sector_Inventories
 			Var: Sector_Max_Productivity
 			Var: Sector_Max_Quality
+			Var: Sector_Min_Energy_Intensity
 			Var: Sector_Min_Input
 			Var: Sector_Normalized_HHI
 			Var: Sector_Number_Firms
@@ -563,14 +573,6 @@ Label Root
 			Var: Sector_Stock_Loans
 			Var: Sector_Taxation
 			Var: Sector_Turbulence
-			Param: switch_entry
-			Param: switch_extra_imports
-			Var: Sector_Min_Energy_Intensity
-			Param: sector_energy_imitation_share
-			Param: sector_energy_innovation_share
-			Param: sector_tech_opportunity_energy
-			Param: sector_initial_carbon_intensity
-			Var: Sector_Emissions
 
 		}
 
@@ -1174,8 +1176,8 @@ Param: id_capital_goods_sector 0 n + n n	0	1	0	0
 Param: id_consumption_goods_sector 0 n + n n	1	0	0	0
 Param: id_energy_sector 0 n + n n	0	0	0	1
 Param: id_intermediate_goods_sector 0 n + n n	0	0	1	0
+Param: innovation_imitation_adjustment 0 n + n n	0.001	0.001	0.001	0.001
 Param: sector_antecipation 0 n + n n	0	0	0	0
-Param: sector_bargain_power_adjustment 0 n + n n	0	0	0	0
 Param: sector_bargain_power_inflaton_adjustment 0 n + n n	0.01	0.01	0.01	0.01
 Param: sector_bargain_power_productivity_adjustment 0 n + n n	0.01	0.01	0.01	0.01
 Param: sector_capital_duration 0 n + n n	40	40	40	40
@@ -1188,6 +1190,8 @@ Param: sector_desired_market_share 0 n + n n	0.1	0.25	0.15	0.15
 Param: sector_elascitity_delay 0 n + n n	0.25	0.25	0.25	0.25
 Param: sector_elasticity_price 0 n + n n	1	1	1	1
 Param: sector_elasticity_quality 0 n + n n	0.5	0.5	0.5	0.5
+Param: sector_energy_imitation_share 0 n + n n	0.005	0.005	0.005	0.005
+Param: sector_energy_innovation_share 0 n + n n	0.005	0.005	0.005	0.005
 Param: sector_energy_intensity 0 n + n n	0.1	0.1	0.1	0.1
 Param: sector_expectations 0 n + n n	0.3	0.3	0.3	0.3
 Param: sector_exports_coefficient 0 s + n n	0	0	0	0
@@ -1202,6 +1206,7 @@ Param: sector_external_price_shock_size 0 n + n n	0.02	0.02	0.02	0.02
 Param: sector_external_price_weight 0 n + n n	1	1	1	1
 Param: sector_financial_cost_passtrough 0 n + n n	1	1	1	1
 Param: sector_indirect_tax_rate 0 n + n n	0.05	0.05	0.05	0.05
+Param: sector_initial_carbon_intensity 0 n + n n	0.5	0.5	0.5	0.5
 Param: sector_initial_debt_rate 0 n + n n	0.4	0.4	0.4	0.4
 Param: sector_initial_demand 0 n + n n	0	0	0	0
 Param: sector_initial_depreciation_scale 0 n + n n	1	1	1	1
@@ -1233,9 +1238,12 @@ Param: sector_quality_imitation_share 0 n + n n	0.005	0.005	0.005	0.005
 Param: sector_quality_innovation_share 0 n + n n	0.005	0.005	0.005	0.005
 Param: sector_std_dev_innovation 0 n + n n	0.01	0.01	0.01	0.01
 Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5	0.5
+Param: sector_tech_opportunity_energy 0 n + n n	0.0005	0.0005	0.0005	0.0005
 Param: sector_tech_opportunity_input 0 n + n n	0.0005	0.0005	0.0005	0.0005
 Param: sector_tech_opportunity_productivity 0 n + n n	0.0025	0.0025	0.0025	0.0025
 Param: sector_tech_opportunity_quality 0 n + n n	0.0025	0.0025	0.0025	0.0025
+Param: switch_entry 0 n + n n	1	1	1	1
+Param: switch_extra_imports 0 n + n n	0	0	0	0
 Var: Sector_Avg_Competitiveness 1 n + n n	1	1	1	1
 Var: Sector_Avg_Debt_Rate 0 s + n n
 Var: Sector_Avg_External_Finance_Rate 0 s + n n
@@ -1260,6 +1268,7 @@ Var: Sector_Demand_Met_By_Imports 6 s + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	
 Var: Sector_Effective_Loans 0 s + n n
 Var: Sector_Effective_Orders 8 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Sector_Effective_Production 0 s + n n
+Var: Sector_Emissions 0 s + n n
 Var: Sector_Employment 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Sector_Entry_Condition 0 n + n n
 Var: Sector_Entry_Deposits_Needed 0 s + n n
@@ -1272,6 +1281,7 @@ Var: Sector_Idle_Capacity 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Sector_Inventories 1 n + n n	0	0	0	0
 Var: Sector_Max_Productivity 1 n + n n	0	0	0	0
 Var: Sector_Max_Quality 1 n + n n	0	0	0	0
+Var: Sector_Min_Energy_Intensity 1 n + n n	0	0	0	0
 Var: Sector_Min_Input 1 n + n n	0	0	0	0
 Var: Sector_Normalized_HHI 0 n + n n
 Var: Sector_Number_Firms 1 s + n n	0	0	0	0
@@ -1294,14 +1304,6 @@ Var: Sector_Stock_Deposits 0 s + n n
 Var: Sector_Stock_Loans 1 s + n n	0	0	0	0
 Var: Sector_Taxation 0 n + n n
 Var: Sector_Turbulence 0 s + n n
-Param: switch_entry 0 n + n n	1	1	1	1
-Param: switch_extra_imports 0 n + n n	0	0	0	0
-Var: Sector_Min_Energy_Intensity 1 n + n n	0	0	0	0
-Param: sector_energy_imitation_share 0 n + n n	0.005	0.005	0.005	0.005
-Param: sector_energy_innovation_share 0 n + n n	0.005	0.005	0.005	0.005
-Param: sector_tech_opportunity_energy 0 n + n n	0.0005	0.0005	0.0005	0.0005
-Param: sector_initial_carbon_intensity 0 n + n n	0.5	0.5	0.5	0.5
-Var: Sector_Emissions 0 s + n n
 
 Object: FIRMS C	1	1	1	1
 Param: firm_bank 0 n + n n	0	0	0	0
@@ -1416,6 +1418,8 @@ Var: Firm_Frontier_Energy_Intensity 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	
 Var: Firm_Frontier_Input_Tech_Coefficient 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Firm_Avg_Carbon_Intensity 1 n + n n	0	0	0	0
 Var: Firm_Emissions 0 s + n n
+Var: Firm_Innovation_RND_Share 1 s + n n	0	0	0	0
+Var: Firm_Desired_Market_Share 1 s + n n	0	0	0	0
 
 Object: CAPITALS C	1	1	1	1
 Param: capital_good_date_birth 0 n + n n	-59	-59	-59	-59
@@ -1581,7 +1585,7 @@ SIM_NUM 1
 SEED 1
 MAX_STEP 600 100 0 0 0 0 0
 EQUATION fun_micro_macro_v.3.6.cpp
-MODELREPORT report_Sim1.html
+MODELREPORT report_Teste_4_sectors_normalsector_householdenergy_carbon_change_rndchange.html
 
 DESCRIPTION
 
@@ -3235,353 +3239,295 @@ Object_SECTORS
 END_DESCRIPTION
 
 Parameter_id_capital_goods_sector
-dummy parameter that defines if the sector is a captal good sector
+Dummy parameter that defines if the sector is a capital good sector
 END_DESCRIPTION
 
 Parameter_id_consumption_goods_sector
-dummy parameter that defines if the sector is a consumption good sector
+Dummy parameter that defines if the sector is a consumption good sector
 END_DESCRIPTION
 
 Parameter_id_energy_sector
-
-_INIT_
-All 4 instances equal to 0
+Dummy parameter that defines if the sector is a energy good sector
 END_DESCRIPTION
 
 Parameter_id_intermediate_goods_sector
-dummy parameter that defines if the sector is an intermediate good sector
+Dummy parameter that defines if the sector is an intermediate good sector
+END_DESCRIPTION
+
+Parameter_innovation_imitation_adjustment
+Determines how much firms adjust the distribution between innovation and imitation based on its market share
 END_DESCRIPTION
 
 Parameter_sector_antecipation
-determines the sector (and firms) antecipation on productivity growth due to learning when calculating replacement investment
-END_DESCRIPTION
-
-Parameter_sector_bargain_power_adjustment
-
-_INIT_
-All 4 instances equal to 0
+Determines the sector (and firms) antecipation on productivity growth due to learning when calculating replacement investment
 END_DESCRIPTION
 
 Parameter_sector_bargain_power_inflaton_adjustment
-
-_INIT_
-All 3 instances equal to 0.01
+Determines how much the inflation passtrough to wages is adjusted in the sector based on the bargaining power
 END_DESCRIPTION
 
 Parameter_sector_bargain_power_productivity_adjustment
-
-_INIT_
-All 3 instances equal to 0.01
+Determines how much the productivity passtrough to wages is adjusted in the sector based on the bargaining power
 END_DESCRIPTION
 
 Parameter_sector_capital_duration
-determines the life spawn of the capital goods in the sector
-_INIT_
-All 3 instances equal to 40
+Determines the life spawn of the capital goods in the sector
 END_DESCRIPTION
 
 Parameter_sector_capital_output_ratio
-determines the relation between productive capacity and capitalsused in calibration
+Determines the relation between productive capacity and capitals. Essential parameter for calibration
 END_DESCRIPTION
 
 Parameter_sector_competitiveness_adjustment
-determines how market shares adjust to competitiveness gains
+Ddetermines how market shares adjust to competitiveness gains
 END_DESCRIPTION
 
 Parameter_sector_debt_rate_adjustment
-determines how maximum debt rate is adjusted based on net profits growth
-_INIT_
-All 3 instances equal to 0.
+Determines how maximum debt rate is adjusted based on net profits growth
 END_DESCRIPTION
 
 Parameter_sector_desired_degree_capacity_utilization
-determines the desired capacity utilization.IMPORTANT: the initial value is overwritten during calibration to accomodate for an integer number of capital goods
-_INIT_
-All 3 instances equal to 0.95.
+Determines the desired capacity utilization. IMPORTANT: the initial value is overwritten during calibration to accomodate for an integer number of capital goods
 END_DESCRIPTION
 
 Parameter_sector_desired_inventories_proportion
-determines the propostion of sales to be kept as inventories
-_INIT_
-All 3 instances equal to 0.1.
+Determines the proportion of sales to be kept as inventories
 END_DESCRIPTION
 
 Parameter_sector_desired_market_share
-determines the firms desired market share while setting markups. if current market share is lower than desired markups are not adjusted
-_INIT_
-All 3 instances equal to 1.
+Determines the firms desired market share while setting markups. Overwitten during calibration as it is endogenous caculated
 END_DESCRIPTION
 
 Parameter_sector_elascitity_delay
-determines the sector competitiveness sensitivity to delivery delay
+Determines the sector competitiveness sensitivity to delivery delay
 END_DESCRIPTION
 
 Parameter_sector_elasticity_price
-determines the sector competitiveness elasticity to price
+Determines the sector competitiveness elasticity to price
 END_DESCRIPTION
 
 Parameter_sector_elasticity_quality
-determines the sector competitiveness selasticity to quality
+Determines the sector competitiveness elasticity to quality
+END_DESCRIPTION
+
+Parameter_sector_energy_imitation_share
+Determines the share of revenue allocated to imitation RND to reduce energy intensity
+END_DESCRIPTION
+
+Parameter_sector_energy_innovation_share
+Determines the share of revenue allocated to innovation RND to reduce energy intensity
 END_DESCRIPTION
 
 Parameter_sector_energy_intensity
-
-_INIT_
-All 4 instances equal to 0.1
+Determines the requires amount of energy to produce 1 output in the sector. Technical parameter
 END_DESCRIPTION
 
 Parameter_sector_expectations
-determines the sector expectation parameter to be used in expected demand calculation
+Determines the sector expectation parameter to be used in expected demand calculation
 END_DESCRIPTION
 
 Parameter_sector_exports_coefficient
-determines the share of external nominal income to be allocated in sector's exports. written dureing calibration
+Determines the share of external nominal income to be allocated in sector's exports. Overwritten during calibration as it is endogenous calculated
 END_DESCRIPTION
 
 Parameter_sector_exports_elasticity_income
-determines the sector's exports elasticity to external income
-_INIT_
-All 3 instances equal to 0.5
+Determines the sector's exports elasticity to external income
 END_DESCRIPTION
 
 Parameter_sector_exports_elasticity_price
-determines the sector's exports elasticity to price differentials
-_INIT_
-All 3 instances equal to 0.5
+Determines the sector's exports elasticity to price differentials
 END_DESCRIPTION
 
 Parameter_sector_external_price_competitiveness
-determines how domestic price growth affects external price growth
-_INIT_
-All 3 instances equal to 0.
+Determines how domestic price growth affects external price growth
 END_DESCRIPTION
 
 Parameter_sector_external_price_growth
-determines an exogenous fixed quarterly growth rate to sector external price
-_INIT_
-All 3 instances equal to 0.005.
+Determines an exogenous fixed quarterly growth rate to sector external price
 END_DESCRIPTION
 
 Parameter_sector_external_price_sd
-determines the standard deviation on sector external price growth
-_INIT_
-All 3 instances equal to 0.01
+Determines the standard deviation on sector external price growth
 END_DESCRIPTION
 
 Parameter_sector_external_price_shock_begin
-determines when sector external price shock begins
+Determines when sector external price shock begins
 END_DESCRIPTION
 
 Parameter_sector_external_price_shock_duration
-determines how long the sector external price shock will take
+Determines how long the sector external price shock will take
 _INIT_
 All 3 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_sector_external_price_shock_size
-determines the intensity of the sector external price shock
-_INIT_
-All 3 instances equal to 0.02.
+Determines the intensity of the sector external price shock
 END_DESCRIPTION
 
 Parameter_sector_external_price_weight
-
-_INIT_
-All 3 instances equal to 1.
+Determines the weight given to external price when firms set their own prices
 END_DESCRIPTION
 
 Parameter_sector_financial_cost_passtrough
-determines how firms pass financial costs to price setting
-_INIT_
-All 3 instances equal to 1.
+Determines how firms pass financial costs to price setting
 END_DESCRIPTION
 
 Parameter_sector_indirect_tax_rate
-determines the indirect tax rateused in calibration
-_INIT_
-All 3 instances equal to 0.05
+Determines the indirect tax rate. Used in calibration
+END_DESCRIPTION
+
+Parameter_sector_initial_carbon_intensity
+Determines the initial amount of CO2 generated in the industrial production of 1 output in the sector
 END_DESCRIPTION
 
 Parameter_sector_initial_debt_rate
-determines the initial sector (and firms) debt rateused in calibration to define the initial stock of loans
-_INIT_
-All 3 instances equal to 0.4.
+Determines the initial sector (and firms) debt rate. Used in calibration to define the initial stock of loans
 END_DESCRIPTION
 
 Parameter_sector_initial_demand
-determines the sector initial real demandwritten and used only in calibration
+Determines the sector initial real demand. Overwritten and used only in calibration
 END_DESCRIPTION
 
 Parameter_sector_initial_depreciation_scale
-IMPORTANT: essential parameter in calibrationdetermines the number of capital goods to physically depreciate in each invetment period
+IMPORTANT: essential parameter in calibration. Determines the number of capital goods to physically depreciate in each invetment period
 END_DESCRIPTION
 
 Parameter_sector_initial_exports_share
-determines the sector's share of country total nominal exportsused in calibration
-_INIT_
-A
+Determines the sector's share of country total nominal exports. Used in calibration
 END_DESCRIPTION
 
 Parameter_sector_initial_external_price
-determines the sector's initial external price
+Determines the sector's initial external price
 END_DESCRIPTION
 
 Parameter_sector_initial_liquidity_preference
-determines the sector (and firms) initial stock of deposits based on capitalused in calibration
-_INIT_
-All 3 instances equal to 0.05.
+Determines the sector (and firms) initial stock of deposits based on capital. Used in calibration
 END_DESCRIPTION
 
 Parameter_sector_initial_price
-determines the sector initial priceessential parameter in calibration
+Determines the sector initial prices. Essential parameter in calibration
 END_DESCRIPTION
 
 Parameter_sector_initial_productivity
-determine the sector initial productivity
+Determines the sector initial labour productivity
 END_DESCRIPTION
 
 Parameter_sector_initial_profit_rate
-determines the sector (and firm's) initial nominal profit rate on production
+Determines the sector initial nominal profit rate on production
 END_DESCRIPTION
 
 Parameter_sector_initial_propensity_import_inputs
-determines the initial sahre of imputs that must be imported
-_INIT_
-All 3 instances equal to 0.05.
+Determines the initial share of inputs that must be imported
 END_DESCRIPTION
 
 Parameter_sector_initial_quality
-determines sector's initial quality
+Determines sector's initial quality
 END_DESCRIPTION
 
 Parameter_sector_input_imitation_share
-
-_INIT_
-All 4 instances equal to 0
+Determines the share of revenue allocated to imitation RND to reduce input intensity
 END_DESCRIPTION
 
 Parameter_sector_input_import_elasticity_price
-
-_INIT_
-All 3 instances equal to 0.
+Determines how the firms adjust their demand for inputs between domestic and external based on the external price change
 END_DESCRIPTION
 
 Parameter_sector_input_innovation_share
-
-_INIT_
-All 4 instances equal to 0
+Determines the share of revenue allocated to innovation RND to reduce energy intensity
 END_DESCRIPTION
 
 Parameter_sector_input_tech_coefficient
-determines the input tech relationshipused in calibration very important parameter
-_INIT_
-All 4 instances equal to 0.3
+Determines the input tech relationship. Used in calibration, very important parameter
 END_DESCRIPTION
 
 Parameter_sector_investment_frequency
-determines how many time periods consist the investment period of the sector
+Determines how many time periods consist the investment period of the sector
 END_DESCRIPTION
 
 Parameter_sector_learning_adjustment
-determines how productivity increase based on accumulated production
+Determines how productivity increase based on accumulated production
 END_DESCRIPTION
 
 Parameter_sector_liquidity_preference_adjustment
-determines how liquidty preference is adjusted each period based on debt rate
-_INIT_
-All 3 instances equal to 0.
+Determines how liquidty preference is adjusted each period based on debt rate
 END_DESCRIPTION
 
 Parameter_sector_markup_adjustment
-determines how markups increase based on market share growth if current market share is above desired
-_INIT_
-All 4 instances equal to 0.001
+Determines how markups increase based on market share growth
 END_DESCRIPTION
 
 Parameter_sector_number_object_firms
-detemmines the initial number of firmsvery important parameter in calibration
+Detemmines the initial number of firms. Very important parameter in calibration
 END_DESCRIPTION
 
 Parameter_sector_passthrough_inflation
-detemines how nominal wages increased based on past inflation gaps
-_INIT_
-All 4 instances equal to 1
+Detemines how nominal wages increased based on past inflation gaps. Overwritten during simulation
 END_DESCRIPTION
 
 Parameter_sector_passthrough_productivity
-determines how nominal wages increase based on past productivity growth
-_INIT_
-All 4 instances equal to 1
+Determines how nominal wages increase based on past productivity growth. IOverwritten during simulation
 END_DESCRIPTION
 
 Parameter_sector_payback_period
-determines how many periods the firm will calculate the payback in replacement investment
-_INIT_
-All 4 instances equal to 8
+Determines how many periods the firm will calculate the payback in replacement investment
 END_DESCRIPTION
 
 Parameter_sector_price_frequency
-determines how many time periods consists the price frequency, in how many periods the firm will adjust prices
-_INIT_
-All 3 instances equal to 4
+Determines how many time periods consists the price frequency, in how many periods the firm will adjust prices
 END_DESCRIPTION
 
 Parameter_sector_productivity_imitation_share
-
-_INIT_
-All 3 instances equal to 0.005
+Determines the share of revenue allocated to imitation RND to increase productivity
 END_DESCRIPTION
 
 Parameter_sector_productivity_innovation_share
-
-_INIT_
-All 3 instances equal to 0.005
+Determines the share of revenue allocated to innovation RND to increase productivity
 END_DESCRIPTION
 
 Parameter_sector_profits_distribution_rate
-determines the sector (and firms) profits distribution rateis actually calculated during calibration
+Determines the sector (and firms) profits distribution rate. Overwritten during calibration, as it is endogenously calculated
 END_DESCRIPTION
 
 Parameter_sector_quality_imitation_share
-
-_INIT_
-All 3 instances equal to 0.005
+Determines the share of revenue allocated to imitation RND to increase quality
 END_DESCRIPTION
 
 Parameter_sector_quality_innovation_share
-
-_INIT_
-All 3 instances equal to 0.005
+Determines the share of revenue allocated to innovation RND to increase quality
 END_DESCRIPTION
 
 Parameter_sector_std_dev_innovation
-determines the standard deviation of innovation distribution
-_INIT_
-All 3 instances equal to 0.01.
+Determines the standard deviation of innovation distribution
 END_DESCRIPTION
 
 Parameter_sector_strategic_price_weight
-determines the sector (and firms) price strategy weight
-_INIT_
-All 3 instances equal to 0.5.
+Determines the sector (and firms) price strategy weight, how much they value the sector`s average price when they set their own price
+END_DESCRIPTION
+
+Parameter_sector_tech_opportunity_energy
+Determines the technological opportunities of energy intensity in the sector, affective the average of the innovation distribuution
 END_DESCRIPTION
 
 Parameter_sector_tech_opportunity_input
-
-_INIT_
-All 4 instances equal to 0
+Determines the technological opportunities of input intensity in the sector, affective the average of the innovation distribuution
 END_DESCRIPTION
 
 Parameter_sector_tech_opportunity_productivity
-determines the exogenous quarterly average grwoth of technological opportunities in process rnd
-_INIT_
-All 3 instances equal to 0.001.
+Determines the technological opportunities of productivity  in the sector, affective the average of the innovation distribuution
 END_DESCRIPTION
 
 Parameter_sector_tech_opportunity_quality
-determines the exogenous quarterly average grwoth of technological opportunities in product rnd
+Determines the technological opportunities of quality in the sector, affective the average of the innovation distribuution
 _INIT_
 A
+END_DESCRIPTION
+
+Parameter_switch_entry
+Determines if new firms are allowed to enter in the sector or not. 1 allows entry
+END_DESCRIPTION
+
+Parameter_switch_extra_imports
+Determines if extra unmet demand is supplied by imports. 1 allows extra imports
 END_DESCRIPTION
 
 Variable_Sector_Avg_Competitiveness
@@ -3686,6 +3632,10 @@ Variable_Sector_Effective_Production
 
 END_DESCRIPTION
 
+Variable_Sector_Emissions
+
+END_DESCRIPTION
+
 Variable_Sector_Employment
 
 END_DESCRIPTION
@@ -3736,6 +3686,12 @@ Variable_Sector_Max_Quality
 
 _INIT_
 All 3 instances equal to 1.
+END_DESCRIPTION
+
+Variable_Sector_Min_Energy_Intensity
+
+_INIT_
+All 4 instances equal to 0
 END_DESCRIPTION
 
 Variable_Sector_Min_Input
@@ -3829,52 +3785,6 @@ Sum of the indirect taxes paid by firms in the sector
 END_DESCRIPTION
 
 Variable_Sector_Turbulence
-
-END_DESCRIPTION
-
-Parameter_switch_entry
-
-_INIT_
-All 1 instances equal to 1.
-END_DESCRIPTION
-
-Parameter_switch_extra_imports
-
-_INIT_
-All 1 instances equal to 0.
-END_DESCRIPTION
-
-Variable_Sector_Min_Energy_Intensity
-
-_INIT_
-All 4 instances equal to 0
-END_DESCRIPTION
-
-Parameter_sector_energy_imitation_share
-
-_INIT_
-All 4 instances equal to 0.005
-END_DESCRIPTION
-
-Parameter_sector_energy_innovation_share
-
-_INIT_
-All 4 instances equal to 0.005
-END_DESCRIPTION
-
-Parameter_sector_tech_opportunity_energy
-
-_INIT_
-All 4 instances equal to 0.001
-END_DESCRIPTION
-
-Parameter_sector_initial_carbon_intensity
-
-_INIT_
-All 4 instances equal to 0.5
-END_DESCRIPTION
-
-Variable_Sector_Emissions
 
 END_DESCRIPTION
 
@@ -4372,6 +4282,20 @@ END_DESCRIPTION
 
 Variable_Firm_Emissions
 
+END_DESCRIPTION
+
+Variable_Firm_Innovation_RND_Share
+This variable defines the allocation of expenses between innovation and imitation.
+If the firm is gaining market share, it decreases imitation and increases innovation. The opposite is valid.This variable defines the allocation of expenses between innovation and imitation.
+If the firm is gaining market share, it decreases imitation and increases innovation. The opposite is valid.
+_INIT_
+All 4 instances equal to 0
+END_DESCRIPTION
+
+Variable_Firm_Desired_Market_Share
+Desired Market Share is a simple average between last period's desired market share and firm's average market share
+_INIT_
+All 4 instances equal to 0
 END_DESCRIPTION
 
 Object_CAPITALS
