@@ -315,7 +315,7 @@ CYCLE(cur, "SECTORS")
 	WRITELLS(cur1, "Firm_Wage", v[188], 0, 1);
 	WRITELLS(cur1, "Firm_Desired_Markup", v[190], 0, 1);
 	WRITELLS(cur1, "Firm_Avg_Debt_Rate", v[162], 0, 1);
-	WRITELLS(cur1, "Firm_Max_Debt_Rate", 2*v[162], 0, 1);
+	WRITELLS(cur1, "Firm_Max_Debt_Rate", 1, 0, 1);
 	WRITELLS(cur1, "Firm_Stock_Inputs", v[150]*v[154]/v[152], 0, 1);
 	WRITELLS(cur1, "Firm_Liquidity_Preference", v[163], 0, 1);
 	WRITELLS(cur1, "Firm_Capital", v[181]/v[152], 0, 1);
