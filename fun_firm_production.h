@@ -92,3 +92,112 @@ Firm effective production over firm productive capacity
 	v[1]=VL("Firm_Productive_Capacity",1);
 	v[2]= v[1]!=0? v[0]/v[1] : 0;
 RESULT(v[2])
+
+
+
+
+
+EQUATION("Firm_Energy_Demand")
+	v[0]=0;                                                        				//initializes the CYCLE
+	CYCLE(cur, "CAPITALS")                                          			//CYCLE trought firm's capital goods
+	{
+		v[1]=VS(cur, "capital_good_energy_requirement");                   	    //capital good productivity
+		v[2]=VS(cur, "Capital_Good_Production");                    			//capital good production
+		v[0]=v[0]+v[1]*v[2];                                        			//sums up the product of each capital good productivity and production
+	}
+RESULT(v[0])
+
+EQUATION("Sector_Energy_Demand")                                                         
+RESULT(SUM("Firm_Energy_Demand"))
+
+EQUATION("Country_Energy_Demand")                                                         
+v[0]=SUM("Sector_Energy_Demand");
+RESULT(v[0])
+
+
+EQUATION("Energy_Capacity") 
+RESULT(SUM("plant_productive_capacity"))
+
+EQUATION("Energy_Production") 
+	v[0]=V("Country_Energy_Demand");                                                             
+	SORT("PLANTS", "plant_unit_cost", "UP");                                        	
+	v[3]=0;                                                                                      	
+	CYCLE(cur, "PLANTS")                                                                        	
+	{
+		v[4]=VS(cur, "plant_productive_capacity");                                          	
+		v[5]=max(0,(min(v[4], v[0])));                                                             
+		WRITES(cur, "plant_production", v[5]);     
+		WRITES(cur, "plant_emissions", v[5]*VS(cur, "plant_carbon_intensity"));  		
+		v[0]=v[0]-v[5];                                                                            
+		v[3]=v[3]+v[5];                                                                            
+	}
+RESULT(v[3])
+
+EQUATION("Energy_Unit_Cost")
+RESULT(WHTAVE("plant_unit_cost", "plant_production")/SUM("plant_production"))
+
+EQUATION("Energy_Price") 
+	v[1]=V("energy_markup");
+	v[2]=V("Energy_Unit_Cost");
+	v[3]= (1+v[1])*v[2];
+RESULT(v[3])
+
+EQUATION("Energy_Expected_Sales_Long_Term") 
+	v[0]=V("energy_investment_frequency");
+	v[1]=LAG_AVE(p,"Country_Energy_Demand", v[0]);
+	v[2]=LAG_AVE(p,"Country_Energy_Demand", v[0], v[0]);	
+	v[3]=V("energy_expectations");                          
+	if (t>2*v[0]&&v[2]!=0)                                    		
+		v[4]=v[1]*(1+2*v[3]*((v[1]-v[2])/v[2]));     		
+	else                                            		
+		v[4]=0;    
+RESULT(max(0,v[4]))
+
+
+EQUATION("Energy_Desired_Capacity_Expansion")
+
+	v[0]=V("energy_investment_frequency");								
+	if(fmod((double) t-1,v[0])==0)														
+		{
+   		v[0]=V("Energy_Expected_Sales_Long_Term");																							 	
+   		v[1]=V("Energy_Capacity"); 		
+		v[2]=V("energy_desired_capacity_utilization");
+		v[4]=v[0]/v[2] - v[1];						
+   		v[5]=max(0,v[4]);
+		}
+   	else
+   		v[5]=0;
+RESULT(v[5])
+
+EQUATION("Energy_New_Plant")
+
+	v[0]=V("energy_investment_frequency");		
+	v[1]=VL("Energy_Desired_Capacity_Expansion", v[0]);
+	if(fmod((double) t-1,v[0])==0 && v[1]>0)														
+		{
+			v[2]=MIN("plant_unit_cost");
+			v[3]=MIN("plant_carbon_intensity");
+			cur1=SEARCH_CND("plant_unit_cost", v[2]);	
+   			cur=ADDOBJ_EX("PLANTS", cur1);												
+			WRITES(cur, "plant_productive_capacity", v[1]);	
+			WRITES(cur, "plant_unit_cost", min(v[2],norm(v[2],0.1)));
+			WRITES(cur, "plant_carbon_intensity", norm(v[3],0.1));			
+		}
+RESULT(0)
+
+EQUATION("Energy_Requirement")
+	v[0]=V("initial_energy_requirement");		
+	v[1]=VS(capital,"Sector_Avg_Quality");
+	v[2]=V("energy_requirement_adjustment");
+	v[3]= v[1]*v[2]==0? v[0]:v[0]/v[1]*v[2];
+RESULT(v[3])
+
+EQUATION("Energy_Emissions")
+RESULT(SUM("plant_emissions"))
+
+EQUATION("Energy_Profits")
+v[0]=V("Energy_Production");
+v[1]=V("Energy_Price");
+v[2]=V("Energy_Unit_Cost");
+v[3]=v[0]*(v[1]-v[2]);
+RESULT(v[3])

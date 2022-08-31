@@ -94,6 +94,7 @@ In this variable, the firm receive the new capital goods ordered in the last inv
 		for(i=0; i<=v[2]; i++)													//for the amount of new capital goods bought
 			{
 			cur=ADDOBJ("CAPITALS");												//create new capital objects
+			WRITES(cur, "capital_good_energy_requirement", V("Energy_Requirement"));				//
 			WRITES(cur, "capital_good_productivity_initial", v[1]);				//writes the new capital productivity as the frontier productivity when it was ordered
 			WRITES(cur, "capital_good_productive_capacity", (1/v[5]));			//writes the productive capacity as the inverse of current capital output ratio of the sector
 			WRITES(cur, "capital_good_date_birth", t);							//writes the new capital date of birth as the current time period
@@ -113,6 +114,7 @@ In this variable, the firm receive the new capital goods ordered in the last inv
      		v[10]=VS(cur, "capital_good_to_replace");
      		if(v[10]==1&&v[3]>0)
      			{
+				WRITES(cur, "capital_good_energy_requirement", V("Energy_Requirement"));				//
      			WRITES(cur, "capital_good_productivity_initial", v[1]);				//writes the new capital productivity as the frontier productivity when it was ordered
 				WRITES(cur, "capital_good_date_birth", t);							//writes the new capital date of birth as the current time period
 				WRITES(cur, "capital_good_to_replace", 0);							//writes the parameter that identifies the capital goods to be replaced as zero

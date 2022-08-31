@@ -86,7 +86,10 @@ V("Capital_Good_Production");
 V("Firm_Avg_Productivity"); 
 V("Firm_Capacity_Utilization");	
 V("Sector_Capacity_Utilization");		
-V("Country_Capacity_Utilization");							
+V("Country_Capacity_Utilization");	
+V("Firm_Energy_Demand");	
+V("Country_Energy_Demand");                                                      
+V("Sector_Energy_Demand");			
 
 /*****CONSUMPTION DEMAND AND IMPORTS*****/
 V("Class_Avg_Real_Income");

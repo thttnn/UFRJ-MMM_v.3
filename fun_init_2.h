@@ -12,6 +12,7 @@ centralbank=SEARCH("CENTRAL_BANK");
 aclass=SEARCH_CND("class_id",1);
 bclass=SEARCH_CND("class_id",2);
 cclass=SEARCH_CND("class_id",3);
+energy=SEARCH("ENERGY");
 
 //COUNTRY PARAMETERS
 v[0]=VS(country, "annual_frequency");
@@ -298,7 +299,8 @@ CYCLE(cur, "SECTORS")
 	cur2=SEARCHS(cur1, "CAPITALS");														
 	WRITELLS(cur2, "Capital_Good_Acumulated_Production", 0, 0, 1);      				
 	WRITES(cur2, "capital_good_productive_capacity", 1/v[158]);     					
-	WRITES(cur2, "capital_good_productivity_initial", v[159]);       		  			
+	WRITES(cur2, "capital_good_productivity_initial", v[159]); 
+	WRITES(cur2, "capital_good_energy_requirement", 0.5);			
 	WRITES(cur2, "capital_good_to_replace", 0);
 	WRITES(cur2, "capital_good_date_birth", 0);
 	WRITES(cur2, "id_capital_good_number", 1);    
@@ -416,7 +418,7 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 			  +WHTAVE("class_direct_tax", "class_profit_share")*max(0,v[102]-v[52])*v[225];
 	LOG("\nPseudo Taxation %f.0",v[280]);
 	LOG("\nTaxation %f.0",v[233]);
-	v[281]=v[233]/v[280];
+	v[281]=v[280]==0? 0: v[233]/v[280];
 		
 	//WRITTING CLASS LAGGED VALUES  
 	v[251]=v[252]=0;
@@ -498,6 +500,11 @@ for(i=1;i<=v[0]+1;i++)		WRITELLS(country, "Country_Consumer_Price_Index", v[13],
 for(i=1;i<=2*v[0]+1;i++)	WRITELLS(country, "Country_GDP", v[100], 0, i);
 for(i=1;i<=2*v[0]+1;i++)	WRITELLS(country, "Country_Real_GDP", v[100]/v[270], 0, i);
 for(i=1;i<=v[0];i++)		WRITELLS(country, "Country_Capital_Goods_Price", v[23], 0, i);
-	
+
+v[300]=VS(energy,"initial_energy_requirement")*(v[141]+v[142]+v[143]);
+for(i=1;i<=2*VS(energy,"energy_investment_frequency");i++)	WRITELLS(country, "Country_Energy_Demand", v[300], 0, i);
+cur7=SEARCH("PLANTS");
+WRITES(cur7,"plant_productive_capacity", v[300]/VS(energy,"energy_desired_capacity_utilization"));
+
 PARAMETER
 RESULT(0)

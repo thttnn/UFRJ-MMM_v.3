@@ -17,6 +17,7 @@ object *centralbank;
 object *aclass;
 object *bclass;
 object *cclass;
+object *energy;
 
 MODELBEGIN
 

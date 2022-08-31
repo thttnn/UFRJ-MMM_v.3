@@ -330,6 +330,7 @@ In this variable a new firm enters if there is market space available and the en
 			cur2=ADDNOBJS(cur, "CAPITALS", v[7]);
 			CYCLES(cur, cur1, "CAPITALS")
 			{
+			WRITES(cur1, "capital_good_energy_requirement", V("Energy_Requirement"));		
 			WRITES(cur1, "capital_good_productive_capacity",(1/v[35]));
 			WRITES(cur1, "capital_good_date_birth",t);					//write the new date of birth
 			WRITES(cur1, "capital_good_depreciation_period",(t+v[38])); //write the new date of birth
