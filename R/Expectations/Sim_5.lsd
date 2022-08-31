@@ -1115,7 +1115,7 @@ Param: sector_desired_market_share 0 n + n n	0.1	0.25	0.15
 Param: sector_elascitity_delay 0 n + n n	0.25	0.25	0.25
 Param: sector_elasticity_price 0 n + n n	1	1	1
 Param: sector_elasticity_quality 0 n + n n	0.5	0.5	0.5
-Param: sector_expectations 0 n + n n	0.2	0.2	0.2
+Param: sector_expectations 0 n + n n	0.5	0.5	0.5
 Param: sector_exports_coefficient 0 s + n n	0	0	0
 Param: sector_exports_elasticity_income 0 n + n n	1	1	1
 Param: sector_exports_elasticity_price 0 n + n n	1	1	1
@@ -1475,7 +1475,7 @@ Var: MGDP 0 s + n n
 Var: XGDP 0 s + n n
 Var: DX_GDP 0 s + n n
 
-SIM_NUM 1
+SIM_NUM 50
 SEED 1
 MAX_STEP 600
 EQUATION fun_micro_macro_v.3.6.cpp
@@ -3112,7 +3112,7 @@ END_DESCRIPTION
 Parameter_sector_expectations
 determines the sector expectation parameter to be used in expected demand calculation
 _INIT_
-All 3 instances equal to 0.2
+All 3 instances equal to 0.5
 END_DESCRIPTION
 
 Parameter_sector_exports_coefficient
