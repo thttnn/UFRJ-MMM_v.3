@@ -274,6 +274,7 @@ CYCLE(cur, "SECTORS")
 	WRITES(cur, "sector_desired_degree_capacity_utilization", v[198]);
 	WRITES(cur, "sector_profits_distribution_rate", v[196]);
 	WRITES(cur, "sector_desired_market_share", 2/v[152]);
+	WRITELLS(cur, "Sector_Technical_Carbon_Intensity", VS(cur, "sector_initial_carbon_intensity"), 0, 1);
 	WRITELLS(cur, "Sector_External_Price", v[157], 0, 1);
 	WRITELLS(cur, "Sector_Productive_Capacity", v[197], 0, 1);
 	WRITELLS(cur, "Sector_Idle_Capacity", 1-v[198], 0, 1);
@@ -538,7 +539,7 @@ v[271]=WHTAVE("sector_initial_productivity", "sector_initial_demand")/SUM("secto
 v[272]=WHTAVE("sector_desired_degree_capacity_utilization", "sector_initial_demand")/SUM("sector_initial_demand");
 	
 //WRITTING COUNTRY LAGGED VALUES  
-WRITELLS(country, "Technical_Carbon_Intensity", VS(capital, "sector_initial_carbon_intensity"), 0, 1);
+
 WRITELLS(country, "Country_Debt_Rate_Firms", v[220], 0, 1);
 WRITELLS(country, "Country_Idle_Capacity", 1-v[272], 0, 1);
 WRITELLS(country, "Country_Avg_Productivity", v[271], 0, 1);

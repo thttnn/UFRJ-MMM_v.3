@@ -159,7 +159,7 @@ V("Firm_Frontier_Productivity");
 V("Firm_Quality");	
 V("Firm_Frontier_Input_Tech_Coefficient"); 
 V("Firm_Frontier_Energy_Intensity");
-V("Technical_Carbon_Intensity");  
+V("Sector_Technical_Carbon_Intensity");  
 
 /*****CAPITAL AND INVESTMENT DECISIONS*****/
 V("Firm_Investment_Period");						   		

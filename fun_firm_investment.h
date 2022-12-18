@@ -90,7 +90,7 @@ In this variable, the firm receive the new capital goods ordered in the last inv
 	v[7]=VL("Firm_Frontier_Energy_Intensity",v[0]);
 	v[5]=V("sector_capital_output_ratio");										//amount of Capital Goods bought
 	v[8]=uniform_int(30, 50);
-	v[16]=V("Technical_Carbon_Intensity");
+	v[16]=V("Sector_Technical_Carbon_Intensity");
 
 	
 	if(v[2]>0)
