@@ -903,27 +903,27 @@ Var: Country_Energy_Intensity 0 s + n n
 Var: Country_Emissions 0 s + n n
 Var: Country_Carbon_Intensity 0 s + n n
 
-Object: CLASSES C	1
-Param: class_autonomous_consumption_adjustment 0 n + n n	1
-Param: class_debt_rate_adjustment 0 n + n n	0
-Param: class_direct_tax 0 s + n n	0.3
-Param: class_id 0 n + n n	1
-Param: class_import_elasticity_price 0 n + n n	0.5
-Param: class_initial_propensity_import 0 n + n n	0
-Param: class_initial_liquidity_preference 0 n + n n	0
-Param: class_initial_max_debt_rate 0 n + n n	1
-Param: class_liquidity_preference_adjustment 0 n + n n	0
-Param: class_population_share 0 n + n n	0.01
-Param: class_profit_share 0 n + n n	1
-Param: class_propensity_to_spend 0 n + n n	0.8
-Param: class_wage_share 0 n + n n	1
-Param: class_wealth_tax 0 n + n n	0
+Object: CLASSES C	4
+Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1	1
+Param: class_debt_rate_adjustment 0 n + n n	0	0	0	0
+Param: class_direct_tax 0 s + n n	0.3	0.3	0.3	0.3
+Param: class_id 0 n + n n	1	1	1	1
+Param: class_import_elasticity_price 0 n + n n	0.5	0.5	0.5	0.5
+Param: class_initial_propensity_import 0 n + n n	0.3	0.2	0.1	0
+Param: class_initial_liquidity_preference 0 n + n n	0	0	0	0
+Param: class_initial_max_debt_rate 0 n + n n	1	1	1	1
+Param: class_liquidity_preference_adjustment 0 n + n n	0	0	0	0
+Param: class_population_share 0 n + n n	0.01	0.05	0.24	0.7
+Param: class_profit_share 0 n + n n	0.4	0.3	0.2	0.1
+Param: class_propensity_to_spend 0 n + n n	0.5	0.6	0.7	0.8
+Param: class_wage_share 0 n + n n	0.1	0.2	0.3	0.4
+Param: class_wealth_tax 0 n + n n	0	0	0	0
 Var: Class_Available_Deposits 0 s + n n
 Var: Class_Avg_Debt_Rate 0 n + n n
-Var: Class_Avg_Nominal_Income 1 n + n n	0
-Var: Class_Avg_Real_Income 1 n + n n	0
+Var: Class_Avg_Nominal_Income 1 n + n n	0	0	0	0
+Var: Class_Avg_Real_Income 1 n + n n	0	0	0	0
 Var: Class_Debt_Payment 0 s + n n
-Var: Class_Debt_Rate 4 s + n n	0	0	0	0
+Var: Class_Debt_Rate 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Class_Demand_Loans 0 s + n n
 Var: Class_Deposits_Return 0 s + n n
 Var: Class_Desired_Expenses 0 s + n n
@@ -933,39 +933,39 @@ Var: Class_Effective_Real_Domestic_Consumption 0 s + n n
 Var: Class_Effective_Real_Imported_Consumption 0 s + n n
 Var: Class_Financial_Obligations 0 s + n n
 Var: Class_Funds 0 s + n n
-Var: Class_Imports_Share 1 s + n n	0.5
-Var: Class_Income_Share 1 s + n n	0
+Var: Class_Imports_Share 1 s + n n	0	0	0	0
+Var: Class_Income_Share 1 s + n n	0	0	0	0
 Var: Class_Interest_Payment 0 s + n n
 Var: Class_Interest_Rate 0 n + n n
 Var: Class_Internal_Funds 0 s + n n
-Var: Class_Liquidity_Preference 1 s + n n	0
-Var: Class_Max_Debt_Rate 1 s + n n	0
+Var: Class_Liquidity_Preference 1 s + n n	0	0	0	0
+Var: Class_Max_Debt_Rate 1 s + n n	0	0	0	0
 Var: Class_Max_Loans 0 s + n n
 Var: Class_Maximum_Expenses 0 s + n n
-Var: Class_Nominal_Disposable_Income 5 s + n n	0	0	0	0	0
+Var: Class_Nominal_Disposable_Income 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Class_Nominal_Gross_Income 0 s + n n
-Var: Class_Real_Autonomous_Consumption 1 s + n n	0
+Var: Class_Real_Autonomous_Consumption 1 s + n n	0	0	0	0
 Var: Class_Real_Desired_Domestic_Consumption 0 s + n n
 Var: Class_Real_Desired_Imported_Consumption 0 s + n n
-Var: Class_Real_Disposable_Income 4 s + n n	0	0	0	0
+Var: Class_Real_Disposable_Income 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Class_Real_Domestic_Consumption_Demand 0 s + n n
 Var: Class_Real_Imported_Consumption_Demand 0 s + n n
 Var: Class_Retained_Deposits 0 s + n n
-Var: Class_Stock_Deposits 5 s + n n	0	0	0	0	0
-Var: Class_Stock_Loans 1 s + n n	0
+Var: Class_Stock_Deposits 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Class_Stock_Loans 1 s + n n	0	0	0	0
 Var: Class_Taxation 0 s + n n
 Var: Class_Wealth_Share 0 s + n n
 Var: Class_Gross_Income_Share 0 s + n n
-Param: class_propensity_to_energy 0 n + n n	0.05
+Param: class_propensity_to_energy 0 n + n n	0.05	0.05	0.05	0.05
 Var: Class_Real_Desired_Energy_Consumption 0 s + n n
 Var: Class_Real_Energy_Demand 0 s + n n
 Var: Class_Effective_Real_Energy_Consumption 0 s + n n
 
-Object: CLASS_LOANS C	1
-Param: class_loan_fixed_amortization 0 n + n n	0
-Param: class_loan_fixed_object 0 n + n n	1
-Param: class_loan_interest_rate 0 n + n n	0
-Param: class_loan_total_amount 0 n + n n	0
+Object: CLASS_LOANS C	1	1	1	1
+Param: class_loan_fixed_amortization 0 n + n n	0	0	0	0
+Param: class_loan_fixed_object 0 n + n n	1	1	1	1
+Param: class_loan_interest_rate 0 n + n n	0	0	0	0
+Param: class_loan_total_amount 0 n + n n	0	0	0	0
 
 Object: EXTERNAL_SECTOR C	1
 Param: exchange_rate_adjustment 0 n + n n	1
@@ -2112,7 +2112,7 @@ END_DESCRIPTION
 Variable_Class_Imports_Share
 
 _INIT_
-All 3 instances equal to 0.1.
+All 4 instances equal to 0
 END_DESCRIPTION
 
 Variable_Class_Income_Share
