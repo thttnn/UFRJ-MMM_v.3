@@ -6,10 +6,14 @@ Firm's expected sales are calculated from an average of effective sales from the
 	v[1]=VL("Firm_Effective_Orders", 1);                    //firm's effective orders lagged 1
 	v[2]=VL("Firm_Effective_Orders", 2);                    //firm's effective orders lagged 2
 	v[3]=V("sector_expectations");                          //firm expectations
+	v[5]=(v[1]-v[2])/v[2];
+	v[6]=max(min(v[5],1),-1);
 	if(v[2]!=0)                                           	//if firm's effective orders lagged 2 is not zero
-		v[4]=v[1]*(1+v[3]*((v[1]-v[2])/v[2]));              //expected sales will be the effective orders in the last period multiplied by the growth rate between the two periods adjusted by the expectations parameter
+		v[4]=v[1]*(1+v[3]*v[6]);              //expected sales will be the effective orders in the last period multiplied by the growth rate between the two periods adjusted by the expectations parameter
 	else                                                  	//if firm's effective orders lagged 2 is zero 
 		v[4]=v[1];                                          //expected sales will be equal to effective orders of the last period
+		
+		
 RESULT(max(0,v[4]))
 
 
@@ -30,13 +34,14 @@ Programed Production is subjected to a existing capactity restriction, but it is
 		{
 		v[10]=V("sector_investment_frequency");
 		v[7]=0;
-		for(i=0;i<=(v[10]-1);i++)
+		for(i=0;i<=v[10]-1;i++)
 			{
 			v[11]=VL("Firm_Effective_Orders_Capital_Goods",i);
 			v[12]=v[11]/v[10];
 			v[7]=v[7]+v[12];
 			}
-		v[8]=v[7]*(1+v[5]);
+		v[8]=v[7]*(1+v[5])-v[6];
+		//v[8]=v[1]*(1+v[5])-v[6];
 		}
 	v[9]=max(0, v[8]);                          			//planned production can never be more then the maximum productive capacity and can never be negative
 RESULT(v[9])
@@ -49,7 +54,16 @@ The actual production of each sector will be determined by the constraint impose
 	v[0]=V("Firm_Planned_Production");                                                              //firm's planned production
 	v[1]=V("Firm_Available_Inputs_Ratio");
 	v[2]=v[1]*v[0];                                                                            		//effective planned production, constrained by the ratio of available inputs
+	
+	v[10]=V("switch_capital_order");
+	if(v[10]==0)	
 	SORT("CAPITALS", "Capital_Good_Productivity", "DOWN");                                        	//rule for the use of capital goods, sorts firm's capital goods by productivity in a decreasing order
+	if(v[10]==1)	
+	SORT("CAPITALS", "capital_good_input_tech_coefficient", "UP"); 
+	if(v[10]==2)	
+	SORT("CAPITALS", "capital_good_energy_intensity", "UP"); 
+	if(v[10]==3)	
+	SORT("CAPITALS", "capital_good_carbon_intensity", "UP"); 
 	v[3]=v[7]=0;                                                                                      	//initializes the CYCLE
 	CYCLE(cur, "CAPITALS")                                                                        	//CYCLE trought the capital goods of the firm
 	{

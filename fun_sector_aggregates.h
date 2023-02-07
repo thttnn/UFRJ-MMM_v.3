@@ -169,6 +169,9 @@ RESULT(SUM("Firm_Effective_Loans"))
 EQUATION("Sector_Emissions")                                                               
 RESULT(SUM("Firm_Emissions"))
 
+EQUATION("Sector_Energy_Demand")                                                               
+RESULT(SUM("Firm_Energy_Demand"))
+
 EQUATION("Sector_Demand_Met")
 /*
 Percentage of demand fulfilled by each sector
@@ -331,3 +334,31 @@ RESULT(WHTAVE("Firm_Capacity_Utilization", "Firm_Market_Share"))
 EQUATION("Sector_Idle_Capacity")
 RESULT(1-V("Sector_Capacity_Utilization"))
 
+EQUATION("Sector_Avg_Energy_Intensity")
+RESULT(WHTAVE("Firm_Avg_Energy_Intensity", "Firm_Market_Share"))
+
+EQUATION("Sector_Avg_Energy_Intensity2")
+v[0]=V("Sector_Energy_Demand");
+v[1]=V("Sector_Effective_Production");
+v[2]=v[1]!=0? v[0]/v[1] : CURRENT;
+RESULT(v[2])
+
+EQUATION("Sector_Avg_Carbon_Intensity")
+RESULT(WHTAVE("Firm_Avg_Carbon_Intensity", "Firm_Market_Share"))
+
+EQUATION("Sector_Avg_Input_Coefficient")
+RESULT(WHTAVE("Firm_Avg_Input_Tech_Coefficient", "Firm_Market_Share"))
+
+EQUATION("Sector_Technical_Carbon_Intensity")
+/*
+*/
+v[0]=CURRENT;                 										
+	v[1]=LAG_GROWTH(energy, "Sector_Avg_Quality", 1, 1);
+	v[2]=V("carbon_intensity_adjustment");				
+		if(v[1]>0) 													
+			v[4]=v[0]*(1-v[1]*v[2]); 								
+		if(v[1]==0)													
+			v[4]=v[0];												
+		if(v[1]<0)													
+			v[4]=v[0]*(1-v[1]*v[2]);							 														                                            		
+RESULT(max(0,v[4]))

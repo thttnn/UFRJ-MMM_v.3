@@ -26,6 +26,9 @@ RESULT(SUMS(country, "Sector_Employment"))
 EQUATION("GDP_G")//GDP real annual growth rate
 RESULT(VS(country, "Country_Annual_Real_Growth"))
 
+EQUATION("GDP_G_2")//GDP real annual growth rate
+RESULT(LAG_GROWTH(p,"Country_Real_GDP",1))
+
 EQUATION("G_n")//GDP nominal annual growth rate
 RESULT(VS(country, "Country_Annual_Growth"))
 
@@ -67,6 +70,18 @@ RESULT(VS(country,"Country_Wage_Share"))
 
 EQUATION("GINI")//Wage Share
 RESULT(VS(country,"Country_Gini_Index"))
+
+EQUATION("EM")//Emissions
+RESULT(VS(country,"Country_Emissions"))
+
+EQUATION("CI")//Carbon Intensity
+RESULT(VS(country,"Country_Carbon_Intensity"))
+
+EQUATION("EI")//Energy Intensity
+RESULT(VS(country,"Country_Energy_Intensity"))
+
+EQUATION("ED")//Energy Demand
+RESULT(VS(country,"Country_Domestic_Energy_Demand"))
 
 
 /*****REAL STATS*****/
@@ -218,6 +233,9 @@ RESULT(VS(capital, "Sector_Avg_Price"))
 EQUATION("P_I")//Average Price of Intermediate good sector
 RESULT(VS(input, "Sector_Avg_Price"))
 
+EQUATION("P_E")//Average Price of Energy sector
+RESULT(VS(energy, "Sector_Avg_Price"))
+
 EQUATION("PX_C")//Average External Price of Consumption good secto
 RESULT(VS(consumption, "Sector_External_Price"))
 
@@ -236,6 +254,9 @@ RESULT(VS(capital, "Sector_Avg_Wage"))
 EQUATION("W_I")//Average Wage of Intermediate good sector
 RESULT(VS(input, "Sector_Avg_Wage"))
 
+EQUATION("W_E")//Average Wage of Energy sector
+RESULT(VS(energy, "Sector_Avg_Wage"))
+
 EQUATION("MK_C")//Average Markup of Consumption good sector
 RESULT(VS(consumption, "Sector_Avg_Markup"))
 
@@ -245,6 +266,9 @@ RESULT(VS(capital, "Sector_Avg_Markup"))
 EQUATION("MK_I")//Average Markup of Intermediate good sector
 RESULT(VS(input, "Sector_Avg_Markup"))
 
+EQUATION("MK_E")//Average Markup of Energy sector
+RESULT(VS(energy, "Sector_Avg_Markup"))
+
 EQUATION("PROD_C")//Average Productivity of Consumption good sector
 RESULT(VS(consumption, "Sector_Avg_Productivity"))
 
@@ -253,6 +277,9 @@ RESULT(VS(capital, "Sector_Avg_Productivity"))
 
 EQUATION("PROD_I")//Average Productivity of Intermediate good sector
 RESULT(VS(input, "Sector_Avg_Productivity"))
+
+EQUATION("PROD_E")//Average Productivity of Energy sector
+RESULT(VS(energy, "Sector_Avg_Productivity"))
 
 EQUATION("U_C")//Unemployment Rate of Consumption good sector
 RESULT(VS(consumption, "Sector_Idle_Capacity"))
@@ -289,6 +316,54 @@ RESULT(VS(capital, "Sector_Avg_Interest_Rate_Long_Term"))
 
 EQUATION("IRLT_I")//Average Long Term Interest Rate of Intermediate good sector
 RESULT(VS(input, "Sector_Avg_Interest_Rate_Long_Term"))
+
+EQUATION("EM_C")//Emissions of Consumption good sector
+RESULT(VS(consumption, "Sector_Emissions"))
+
+EQUATION("EM_K")//Emissions of Capital good sector
+RESULT(VS(capital, "Sector_Emissions"))
+
+EQUATION("EM_I")//Emissions of Intermediate good sector
+RESULT(VS(input, "Sector_Emissions"))
+
+EQUATION("EM_E")//Emissions of Energy sector
+RESULT(VS(energy, "Sector_Emissions"))
+
+EQUATION("ED_C")//Energy Demand of Consumption good sector
+RESULT(VS(consumption, "Sector_Energy_Demand"))
+
+EQUATION("ED_K")//Energy Demand of Capital good sector
+RESULT(VS(capital, "Sector_Energy_Demand"))
+
+EQUATION("ED_I")//Energy Demand of Intermediate good sector
+RESULT(VS(input, "Sector_Energy_Demand"))
+
+EQUATION("ED_E")//Energy Demand of Energy sector
+RESULT(VS(energy, "Sector_Energy_Demand"))
+
+EQUATION("EI_C")//Energy Intensity of Consumption good sector
+RESULT(VS(consumption, "Sector_Avg_Energy_Intensity"))
+
+EQUATION("EI_K")//Energy Intensity of Capital good sector
+RESULT(VS(capital, "Sector_Avg_Energy_Intensity"))
+
+EQUATION("EI_I")//Energy Intensity of Intermediate good sector
+RESULT(VS(input, "Sector_Avg_Energy_Intensity"))
+
+EQUATION("EI_E")//Energy Intensity of Energy sector
+RESULT(VS(energy, "Sector_Avg_Energy_Intensity"))
+
+EQUATION("CI_C")//Carbon Intensity of Consumption good sector
+RESULT(VS(consumption, "Sector_Avg_Carbon_Intensity"))
+
+EQUATION("CI_K")//Carbon Intensity of Capital good sector
+RESULT(VS(capital, "Sector_Avg_Carbon_Intensity"))
+
+EQUATION("CI_I")//Carbon Intensity of Intermediate good sector
+RESULT(VS(input, "Sector_Avg_Carbon_Intensity"))
+
+EQUATION("CI_E")//Carbon Intensity of Energy sector
+RESULT(VS(energy, "Sector_Avg_Carbon_Intensity"))
 
 /*****COUNTRY GROWTH STATS*****/
 
@@ -334,6 +409,18 @@ RESULT(LAG_GROWTH(p,"X_r",1))
 EQUATION("NX_G")//Quarterly Real Net Exports Growth rate
 RESULT(LAG_GROWTH(p,"NX_r",1))
 
+EQUATION("EI_G")
+RESULT(LAG_GROWTH(p, "Country_Energy_Intensity", 1))
+
+EQUATION("CI_G")
+RESULT(LAG_GROWTH(p, "Country_Carbon_Intensity", 1))
+
+EQUATION("EM_G")
+RESULT(LAG_GROWTH(p, "Country_Emissions", 1))
+
+EQUATION("ED_G")
+RESULT(LAG_GROWTH(p, "Country_Domestic_Energy_Demand", 1))
+
 
 /*****MACRO SHARE STATS*****/
 
@@ -356,7 +443,7 @@ EQUATION("MGDP")
 RESULT(V("Country_Nominal_Imports")/V("Country_GDP_Demand"))
 
 EQUATION("INVGDP")
-RESULT(V("Country_Inventories")/V("Country_GDP_Demand"))
+RESULT(V("Country_Inventories_Variation")/V("Country_GDP_Demand"))
 
 EQUATION("KGDP")
 RESULT(V("Country_Capital_Stock")/V("Country_GDP_Demand")) 

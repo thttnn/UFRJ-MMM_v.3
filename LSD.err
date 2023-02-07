@@ -890,3 +890,13 @@ set res [ winfo exists "%s" ]
 Message:
 can't read "list": no such variable
 -----
+
+
+====================> NEW TCL SESSION
+
+(01/17/23 17:39:40)
+Command:
+FATAL ERROR
+Message:
+System Signal received: SIGSEGV (Segmentation violation)
+-----

@@ -67,21 +67,6 @@ WRITES(cur, "Bank_Number_Clients", v[10]);
 }	
 RESULT(0)
 
-
-EQUATION("Sector_Technical_Carbon_Intensity")
-/*
-*/
-v[0]=CURRENT;                 										
-	v[1]=LAG_GROWTH(energy, "Sector_Avg_Quality", 1, 1);
-	v[2]=V("carbon_intensity_adjustment");				
-		if(v[1]>0) 													
-			v[4]=v[0]*(1-v[1]*v[2]); 								
-		if(v[1]==0)													
-			v[4]=v[0];												
-		if(v[1]<0)													
-			v[4]=v[0]*(1-v[1]*v[2]);							 														                                            		
-RESULT(max(0,v[4]))
-
 	
 EQUATION("Country_Domestic_Intermediate_Demand")
 /*
@@ -197,6 +182,7 @@ Annual growth of the consumer price index
 Uses support function
 */
 RESULT(LAG_GROWTH(p, "Country_Consumer_Price_Index", V("annual_frequency"), 1))
+
 
 
 EQUATION("Country_Distributed_Profits")

@@ -575,6 +575,12 @@ Label Root
 			Param: innovation_imitation_adjustment
 			Var: Sector_Technical_Carbon_Intensity
 			Param: carbon_intensity_adjustment
+			Var: Sector_Avg_Carbon_Intensity
+			Var: Sector_Avg_Energy_Intensity
+			Var: Sector_Avg_Input_Coefficient
+			Var: Sector_Energy_Demand
+			Var: Sector_Avg_Energy_Intensity2
+			Param: switch_capital_order
 
 		}
 
@@ -711,6 +717,31 @@ Label Root
 			Var: DX_GDP
 			Var: PROF_r
 			Var: WAGE_r
+			Var: CI
+			Var: CI_C
+			Var: CI_E
+			Var: CI_I
+			Var: CI_K
+			Var: ED
+			Var: ED_C
+			Var: ED_E
+			Var: ED_I
+			Var: ED_K
+			Var: EI
+			Var: EI_C
+			Var: EI_E
+			Var: EI_I
+			Var: EI_K
+			Var: EM
+			Var: EM_C
+			Var: EM_E
+			Var: EM_I
+			Var: EM_K
+			Var: P_E
+			Var: MK_E
+			Var: PROD_E
+			Var: W_E
+			Var: GDP_G_2
 
 		}
 
@@ -800,6 +831,7 @@ Label Root
 		Var: Country_Energy_Intensity
 		Var: Country_Emissions
 		Var: Country_Carbon_Intensity
+		Var: Country_Annual_Energy_Intensity_Growth
 
 	}
 
@@ -830,8 +862,8 @@ Param: entry_debt_share 0 n + n n	0
 Param: survival_period 0 n + n n	0
 Param: switch_class_tax_structure 0 n + n n	3
 Param: switch_creditworthness 0 n + n n	0
-Param: switch_extra_gov_expenses 0 n + n n	0
-Param: switch_interest_investment 0 n + n n	2
+Param: switch_extra_gov_expenses 0 n + n n	1
+Param: switch_interest_investment 0 n + n n	0
 Param: switch_interest_payment 0 n + n n	0
 Param: switch_monetary_policy 0 n + n n	1
 Var: Country_Annual_CPI_Inflation 1 s + n n	0
@@ -899,9 +931,10 @@ Param: switch_foroward_looking 0 n + n n	1
 Var: Country_Domestic_Energy_Demand 0 s + n n
 Param: country_initial_energy_consumption_share_GDP 0 n + n n	0.1
 Var: Country_Nominal_Energy_Production 0 s + n n
-Var: Country_Energy_Intensity 0 s + n n
+Var: Country_Energy_Intensity 5 s + n n	0	0	0	0	0
 Var: Country_Emissions 0 s + n n
 Var: Country_Carbon_Intensity 0 s + n n
+Var: Country_Annual_Energy_Intensity_Growth 0 s + n n
 
 Object: CLASSES C	4
 Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1	1
@@ -913,7 +946,7 @@ Param: class_initial_propensity_import 0 n + n n	0.3	0.2	0.1	0
 Param: class_initial_liquidity_preference 0 n + n n	0	0	0	0
 Param: class_initial_max_debt_rate 0 n + n n	1	1	1	1
 Param: class_liquidity_preference_adjustment 0 n + n n	0	0	0	0
-Param: class_population_share 0 n + n n	0.01	0.05	0.24	0.7
+Param: class_population_share 0 n + n n	0.01	0.04	0.25	0.7
 Param: class_profit_share 0 n + n n	0.4	0.3	0.2	0.1
 Param: class_propensity_to_spend 0 n + n n	0.5	0.6	0.7	0.8
 Param: class_wage_share 0 n + n n	0.1	0.2	0.3	0.4
@@ -1110,7 +1143,7 @@ Param: interest_shock_duration 0 n + n n	0
 Param: interest_shock_size 0 n + n n	0.01
 
 Object: GOVERNMENT C	1
-Param: government_benefit_rate 0 n + n n	0.5
+Param: government_benefit_rate 0 n + n n	0
 Param: government_expectations 0 n + n n	1
 Param: government_initial_debt_gdp_ratio 0 n + n n	0.5
 Param: government_initial_share_capital 0 n + n n	0
@@ -1167,7 +1200,7 @@ Param: sector_antecipation 0 n + n n	0	0	0	0
 Param: sector_bargain_power_adjustment 0 n + n n	0	0	0	0
 Param: sector_bargain_power_inflaton_adjustment 0 n + n n	0	0	0	0
 Param: sector_bargain_power_productivity_adjustment 0 n + n n	0	0	0	0
-Param: sector_capital_duration 0 n + n n	40	40	40	80
+Param: sector_capital_duration 0 n + n n	40	40	40	40
 Param: sector_capital_output_ratio 0 n + n n	1	1	1	1
 Param: sector_competitiveness_adjustment 0 n + n n	1	1	1	1
 Param: sector_debt_rate_adjustment 0 n + n n	0	0	0	0
@@ -1188,15 +1221,15 @@ Param: sector_external_price_sd 0 n + n n	0.01	0.01	0.01	0.01
 Param: sector_external_price_shock_begin 0 n + n n	400	400	400	400
 Param: sector_external_price_shock_duration 0 n + n n	0	0	0	0
 Param: sector_external_price_shock_size 0 n + n n	0.02	0.02	0.02	0.02
-Param: sector_external_price_weight 0 n + n n	1	1	1	1
+Param: sector_external_price_weight 0 n + n n	0	0	0	0
 Param: sector_financial_cost_passtrough 0 n + n n	1	1	1	1
 Param: sector_indirect_tax_rate 0 n + n n	0.05	0.05	0.05	0.05
 Param: sector_initial_debt_rate 0 n + n n	0.4	0.4	0.4	0.1
 Param: sector_initial_demand 0 n + n n	0	0	0	0
 Param: sector_initial_depreciation_scale 0 n + n n	1	1	1	20
-Param: sector_initial_exports_share 0 n + n n	0.4	0.3	0.3	0
+Param: sector_initial_exports_share 0 n + n n	0	1	0	0
 Param: sector_initial_external_price 0 n + n n	1	1	1	1
-Param: sector_initial_liquidity_preference 0 n + n n	0.05	0.05	0.05	0.2
+Param: sector_initial_liquidity_preference 0 n + n n	0.1	0.1	0.1	0.1
 Param: sector_initial_price 0 n + n n	1	1	1	1
 Param: sector_initial_productivity 0 n + n n	1	1	1	1
 Param: sector_initial_profit_rate 0 n + n n	0.2	0.2	0.2	0.2
@@ -1213,7 +1246,7 @@ Param: sector_markup_adjustment 0 n + n n	0	0	0	0
 Param: sector_number_object_firms 0 n + n n	99	40	60	1
 Param: sector_passthrough_inflation 0 s + n n	1	1	1	1
 Param: sector_passthrough_productivity 0 s + n n	1	1	1	1
-Param: sector_payback_period 0 n + n n	8	8	8	8
+Param: sector_payback_period 0 n + n n	40	40	40	40
 Param: sector_price_frequency 0 n + n n	1	1	1	1
 Param: sector_productivity_imitation_share 0 n + n n	0.005	0.005	0.005	0.005
 Param: sector_productivity_innovation_share 0 n + n n	0.005	0.005	0.005	0.005
@@ -1222,7 +1255,7 @@ Param: sector_quality_imitation_share 0 n + n n	0.005	0.005	0.005	0.005
 Param: sector_quality_innovation_share 0 n + n n	0.005	0.005	0.005	0.005
 Param: sector_std_dev_innovation 0 n + n n	0.01	0.01	0.01	0.01
 Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5	0.5
-Param: sector_tech_opportunity_input 0 n + n n	0.0005	0.0005	0.0005	0.0005
+Param: sector_tech_opportunity_input 0 n + n n	0.0025	0.0025	0.0025	0.0025
 Param: sector_tech_opportunity_productivity 0 n + n n	0.0025	0.0025	0.0025	0.0025
 Param: sector_tech_opportunity_quality 0 n + n n	0.0025	0.0025	0.0025	0.0025
 Var: Sector_Avg_Competitiveness 1 n + n n	1	1	1	1
@@ -1285,15 +1318,21 @@ Var: Sector_Taxation 0 n + n n
 Var: Sector_Turbulence 0 s + n n
 Param: switch_entry 0 n + n n	1	1	1	0
 Param: switch_extra_imports 0 n + n n	0	0	0	0
-Var: Sector_Min_Energy_Intensity 1 n + n n	0	0	0	0
+Var: Sector_Min_Energy_Intensity 1 s + n n	0	0	0	0
 Param: sector_energy_imitation_share 0 n + n n	0.005	0.005	0.005	0.005
 Param: sector_energy_innovation_share 0 n + n n	0.005	0.005	0.005	0.005
-Param: sector_tech_opportunity_energy 0 n + n n	0.0005	0.0005	0.0005	0.0005
-Param: sector_initial_carbon_intensity 0 n + n n	0.1	0.2	0.1	0.5
+Param: sector_tech_opportunity_energy 0 n + n n	0.0025	0.0025	0.0025	0.0025
+Param: sector_initial_carbon_intensity 0 n + n n	0.1	0.2	0.1	0.8
 Var: Sector_Emissions 0 s + n n
-Param: innovation_imitation_adjustment 0 n + n n	0.01	0.01	0.01	0.01
+Param: innovation_imitation_adjustment 0 n + n n	0.005	0.005	0.005	0.005
 Var: Sector_Technical_Carbon_Intensity 1 s + n n	0	0	0	0
-Param: carbon_intensity_adjustment 0 n + n n	0	0	0	0.1
+Param: carbon_intensity_adjustment 0 n + n n	0.01	0.01	0.01	0.1
+Var: Sector_Avg_Carbon_Intensity 0 s + n n
+Var: Sector_Avg_Energy_Intensity 0 s + n n
+Var: Sector_Avg_Input_Coefficient 0 s + n n
+Var: Sector_Energy_Demand 0 s + n n
+Var: Sector_Avg_Energy_Intensity2 0 s + n n
+Param: switch_capital_order 0 n + n n	0	0	0	0
 
 Object: FIRMS C	1	1	1	1
 Param: firm_bank 0 n + n n	0	0	0	0
@@ -1303,112 +1342,112 @@ Param: firm_hedge 0 n + n n	0	0	0	0
 Param: firm_id 0 n + n n	0	0	0	0
 Param: firm_ponzi 0 n + n n	0	0	0	0
 Param: firm_speculative 0 n + n n	0	0	0	0
-Var: Firm_Available_Funds_After_Replacement 0 s + n n
-Var: Firm_Available_Funds_Replacement 0 s + n n
-Var: Firm_Available_Inputs_Ratio 0 s + n n
-Var: Firm_Available_Loans 0 s + n n
-Var: Firm_Avg_Debt_Rate 1 s + n n	0	0	0	0
-Var: Firm_Avg_Productivity 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Capacity_Utilization 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Capital 1 s + n n	0	0	0	0
-Var: Firm_Competitiveness 1 s + n n	1	1	1	1
-Var: Firm_Credit_Rationing 0 s + n n
-Var: Firm_Debt_Payment 0 s + n n
-Var: Firm_Debt_Rate 20 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Delivery_Delay 1 s + n n	1	1	1	1
-Var: Firm_Demand_Capital_Goods 20 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Demand_Capital_Goods_Expansion 40 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Demand_Capital_Goods_Replacement 40 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Demand_Loans 0 s + n n
-Var: Firm_Demand_Productive_Capacity_Expansion 7 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Demand_Productive_Capacity_Replacement 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Deposits_Return 0 s + n n
-Var: Firm_Depreciated_Productive_Capacity 0 s + n n
-Var: Firm_Max_Debt_Rate 1 s + n n	0.5	0.5	0.5	0.5
-Var: Firm_Desired_Expansion_Investment_Expenses 0 s + n n
-Var: Firm_Desired_Investment_Expenses 0 s + n n
-Var: Firm_Desired_Markup 1 s + n n	0	0	0	0
-Var: Firm_Desired_Price 0 s + n n
-Var: Firm_Desired_Replacement_Investment_Expenses 0 s + n n
-Var: Firm_Distributed_Profits 0 s + n n
-Var: Firm_Effective_Capital_Goods_Expansion 0 s + n n
-Var: Firm_Effective_Capital_Goods_Replacement 0 s + n n
-Var: Firm_Effective_Expansion_Investment_Expenses 0 s + n n
-Var: Firm_Effective_Investment_Expenses 0 s + n n
-Var: Firm_Effective_Loans 0 s + n n
-Var: Firm_Effective_Market_Share 1 s + n n	0	0	0	0
-Var: Firm_Effective_Markup 0 s + n n
-Var: Firm_Effective_Orders 40 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Effective_Orders_Capital_Goods 40 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Effective_Production 0 s + n n
-Var: Firm_Effective_Productive_Capacity_Variation 0 s + n n
-Var: Firm_Expected_Demand 0 s + n n
-Var: Firm_Expected_Sales_Long_Term 0 s + n n
-Var: Firm_External_Finance_Rate 0 s + n n
-Var: Firm_Financial_Obligations 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Financial_Position 0 s + n n
-Var: Firm_Frontier_Productivity 20 s + n n	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Imitation_Productivity 0 s + n n
-Var: Firm_Imitation_Quality 0 s + n n
-Var: Firm_Indirect_Tax 0 s + n n
-Var: Firm_Innovation_Productivity 0 s + n n
-Var: Firm_Innovation_Quality 0 s + n n
-Var: Firm_Input_Cost 0 s + n n
-Var: Firm_Input_Demand_Next_Period 0 s + n n
-Var: Firm_Interest_Payment 20 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Interest_Rate_Long_Term 0 s + n n
-Var: Firm_Interest_Rate_Short_Term 0 s + n n
-Var: Firm_Internal_Finance_Rate 0 s + n n
-Var: Firm_Internal_Funds 0 s + n n
-Var: Firm_Inventories_Variation 0 s + n n
-Var: Firm_Investment_Constraint_Rate 0 s + n n
-Var: Firm_Investment_Period 0 s + n n
-Var: Firm_Investment_Rate 0 s + n n
-Var: Firm_Liquidity_Preference 1 s + n n	0.05	0.05	0.05	0.05
-Var: Firm_Liquidity_Rate 0 s + n n
-Var: Firm_Market_Share 7 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Max_Productivity 6 s + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
-Var: Firm_Modernization_Rate 0 s + n n
-Var: Firm_Net_Profits 20 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Net_Revenue 0 s + n n
-Var: Firm_Planned_Production 0 s + n n
-Var: Firm_Price 1 s + n n	1	1	1	1
-Var: Firm_Price_Period 0 s + n n
-Var: Firm_Productive_Capacity 20 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Productive_Capacity_Depreciation 7 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Profit_Rate 0 s + n n
-Var: Firm_Profits 0 s + n n
-Var: Firm_Quality 1 s + n n	1	1	1	1
-Var: Firm_RND_Expenses 0 s + n n
-Var: Firm_Replacement_Expenses 0 s + n n
-Var: Firm_Retained_Deposits 0 s + n n
-Var: Firm_Retained_Profits 0 s + n n
-Var: Firm_Revenue 1 s + n n	10	10	10	10
-Var: Firm_Sales 1 s + n n	10	10	10	10
-Var: Firm_Stock_Deposits 1 s + n n	0	0	0	0
-Var: Firm_Stock_Inputs 1 s + n n	0	0	0	0
-Var: Firm_Stock_Inventories 1 s + n n	1	1	1	1
-Var: Firm_Stock_Loans 1 s + n n	0	0	0	0
-Var: Firm_Stock_Loans_Long_Term 0 s + n n
-Var: Firm_Stock_Loans_Short_Term 0 s + n n
-Var: Firm_Total_Funds 0 s + n n
-Var: Firm_Unit_Financial_Cost 0 s + n n
-Var: Firm_Variable_Cost 1 s + n n	0	0	0	0
-Var: Firm_Wage 1 s + n n	0	0	0	0
-Var: Firm_Input_Imports 0 s + n n
-Var: Firm_Imitation_Input 0 s + n n
-Var: Firm_Innovation_Input 0 n + n n
-Var: Firm_Energy_Demand 0 s + n n
-Var: Firm_Imitation_Energy_Intensity 0 s + n n
-Var: Firm_Innovation_Energy_Intensity 0 s + n n
+Var: Firm_Available_Funds_After_Replacement 0 n + n n
+Var: Firm_Available_Funds_Replacement 0 n + n n
+Var: Firm_Available_Inputs_Ratio 0 n + n n
+Var: Firm_Available_Loans 0 n + n n
+Var: Firm_Avg_Debt_Rate 1 n + n n	0	0	0	0
+Var: Firm_Avg_Productivity 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Capacity_Utilization 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Capital 1 n + n n	0	0	0	0
+Var: Firm_Competitiveness 1 n + n n	1	1	1	1
+Var: Firm_Credit_Rationing 0 n + n n
+Var: Firm_Debt_Payment 0 n + n n
+Var: Firm_Debt_Rate 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Delivery_Delay 1 n + n n	1	1	1	1
+Var: Firm_Demand_Capital_Goods 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Demand_Capital_Goods_Expansion 40 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Demand_Capital_Goods_Replacement 40 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Demand_Loans 0 n + n n
+Var: Firm_Demand_Productive_Capacity_Expansion 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Demand_Productive_Capacity_Replacement 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Deposits_Return 0 n + n n
+Var: Firm_Depreciated_Productive_Capacity 0 n + n n
+Var: Firm_Max_Debt_Rate 1 n + n n	0.5	0.5	0.5	0.5
+Var: Firm_Desired_Expansion_Investment_Expenses 0 n + n n
+Var: Firm_Desired_Investment_Expenses 0 n + n n
+Var: Firm_Desired_Markup 1 n + n n	0	0	0	0
+Var: Firm_Desired_Price 0 n + n n
+Var: Firm_Desired_Replacement_Investment_Expenses 0 n + n n
+Var: Firm_Distributed_Profits 0 n + n n
+Var: Firm_Effective_Capital_Goods_Expansion 0 n + n n
+Var: Firm_Effective_Capital_Goods_Replacement 0 n + n n
+Var: Firm_Effective_Expansion_Investment_Expenses 0 n + n n
+Var: Firm_Effective_Investment_Expenses 0 n + n n
+Var: Firm_Effective_Loans 0 n + n n
+Var: Firm_Effective_Market_Share 1 n + n n	0	0	0	0
+Var: Firm_Effective_Markup 0 n + n n
+Var: Firm_Effective_Orders 40 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Effective_Orders_Capital_Goods 40 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Effective_Production 0 n + n n
+Var: Firm_Effective_Productive_Capacity_Variation 0 n + n n
+Var: Firm_Expected_Demand 0 n + n n
+Var: Firm_Expected_Sales_Long_Term 0 n + n n
+Var: Firm_External_Finance_Rate 0 n + n n
+Var: Firm_Financial_Obligations 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Financial_Position 0 n + n n
+Var: Firm_Frontier_Productivity 20 n + n n	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Imitation_Productivity 0 n + n n
+Var: Firm_Imitation_Quality 0 n + n n
+Var: Firm_Indirect_Tax 0 n + n n
+Var: Firm_Innovation_Productivity 0 n + n n
+Var: Firm_Innovation_Quality 0 n + n n
+Var: Firm_Input_Cost 0 n + n n
+Var: Firm_Input_Demand_Next_Period 0 n + n n
+Var: Firm_Interest_Payment 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Interest_Rate_Long_Term 0 n + n n
+Var: Firm_Interest_Rate_Short_Term 0 n + n n
+Var: Firm_Internal_Finance_Rate 0 n + n n
+Var: Firm_Internal_Funds 0 n + n n
+Var: Firm_Inventories_Variation 0 n + n n
+Var: Firm_Investment_Constraint_Rate 0 n + n n
+Var: Firm_Investment_Period 0 n + n n
+Var: Firm_Investment_Rate 0 n + n n
+Var: Firm_Liquidity_Preference 1 n + n n	0.05	0.05	0.05	0.05
+Var: Firm_Liquidity_Rate 0 n + n n
+Var: Firm_Market_Share 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Max_Productivity 6 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Var: Firm_Modernization_Rate 0 n + n n
+Var: Firm_Net_Profits 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Net_Revenue 0 n + n n
+Var: Firm_Planned_Production 0 n + n n
+Var: Firm_Price 1 n + n n	1	1	1	1
+Var: Firm_Price_Period 0 n + n n
+Var: Firm_Productive_Capacity 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Productive_Capacity_Depreciation 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Profit_Rate 0 n + n n
+Var: Firm_Profits 0 n + n n
+Var: Firm_Quality 1 n + n n	1	1	1	1
+Var: Firm_RND_Expenses 0 n + n n
+Var: Firm_Replacement_Expenses 0 n + n n
+Var: Firm_Retained_Deposits 0 n + n n
+Var: Firm_Retained_Profits 0 n + n n
+Var: Firm_Revenue 1 n + n n	10	10	10	10
+Var: Firm_Sales 1 n + n n	10	10	10	10
+Var: Firm_Stock_Deposits 1 n + n n	0	0	0	0
+Var: Firm_Stock_Inputs 1 n + n n	0	0	0	0
+Var: Firm_Stock_Inventories 1 n + n n	1	1	1	1
+Var: Firm_Stock_Loans 1 n + n n	0	0	0	0
+Var: Firm_Stock_Loans_Long_Term 0 n + n n
+Var: Firm_Stock_Loans_Short_Term 0 n + n n
+Var: Firm_Total_Funds 0 n + n n
+Var: Firm_Unit_Financial_Cost 0 n + n n
+Var: Firm_Variable_Cost 1 n + n n	0	0	0	0
+Var: Firm_Wage 1 n + n n	0	0	0	0
+Var: Firm_Input_Imports 0 n + n n
+Var: Firm_Imitation_Input 0 n + n n
+Var: Firm_Innovation_Input 0 s + n n
+Var: Firm_Energy_Demand 0 n + n n
+Var: Firm_Imitation_Energy_Intensity 0 n + n n
+Var: Firm_Innovation_Energy_Intensity 0 n + n n
 Var: Firm_Avg_Energy_Intensity 1 n + n n	0	0	0	0
 Var: Firm_Avg_Input_Tech_Coefficient 1 n + n n	0	0	0	0
 Var: Firm_Frontier_Energy_Intensity 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 Var: Firm_Frontier_Input_Tech_Coefficient 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Avg_Carbon_Intensity 1 s + n n	0	0	0	0
-Var: Firm_Emissions 0 s + n n
-Var: Firm_Innovation_RND_Share 1 s + n n	0	0	0	0
-Var: Firm_Desired_Market_Share 1 s + n n	0	0	0	0
+Var: Firm_Avg_Carbon_Intensity 1 n + n n	0	0	0	0
+Var: Firm_Emissions 0 n + n n
+Var: Firm_Innovation_RND_Share 1 n + n n	0	0	0	0
+Var: Firm_Desired_Market_Share 1 n + n n	0	0	0	0
 
 Object: CAPITALS C	1	1	1	1
 Param: capital_good_date_birth 0 n + n n	-59	-59	-59	-59
@@ -1564,6 +1603,31 @@ Var: XGDP 0 s + n n
 Var: DX_GDP 0 s + n n
 Var: PROF_r 0 s + n n
 Var: WAGE_r 0 s + n n
+Var: CI 0 s + n n
+Var: CI_C 0 s + n n
+Var: CI_E 0 s + n n
+Var: CI_I 0 s + n n
+Var: CI_K 0 s + n n
+Var: ED 0 s + n n
+Var: ED_C 0 s + n n
+Var: ED_E 0 s + n n
+Var: ED_I 0 s + n n
+Var: ED_K 0 s + n n
+Var: EI 0 s + n n
+Var: EI_C 0 s + n n
+Var: EI_E 0 s + n n
+Var: EI_I 0 s + n n
+Var: EI_K 0 s + n n
+Var: EM 0 s + n n
+Var: EM_C 0 s + n n
+Var: EM_E 0 s + n n
+Var: EM_I 0 s + n n
+Var: EM_K 0 s + n n
+Var: P_E 0 s + n n
+Var: MK_E 0 s + n n
+Var: PROD_E 0 s + n n
+Var: W_E 0 s + n n
+Var: GDP_G_2 0 s + n n
 
 SIM_NUM 1
 SEED 1
@@ -1615,6 +1679,8 @@ END_DESCRIPTION
 
 Parameter_begin_surplus_target_rule
 
+_INIT_
+All 1 instances equal to 0
 END_DESCRIPTION
 
 Parameter_country_initial_depreciation_share_GDP
@@ -1651,6 +1717,8 @@ END_DESCRIPTION
 
 Parameter_switch_interest_investment
 
+_INIT_
+All 1 instances equal to 0
 END_DESCRIPTION
 
 Parameter_switch_interest_payment
@@ -1930,6 +1998,10 @@ Variable_Country_Emissions
 END_DESCRIPTION
 
 Variable_Country_Carbon_Intensity
+
+END_DESCRIPTION
+
+Variable_Country_Annual_Energy_Intensity_Growth
 
 END_DESCRIPTION
 
@@ -3047,10 +3119,14 @@ END_DESCRIPTION
 
 Parameter_sector_external_price_weight
 
+_INIT_
+All 4 instances equal to 0
 END_DESCRIPTION
 
 Parameter_sector_financial_cost_passtrough
 
+_INIT_
+All 4 instances equal to 1
 END_DESCRIPTION
 
 Parameter_sector_indirect_tax_rate
@@ -3079,6 +3155,8 @@ END_DESCRIPTION
 
 Parameter_sector_initial_liquidity_preference
 
+_INIT_
+All 4 instances equal to 0.1
 END_DESCRIPTION
 
 Parameter_sector_initial_price
@@ -3147,6 +3225,8 @@ END_DESCRIPTION
 
 Parameter_sector_payback_period
 
+_INIT_
+All 4 instances equal to 40
 END_DESCRIPTION
 
 Parameter_sector_price_frequency
@@ -3183,6 +3263,8 @@ END_DESCRIPTION
 
 Parameter_sector_tech_opportunity_input
 
+_INIT_
+All 4 instances equal to 0.0025
 END_DESCRIPTION
 
 Parameter_sector_tech_opportunity_productivity
@@ -3427,6 +3509,8 @@ END_DESCRIPTION
 
 Parameter_switch_entry
 
+_INIT_
+All 4 instances equal to 0
 END_DESCRIPTION
 
 Parameter_switch_extra_imports
@@ -3447,6 +3531,8 @@ END_DESCRIPTION
 
 Parameter_sector_tech_opportunity_energy
 
+_INIT_
+All 4 instances equal to 0.0025
 END_DESCRIPTION
 
 Parameter_sector_initial_carbon_intensity
@@ -3459,6 +3545,8 @@ END_DESCRIPTION
 
 Parameter_innovation_imitation_adjustment
 
+_INIT_
+All 4 instances equal to 0.005
 END_DESCRIPTION
 
 Variable_Sector_Technical_Carbon_Intensity
@@ -3467,6 +3555,32 @@ END_DESCRIPTION
 
 Parameter_carbon_intensity_adjustment
 
+END_DESCRIPTION
+
+Variable_Sector_Avg_Carbon_Intensity
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Energy_Intensity
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Input_Coefficient
+
+END_DESCRIPTION
+
+Variable_Sector_Energy_Demand
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Energy_Intensity2
+
+END_DESCRIPTION
+
+Parameter_switch_capital_order
+
+_INIT_
+All 4 instances equal to 0
 END_DESCRIPTION
 
 Object_FIRMS
@@ -4530,6 +4644,106 @@ Variable_PROF_r
 END_DESCRIPTION
 
 Variable_WAGE_r
+
+END_DESCRIPTION
+
+Variable_CI
+
+END_DESCRIPTION
+
+Variable_CI_C
+
+END_DESCRIPTION
+
+Variable_CI_E
+
+END_DESCRIPTION
+
+Variable_CI_I
+
+END_DESCRIPTION
+
+Variable_CI_K
+
+END_DESCRIPTION
+
+Variable_ED
+
+END_DESCRIPTION
+
+Variable_ED_C
+
+END_DESCRIPTION
+
+Variable_ED_E
+
+END_DESCRIPTION
+
+Variable_ED_I
+
+END_DESCRIPTION
+
+Variable_ED_K
+
+END_DESCRIPTION
+
+Variable_EI
+
+END_DESCRIPTION
+
+Variable_EI_C
+
+END_DESCRIPTION
+
+Variable_EI_E
+
+END_DESCRIPTION
+
+Variable_EI_I
+
+END_DESCRIPTION
+
+Variable_EI_K
+
+END_DESCRIPTION
+
+Variable_EM
+
+END_DESCRIPTION
+
+Variable_EM_C
+
+END_DESCRIPTION
+
+Variable_EM_E
+
+END_DESCRIPTION
+
+Variable_EM_I
+
+END_DESCRIPTION
+
+Variable_EM_K
+
+END_DESCRIPTION
+
+Variable_P_E
+
+END_DESCRIPTION
+
+Variable_MK_E
+
+END_DESCRIPTION
+
+Variable_PROD_E
+
+END_DESCRIPTION
+
+Variable_W_E
+
+END_DESCRIPTION
+
+Variable_GDP_G_2
 
 END_DESCRIPTION
 

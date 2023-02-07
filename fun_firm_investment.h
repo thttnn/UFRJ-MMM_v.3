@@ -186,7 +186,13 @@ The sectors update their productive capacity from year to year, time it takes fo
 		v[4]=v[1]*(1+2*v[3]*((v[1]-v[2])/v[2]));     		//expected orders for the next six periods will be the average effective orders of the last six periods multiplied by the growth rate between the averages and the double of the expectation parameter
 	else                                            		//if the average effective orders of the six periods prior to the last six is zero
 		v[4]=0;                                      		//expected orders for the next six periods will be zero
-RESULT(max(0,v[4]))
+		
+	v[5]=LAG_GROWTH(p,"Firm_Effective_Orders",v[0]);
+	v[6]=max(min(v[5],1),-1);
+	v[7]=v[1]*(1+2*v[3]*v[6]);
+
+	
+RESULT(max(0,v[7]))
 
 
 EQUATION("Firm_Desired_Expansion_Investment_Expenses")
@@ -492,6 +498,10 @@ The demand for capital goods in each period will be determined by the sum of 1/6
 		v[4]=v[4]+v[2]+v[3];																//sum up firm's lagged  desired productive capacity to replace plus productive capacity to expand
 		}
 	v[5]=v[4]/v[0];																			//divides the total amount of demand by the invesmet period. This is because capital goods take a whole investment period to be produced. This distributed the demand for the capital goods firms equally during the investment period. It does not mean that each firm demands 1/6 of capital each period, it's just to distribute the production															
+
+v[6]=V("Firm_Demand_Capital_Goods_Expansion");									
+v[7]=V("Firm_Demand_Capital_Goods_Replacement");		
+v[8]=v[6]+v[7];
 RESULT(v[5])
 
 
