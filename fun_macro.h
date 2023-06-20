@@ -688,3 +688,17 @@ EQUATION("Country_Avg_Propensity_Consume")
 	v[3]= v[2]!=0? v[0]*v[1]/v[2] : 0;
 RESULT(v[3])
 
+EQUATION("Shock_RND")
+	v[0]=V("shock_RND_starts");
+	v[1]=V("shock_RND_value");
+	
+	if(t==v[0])
+	{
+		CYCLE(cur, "SECTORS")
+		{
+			WRITES(cur, "sector_energy_imitation_share", v[1]);
+			WRITES(cur, "sector_energy_innovation_share", v[1]);
+		}
+	}
+RESULT(0)			
+

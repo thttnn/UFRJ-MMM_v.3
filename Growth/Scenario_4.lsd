@@ -1,0 +1,4836 @@
+	
+Label Root
+{
+	Son: COUNTRY
+	Label COUNTRY
+	{
+		Son: CLASSES
+		Label CLASSES
+		{
+			Son: CLASS_LOANS
+			Label CLASS_LOANS
+			{
+				Param: class_loan_fixed_amortization
+				Param: class_loan_fixed_object
+				Param: class_loan_interest_rate
+				Param: class_loan_total_amount
+
+			}
+
+			Param: class_autonomous_consumption_adjustment
+			Param: class_debt_rate_adjustment
+			Param: class_direct_tax
+			Param: class_id
+			Param: class_import_elasticity_price
+			Param: class_initial_propensity_import
+			Param: class_initial_liquidity_preference
+			Param: class_initial_max_debt_rate
+			Param: class_liquidity_preference_adjustment
+			Param: class_population_share
+			Param: class_profit_share
+			Param: class_propensity_to_spend
+			Param: class_wage_share
+			Param: class_wealth_tax
+			Var: Class_Available_Deposits
+			Var: Class_Avg_Debt_Rate
+			Var: Class_Avg_Nominal_Income
+			Var: Class_Avg_Real_Income
+			Var: Class_Debt_Payment
+			Var: Class_Debt_Rate
+			Var: Class_Demand_Loans
+			Var: Class_Deposits_Return
+			Var: Class_Desired_Expenses
+			Var: Class_Effective_Expenses
+			Var: Class_Effective_Loans
+			Var: Class_Effective_Real_Domestic_Consumption
+			Var: Class_Effective_Real_Imported_Consumption
+			Var: Class_Financial_Obligations
+			Var: Class_Funds
+			Var: Class_Imports_Share
+			Var: Class_Income_Share
+			Var: Class_Interest_Payment
+			Var: Class_Interest_Rate
+			Var: Class_Internal_Funds
+			Var: Class_Liquidity_Preference
+			Var: Class_Max_Debt_Rate
+			Var: Class_Max_Loans
+			Var: Class_Maximum_Expenses
+			Var: Class_Nominal_Disposable_Income
+			Var: Class_Nominal_Gross_Income
+			Var: Class_Real_Autonomous_Consumption
+			Var: Class_Real_Desired_Domestic_Consumption
+			Var: Class_Real_Desired_Imported_Consumption
+			Var: Class_Real_Disposable_Income
+			Var: Class_Real_Domestic_Consumption_Demand
+			Var: Class_Real_Imported_Consumption_Demand
+			Var: Class_Retained_Deposits
+			Var: Class_Stock_Deposits
+			Var: Class_Stock_Loans
+			Var: Class_Taxation
+			Var: Class_Wealth_Share
+			Var: Class_Gross_Income_Share
+			Param: class_propensity_to_energy
+			Var: Class_Real_Desired_Energy_Consumption
+			Var: Class_Real_Energy_Demand
+			Var: Class_Effective_Real_Energy_Consumption
+
+		}
+
+		Son: EXTERNAL_SECTOR
+		Label EXTERNAL_SECTOR
+		{
+			Param: exchange_rate_adjustment
+			Param: exchange_rate_max
+			Param: exchange_rate_min
+			Param: external_capital_flow_adjustment
+			Param: external_income_adjustmnent
+			Param: external_income_growth
+			Param: external_income_sd
+			Param: external_interest_rate
+			Param: external_shock_begin
+			Param: external_shock_duration
+			Param: external_shock_size
+			Param: initial_exchange_rate
+			Param: initial_external_income_scale
+			Param: initial_reserves_ratio
+			Var: Country_Capital_Flows
+			Var: Country_Exchange_Rate
+			Var: Country_International_Reserves
+			Var: Country_International_Reserves_GDP_Ratio
+			Var: Country_Nominal_Exports
+			Var: Country_Nominal_Imports
+			Var: Country_Trade_Balance
+			Var: External_Real_Income
+			Var: Country_External_Debt
+			Var: Country_External_Debt_GDP_Ratio
+			Param: external_interest_sd
+
+		}
+
+		Son: FINANCIAL
+		Label FINANCIAL
+		{
+			Son: BANKS
+			Label BANKS
+			{
+				Param: bank_defaulted_loans_temporary
+				Param: bank_id
+				Var: Bank_Accumulated_Defaulted_Loans
+				Var: Bank_Accumulated_Profits
+				Var: Bank_Competitiveness
+				Var: Bank_Debt_Payment
+				Var: Bank_Default_Share
+				Var: Bank_Defaulted_Loans
+				Var: Bank_Demand_Loans
+				Var: Bank_Demand_Met
+				Var: Bank_Desired_Interest_Rate_Long_Term
+				Var: Bank_Desired_Interest_Rate_Short_Term
+				Var: Bank_Desired_Long_Term_Spread
+				Var: Bank_Desired_Short_Term_Spread
+				Var: Bank_Distributed_Profits
+				Var: Bank_Effective_Loans
+				Var: Bank_Interest_Payment
+				Var: Bank_Interest_Rate_Long_Term
+				Var: Bank_Interest_Rate_Short_Term
+				Var: Bank_Interest_Receivment
+				Var: Bank_Leverage
+				Var: Bank_Market_Share
+				Var: Bank_Max_Total_Loans
+				Var: Bank_Number_Clients
+				Var: Bank_Profits
+				Var: Bank_Rescue
+				Var: Bank_Short_Term_Rate
+				Var: Bank_Stock_Deposits
+				Var: Bank_Stock_Loans_Long_Term
+				Var: Bank_Stock_Loans_Short_Term
+				Var: Bank_Total_Stock_Loans
+				Var: Bank_Effective_Profit_Rate
+				Var: Bank_Retained_Profits
+				Var: Bank_Effective_Capital_Ratio
+
+			}
+
+			Son: CENTRAL_BANK
+			Label CENTRAL_BANK
+			{
+				Param: cb_smoothing
+				Param: cb_minimum_capital_ratio
+				Param: cb_sensitivity_capacity
+				Param: cb_sensitivity_credit_growth
+				Param: cb_sensitivity_debt_rate
+				Param: cb_sensitivity_inflation
+				Param: cb_sensitivity_exchange
+				Param: cb_target_annual_inflation
+				Param: cb_target_capacity
+				Param: cb_target_credit_growth
+				Param: cb_target_debt_rate
+				Param: cb_target_reserves
+				Var: Central_Bank_Basic_Interest_Rate
+				Param: cb_credibility
+				Param: cb_credibility_adjustment
+				Param: cb_credibility_tolerance
+				Var: CB_Credibility
+				Var: CB_Quarterly_Real_Interest_Rate
+				Param: cb_quarterly_nominal_interest_rate
+				Var: CB_Inflation_Gap
+				Var: CB_Output_Gap
+				Param: cb_interest_rate_max
+				Param: cb_interest_rate_min
+				Param: interest_shock_begin
+				Param: interest_shock_duration
+				Param: interest_shock_size
+
+			}
+
+			Param: fs_elasticity_default
+			Param: fs_elasticity_interest_long_term
+			Param: fs_elasticity_interest_short_term
+			Param: fs_elasticity_rationing
+			Param: fs_expectations
+			Param: fs_initial_leverage
+			Param: fs_number_object_banks
+			Param: fs_price_strategy_long_term
+			Param: fs_price_strategy_short_term
+			Param: fs_risk_premium_class
+			Param: fs_risk_premium_long_term
+			Param: fs_risk_premium_short_term
+			Param: fs_sensitivity_debt_rate
+			Param: fs_sensitivity_default
+			Param: fs_spread_deposits
+			Param: fs_spread_long_term
+			Param: fs_spread_long_term_adjustment
+			Param: fs_spread_short_term
+			Param: fs_spread_short_term_adjustment
+			Var: Financial_Sector_Accumulated_Defaulted_Loans
+			Var: Financial_Sector_Accumulated_Profits
+			Var: Financial_Sector_Accumulated_Rescue
+			Var: Financial_Sector_Avg_Competitiveness
+			Var: Financial_Sector_Avg_Interest_Rate_Long_Term
+			Var: Financial_Sector_Avg_Interest_Rate_Short_Term
+			Var: Financial_Sector_Debt_Payment
+			Var: Financial_Sector_Default_Rate
+			Var: Financial_Sector_Defaulted_Loans
+			Var: Financial_Sector_Demand_Loans
+			Var: Financial_Sector_Demand_Met
+			Var: Financial_Sector_Distributed_Profits
+			Var: Financial_Sector_Effective_Capital_Ratio
+			Var: Financial_Sector_Effective_Loans
+			Var: Financial_Sector_Interest_Payment
+			Var: Financial_Sector_Interest_Receivment
+			Var: Financial_Sector_Leverage
+			Var: Financial_Sector_Max_Total_Loans
+			Var: Financial_Sector_Normalized_HHI
+			Var: Financial_Sector_Profits
+			Var: Financial_Sector_Rescue
+			Var: Financial_Sector_Short_Term_Rate
+			Var: Financial_Sector_Stock_Deposits
+			Var: Financial_Sector_Stock_Loans_Long_Term
+			Var: Financial_Sector_Stock_Loans_Short_Term
+			Var: Financial_Sector_Total_Stock_Loans
+			Var: Financial_Sector_Total_Stock_Loans_Growth
+			Var: Financial_Sector_Turbulence
+			Var: Financial_Sector_Interest_Rate_Deposits
+			Param: fs_profit_distribution_rate
+
+		}
+
+		Son: GOVERNMENT
+		Label GOVERNMENT
+		{
+			Param: government_benefit_rate
+			Param: government_expectations
+			Param: government_initial_debt_gdp_ratio
+			Param: government_initial_share_capital
+			Param: government_initial_share_consumption
+			Param: government_initial_share_input
+			Param: government_max_debt_ratio
+			Param: government_max_surplus_target
+			Param: government_min_debt_ratio
+			Param: government_min_surplus_target
+			Param: government_real_growth
+			Param: government_surplus_target_adjustment
+			Var: Government_Debt
+			Var: Government_Debt_GDP_Ratio
+			Var: Government_Desired_Consumption
+			Var: Government_Desired_Expenses
+			Var: Government_Desired_Inputs
+			Var: Government_Desired_Investment
+			Var: Government_Desired_Unemployment_Benefits
+			Var: Government_Desired_Wages
+			Var: Government_Effective_Consumption
+			Var: Government_Effective_Expenses
+			Var: Government_Effective_Inputs
+			Var: Government_Effective_Investment
+			Var: Government_Effective_Unemployment_Benefits
+			Var: Government_Effective_Wages
+			Var: Government_Income_Taxes
+			Var: Government_Indirect_Taxes
+			Var: Government_Interest_Payment
+			Var: Government_Max_Expenses
+			Var: Government_Max_Expenses_Ceiling
+			Var: Government_Max_Expenses_Surplus
+			Var: Government_Nominal_Result
+			Var: Government_Primary_Result
+			Var: Government_Surplus_GDP_Ratio
+			Var: Government_Surplus_Rate_Target
+			Var: Government_Total_Taxes
+			Var: Government_Fiscal_Multiplier
+			Param: government_real_consumption_growth
+			Param: government_real_input_growth
+			Param: government_real_investment_growth
+			Param: government_real_wage_growth
+			Var: Government_Investment_GDP_Ratio
+			Param: government_initial_share_energy
+			Param: government_real_energy_growth
+			Var: Government_Desired_Energy
+			Var: Government_Effective_Energy
+
+		}
+
+		Son: SECTORS
+		Label SECTORS
+		{
+			Son: FIRMS
+			Label FIRMS
+			{
+				Son: CAPITALS
+				Label CAPITALS
+				{
+					Param: capital_good_date_birth
+					Param: capital_good_depreciation_period
+					Param: capital_good_productive_capacity
+					Param: capital_good_productivity_initial
+					Param: capital_good_to_depreciate
+					Param: capital_good_to_replace
+					Param: id_capital_good_number
+					Var: Capital_Good_Acumulated_Production
+					Var: Capital_Good_Production
+					Var: Capital_Good_Productivity
+					Param: capital_good_energy_intensity
+					Param: capital_good_input_tech_coefficient
+					Param: capital_good_carbon_intensity
+
+				}
+
+				Son: FIRM_LOANS
+				Label FIRM_LOANS
+				{
+					Param: firm_loan_fixed_amortization
+					Param: firm_loan_fixed_object
+					Param: firm_loan_interest_rate
+					Param: firm_loan_total_amount
+					Param: id_firm_loan_long_term
+					Param: id_firm_loan_short_term
+
+				}
+
+				Param: firm_bank
+				Param: firm_date_birth
+				Param: firm_effective_loans
+				Param: firm_hedge
+				Param: firm_id
+				Param: firm_ponzi
+				Param: firm_speculative
+				Var: Firm_Available_Funds_After_Replacement
+				Var: Firm_Available_Funds_Replacement
+				Var: Firm_Available_Inputs_Ratio
+				Var: Firm_Available_Loans
+				Var: Firm_Avg_Debt_Rate
+				Var: Firm_Avg_Productivity
+				Var: Firm_Capacity_Utilization
+				Var: Firm_Capital
+				Var: Firm_Competitiveness
+				Var: Firm_Credit_Rationing
+				Var: Firm_Debt_Payment
+				Var: Firm_Debt_Rate
+				Var: Firm_Delivery_Delay
+				Var: Firm_Demand_Capital_Goods
+				Var: Firm_Demand_Capital_Goods_Expansion
+				Var: Firm_Demand_Capital_Goods_Replacement
+				Var: Firm_Demand_Loans
+				Var: Firm_Demand_Productive_Capacity_Expansion
+				Var: Firm_Demand_Productive_Capacity_Replacement
+				Var: Firm_Deposits_Return
+				Var: Firm_Depreciated_Productive_Capacity
+				Var: Firm_Max_Debt_Rate
+				Var: Firm_Desired_Expansion_Investment_Expenses
+				Var: Firm_Desired_Investment_Expenses
+				Var: Firm_Desired_Markup
+				Var: Firm_Desired_Price
+				Var: Firm_Desired_Replacement_Investment_Expenses
+				Var: Firm_Distributed_Profits
+				Var: Firm_Effective_Capital_Goods_Expansion
+				Var: Firm_Effective_Capital_Goods_Replacement
+				Var: Firm_Effective_Expansion_Investment_Expenses
+				Var: Firm_Effective_Investment_Expenses
+				Var: Firm_Effective_Loans
+				Var: Firm_Effective_Market_Share
+				Var: Firm_Effective_Markup
+				Var: Firm_Effective_Orders
+				Var: Firm_Effective_Orders_Capital_Goods
+				Var: Firm_Effective_Production
+				Var: Firm_Effective_Productive_Capacity_Variation
+				Var: Firm_Expected_Demand
+				Var: Firm_Expected_Sales_Long_Term
+				Var: Firm_External_Finance_Rate
+				Var: Firm_Financial_Obligations
+				Var: Firm_Financial_Position
+				Var: Firm_Frontier_Productivity
+				Var: Firm_Imitation_Productivity
+				Var: Firm_Imitation_Quality
+				Var: Firm_Indirect_Tax
+				Var: Firm_Innovation_Productivity
+				Var: Firm_Innovation_Quality
+				Var: Firm_Input_Cost
+				Var: Firm_Input_Demand_Next_Period
+				Var: Firm_Interest_Payment
+				Var: Firm_Interest_Rate_Long_Term
+				Var: Firm_Interest_Rate_Short_Term
+				Var: Firm_Internal_Finance_Rate
+				Var: Firm_Internal_Funds
+				Var: Firm_Inventories_Variation
+				Var: Firm_Investment_Constraint_Rate
+				Var: Firm_Investment_Period
+				Var: Firm_Investment_Rate
+				Var: Firm_Liquidity_Preference
+				Var: Firm_Liquidity_Rate
+				Var: Firm_Market_Share
+				Var: Firm_Max_Productivity
+				Var: Firm_Modernization_Rate
+				Var: Firm_Net_Profits
+				Var: Firm_Net_Revenue
+				Var: Firm_Planned_Production
+				Var: Firm_Price
+				Var: Firm_Price_Period
+				Var: Firm_Productive_Capacity
+				Var: Firm_Productive_Capacity_Depreciation
+				Var: Firm_Profit_Rate
+				Var: Firm_Profits
+				Var: Firm_Quality
+				Var: Firm_RND_Expenses
+				Var: Firm_Replacement_Expenses
+				Var: Firm_Retained_Deposits
+				Var: Firm_Retained_Profits
+				Var: Firm_Revenue
+				Var: Firm_Sales
+				Var: Firm_Stock_Deposits
+				Var: Firm_Stock_Inputs
+				Var: Firm_Stock_Inventories
+				Var: Firm_Stock_Loans
+				Var: Firm_Stock_Loans_Long_Term
+				Var: Firm_Stock_Loans_Short_Term
+				Var: Firm_Total_Funds
+				Var: Firm_Unit_Financial_Cost
+				Var: Firm_Variable_Cost
+				Var: Firm_Wage
+				Var: Firm_Input_Imports
+				Var: Firm_Imitation_Input
+				Var: Firm_Innovation_Input
+				Var: Firm_Energy_Demand
+				Var: Firm_Imitation_Energy_Intensity
+				Var: Firm_Innovation_Energy_Intensity
+				Var: Firm_Avg_Energy_Intensity
+				Var: Firm_Avg_Input_Tech_Coefficient
+				Var: Firm_Frontier_Energy_Intensity
+				Var: Firm_Frontier_Input_Tech_Coefficient
+				Var: Firm_Avg_Carbon_Intensity
+				Var: Firm_Emissions
+				Var: Firm_Innovation_RND_Share
+				Var: Firm_Desired_Market_Share
+
+			}
+
+			Param: id_capital_goods_sector
+			Param: id_consumption_goods_sector
+			Param: id_energy_sector
+			Param: id_intermediate_goods_sector
+			Param: sector_antecipation
+			Param: sector_bargain_power_adjustment
+			Param: sector_bargain_power_inflaton_adjustment
+			Param: sector_bargain_power_productivity_adjustment
+			Param: sector_capital_duration
+			Param: sector_capital_output_ratio
+			Param: sector_competitiveness_adjustment
+			Param: sector_debt_rate_adjustment
+			Param: sector_desired_degree_capacity_utilization
+			Param: sector_desired_inventories_proportion
+			Param: sector_desired_market_share
+			Param: sector_elascitity_delay
+			Param: sector_elasticity_price
+			Param: sector_elasticity_quality
+			Param: sector_energy_intensity
+			Param: sector_expectations
+			Param: sector_exports_coefficient
+			Param: sector_exports_elasticity_income
+			Param: sector_exports_elasticity_price
+			Param: sector_external_price_competitiveness
+			Param: sector_external_price_growth
+			Param: sector_external_price_sd
+			Param: sector_external_price_shock_begin
+			Param: sector_external_price_shock_duration
+			Param: sector_external_price_shock_size
+			Param: sector_external_price_weight
+			Param: sector_financial_cost_passtrough
+			Param: sector_indirect_tax_rate
+			Param: sector_initial_debt_rate
+			Param: sector_initial_demand
+			Param: sector_initial_depreciation_scale
+			Param: sector_initial_exports_share
+			Param: sector_initial_external_price
+			Param: sector_initial_liquidity_preference
+			Param: sector_initial_price
+			Param: sector_initial_productivity
+			Param: sector_initial_profit_rate
+			Param: sector_initial_propensity_import_inputs
+			Param: sector_initial_quality
+			Param: sector_input_imitation_share
+			Param: sector_input_import_elasticity_price
+			Param: sector_input_innovation_share
+			Param: sector_input_tech_coefficient
+			Param: sector_investment_frequency
+			Param: sector_learning_adjustment
+			Param: sector_liquidity_preference_adjustment
+			Param: sector_markup_adjustment
+			Param: sector_number_object_firms
+			Param: sector_passthrough_inflation
+			Param: sector_passthrough_productivity
+			Param: sector_payback_period
+			Param: sector_price_frequency
+			Param: sector_productivity_imitation_share
+			Param: sector_productivity_innovation_share
+			Param: sector_profits_distribution_rate
+			Param: sector_quality_imitation_share
+			Param: sector_quality_innovation_share
+			Param: sector_std_dev_innovation
+			Param: sector_strategic_price_weight
+			Param: sector_tech_opportunity_input
+			Param: sector_tech_opportunity_productivity
+			Param: sector_tech_opportunity_quality
+			Var: Sector_Avg_Competitiveness
+			Var: Sector_Avg_Debt_Rate
+			Var: Sector_Avg_External_Finance_Rate
+			Var: Sector_Avg_Financial_Position
+			Var: Sector_Avg_Interest_Rate_Long_Term
+			Var: Sector_Avg_Interest_Rate_Short_Term
+			Var: Sector_Avg_Internal_Finance_Rate
+			Var: Sector_Avg_Investment_Constraint_Rate
+			Var: Sector_Avg_Investment_Rate
+			Var: Sector_Avg_Liquidity_Rate
+			Var: Sector_Avg_Markup
+			Var: Sector_Avg_Max_Debt_Rate
+			Var: Sector_Avg_Modernization_Rate
+			Var: Sector_Avg_Price
+			Var: Sector_Avg_Productivity
+			Var: Sector_Avg_Quality
+			Var: Sector_Avg_Wage
+			Var: Sector_Bargain_Power
+			Var: Sector_Capacity_Utilization
+			Var: Sector_Demand_Met
+			Var: Sector_Demand_Met_By_Imports
+			Var: Sector_Effective_Loans
+			Var: Sector_Effective_Orders
+			Var: Sector_Effective_Production
+			Var: Sector_Employment
+			Var: Sector_Entry_Condition
+			Var: Sector_Entry_Deposits_Needed
+			Var: Sector_Exports_Share
+			Var: Sector_External_Price
+			Var: Sector_Extra_Imports
+			Var: Sector_Hedge_Normalized_Share
+			Var: Sector_Hedge_Share
+			Var: Sector_Idle_Capacity
+			Var: Sector_Inventories
+			Var: Sector_Max_Productivity
+			Var: Sector_Max_Quality
+			Var: Sector_Min_Input
+			Var: Sector_Normalized_HHI
+			Var: Sector_Number_Firms
+			Var: Sector_Participation
+			Var: Sector_Ponzi_Normalized_Share
+			Var: Sector_Ponzi_Share
+			Var: Sector_Productive_Capacity
+			Var: Sector_Productive_Capacity_Available
+			Var: Sector_Productive_Capacity_Entry
+			Var: Sector_Productive_Capacity_Exit
+			Var: Sector_Profit_Rate
+			Var: Sector_Profits
+			Var: Sector_Propensity_Import_Inputs
+			Var: Sector_Real_Exports
+			Var: Sector_Sales
+			Var: Sector_Short_Term_Rate
+			Var: Sector_Speculative_Normalized_Share
+			Var: Sector_Speculative_Share
+			Var: Sector_Stock_Deposits
+			Var: Sector_Stock_Loans
+			Var: Sector_Taxation
+			Var: Sector_Turbulence
+			Param: switch_entry
+			Param: switch_extra_imports
+			Var: Sector_Min_Energy_Intensity
+			Param: sector_energy_imitation_share
+			Param: sector_energy_innovation_share
+			Param: sector_tech_opportunity_energy
+			Param: sector_initial_carbon_intensity
+			Var: Sector_Emissions
+			Param: innovation_imitation_adjustment
+			Var: Sector_Technical_Carbon_Intensity
+			Param: carbon_intensity_adjustment
+			Var: Sector_Avg_Carbon_Intensity
+			Var: Sector_Avg_Energy_Intensity
+			Var: Sector_Avg_Input_Coefficient
+			Var: Sector_Energy_Demand
+			Var: Sector_Avg_Energy_Intensity2
+			Param: switch_capital_order
+
+		}
+
+		Son: ANALYSIS
+		Label ANALYSIS
+		{
+			Var: C
+			Var: Cri
+			Var: G_n
+			Var: I
+			Var: U
+			Var: P
+			Var: C_r
+			Var: I_r
+			Var: CON_G
+			Var: GDP_G
+			Var: GOV_G
+			Var: INV_G
+			Var: P_G
+			Var: PDEBT
+			Var: PDEBT_G
+			Var: PROD
+			Var: PROD_G
+			Var: G_r
+			Var: M_r
+			Var: PROFITS
+			Var: PROFITS_G
+			Var: WAGE
+			Var: WAGE_G
+			Var: EMP
+			Var: INVE_G
+			Var: INVE_r
+			Var: K_G
+			Var: K_r
+			Var: NX_G
+			Var: NX_r
+			Var: X_G
+			Var: X_r
+			Var: M_G
+			Var: MK
+			Var: MK_G
+			Var: HHI_C
+			Var: HHI_I
+			Var: HHI_K
+			Var: MK_C
+			Var: MK_I
+			Var: MK_K
+			Var: P_C
+			Var: P_I
+			Var: P_K
+			Var: PROD_C
+			Var: PROD_I
+			Var: PROD_K
+			Var: U_C
+			Var: U_I
+			Var: U_K
+			Var: W_C
+			Var: W_I
+			Var: W_K
+			Var: DEBT_FS
+			Var: DEBT_FS_G
+			Var: DEBT_FS_LT
+			Var: DEBT_FS_LT_G
+			Var: DEBT_FS_ST
+			Var: DEBT_FS_ST_G
+			Var: DEBT_RT_C
+			Var: DEBT_RT_CL
+			Var: DEBT_RT_FI
+			Var: DEBT_RT_I
+			Var: DEBT_RT_K
+			Var: DEP_FS
+			Var: DEP_FS_G
+			Var: FS_HHI
+			Var: FS_LEV
+			Var: FS_STR
+			Var: FS_DEF
+			Var: FS_DR
+			Var: FS_PR
+			Var: HEDGE
+			Var: IR
+			Var: IR_DEP
+			Var: IR_LT
+			Var: IR_ST
+			Var: PONZI
+			Var: SPEC
+			Var: GGDP
+			Var: IGDP
+			Var: INVGDP
+			Var: KGDP
+			Var: NXGDP
+			Var: CGDP
+			Var: KL
+			Var: PCU
+			Var: PR
+			Var: EMP_G
+			Var: BKR
+			Var: BKR_RT
+			Var: CPI
+			Var: CPI_G
+			Var: GDP
+			Var: GDP_r
+			Var: PSH
+			Var: WSH
+			Var: WSH_A
+			Var: YSH_A
+			Var: CF
+			Var: DT
+			Var: ER
+			Var: G
+			Var: GDPX_r
+			Var: IT
+			Var: M
+			Var: NX
+			Var: PDEBT_GDP
+			Var: PS_GDP
+			Var: PST
+			Var: RES
+			Var: RES_GDP
+			Var: TT
+			Var: X
+			Var: FS_DMET
+			Var: FS_RES
+			Var: PX_C
+			Var: PX_I
+			Var: PX_K
+			Var: IRLT_C
+			Var: IRLT_I
+			Var: IRLT_K
+			Var: IRST_C
+			Var: IRST_I
+			Var: IRST_K
+			Var: MGDP
+			Var: XGDP
+			Var: DX_GDP
+			Var: PROF_r
+			Var: WAGE_r
+			Var: CI
+			Var: CI_C
+			Var: CI_E
+			Var: CI_I
+			Var: CI_K
+			Var: ED
+			Var: ED_C
+			Var: ED_E
+			Var: ED_I
+			Var: ED_K
+			Var: EI
+			Var: EI_C
+			Var: EI_E
+			Var: EI_I
+			Var: EI_K
+			Var: EM
+			Var: EM_C
+			Var: EM_E
+			Var: EM_I
+			Var: EM_K
+			Var: P_E
+			Var: MK_E
+			Var: PROD_E
+			Var: W_E
+			Var: CI_G
+			Var: ED_G
+			Var: EI_G
+			Var: EM_G
+
+		}
+
+		Param: annual_frequency
+		Param: begin_credit_rationing
+		Param: begin_expenses_ceiling_rule
+		Param: begin_flexible_exchange_rate
+		Param: begin_flexible_surplus_target
+		Param: begin_monetary_policy
+		Param: begin_surplus_target_rule
+		Param: country_initial_depreciation_share_GDP
+		Param: country_initial_exports_share_GDP
+		Param: country_initial_government_share_GDP
+		Param: entry_debt_share
+		Param: survival_period
+		Param: switch_class_tax_structure
+		Param: switch_creditworthness
+		Param: switch_extra_gov_expenses
+		Param: switch_interest_investment
+		Param: switch_interest_payment
+		Param: switch_monetary_policy
+		Var: Country_Annual_CPI_Inflation
+		Var: Country_Annual_GDP
+		Var: Country_Annual_Growth
+		Var: Country_Annual_Inflation
+		Var: Country_Annual_Real_GDP
+		Var: Country_Annual_Real_Growth
+		Var: Country_Autonomous_Consumption
+		Var: Country_Autonomous_Investment
+		Var: Country_Avg_HHI
+		Var: Country_Avg_Markup
+		Var: Country_Avg_Productivity
+		Var: Country_Avg_Profit_Rate
+		Var: Country_Capacity_Utilization
+		Var: Country_Capital_Goods_Price
+		Var: Country_Capital_Labor_Ratio
+		Var: Country_Capital_Output_Ratio
+		Var: Country_Capital_Stock
+		Var: Country_Consumer_Price_Index
+		Var: Country_Debt_Rate_Class
+		Var: Country_Debt_Rate_Firms
+		Var: Country_Distributed_Profits
+		Var: Country_Domestic_Capital_Goods_Demand
+		Var: Country_Domestic_Consumption_Demand
+		Var: Country_Domestic_Intermediate_Demand
+		Var: Country_GDP
+		Var: Country_GDP_Demand
+		Var: Country_Hedge_Share
+		Var: Country_Idle_Capacity
+		Var: Country_Induced_Investment
+		Var: Country_Inventories
+		Var: Country_Inventories_Variation
+		Var: Country_Likelihood_Crisis
+		Var: Country_Nominal_Capital_Production
+		Var: Country_Nominal_Consumption_Production
+		Var: Country_Nominal_Input_Production
+		Var: Country_Ponzi_Share
+		Var: Country_Price_Index
+		Var: Country_Productive_Capacity_Depreciated
+		Var: Country_Productive_Capacity_Expansion
+		Var: Country_Productive_Capacity_Replacement
+		Var: Country_Profit_Share
+		Var: Country_Real_GDP
+		Var: Country_Real_GDP_Demand
+		Var: Country_Speculative_Share
+		Var: Country_Total_Classes_Expenses
+		Var: Country_Total_Investment_Expenses
+		Var: Country_Total_Nominal_Production
+		Var: Country_Total_Profits
+		Var: Country_Total_Wages
+		Var: Country_Wage_Share
+		Var: Exit
+		Var: Exit_Bankruptcy_Events
+		Var: Exit_Bankruptcy_Share
+		Var: Exit_Defaulted_Loans
+		Var: Exit_Deposits_Distributed
+		Var: Exit_Productive_Capacity
+		Var: Loans_Distribution_Firms
+		Var: Country_Avg_Propensity_Consume
+		Param: switch_fixed_bank_profit_distribution
+		Var: Country_Financial_Profit_Share
+		Var: Country_Industrial_Profit_Share
+		Param: switch_foroward_looking
+		Var: Country_Domestic_Energy_Demand
+		Param: country_initial_energy_consumption_share_GDP
+		Var: Country_Nominal_Energy_Production
+		Var: Country_Energy_Intensity
+		Var: Country_Emissions
+		Var: Country_Carbon_Intensity
+
+	}
+
+	Var: Initialization_2
+	Var: Time_Step
+
+}
+
+
+DATA
+
+Object: Root C	1
+Var: Initialization_2 0 n + n n
+Var: Time_Step 0 n + n n
+
+Object: COUNTRY C	1
+Param: annual_frequency 0 n + n n	4
+Param: begin_credit_rationing 0 n + n n	0
+Param: begin_expenses_ceiling_rule 0 n + n n	-1
+Param: begin_flexible_exchange_rate 0 n + n n	-1
+Param: begin_flexible_surplus_target 0 n + n n	-1
+Param: begin_monetary_policy 0 n + n n	-1
+Param: begin_surplus_target_rule 0 n + n n	0
+Param: country_initial_depreciation_share_GDP 0 n + n n	0.1
+Param: country_initial_exports_share_GDP 0 n + n n	0.1
+Param: country_initial_government_share_GDP 0 n + n n	0.2
+Param: entry_debt_share 0 n + n n	0
+Param: survival_period 0 n + n n	0
+Param: switch_class_tax_structure 0 n + n n	3
+Param: switch_creditworthness 0 n + n n	0
+Param: switch_extra_gov_expenses 0 n + n n	1
+Param: switch_interest_investment 0 n + n n	2
+Param: switch_interest_payment 0 n + n n	0
+Param: switch_monetary_policy 0 n + n n	1
+Var: Country_Annual_CPI_Inflation 1 s + n n	0
+Var: Country_Annual_GDP 0 s + n n
+Var: Country_Annual_Growth 1 s + n n	0
+Var: Country_Annual_Inflation 1 s + n n	0
+Var: Country_Annual_Real_GDP 0 s + n n
+Var: Country_Annual_Real_Growth 1 s + n n	0
+Var: Country_Autonomous_Consumption 0 n + n n
+Var: Country_Autonomous_Investment 0 s + n n
+Var: Country_Avg_HHI 0 s + n n
+Var: Country_Avg_Markup 0 s + n n
+Var: Country_Avg_Productivity 5 n + n n	1	1	1	1	1
+Var: Country_Avg_Profit_Rate 0 s + n n
+Var: Country_Capacity_Utilization 0 s + n n
+Var: Country_Capital_Goods_Price 6 s + n n	0	0	0	0	0	0
+Var: Country_Capital_Labor_Ratio 0 s + n n
+Var: Country_Capital_Output_Ratio 0 s + n n
+Var: Country_Capital_Stock 0 n + n n
+Var: Country_Consumer_Price_Index 5 s + n n	1	1	1	1	1
+Var: Country_Debt_Rate_Class 1 s + n n	0
+Var: Country_Debt_Rate_Firms 1 s + n n	0
+Var: Country_Distributed_Profits 0 s + n n
+Var: Country_Domestic_Capital_Goods_Demand 0 s + n n
+Var: Country_Domestic_Consumption_Demand 0 s + n n
+Var: Country_Domestic_Intermediate_Demand 0 s + n n
+Var: Country_GDP 10 s + n n	294	294	294	294	294	294	294	294	294	294
+Var: Country_GDP_Demand 0 s + n n
+Var: Country_Hedge_Share 0 s + n n
+Var: Country_Idle_Capacity 5 s + n n	0.18	0.18	0.18	0.18	0.18
+Var: Country_Induced_Investment 0 s + n n
+Var: Country_Inventories 1 n + n n	0
+Var: Country_Inventories_Variation 0 n + n n
+Var: Country_Likelihood_Crisis 0 s + n n
+Var: Country_Nominal_Capital_Production 0 n + n n
+Var: Country_Nominal_Consumption_Production 0 n + n n
+Var: Country_Nominal_Input_Production 0 n + n n
+Var: Country_Ponzi_Share 0 s + n n
+Var: Country_Price_Index 5 s + n n	1	1	1	1	1
+Var: Country_Productive_Capacity_Depreciated 0 s + n n
+Var: Country_Productive_Capacity_Expansion 0 s + n n
+Var: Country_Productive_Capacity_Replacement 0 s + n n
+Var: Country_Profit_Share 0 s + n n
+Var: Country_Real_GDP 9 s + n p	0	0	0	0	0	0	0	0	0
+Var: Country_Real_GDP_Demand 0 s + n n
+Var: Country_Speculative_Share 0 s + n n
+Var: Country_Total_Classes_Expenses 0 n + n n
+Var: Country_Total_Investment_Expenses 0 n + n n
+Var: Country_Total_Nominal_Production 0 n + n n
+Var: Country_Total_Profits 0 s + n n
+Var: Country_Total_Wages 0 s + n n
+Var: Country_Wage_Share 0 s + n n
+Var: Exit 0 s + n n
+Var: Exit_Bankruptcy_Events 0 s + n n
+Var: Exit_Bankruptcy_Share 0 s + n n
+Var: Exit_Defaulted_Loans 0 s + n n
+Var: Exit_Deposits_Distributed 0 s + n n
+Var: Exit_Productive_Capacity 0 n + n n
+Var: Loans_Distribution_Firms 0 n + n n
+Var: Country_Avg_Propensity_Consume 0 s + n n
+Param: switch_fixed_bank_profit_distribution 0 n + n n	0
+Var: Country_Financial_Profit_Share 0 s + n n
+Var: Country_Industrial_Profit_Share 0 s + n n
+Param: switch_foroward_looking 0 n + n n	1
+Var: Country_Domestic_Energy_Demand 1 s + n n	0
+Param: country_initial_energy_consumption_share_GDP 0 n + n n	0.1
+Var: Country_Nominal_Energy_Production 0 s + n n
+Var: Country_Energy_Intensity 1 s + n n	0
+Var: Country_Emissions 1 s + n n	0
+Var: Country_Carbon_Intensity 1 s + n n	0
+
+Object: CLASSES C	4
+Param: class_autonomous_consumption_adjustment 0 n + n n	1	1	1	1
+Param: class_debt_rate_adjustment 0 n + n n	0	0	0	0
+Param: class_direct_tax 0 s + n n	0.3	0.3	0.3	0.3
+Param: class_id 0 n + n n	1	1	1	1
+Param: class_import_elasticity_price 0 n + n n	0	0	0	0
+Param: class_initial_propensity_import 0 n + n n	0.3	0.2	0.1	0
+Param: class_initial_liquidity_preference 0 n + n n	0	0	0	0
+Param: class_initial_max_debt_rate 0 n + n n	1	1	1	1
+Param: class_liquidity_preference_adjustment 0 n + n n	0	0	0	0
+Param: class_population_share 0 n + n n	0.01	0.04	0.25	0.7
+Param: class_profit_share 0 n + n n	0.4	0.3	0.2	0.1
+Param: class_propensity_to_spend 0 n + n n	0.5	0.6	0.7	0.8
+Param: class_wage_share 0 n + n n	0.1	0.2	0.3	0.4
+Param: class_wealth_tax 0 n + n n	0	0	0	0
+Var: Class_Available_Deposits 0 s + n n
+Var: Class_Avg_Debt_Rate 0 n + n n
+Var: Class_Avg_Nominal_Income 1 n + n n	0	0	0	0
+Var: Class_Avg_Real_Income 1 n + n n	0	0	0	0
+Var: Class_Debt_Payment 0 s + n n
+Var: Class_Debt_Rate 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Class_Demand_Loans 0 s + n n
+Var: Class_Deposits_Return 0 s + n n
+Var: Class_Desired_Expenses 0 s + n n
+Var: Class_Effective_Expenses 0 s + n n
+Var: Class_Effective_Loans 0 n + n n
+Var: Class_Effective_Real_Domestic_Consumption 0 s + n n
+Var: Class_Effective_Real_Imported_Consumption 0 s + n n
+Var: Class_Financial_Obligations 0 s + n n
+Var: Class_Funds 0 s + n n
+Var: Class_Imports_Share 1 s + n n	0	0	0	0
+Var: Class_Income_Share 1 s + n n	0	0	0	0
+Var: Class_Interest_Payment 0 s + n n
+Var: Class_Interest_Rate 0 n + n n
+Var: Class_Internal_Funds 0 s + n n
+Var: Class_Liquidity_Preference 1 s + n n	0	0	0	0
+Var: Class_Max_Debt_Rate 1 s + n n	0	0	0	0
+Var: Class_Max_Loans 0 s + n n
+Var: Class_Maximum_Expenses 0 s + n n
+Var: Class_Nominal_Disposable_Income 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Class_Nominal_Gross_Income 0 s + n n
+Var: Class_Real_Autonomous_Consumption 1 s + n n	0	0	0	0
+Var: Class_Real_Desired_Domestic_Consumption 0 s + n n
+Var: Class_Real_Desired_Imported_Consumption 0 s + n n
+Var: Class_Real_Disposable_Income 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Class_Real_Domestic_Consumption_Demand 0 s + n n
+Var: Class_Real_Imported_Consumption_Demand 0 s + n n
+Var: Class_Retained_Deposits 0 s + n n
+Var: Class_Stock_Deposits 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Class_Stock_Loans 1 s + n n	0	0	0	0
+Var: Class_Taxation 0 s + n n
+Var: Class_Wealth_Share 0 s + n n
+Var: Class_Gross_Income_Share 0 s + n n
+Param: class_propensity_to_energy 0 n + n n	0.05	0.05	0.05	0.05
+Var: Class_Real_Desired_Energy_Consumption 0 s + n n
+Var: Class_Real_Energy_Demand 0 s + n n
+Var: Class_Effective_Real_Energy_Consumption 0 s + n n
+
+Object: CLASS_LOANS C	1	1	1	1
+Param: class_loan_fixed_amortization 0 n + n n	0	0	0	0
+Param: class_loan_fixed_object 0 n + n n	1	1	1	1
+Param: class_loan_interest_rate 0 n + n n	0	0	0	0
+Param: class_loan_total_amount 0 n + n n	0	0	0	0
+
+Object: EXTERNAL_SECTOR C	1
+Param: exchange_rate_adjustment 0 n + n n	1
+Param: exchange_rate_max 0 n + n n	5
+Param: exchange_rate_min 0 n + n n	0.001
+Param: external_capital_flow_adjustment 0 n + n n	10
+Param: external_income_adjustmnent 0 n + n n	0
+Param: external_income_growth 0 n + n n	0.0025
+Param: external_income_sd 0 n + n n	0
+Param: external_interest_rate 0 s + n n	0.001
+Param: external_shock_begin 0 n + n n	400
+Param: external_shock_duration 0 n + n n	0
+Param: external_shock_size 0 n + n n	0
+Param: initial_exchange_rate 0 n + n n	1
+Param: initial_external_income_scale 0 n + n n	1
+Param: initial_reserves_ratio 0 n + n n	0
+Var: Country_Capital_Flows 1 s + n n	0
+Var: Country_Exchange_Rate 1 s + n n	1
+Var: Country_International_Reserves 1 s + n n	0
+Var: Country_International_Reserves_GDP_Ratio 1 s + n n	0
+Var: Country_Nominal_Exports 1 s + n n	0
+Var: Country_Nominal_Imports 1 s + n n	0
+Var: Country_Trade_Balance 1 s + n n	0
+Var: External_Real_Income 2 s + n n	0	0
+Var: Country_External_Debt 1 s + n n	0
+Var: Country_External_Debt_GDP_Ratio 0 s + n n
+Param: external_interest_sd 0 n + n n	0.001
+
+Object: FINANCIAL C	1
+Param: fs_elasticity_default 0 n + n n	0
+Param: fs_elasticity_interest_long_term 0 n + n n	0
+Param: fs_elasticity_interest_short_term 0 n + n n	0
+Param: fs_elasticity_rationing 0 n + n n	0
+Param: fs_expectations 0 n + n n	0
+Param: fs_initial_leverage 0 n + n n	1
+Param: fs_number_object_banks 0 n + n n	10
+Param: fs_price_strategy_long_term 0 n + n n	1
+Param: fs_price_strategy_short_term 0 n + n n	1
+Param: fs_risk_premium_class 0 n + n n	0.1
+Param: fs_risk_premium_long_term 0 n + n n	0.2
+Param: fs_risk_premium_short_term 0 n + n n	0.1
+Param: fs_sensitivity_debt_rate 0 n + n n	0.1
+Param: fs_sensitivity_default 0 n + n n	0.1
+Param: fs_spread_deposits 0 n + n n	0.1
+Param: fs_spread_long_term 0 n + n n	0.05
+Param: fs_spread_long_term_adjustment 0 n + n n	0
+Param: fs_spread_short_term 0 n + n n	0.01
+Param: fs_spread_short_term_adjustment 0 n + n n	0
+Var: Financial_Sector_Accumulated_Defaulted_Loans 0 s + n n
+Var: Financial_Sector_Accumulated_Profits 1 s + n n	0
+Var: Financial_Sector_Accumulated_Rescue 0 s + n n
+Var: Financial_Sector_Avg_Competitiveness 1 s + n n	1
+Var: Financial_Sector_Avg_Interest_Rate_Long_Term 1 s + n n	0
+Var: Financial_Sector_Avg_Interest_Rate_Short_Term 1 s + n n	0
+Var: Financial_Sector_Debt_Payment 0 s + n n
+Var: Financial_Sector_Default_Rate 0 s + n n
+Var: Financial_Sector_Defaulted_Loans 0 s + n n
+Var: Financial_Sector_Demand_Loans 0 s + n n
+Var: Financial_Sector_Demand_Met 0 s + n n
+Var: Financial_Sector_Distributed_Profits 0 s + n n
+Var: Financial_Sector_Effective_Capital_Ratio 0 s + n n
+Var: Financial_Sector_Effective_Loans 0 n + n n
+Var: Financial_Sector_Interest_Payment 0 s + n n
+Var: Financial_Sector_Interest_Receivment 0 s + n n
+Var: Financial_Sector_Leverage 0 s + n n
+Var: Financial_Sector_Max_Total_Loans 0 n + n n
+Var: Financial_Sector_Normalized_HHI 0 s + n n
+Var: Financial_Sector_Profits 0 s + n n
+Var: Financial_Sector_Rescue 0 s + n n
+Var: Financial_Sector_Short_Term_Rate 0 s + n n
+Var: Financial_Sector_Stock_Deposits 0 s + n n
+Var: Financial_Sector_Stock_Loans_Long_Term 0 s + n n
+Var: Financial_Sector_Stock_Loans_Short_Term 0 s + n n
+Var: Financial_Sector_Total_Stock_Loans 1 s + n n	0
+Var: Financial_Sector_Total_Stock_Loans_Growth 1 s + n n	0
+Var: Financial_Sector_Turbulence 0 s + n n
+Var: Financial_Sector_Interest_Rate_Deposits 1 s + n n	0
+Param: fs_profit_distribution_rate 0 n + n n	0.9
+
+Object: BANKS C	1
+Param: bank_defaulted_loans_temporary 0 n + n n	0
+Param: bank_id 0 n + n n	1
+Var: Bank_Accumulated_Defaulted_Loans 1 n + n n	0
+Var: Bank_Accumulated_Profits 1 n + n n	0
+Var: Bank_Competitiveness 1 n + n n	0
+Var: Bank_Debt_Payment 0 n + n n
+Var: Bank_Default_Share 5 n + n n	0	0	0	0	0
+Var: Bank_Defaulted_Loans 1 n + n n	0
+Var: Bank_Demand_Loans 1 n + n n	0
+Var: Bank_Demand_Met 1 n + n n	0
+Var: Bank_Desired_Interest_Rate_Long_Term 1 n + n n	0
+Var: Bank_Desired_Interest_Rate_Short_Term 0 n + n n
+Var: Bank_Desired_Long_Term_Spread 1 n + n n	0
+Var: Bank_Desired_Short_Term_Spread 1 n + n n	0
+Var: Bank_Distributed_Profits 0 n + n n
+Var: Bank_Effective_Loans 0 n + n n
+Var: Bank_Interest_Payment 0 n + n n
+Var: Bank_Interest_Rate_Long_Term 1 n + n n	0
+Var: Bank_Interest_Rate_Short_Term 1 n + n n	0
+Var: Bank_Interest_Receivment 0 n + n n
+Var: Bank_Leverage 1 n + n n	0
+Var: Bank_Market_Share 1 n + n n	0
+Var: Bank_Max_Total_Loans 0 n + n n
+Var: Bank_Number_Clients 0 n + n n
+Var: Bank_Profits 0 n + n n
+Var: Bank_Rescue 0 n + n n
+Var: Bank_Short_Term_Rate 1 n + n n	0
+Var: Bank_Stock_Deposits 0 n + n n
+Var: Bank_Stock_Loans_Long_Term 1 n + n n	0
+Var: Bank_Stock_Loans_Short_Term 0 n + n n
+Var: Bank_Total_Stock_Loans 1 n + n n	0
+Var: Bank_Effective_Profit_Rate 0 n + n n
+Var: Bank_Retained_Profits 0 n + n n
+Var: Bank_Effective_Capital_Ratio 0 n + n n
+
+Object: CENTRAL_BANK C	1
+Param: cb_smoothing 0 n + n n	0.8
+Param: cb_minimum_capital_ratio 0 n + n n	0.05
+Param: cb_sensitivity_capacity 0 n + n n	0
+Param: cb_sensitivity_credit_growth 0 n + n n	0
+Param: cb_sensitivity_debt_rate 0 n + n n	0
+Param: cb_sensitivity_inflation 0 n + n n	1
+Param: cb_sensitivity_exchange 0 n + n n	0
+Param: cb_target_annual_inflation 0 n + n n	0.02
+Param: cb_target_capacity 0 n + n n	0.15
+Param: cb_target_credit_growth 0 n + n n	0.01
+Param: cb_target_debt_rate 0 n + n n	0.5
+Param: cb_target_reserves 0 n + n n	0
+Var: Central_Bank_Basic_Interest_Rate 1 s + n n	0
+Param: cb_credibility 0 s + n n	0
+Param: cb_credibility_adjustment 0 n + n n	0
+Param: cb_credibility_tolerance 0 n + n n	0.5
+Var: CB_Credibility 1 s + n n	0
+Var: CB_Quarterly_Real_Interest_Rate 0 s + n n
+Param: cb_quarterly_nominal_interest_rate 0 n + n n	0.001
+Var: CB_Inflation_Gap 0 s + n n
+Var: CB_Output_Gap 0 s + n n
+Param: cb_interest_rate_max 0 n + n n	0.1
+Param: cb_interest_rate_min 0 n + n n	0
+Param: interest_shock_begin 0 n + n n	400
+Param: interest_shock_duration 0 n + n n	0
+Param: interest_shock_size 0 n + n n	0.01
+
+Object: GOVERNMENT C	1
+Param: government_benefit_rate 0 n + n n	0
+Param: government_expectations 0 n + n n	1
+Param: government_initial_debt_gdp_ratio 0 n + n n	0.5
+Param: government_initial_share_capital 0 n + n n	0
+Param: government_initial_share_consumption 0 n + n n	0
+Param: government_initial_share_input 0 n + n n	0
+Param: government_max_debt_ratio 0 n + n n	1
+Param: government_max_surplus_target 0 s + n n	0.1
+Param: government_min_debt_ratio 0 n + n n	1
+Param: government_min_surplus_target 0 s + n n	-0.1
+Param: government_real_growth 0 n + n n	0.003
+Param: government_surplus_target_adjustment 0 n + n n	0.001
+Var: Government_Debt 5 s + n n	0	0	0	0	0
+Var: Government_Debt_GDP_Ratio 5 s + n n	0	0	0	0	0
+Var: Government_Desired_Consumption 1 s + n n	0
+Var: Government_Desired_Expenses 0 n + n n
+Var: Government_Desired_Inputs 1 s + n n	0
+Var: Government_Desired_Investment 1 s + n n	0
+Var: Government_Desired_Unemployment_Benefits 1 s + n n	0
+Var: Government_Desired_Wages 1 s + n n	0
+Var: Government_Effective_Consumption 0 s + n n
+Var: Government_Effective_Expenses 5 s + n n	0	0	0	0	0
+Var: Government_Effective_Inputs 0 s + n n
+Var: Government_Effective_Investment 1 s + n n	0
+Var: Government_Effective_Unemployment_Benefits 0 s + n n
+Var: Government_Effective_Wages 0 s + n n
+Var: Government_Income_Taxes 0 n + n n
+Var: Government_Indirect_Taxes 0 n + n n
+Var: Government_Interest_Payment 0 s + n n
+Var: Government_Max_Expenses 1 s + n n	0
+Var: Government_Max_Expenses_Ceiling 1 s + n n	0
+Var: Government_Max_Expenses_Surplus 1 s + n n	0
+Var: Government_Nominal_Result 0 s + n n
+Var: Government_Primary_Result 0 s + n n
+Var: Government_Surplus_GDP_Ratio 0 s + n n
+Var: Government_Surplus_Rate_Target 1 s + n n	0
+Var: Government_Total_Taxes 1 s + n n	0
+Var: Government_Fiscal_Multiplier 0 s + n n
+Param: government_real_consumption_growth 0 n + n n	0.003
+Param: government_real_input_growth 0 n + n n	0.003
+Param: government_real_investment_growth 0 n + n n	0.003
+Param: government_real_wage_growth 0 n + n n	0.002
+Var: Government_Investment_GDP_Ratio 0 s + n n
+Param: government_initial_share_energy 0 n + n n	0
+Param: government_real_energy_growth 0 n + n n	0
+Var: Government_Desired_Energy 1 n + n n	0
+Var: Government_Effective_Energy 0 s + n n
+
+Object: SECTORS C	4
+Param: id_capital_goods_sector 0 n + n n	0	1	0	0
+Param: id_consumption_goods_sector 0 n + n n	1	0	0	0
+Param: id_energy_sector 0 n + n n	0	0	0	1
+Param: id_intermediate_goods_sector 0 n + n n	0	0	1	0
+Param: sector_antecipation 0 n + n n	0	0	0	0
+Param: sector_bargain_power_adjustment 0 n + n n	0	0	0	0
+Param: sector_bargain_power_inflaton_adjustment 0 n + n n	0	0	0	0
+Param: sector_bargain_power_productivity_adjustment 0 n + n n	0	0	0	0
+Param: sector_capital_duration 0 n + n n	40	40	40	80
+Param: sector_capital_output_ratio 0 n + n n	1	1	1	1
+Param: sector_competitiveness_adjustment 0 n + n n	1	1	1	1
+Param: sector_debt_rate_adjustment 0 n + n n	0	0	0	0
+Param: sector_desired_degree_capacity_utilization 0 n + n n	0.9	0.9	0.9	0.5
+Param: sector_desired_inventories_proportion 0 n + n n	0.1	0.1	0.1	0
+Param: sector_desired_market_share 0 n + n n	0	0	0	0
+Param: sector_elascitity_delay 0 n + n n	0.25	0.25	0.25	0.25
+Param: sector_elasticity_price 0 n + n n	1	1	1	1
+Param: sector_elasticity_quality 0 n + n n	0.5	0.5	0.5	0.5
+Param: sector_energy_intensity 0 n + n n	0.1	0.1	0.1	0.1
+Param: sector_expectations 0 n + n n	0.3	0.3	0.3	0.3
+Param: sector_exports_coefficient 0 s + n n	0	0	0	0
+Param: sector_exports_elasticity_income 0 n + n n	0.5	0.5	0.5	0.5
+Param: sector_exports_elasticity_price 0 n + n n	0.5	0.5	0.5	0.5
+Param: sector_external_price_competitiveness 0 n + n n	0	0	0	0
+Param: sector_external_price_growth 0 n + n n	0.005	0.005	0.005	0.005
+Param: sector_external_price_sd 0 n + n n	0	0	0	0
+Param: sector_external_price_shock_begin 0 n + n n	400	400	400	400
+Param: sector_external_price_shock_duration 0 n + n n	0	0	0	0
+Param: sector_external_price_shock_size 0 n + n n	0.02	0.02	0.02	0.02
+Param: sector_external_price_weight 0 n + n n	0	0	0	0
+Param: sector_financial_cost_passtrough 0 n + n n	1	1	1	1
+Param: sector_indirect_tax_rate 0 n + n n	0.05	0.05	0.05	0.05
+Param: sector_initial_debt_rate 0 n + n n	0.4	0.4	0.4	0.1
+Param: sector_initial_demand 0 n + n n	0	0	0	0
+Param: sector_initial_depreciation_scale 0 n + n n	1	1	1	20
+Param: sector_initial_exports_share 0 n + n n	0	1	0	0
+Param: sector_initial_external_price 0 n + n n	1	1	1	1
+Param: sector_initial_liquidity_preference 0 n + n n	0.05	0.05	0.05	0.2
+Param: sector_initial_price 0 n + n n	1	1	1	1
+Param: sector_initial_productivity 0 n + n n	1	1	1	1
+Param: sector_initial_profit_rate 0 n + n n	0.2	0.2	0.2	0.2
+Param: sector_initial_propensity_import_inputs 0 n + n n	0.05	0.05	0.05	0.05
+Param: sector_initial_quality 0 n + n n	1	1	1	1
+Param: sector_input_imitation_share 0 n + n n	0.005	0.005	0.005	0.005
+Param: sector_input_import_elasticity_price 0 n + n n	0	0	0	0
+Param: sector_input_innovation_share 0 n + n n	0.005	0.005	0.005	0.005
+Param: sector_input_tech_coefficient 0 n + n n	0.3	0.3	0.3	0.3
+Param: sector_investment_frequency 0 n + n n	4	4	4	4
+Param: sector_learning_adjustment 0 n + n n	0	0	0	0
+Param: sector_liquidity_preference_adjustment 0 n + n n	0	0	0	0
+Param: sector_markup_adjustment 0 n + n n	0	0	0	0
+Param: sector_number_object_firms 0 n + n n	99	40	60	1
+Param: sector_passthrough_inflation 0 s + n n	1	1	1	1
+Param: sector_passthrough_productivity 0 s + n n	1	1	1	1
+Param: sector_payback_period 0 n + n n	8	8	8	8
+Param: sector_price_frequency 0 n + n n	1	1	1	1
+Param: sector_productivity_imitation_share 0 n + n n	0.005	0.005	0.005	0.005
+Param: sector_productivity_innovation_share 0 n + n n	0.005	0.005	0.005	0.005
+Param: sector_profits_distribution_rate 0 n + n n	0.8	0.8	0.8	0.8
+Param: sector_quality_imitation_share 0 n + n n	0.005	0.005	0.005	0.005
+Param: sector_quality_innovation_share 0 n + n n	0.005	0.005	0.005	0.005
+Param: sector_std_dev_innovation 0 n + n n	0.01	0.01	0.01	0.01
+Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5	0.5
+Param: sector_tech_opportunity_input 0 n + n n	0.0005	0.0005	0.0005	0.0005
+Param: sector_tech_opportunity_productivity 0 n + n n	0.0025	0.0025	0.0025	0.0025
+Param: sector_tech_opportunity_quality 0 n + n n	0.0025	0.0025	0.0025	0.0025
+Var: Sector_Avg_Competitiveness 1 n + n n	1	1	1	1
+Var: Sector_Avg_Debt_Rate 0 s + n n
+Var: Sector_Avg_External_Finance_Rate 0 s + n n
+Var: Sector_Avg_Financial_Position 0 s + n n
+Var: Sector_Avg_Interest_Rate_Long_Term 0 s + n n
+Var: Sector_Avg_Interest_Rate_Short_Term 0 s + n n
+Var: Sector_Avg_Internal_Finance_Rate 0 s + n n
+Var: Sector_Avg_Investment_Constraint_Rate 0 s + n n
+Var: Sector_Avg_Investment_Rate 0 s + n n
+Var: Sector_Avg_Liquidity_Rate 0 s + n n
+Var: Sector_Avg_Markup 0 s + n n
+Var: Sector_Avg_Max_Debt_Rate 0 s + n n
+Var: Sector_Avg_Modernization_Rate 0 s + n n
+Var: Sector_Avg_Price 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Avg_Productivity 1 s + n n	0	0	0	0
+Var: Sector_Avg_Quality 5 s + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Var: Sector_Avg_Wage 1 s + n n	0	0	0	0
+Var: Sector_Bargain_Power 1 s + n n	0	0	0	0
+Var: Sector_Capacity_Utilization 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Demand_Met 20 s + n n	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Demand_Met_By_Imports 20 s + n n	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Effective_Loans 0 s + n n
+Var: Sector_Effective_Orders 40 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Effective_Production 0 s + n n
+Var: Sector_Employment 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Entry_Condition 0 n + n n
+Var: Sector_Entry_Deposits_Needed 0 s + n n
+Var: Sector_Exports_Share 1 s + n n	0	0	0	0
+Var: Sector_External_Price 1 s + n n	1	1	1	1
+Var: Sector_Extra_Imports 0 n + n n
+Var: Sector_Hedge_Normalized_Share 0 s + n n
+Var: Sector_Hedge_Share 0 s + n n
+Var: Sector_Idle_Capacity 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Inventories 1 n + n n	0	0	0	0
+Var: Sector_Max_Productivity 1 n + n n	0	0	0	0
+Var: Sector_Max_Quality 1 n + n n	0	0	0	0
+Var: Sector_Min_Input 1 n + n n	0	0	0	0
+Var: Sector_Normalized_HHI 0 n + n n
+Var: Sector_Number_Firms 1 s + n n	0	0	0	0
+Var: Sector_Participation 0 s + n n
+Var: Sector_Ponzi_Normalized_Share 0 s + n n
+Var: Sector_Ponzi_Share 0 s + n n
+Var: Sector_Productive_Capacity 1 s + n n	0	0	0	0
+Var: Sector_Productive_Capacity_Available 1 n + n n	0	0	0	0
+Var: Sector_Productive_Capacity_Entry 0 n + n n
+Var: Sector_Productive_Capacity_Exit 0 n + n n
+Var: Sector_Profit_Rate 0 s + n n
+Var: Sector_Profits 0 s + n n
+Var: Sector_Propensity_Import_Inputs 1 s + n n	0	0	0	0
+Var: Sector_Real_Exports 0 s + n n
+Var: Sector_Sales 0 n + n n
+Var: Sector_Short_Term_Rate 0 s + n n
+Var: Sector_Speculative_Normalized_Share 0 s + n n
+Var: Sector_Speculative_Share 0 s + n n
+Var: Sector_Stock_Deposits 0 s + n n
+Var: Sector_Stock_Loans 1 s + n n	0	0	0	0
+Var: Sector_Taxation 0 n + n n
+Var: Sector_Turbulence 0 s + n n
+Param: switch_entry 0 n + n n	1	1	1	0
+Param: switch_extra_imports 0 n + n n	0	0	0	0
+Var: Sector_Min_Energy_Intensity 1 s + n n	0	0	0	0
+Param: sector_energy_imitation_share 0 n + n n	0.005	0.005	0.005	0.005
+Param: sector_energy_innovation_share 0 n + n n	0.005	0.005	0.005	0.005
+Param: sector_tech_opportunity_energy 0 n + n n	0.002	0.002	0.002	0.002
+Param: sector_initial_carbon_intensity 0 n + n n	0.1	0.2	0.1	1
+Var: Sector_Emissions 0 s + n n
+Param: innovation_imitation_adjustment 0 n + n n	0.005	0.005	0.005	0.005
+Var: Sector_Technical_Carbon_Intensity 1 s + n n	0	0	0	0
+Param: carbon_intensity_adjustment 0 n + n n	0	0	0	0
+Var: Sector_Avg_Carbon_Intensity 0 s + n n
+Var: Sector_Avg_Energy_Intensity 0 s + n n
+Var: Sector_Avg_Input_Coefficient 0 s + n n
+Var: Sector_Energy_Demand 0 s + n n
+Var: Sector_Avg_Energy_Intensity2 0 s + n n
+Param: switch_capital_order 0 n + n n	2	2	2	2
+
+Object: FIRMS C	1	1	1	1
+Param: firm_bank 0 n + n n	0	0	0	0
+Param: firm_date_birth 0 n + n n	0	0	0	0
+Param: firm_effective_loans 0 n + n n	0	0	0	0
+Param: firm_hedge 0 n + n n	0	0	0	0
+Param: firm_id 0 n + n n	0	0	0	0
+Param: firm_ponzi 0 n + n n	0	0	0	0
+Param: firm_speculative 0 n + n n	0	0	0	0
+Var: Firm_Available_Funds_After_Replacement 0 n + n n
+Var: Firm_Available_Funds_Replacement 0 n + n n
+Var: Firm_Available_Inputs_Ratio 0 n + n n
+Var: Firm_Available_Loans 0 n + n n
+Var: Firm_Avg_Debt_Rate 1 n + n n	0	0	0	0
+Var: Firm_Avg_Productivity 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Capacity_Utilization 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Capital 1 n + n n	0	0	0	0
+Var: Firm_Competitiveness 1 n + n n	1	1	1	1
+Var: Firm_Credit_Rationing 0 n + n n
+Var: Firm_Debt_Payment 0 n + n n
+Var: Firm_Debt_Rate 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Delivery_Delay 1 n + n n	1	1	1	1
+Var: Firm_Demand_Capital_Goods 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Demand_Capital_Goods_Expansion 40 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Demand_Capital_Goods_Replacement 40 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Demand_Loans 0 n + n n
+Var: Firm_Demand_Productive_Capacity_Expansion 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Demand_Productive_Capacity_Replacement 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Deposits_Return 0 n + n n
+Var: Firm_Depreciated_Productive_Capacity 0 n + n n
+Var: Firm_Max_Debt_Rate 1 n + n n	0.5	0.5	0.5	0.5
+Var: Firm_Desired_Expansion_Investment_Expenses 0 n + n n
+Var: Firm_Desired_Investment_Expenses 0 n + n n
+Var: Firm_Desired_Markup 1 n + n n	0	0	0	0
+Var: Firm_Desired_Price 0 n + n n
+Var: Firm_Desired_Replacement_Investment_Expenses 0 n + n n
+Var: Firm_Distributed_Profits 0 n + n n
+Var: Firm_Effective_Capital_Goods_Expansion 0 n + n n
+Var: Firm_Effective_Capital_Goods_Replacement 0 n + n n
+Var: Firm_Effective_Expansion_Investment_Expenses 0 n + n n
+Var: Firm_Effective_Investment_Expenses 0 n + n n
+Var: Firm_Effective_Loans 0 n + n n
+Var: Firm_Effective_Market_Share 1 n + n n	0	0	0	0
+Var: Firm_Effective_Markup 0 n + n n
+Var: Firm_Effective_Orders 40 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Effective_Orders_Capital_Goods 40 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Effective_Production 0 n + n n
+Var: Firm_Effective_Productive_Capacity_Variation 0 n + n n
+Var: Firm_Expected_Demand 0 n + n n
+Var: Firm_Expected_Sales_Long_Term 0 n + n n
+Var: Firm_External_Finance_Rate 0 n + n n
+Var: Firm_Financial_Obligations 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Financial_Position 0 n + n n
+Var: Firm_Frontier_Productivity 20 n + n n	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Imitation_Productivity 0 n + n n
+Var: Firm_Imitation_Quality 0 n + n n
+Var: Firm_Indirect_Tax 0 n + n n
+Var: Firm_Innovation_Productivity 0 n + n n
+Var: Firm_Innovation_Quality 0 n + n n
+Var: Firm_Input_Cost 0 n + n n
+Var: Firm_Input_Demand_Next_Period 0 n + n n
+Var: Firm_Interest_Payment 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Interest_Rate_Long_Term 0 n + n n
+Var: Firm_Interest_Rate_Short_Term 0 n + n n
+Var: Firm_Internal_Finance_Rate 0 n + n n
+Var: Firm_Internal_Funds 0 n + n n
+Var: Firm_Inventories_Variation 0 n + n n
+Var: Firm_Investment_Constraint_Rate 0 n + n n
+Var: Firm_Investment_Period 0 n + n n
+Var: Firm_Investment_Rate 0 n + n n
+Var: Firm_Liquidity_Preference 1 n + n n	0.05	0.05	0.05	0.05
+Var: Firm_Liquidity_Rate 0 n + n n
+Var: Firm_Market_Share 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Max_Productivity 6 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Var: Firm_Modernization_Rate 0 n + n n
+Var: Firm_Net_Profits 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Net_Revenue 0 n + n n
+Var: Firm_Planned_Production 0 n + n n
+Var: Firm_Price 1 n + n n	1	1	1	1
+Var: Firm_Price_Period 0 n + n n
+Var: Firm_Productive_Capacity 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Productive_Capacity_Depreciation 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Profit_Rate 0 n + n n
+Var: Firm_Profits 0 n + n n
+Var: Firm_Quality 1 n + n n	1	1	1	1
+Var: Firm_RND_Expenses 0 n + n n
+Var: Firm_Replacement_Expenses 0 n + n n
+Var: Firm_Retained_Deposits 0 n + n n
+Var: Firm_Retained_Profits 0 n + n n
+Var: Firm_Revenue 1 n + n n	10	10	10	10
+Var: Firm_Sales 1 n + n n	10	10	10	10
+Var: Firm_Stock_Deposits 1 n + n n	0	0	0	0
+Var: Firm_Stock_Inputs 1 n + n n	0	0	0	0
+Var: Firm_Stock_Inventories 1 n + n n	1	1	1	1
+Var: Firm_Stock_Loans 1 n + n n	0	0	0	0
+Var: Firm_Stock_Loans_Long_Term 0 n + n n
+Var: Firm_Stock_Loans_Short_Term 0 n + n n
+Var: Firm_Total_Funds 0 n + n n
+Var: Firm_Unit_Financial_Cost 0 n + n n
+Var: Firm_Variable_Cost 1 n + n n	0	0	0	0
+Var: Firm_Wage 1 n + n n	0	0	0	0
+Var: Firm_Input_Imports 0 n + n n
+Var: Firm_Imitation_Input 0 n + n n
+Var: Firm_Innovation_Input 0 n + n n
+Var: Firm_Energy_Demand 0 n + n n
+Var: Firm_Imitation_Energy_Intensity 0 n + n n
+Var: Firm_Innovation_Energy_Intensity 0 n + n n
+Var: Firm_Avg_Energy_Intensity 1 n + n n	0	0	0	0
+Var: Firm_Avg_Input_Tech_Coefficient 1 n + n n	0	0	0	0
+Var: Firm_Frontier_Energy_Intensity 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Frontier_Input_Tech_Coefficient 20 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Avg_Carbon_Intensity 1 n + n n	0	0	0	0
+Var: Firm_Emissions 0 n + n n
+Var: Firm_Innovation_RND_Share 1 n + n n	0	0	0	0
+Var: Firm_Desired_Market_Share 1 n + n n	0	0	0	0
+
+Object: CAPITALS C	1	1	1	1
+Param: capital_good_date_birth 0 n + n n	-59	-59	-59	-59
+Param: capital_good_depreciation_period 0 n + n n	0	0	0	0
+Param: capital_good_productive_capacity 0 n + n n	1	1	1	1
+Param: capital_good_productivity_initial 0 n + n n	1	1	1	1
+Param: capital_good_to_depreciate 0 n + n n	0	0	0	0
+Param: capital_good_to_replace 0 n + n n	0	0	0	0
+Param: id_capital_good_number 0 n + n n	1	1	1	1
+Var: Capital_Good_Acumulated_Production 1 n + n n	0	0	0	0
+Var: Capital_Good_Production 0 n + n n
+Var: Capital_Good_Productivity 0 n + n n
+Param: capital_good_energy_intensity 0 n + n n	0	0	0	0
+Param: capital_good_input_tech_coefficient 0 n + n n	0	0	0	0
+Param: capital_good_carbon_intensity 0 n + n n	0	0	0	0
+
+Object: FIRM_LOANS C	1	1	1	1
+Param: firm_loan_fixed_amortization 0 n + n n	0	0	0	0
+Param: firm_loan_fixed_object 0 n + n n	1	1	1	1
+Param: firm_loan_interest_rate 0 n + n n	0	0	0	0
+Param: firm_loan_total_amount 0 n + n n	0	0	0	0
+Param: id_firm_loan_long_term 0 n + n n	0	0	0	0
+Param: id_firm_loan_short_term 0 n + n n	0	0	0	0
+
+Object: ANALYSIS C	1
+Var: C 0 s + n n
+Var: Cri 0 s + n n
+Var: G_n 0 s + n n
+Var: I 0 s + n n
+Var: U 0 s + n n
+Var: P 0 s + n n
+Var: C_r 1 s + n n	0
+Var: I_r 1 s + n n	0
+Var: CON_G 0 s + n n
+Var: GDP_G 0 s + n n
+Var: GOV_G 0 s + n n
+Var: INV_G 0 s + n n
+Var: P_G 0 s + n n
+Var: PDEBT 1 s + n n	0
+Var: PDEBT_G 0 s + n n
+Var: PROD 1 s + n n	0
+Var: PROD_G 0 s + n n
+Var: G_r 1 s + n n	0
+Var: M_r 1 s + n n	0
+Var: PROFITS 1 s + n n	0
+Var: PROFITS_G 0 s + n n
+Var: WAGE 1 s + n n	0
+Var: WAGE_G 0 s + n n
+Var: EMP 1 s + n n	0
+Var: INVE_G 0 s + n n
+Var: INVE_r 1 s + n n	0
+Var: K_G 0 s + n n
+Var: K_r 1 s + n n	0
+Var: NX_G 0 s + n n
+Var: NX_r 1 s + n n	0
+Var: X_G 0 s + n n
+Var: X_r 1 s + n n	0
+Var: M_G 0 s + n n
+Var: MK 1 s + n n	0
+Var: MK_G 0 s + n n
+Var: HHI_C 0 s + n n
+Var: HHI_I 0 s + n n
+Var: HHI_K 0 s + n n
+Var: MK_C 0 s + n n
+Var: MK_I 0 s + n n
+Var: MK_K 0 s + n n
+Var: P_C 0 s + n n
+Var: P_I 0 s + n n
+Var: P_K 0 s + n n
+Var: PROD_C 0 s + n n
+Var: PROD_I 0 s + n n
+Var: PROD_K 0 s + n n
+Var: U_C 0 s + n n
+Var: U_I 0 s + n n
+Var: U_K 0 s + n n
+Var: W_C 0 s + n n
+Var: W_I 0 s + n n
+Var: W_K 0 s + n n
+Var: DEBT_FS 1 s + n n	0
+Var: DEBT_FS_G 0 s + n n
+Var: DEBT_FS_LT 1 s + n n	0
+Var: DEBT_FS_LT_G 0 s + n n
+Var: DEBT_FS_ST 1 s + n n	0
+Var: DEBT_FS_ST_G 0 s + n n
+Var: DEBT_RT_C 0 s + n n
+Var: DEBT_RT_CL 0 s + n n
+Var: DEBT_RT_FI 0 s + n n
+Var: DEBT_RT_I 0 s + n n
+Var: DEBT_RT_K 0 s + n n
+Var: DEP_FS 1 s + n n	0
+Var: DEP_FS_G 0 s + n n
+Var: FS_HHI 0 s + n n
+Var: FS_LEV 0 s + n n
+Var: FS_STR 0 s + n n
+Var: FS_DEF 0 s + n n
+Var: FS_DR 0 s + n n
+Var: FS_PR 0 s + n n
+Var: HEDGE 0 s + n n
+Var: IR 0 s + n n
+Var: IR_DEP 0 s + n n
+Var: IR_LT 0 s + n n
+Var: IR_ST 0 s + n n
+Var: PONZI 0 s + n n
+Var: SPEC 0 s + n n
+Var: GGDP 0 s + n n
+Var: IGDP 0 s + n n
+Var: INVGDP 0 s + n n
+Var: KGDP 0 s + n n
+Var: NXGDP 0 s + n n
+Var: CGDP 0 s + n n
+Var: KL 0 s + n n
+Var: PCU 0 s + n n
+Var: PR 0 s + n n
+Var: EMP_G 0 s + n n
+Var: BKR 0 s + n n
+Var: BKR_RT 0 s + n n
+Var: CPI 0 s + n n
+Var: CPI_G 0 s + n n
+Var: GDP 0 s + n n
+Var: GDP_r 0 s + n n
+Var: PSH 0 s + n n
+Var: WSH 0 s + n n
+Var: WSH_A 0 s + n n
+Var: YSH_A 0 s + n n
+Var: CF 0 s + n n
+Var: DT 0 s + n n
+Var: ER 0 s + n n
+Var: G 0 s + n n
+Var: GDPX_r 0 s + n n
+Var: IT 0 s + n n
+Var: M 0 s + n n
+Var: NX 0 s + n n
+Var: PDEBT_GDP 0 s + n n
+Var: PS_GDP 0 s + n n
+Var: PST 0 s + n n
+Var: RES 0 s + n n
+Var: RES_GDP 0 s + n n
+Var: TT 0 s + n n
+Var: X 0 s + n n
+Var: FS_DMET 0 s + n n
+Var: FS_RES 0 s + n n
+Var: PX_C 0 s + n n
+Var: PX_I 0 s + n n
+Var: PX_K 0 s + n n
+Var: IRLT_C 0 s + n n
+Var: IRLT_I 0 s + n n
+Var: IRLT_K 0 s + n n
+Var: IRST_C 0 s + n n
+Var: IRST_I 0 s + n n
+Var: IRST_K 0 s + n n
+Var: MGDP 0 s + n n
+Var: XGDP 0 s + n n
+Var: DX_GDP 0 s + n n
+Var: PROF_r 0 s + n n
+Var: WAGE_r 0 s + n n
+Var: CI 0 s + n n
+Var: CI_C 0 s + n n
+Var: CI_E 0 s + n n
+Var: CI_I 0 s + n n
+Var: CI_K 0 s + n n
+Var: ED 0 s + n n
+Var: ED_C 0 s + n n
+Var: ED_E 0 s + n n
+Var: ED_I 0 s + n n
+Var: ED_K 0 s + n n
+Var: EI 0 s + n n
+Var: EI_C 0 s + n n
+Var: EI_E 0 s + n n
+Var: EI_I 0 s + n n
+Var: EI_K 0 s + n n
+Var: EM 0 s + n n
+Var: EM_C 0 s + n n
+Var: EM_E 0 s + n n
+Var: EM_I 0 s + n n
+Var: EM_K 0 s + n n
+Var: P_E 0 s + n n
+Var: MK_E 0 s + n n
+Var: PROD_E 0 s + n n
+Var: W_E 0 s + n n
+Var: CI_G 0 s + n n
+Var: ED_G 0 s + n n
+Var: EI_G 0 s + n n
+Var: EM_G 0 s + n n
+
+SIM_NUM 50
+SEED 1
+MAX_STEP 600
+EQUATION fun_micro_macro_v.3.6.cpp
+MODELREPORT report_Sim1.html
+
+DESCRIPTION
+
+Object_Root
+
+END_DESCRIPTION
+
+Variable_Initialization_2
+
+END_DESCRIPTION
+
+Variable_Time_Step
+
+END_DESCRIPTION
+
+Object_COUNTRY
+
+END_DESCRIPTION
+
+Parameter_annual_frequency
+
+END_DESCRIPTION
+
+Parameter_begin_credit_rationing
+
+END_DESCRIPTION
+
+Parameter_begin_expenses_ceiling_rule
+
+END_DESCRIPTION
+
+Parameter_begin_flexible_exchange_rate
+
+END_DESCRIPTION
+
+Parameter_begin_flexible_surplus_target
+
+END_DESCRIPTION
+
+Parameter_begin_monetary_policy
+
+END_DESCRIPTION
+
+Parameter_begin_surplus_target_rule
+
+_INIT_
+All 1 instances equal to 0
+END_DESCRIPTION
+
+Parameter_country_initial_depreciation_share_GDP
+
+END_DESCRIPTION
+
+Parameter_country_initial_exports_share_GDP
+
+END_DESCRIPTION
+
+Parameter_country_initial_government_share_GDP
+
+END_DESCRIPTION
+
+Parameter_entry_debt_share
+
+END_DESCRIPTION
+
+Parameter_survival_period
+
+END_DESCRIPTION
+
+Parameter_switch_class_tax_structure
+
+END_DESCRIPTION
+
+Parameter_switch_creditworthness
+
+END_DESCRIPTION
+
+Parameter_switch_extra_gov_expenses
+
+END_DESCRIPTION
+
+Parameter_switch_interest_investment
+
+END_DESCRIPTION
+
+Parameter_switch_interest_payment
+
+END_DESCRIPTION
+
+Parameter_switch_monetary_policy
+
+END_DESCRIPTION
+
+Variable_Country_Annual_CPI_Inflation
+
+END_DESCRIPTION
+
+Variable_Country_Annual_GDP
+
+END_DESCRIPTION
+
+Variable_Country_Annual_Growth
+
+END_DESCRIPTION
+
+Variable_Country_Annual_Inflation
+
+END_DESCRIPTION
+
+Variable_Country_Annual_Real_GDP
+
+END_DESCRIPTION
+
+Variable_Country_Annual_Real_Growth
+
+END_DESCRIPTION
+
+Variable_Country_Autonomous_Consumption
+
+END_DESCRIPTION
+
+Variable_Country_Autonomous_Investment
+
+END_DESCRIPTION
+
+Variable_Country_Avg_HHI
+
+END_DESCRIPTION
+
+Variable_Country_Avg_Markup
+
+END_DESCRIPTION
+
+Variable_Country_Avg_Productivity
+
+END_DESCRIPTION
+
+Variable_Country_Avg_Profit_Rate
+
+END_DESCRIPTION
+
+Variable_Country_Capacity_Utilization
+
+END_DESCRIPTION
+
+Variable_Country_Capital_Goods_Price
+
+END_DESCRIPTION
+
+Variable_Country_Capital_Labor_Ratio
+
+END_DESCRIPTION
+
+Variable_Country_Capital_Output_Ratio
+
+END_DESCRIPTION
+
+Variable_Country_Capital_Stock
+
+END_DESCRIPTION
+
+Variable_Country_Consumer_Price_Index
+
+END_DESCRIPTION
+
+Variable_Country_Debt_Rate_Class
+
+END_DESCRIPTION
+
+Variable_Country_Debt_Rate_Firms
+
+END_DESCRIPTION
+
+Variable_Country_Distributed_Profits
+
+END_DESCRIPTION
+
+Variable_Country_Domestic_Capital_Goods_Demand
+
+END_DESCRIPTION
+
+Variable_Country_Domestic_Consumption_Demand
+
+END_DESCRIPTION
+
+Variable_Country_Domestic_Intermediate_Demand
+
+END_DESCRIPTION
+
+Variable_Country_GDP
+
+END_DESCRIPTION
+
+Variable_Country_GDP_Demand
+
+END_DESCRIPTION
+
+Variable_Country_Hedge_Share
+
+END_DESCRIPTION
+
+Variable_Country_Idle_Capacity
+
+END_DESCRIPTION
+
+Variable_Country_Induced_Investment
+
+END_DESCRIPTION
+
+Variable_Country_Inventories
+
+END_DESCRIPTION
+
+Variable_Country_Inventories_Variation
+
+END_DESCRIPTION
+
+Variable_Country_Likelihood_Crisis
+
+END_DESCRIPTION
+
+Variable_Country_Nominal_Capital_Production
+
+END_DESCRIPTION
+
+Variable_Country_Nominal_Consumption_Production
+
+END_DESCRIPTION
+
+Variable_Country_Nominal_Input_Production
+
+END_DESCRIPTION
+
+Variable_Country_Ponzi_Share
+
+END_DESCRIPTION
+
+Variable_Country_Price_Index
+
+END_DESCRIPTION
+
+Variable_Country_Productive_Capacity_Depreciated
+
+END_DESCRIPTION
+
+Variable_Country_Productive_Capacity_Expansion
+
+END_DESCRIPTION
+
+Variable_Country_Productive_Capacity_Replacement
+
+END_DESCRIPTION
+
+Variable_Country_Profit_Share
+
+END_DESCRIPTION
+
+Variable_Country_Real_GDP
+
+END_DESCRIPTION
+
+Variable_Country_Real_GDP_Demand
+
+END_DESCRIPTION
+
+Variable_Country_Speculative_Share
+
+END_DESCRIPTION
+
+Variable_Country_Total_Classes_Expenses
+
+END_DESCRIPTION
+
+Variable_Country_Total_Investment_Expenses
+
+END_DESCRIPTION
+
+Variable_Country_Total_Nominal_Production
+
+END_DESCRIPTION
+
+Variable_Country_Total_Profits
+
+END_DESCRIPTION
+
+Variable_Country_Total_Wages
+
+END_DESCRIPTION
+
+Variable_Country_Wage_Share
+
+END_DESCRIPTION
+
+Variable_Exit
+
+END_DESCRIPTION
+
+Variable_Exit_Bankruptcy_Events
+
+END_DESCRIPTION
+
+Variable_Exit_Bankruptcy_Share
+
+END_DESCRIPTION
+
+Variable_Exit_Defaulted_Loans
+
+END_DESCRIPTION
+
+Variable_Exit_Deposits_Distributed
+
+END_DESCRIPTION
+
+Variable_Exit_Productive_Capacity
+
+END_DESCRIPTION
+
+Variable_Loans_Distribution_Firms
+
+END_DESCRIPTION
+
+Variable_Country_Avg_Propensity_Consume
+
+END_DESCRIPTION
+
+Parameter_switch_fixed_bank_profit_distribution
+
+END_DESCRIPTION
+
+Variable_Country_Financial_Profit_Share
+
+END_DESCRIPTION
+
+Variable_Country_Industrial_Profit_Share
+
+END_DESCRIPTION
+
+Parameter_switch_foroward_looking
+
+END_DESCRIPTION
+
+Variable_Country_Domestic_Energy_Demand
+
+END_DESCRIPTION
+
+Parameter_country_initial_energy_consumption_share_GDP
+
+END_DESCRIPTION
+
+Variable_Country_Nominal_Energy_Production
+
+END_DESCRIPTION
+
+Variable_Country_Energy_Intensity
+
+END_DESCRIPTION
+
+Variable_Country_Emissions
+
+END_DESCRIPTION
+
+Variable_Country_Carbon_Intensity
+
+END_DESCRIPTION
+
+Object_CLASSES
+
+END_DESCRIPTION
+
+Parameter_class_autonomous_consumption_adjustment
+
+END_DESCRIPTION
+
+Parameter_class_debt_rate_adjustment
+
+END_DESCRIPTION
+
+Parameter_class_direct_tax
+
+END_DESCRIPTION
+
+Parameter_class_id
+
+END_DESCRIPTION
+
+Parameter_class_import_elasticity_price
+
+_INIT_
+All 4 instances equal to 0
+END_DESCRIPTION
+
+Parameter_class_initial_propensity_import
+
+END_DESCRIPTION
+
+Parameter_class_initial_liquidity_preference
+
+END_DESCRIPTION
+
+Parameter_class_initial_max_debt_rate
+
+END_DESCRIPTION
+
+Parameter_class_liquidity_preference_adjustment
+
+END_DESCRIPTION
+
+Parameter_class_population_share
+
+END_DESCRIPTION
+
+Parameter_class_profit_share
+
+END_DESCRIPTION
+
+Parameter_class_propensity_to_spend
+
+END_DESCRIPTION
+
+Parameter_class_wage_share
+
+END_DESCRIPTION
+
+Parameter_class_wealth_tax
+
+END_DESCRIPTION
+
+Variable_Class_Available_Deposits
+
+END_DESCRIPTION
+
+Variable_Class_Avg_Debt_Rate
+
+END_DESCRIPTION
+
+Variable_Class_Avg_Nominal_Income
+
+END_DESCRIPTION
+
+Variable_Class_Avg_Real_Income
+
+END_DESCRIPTION
+
+Variable_Class_Debt_Payment
+
+END_DESCRIPTION
+
+Variable_Class_Debt_Rate
+
+END_DESCRIPTION
+
+Variable_Class_Demand_Loans
+
+END_DESCRIPTION
+
+Variable_Class_Deposits_Return
+
+END_DESCRIPTION
+
+Variable_Class_Desired_Expenses
+
+END_DESCRIPTION
+
+Variable_Class_Effective_Expenses
+
+END_DESCRIPTION
+
+Variable_Class_Effective_Loans
+
+END_DESCRIPTION
+
+Variable_Class_Effective_Real_Domestic_Consumption
+
+END_DESCRIPTION
+
+Variable_Class_Effective_Real_Imported_Consumption
+
+END_DESCRIPTION
+
+Variable_Class_Financial_Obligations
+
+END_DESCRIPTION
+
+Variable_Class_Funds
+
+END_DESCRIPTION
+
+Variable_Class_Imports_Share
+
+END_DESCRIPTION
+
+Variable_Class_Income_Share
+
+END_DESCRIPTION
+
+Variable_Class_Interest_Payment
+
+END_DESCRIPTION
+
+Variable_Class_Interest_Rate
+
+END_DESCRIPTION
+
+Variable_Class_Internal_Funds
+
+END_DESCRIPTION
+
+Variable_Class_Liquidity_Preference
+
+END_DESCRIPTION
+
+Variable_Class_Max_Debt_Rate
+
+END_DESCRIPTION
+
+Variable_Class_Max_Loans
+
+END_DESCRIPTION
+
+Variable_Class_Maximum_Expenses
+
+END_DESCRIPTION
+
+Variable_Class_Nominal_Disposable_Income
+
+END_DESCRIPTION
+
+Variable_Class_Nominal_Gross_Income
+
+END_DESCRIPTION
+
+Variable_Class_Real_Autonomous_Consumption
+
+END_DESCRIPTION
+
+Variable_Class_Real_Desired_Domestic_Consumption
+
+END_DESCRIPTION
+
+Variable_Class_Real_Desired_Imported_Consumption
+
+END_DESCRIPTION
+
+Variable_Class_Real_Disposable_Income
+
+END_DESCRIPTION
+
+Variable_Class_Real_Domestic_Consumption_Demand
+
+END_DESCRIPTION
+
+Variable_Class_Real_Imported_Consumption_Demand
+
+END_DESCRIPTION
+
+Variable_Class_Retained_Deposits
+
+END_DESCRIPTION
+
+Variable_Class_Stock_Deposits
+
+END_DESCRIPTION
+
+Variable_Class_Stock_Loans
+
+END_DESCRIPTION
+
+Variable_Class_Taxation
+
+END_DESCRIPTION
+
+Variable_Class_Wealth_Share
+
+END_DESCRIPTION
+
+Variable_Class_Gross_Income_Share
+
+END_DESCRIPTION
+
+Parameter_class_propensity_to_energy
+
+END_DESCRIPTION
+
+Variable_Class_Real_Desired_Energy_Consumption
+
+END_DESCRIPTION
+
+Variable_Class_Real_Energy_Demand
+
+END_DESCRIPTION
+
+Variable_Class_Effective_Real_Energy_Consumption
+
+END_DESCRIPTION
+
+Object_CLASS_LOANS
+
+END_DESCRIPTION
+
+Parameter_class_loan_fixed_amortization
+
+END_DESCRIPTION
+
+Parameter_class_loan_fixed_object
+
+END_DESCRIPTION
+
+Parameter_class_loan_interest_rate
+
+END_DESCRIPTION
+
+Parameter_class_loan_total_amount
+
+END_DESCRIPTION
+
+Object_EXTERNAL_SECTOR
+
+END_DESCRIPTION
+
+Parameter_exchange_rate_adjustment
+
+END_DESCRIPTION
+
+Parameter_exchange_rate_max
+
+END_DESCRIPTION
+
+Parameter_exchange_rate_min
+
+END_DESCRIPTION
+
+Parameter_external_capital_flow_adjustment
+
+END_DESCRIPTION
+
+Parameter_external_income_adjustmnent
+
+END_DESCRIPTION
+
+Parameter_external_income_growth
+
+END_DESCRIPTION
+
+Parameter_external_income_sd
+
+_INIT_
+All 1 instances equal to 0
+END_DESCRIPTION
+
+Parameter_external_interest_rate
+
+END_DESCRIPTION
+
+Parameter_external_shock_begin
+
+END_DESCRIPTION
+
+Parameter_external_shock_duration
+
+END_DESCRIPTION
+
+Parameter_external_shock_size
+
+END_DESCRIPTION
+
+Parameter_initial_exchange_rate
+
+END_DESCRIPTION
+
+Parameter_initial_external_income_scale
+
+END_DESCRIPTION
+
+Parameter_initial_reserves_ratio
+
+END_DESCRIPTION
+
+Variable_Country_Capital_Flows
+
+END_DESCRIPTION
+
+Variable_Country_Exchange_Rate
+
+END_DESCRIPTION
+
+Variable_Country_International_Reserves
+
+END_DESCRIPTION
+
+Variable_Country_International_Reserves_GDP_Ratio
+
+END_DESCRIPTION
+
+Variable_Country_Nominal_Exports
+
+END_DESCRIPTION
+
+Variable_Country_Nominal_Imports
+
+END_DESCRIPTION
+
+Variable_Country_Trade_Balance
+
+END_DESCRIPTION
+
+Variable_External_Real_Income
+
+END_DESCRIPTION
+
+Variable_Country_External_Debt
+
+END_DESCRIPTION
+
+Variable_Country_External_Debt_GDP_Ratio
+
+END_DESCRIPTION
+
+Parameter_external_interest_sd
+
+END_DESCRIPTION
+
+Object_FINANCIAL
+
+END_DESCRIPTION
+
+Parameter_fs_elasticity_default
+
+END_DESCRIPTION
+
+Parameter_fs_elasticity_interest_long_term
+
+END_DESCRIPTION
+
+Parameter_fs_elasticity_interest_short_term
+
+END_DESCRIPTION
+
+Parameter_fs_elasticity_rationing
+
+END_DESCRIPTION
+
+Parameter_fs_expectations
+
+END_DESCRIPTION
+
+Parameter_fs_initial_leverage
+
+END_DESCRIPTION
+
+Parameter_fs_number_object_banks
+
+END_DESCRIPTION
+
+Parameter_fs_price_strategy_long_term
+
+END_DESCRIPTION
+
+Parameter_fs_price_strategy_short_term
+
+END_DESCRIPTION
+
+Parameter_fs_risk_premium_class
+
+END_DESCRIPTION
+
+Parameter_fs_risk_premium_long_term
+
+END_DESCRIPTION
+
+Parameter_fs_risk_premium_short_term
+
+END_DESCRIPTION
+
+Parameter_fs_sensitivity_debt_rate
+
+END_DESCRIPTION
+
+Parameter_fs_sensitivity_default
+
+END_DESCRIPTION
+
+Parameter_fs_spread_deposits
+
+END_DESCRIPTION
+
+Parameter_fs_spread_long_term
+
+END_DESCRIPTION
+
+Parameter_fs_spread_long_term_adjustment
+
+END_DESCRIPTION
+
+Parameter_fs_spread_short_term
+
+END_DESCRIPTION
+
+Parameter_fs_spread_short_term_adjustment
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Accumulated_Defaulted_Loans
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Accumulated_Profits
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Accumulated_Rescue
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Avg_Competitiveness
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Avg_Interest_Rate_Long_Term
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Avg_Interest_Rate_Short_Term
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Debt_Payment
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Default_Rate
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Defaulted_Loans
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Demand_Loans
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Demand_Met
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Distributed_Profits
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Effective_Capital_Ratio
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Effective_Loans
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Interest_Payment
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Interest_Receivment
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Leverage
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Max_Total_Loans
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Normalized_HHI
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Profits
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Rescue
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Short_Term_Rate
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Stock_Deposits
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Stock_Loans_Long_Term
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Stock_Loans_Short_Term
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Total_Stock_Loans
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Total_Stock_Loans_Growth
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Turbulence
+
+END_DESCRIPTION
+
+Variable_Financial_Sector_Interest_Rate_Deposits
+
+END_DESCRIPTION
+
+Parameter_fs_profit_distribution_rate
+
+END_DESCRIPTION
+
+Object_BANKS
+
+END_DESCRIPTION
+
+Parameter_bank_defaulted_loans_temporary
+
+END_DESCRIPTION
+
+Parameter_bank_id
+
+END_DESCRIPTION
+
+Variable_Bank_Accumulated_Defaulted_Loans
+
+END_DESCRIPTION
+
+Variable_Bank_Accumulated_Profits
+
+END_DESCRIPTION
+
+Variable_Bank_Competitiveness
+
+END_DESCRIPTION
+
+Variable_Bank_Debt_Payment
+
+END_DESCRIPTION
+
+Variable_Bank_Default_Share
+
+END_DESCRIPTION
+
+Variable_Bank_Defaulted_Loans
+
+END_DESCRIPTION
+
+Variable_Bank_Demand_Loans
+
+END_DESCRIPTION
+
+Variable_Bank_Demand_Met
+
+END_DESCRIPTION
+
+Variable_Bank_Desired_Interest_Rate_Long_Term
+
+END_DESCRIPTION
+
+Variable_Bank_Desired_Interest_Rate_Short_Term
+
+END_DESCRIPTION
+
+Variable_Bank_Desired_Long_Term_Spread
+
+END_DESCRIPTION
+
+Variable_Bank_Desired_Short_Term_Spread
+
+END_DESCRIPTION
+
+Variable_Bank_Distributed_Profits
+
+END_DESCRIPTION
+
+Variable_Bank_Effective_Loans
+
+END_DESCRIPTION
+
+Variable_Bank_Interest_Payment
+
+END_DESCRIPTION
+
+Variable_Bank_Interest_Rate_Long_Term
+
+END_DESCRIPTION
+
+Variable_Bank_Interest_Rate_Short_Term
+
+END_DESCRIPTION
+
+Variable_Bank_Interest_Receivment
+
+END_DESCRIPTION
+
+Variable_Bank_Leverage
+
+END_DESCRIPTION
+
+Variable_Bank_Market_Share
+
+END_DESCRIPTION
+
+Variable_Bank_Max_Total_Loans
+
+END_DESCRIPTION
+
+Variable_Bank_Number_Clients
+
+END_DESCRIPTION
+
+Variable_Bank_Profits
+
+END_DESCRIPTION
+
+Variable_Bank_Rescue
+
+END_DESCRIPTION
+
+Variable_Bank_Short_Term_Rate
+
+END_DESCRIPTION
+
+Variable_Bank_Stock_Deposits
+
+END_DESCRIPTION
+
+Variable_Bank_Stock_Loans_Long_Term
+
+END_DESCRIPTION
+
+Variable_Bank_Stock_Loans_Short_Term
+
+END_DESCRIPTION
+
+Variable_Bank_Total_Stock_Loans
+
+END_DESCRIPTION
+
+Variable_Bank_Effective_Profit_Rate
+
+END_DESCRIPTION
+
+Variable_Bank_Retained_Profits
+
+END_DESCRIPTION
+
+Variable_Bank_Effective_Capital_Ratio
+
+END_DESCRIPTION
+
+Object_CENTRAL_BANK
+
+END_DESCRIPTION
+
+Parameter_cb_smoothing
+
+END_DESCRIPTION
+
+Parameter_cb_minimum_capital_ratio
+
+END_DESCRIPTION
+
+Parameter_cb_sensitivity_capacity
+
+END_DESCRIPTION
+
+Parameter_cb_sensitivity_credit_growth
+
+END_DESCRIPTION
+
+Parameter_cb_sensitivity_debt_rate
+
+END_DESCRIPTION
+
+Parameter_cb_sensitivity_inflation
+
+END_DESCRIPTION
+
+Parameter_cb_sensitivity_exchange
+
+END_DESCRIPTION
+
+Parameter_cb_target_annual_inflation
+
+END_DESCRIPTION
+
+Parameter_cb_target_capacity
+
+END_DESCRIPTION
+
+Parameter_cb_target_credit_growth
+
+END_DESCRIPTION
+
+Parameter_cb_target_debt_rate
+
+END_DESCRIPTION
+
+Parameter_cb_target_reserves
+
+END_DESCRIPTION
+
+Variable_Central_Bank_Basic_Interest_Rate
+
+END_DESCRIPTION
+
+Parameter_cb_credibility
+
+END_DESCRIPTION
+
+Parameter_cb_credibility_adjustment
+
+END_DESCRIPTION
+
+Parameter_cb_credibility_tolerance
+
+END_DESCRIPTION
+
+Variable_CB_Credibility
+
+END_DESCRIPTION
+
+Variable_CB_Quarterly_Real_Interest_Rate
+
+END_DESCRIPTION
+
+Parameter_cb_quarterly_nominal_interest_rate
+
+END_DESCRIPTION
+
+Variable_CB_Inflation_Gap
+
+END_DESCRIPTION
+
+Variable_CB_Output_Gap
+
+END_DESCRIPTION
+
+Parameter_cb_interest_rate_max
+
+END_DESCRIPTION
+
+Parameter_cb_interest_rate_min
+
+END_DESCRIPTION
+
+Parameter_interest_shock_begin
+
+END_DESCRIPTION
+
+Parameter_interest_shock_duration
+
+END_DESCRIPTION
+
+Parameter_interest_shock_size
+
+END_DESCRIPTION
+
+Object_GOVERNMENT
+
+END_DESCRIPTION
+
+Parameter_government_benefit_rate
+
+END_DESCRIPTION
+
+Parameter_government_expectations
+
+END_DESCRIPTION
+
+Parameter_government_initial_debt_gdp_ratio
+
+END_DESCRIPTION
+
+Parameter_government_initial_share_capital
+
+END_DESCRIPTION
+
+Parameter_government_initial_share_consumption
+
+END_DESCRIPTION
+
+Parameter_government_initial_share_input
+
+END_DESCRIPTION
+
+Parameter_government_max_debt_ratio
+
+END_DESCRIPTION
+
+Parameter_government_max_surplus_target
+
+END_DESCRIPTION
+
+Parameter_government_min_debt_ratio
+
+END_DESCRIPTION
+
+Parameter_government_min_surplus_target
+
+END_DESCRIPTION
+
+Parameter_government_real_growth
+
+END_DESCRIPTION
+
+Parameter_government_surplus_target_adjustment
+
+END_DESCRIPTION
+
+Variable_Government_Debt
+
+END_DESCRIPTION
+
+Variable_Government_Debt_GDP_Ratio
+
+END_DESCRIPTION
+
+Variable_Government_Desired_Consumption
+
+END_DESCRIPTION
+
+Variable_Government_Desired_Expenses
+
+END_DESCRIPTION
+
+Variable_Government_Desired_Inputs
+
+END_DESCRIPTION
+
+Variable_Government_Desired_Investment
+
+END_DESCRIPTION
+
+Variable_Government_Desired_Unemployment_Benefits
+
+END_DESCRIPTION
+
+Variable_Government_Desired_Wages
+
+END_DESCRIPTION
+
+Variable_Government_Effective_Consumption
+
+END_DESCRIPTION
+
+Variable_Government_Effective_Expenses
+
+END_DESCRIPTION
+
+Variable_Government_Effective_Inputs
+
+END_DESCRIPTION
+
+Variable_Government_Effective_Investment
+
+END_DESCRIPTION
+
+Variable_Government_Effective_Unemployment_Benefits
+
+END_DESCRIPTION
+
+Variable_Government_Effective_Wages
+
+END_DESCRIPTION
+
+Variable_Government_Income_Taxes
+
+END_DESCRIPTION
+
+Variable_Government_Indirect_Taxes
+
+END_DESCRIPTION
+
+Variable_Government_Interest_Payment
+
+END_DESCRIPTION
+
+Variable_Government_Max_Expenses
+
+END_DESCRIPTION
+
+Variable_Government_Max_Expenses_Ceiling
+
+END_DESCRIPTION
+
+Variable_Government_Max_Expenses_Surplus
+
+END_DESCRIPTION
+
+Variable_Government_Nominal_Result
+
+END_DESCRIPTION
+
+Variable_Government_Primary_Result
+
+END_DESCRIPTION
+
+Variable_Government_Surplus_GDP_Ratio
+
+END_DESCRIPTION
+
+Variable_Government_Surplus_Rate_Target
+
+END_DESCRIPTION
+
+Variable_Government_Total_Taxes
+
+END_DESCRIPTION
+
+Variable_Government_Fiscal_Multiplier
+
+END_DESCRIPTION
+
+Parameter_government_real_consumption_growth
+
+END_DESCRIPTION
+
+Parameter_government_real_input_growth
+
+END_DESCRIPTION
+
+Parameter_government_real_investment_growth
+
+END_DESCRIPTION
+
+Parameter_government_real_wage_growth
+
+END_DESCRIPTION
+
+Variable_Government_Investment_GDP_Ratio
+
+END_DESCRIPTION
+
+Parameter_government_initial_share_energy
+
+END_DESCRIPTION
+
+Parameter_government_real_energy_growth
+
+END_DESCRIPTION
+
+Variable_Government_Desired_Energy
+
+END_DESCRIPTION
+
+Variable_Government_Effective_Energy
+
+END_DESCRIPTION
+
+Object_SECTORS
+
+END_DESCRIPTION
+
+Parameter_id_capital_goods_sector
+
+END_DESCRIPTION
+
+Parameter_id_consumption_goods_sector
+
+END_DESCRIPTION
+
+Parameter_id_energy_sector
+
+END_DESCRIPTION
+
+Parameter_id_intermediate_goods_sector
+
+END_DESCRIPTION
+
+Parameter_sector_antecipation
+
+END_DESCRIPTION
+
+Parameter_sector_bargain_power_adjustment
+
+END_DESCRIPTION
+
+Parameter_sector_bargain_power_inflaton_adjustment
+
+END_DESCRIPTION
+
+Parameter_sector_bargain_power_productivity_adjustment
+
+END_DESCRIPTION
+
+Parameter_sector_capital_duration
+
+END_DESCRIPTION
+
+Parameter_sector_capital_output_ratio
+
+END_DESCRIPTION
+
+Parameter_sector_competitiveness_adjustment
+
+END_DESCRIPTION
+
+Parameter_sector_debt_rate_adjustment
+
+END_DESCRIPTION
+
+Parameter_sector_desired_degree_capacity_utilization
+
+END_DESCRIPTION
+
+Parameter_sector_desired_inventories_proportion
+
+END_DESCRIPTION
+
+Parameter_sector_desired_market_share
+
+END_DESCRIPTION
+
+Parameter_sector_elascitity_delay
+
+END_DESCRIPTION
+
+Parameter_sector_elasticity_price
+
+END_DESCRIPTION
+
+Parameter_sector_elasticity_quality
+
+END_DESCRIPTION
+
+Parameter_sector_energy_intensity
+
+END_DESCRIPTION
+
+Parameter_sector_expectations
+
+END_DESCRIPTION
+
+Parameter_sector_exports_coefficient
+
+END_DESCRIPTION
+
+Parameter_sector_exports_elasticity_income
+
+END_DESCRIPTION
+
+Parameter_sector_exports_elasticity_price
+
+END_DESCRIPTION
+
+Parameter_sector_external_price_competitiveness
+
+END_DESCRIPTION
+
+Parameter_sector_external_price_growth
+
+END_DESCRIPTION
+
+Parameter_sector_external_price_sd
+
+_INIT_
+All 4 instances equal to 0
+END_DESCRIPTION
+
+Parameter_sector_external_price_shock_begin
+
+END_DESCRIPTION
+
+Parameter_sector_external_price_shock_duration
+
+END_DESCRIPTION
+
+Parameter_sector_external_price_shock_size
+
+END_DESCRIPTION
+
+Parameter_sector_external_price_weight
+
+_INIT_
+All 4 instances equal to 0
+END_DESCRIPTION
+
+Parameter_sector_financial_cost_passtrough
+
+_INIT_
+All 4 instances equal to 1
+END_DESCRIPTION
+
+Parameter_sector_indirect_tax_rate
+
+END_DESCRIPTION
+
+Parameter_sector_initial_debt_rate
+
+END_DESCRIPTION
+
+Parameter_sector_initial_demand
+
+END_DESCRIPTION
+
+Parameter_sector_initial_depreciation_scale
+
+END_DESCRIPTION
+
+Parameter_sector_initial_exports_share
+
+END_DESCRIPTION
+
+Parameter_sector_initial_external_price
+
+END_DESCRIPTION
+
+Parameter_sector_initial_liquidity_preference
+
+END_DESCRIPTION
+
+Parameter_sector_initial_price
+
+END_DESCRIPTION
+
+Parameter_sector_initial_productivity
+
+END_DESCRIPTION
+
+Parameter_sector_initial_profit_rate
+
+END_DESCRIPTION
+
+Parameter_sector_initial_propensity_import_inputs
+
+END_DESCRIPTION
+
+Parameter_sector_initial_quality
+
+END_DESCRIPTION
+
+Parameter_sector_input_imitation_share
+
+END_DESCRIPTION
+
+Parameter_sector_input_import_elasticity_price
+
+END_DESCRIPTION
+
+Parameter_sector_input_innovation_share
+
+END_DESCRIPTION
+
+Parameter_sector_input_tech_coefficient
+
+END_DESCRIPTION
+
+Parameter_sector_investment_frequency
+
+END_DESCRIPTION
+
+Parameter_sector_learning_adjustment
+
+END_DESCRIPTION
+
+Parameter_sector_liquidity_preference_adjustment
+
+END_DESCRIPTION
+
+Parameter_sector_markup_adjustment
+
+END_DESCRIPTION
+
+Parameter_sector_number_object_firms
+
+END_DESCRIPTION
+
+Parameter_sector_passthrough_inflation
+
+END_DESCRIPTION
+
+Parameter_sector_passthrough_productivity
+
+END_DESCRIPTION
+
+Parameter_sector_payback_period
+
+END_DESCRIPTION
+
+Parameter_sector_price_frequency
+
+END_DESCRIPTION
+
+Parameter_sector_productivity_imitation_share
+
+END_DESCRIPTION
+
+Parameter_sector_productivity_innovation_share
+
+END_DESCRIPTION
+
+Parameter_sector_profits_distribution_rate
+
+END_DESCRIPTION
+
+Parameter_sector_quality_imitation_share
+
+END_DESCRIPTION
+
+Parameter_sector_quality_innovation_share
+
+END_DESCRIPTION
+
+Parameter_sector_std_dev_innovation
+
+END_DESCRIPTION
+
+Parameter_sector_strategic_price_weight
+
+END_DESCRIPTION
+
+Parameter_sector_tech_opportunity_input
+
+END_DESCRIPTION
+
+Parameter_sector_tech_opportunity_productivity
+
+END_DESCRIPTION
+
+Parameter_sector_tech_opportunity_quality
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Competitiveness
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Debt_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_External_Finance_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Financial_Position
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Interest_Rate_Long_Term
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Interest_Rate_Short_Term
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Internal_Finance_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Investment_Constraint_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Investment_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Liquidity_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Markup
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Max_Debt_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Modernization_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Price
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Productivity
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Quality
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Wage
+
+END_DESCRIPTION
+
+Variable_Sector_Bargain_Power
+
+END_DESCRIPTION
+
+Variable_Sector_Capacity_Utilization
+
+END_DESCRIPTION
+
+Variable_Sector_Demand_Met
+
+END_DESCRIPTION
+
+Variable_Sector_Demand_Met_By_Imports
+
+END_DESCRIPTION
+
+Variable_Sector_Effective_Loans
+
+END_DESCRIPTION
+
+Variable_Sector_Effective_Orders
+
+END_DESCRIPTION
+
+Variable_Sector_Effective_Production
+
+END_DESCRIPTION
+
+Variable_Sector_Employment
+
+END_DESCRIPTION
+
+Variable_Sector_Entry_Condition
+
+END_DESCRIPTION
+
+Variable_Sector_Entry_Deposits_Needed
+
+END_DESCRIPTION
+
+Variable_Sector_Exports_Share
+
+END_DESCRIPTION
+
+Variable_Sector_External_Price
+
+END_DESCRIPTION
+
+Variable_Sector_Extra_Imports
+
+END_DESCRIPTION
+
+Variable_Sector_Hedge_Normalized_Share
+
+END_DESCRIPTION
+
+Variable_Sector_Hedge_Share
+
+END_DESCRIPTION
+
+Variable_Sector_Idle_Capacity
+
+END_DESCRIPTION
+
+Variable_Sector_Inventories
+
+END_DESCRIPTION
+
+Variable_Sector_Max_Productivity
+
+END_DESCRIPTION
+
+Variable_Sector_Max_Quality
+
+END_DESCRIPTION
+
+Variable_Sector_Min_Input
+
+END_DESCRIPTION
+
+Variable_Sector_Normalized_HHI
+
+END_DESCRIPTION
+
+Variable_Sector_Number_Firms
+
+END_DESCRIPTION
+
+Variable_Sector_Participation
+
+END_DESCRIPTION
+
+Variable_Sector_Ponzi_Normalized_Share
+
+END_DESCRIPTION
+
+Variable_Sector_Ponzi_Share
+
+END_DESCRIPTION
+
+Variable_Sector_Productive_Capacity
+
+END_DESCRIPTION
+
+Variable_Sector_Productive_Capacity_Available
+
+END_DESCRIPTION
+
+Variable_Sector_Productive_Capacity_Entry
+
+END_DESCRIPTION
+
+Variable_Sector_Productive_Capacity_Exit
+
+END_DESCRIPTION
+
+Variable_Sector_Profit_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Profits
+
+END_DESCRIPTION
+
+Variable_Sector_Propensity_Import_Inputs
+
+END_DESCRIPTION
+
+Variable_Sector_Real_Exports
+
+END_DESCRIPTION
+
+Variable_Sector_Sales
+
+END_DESCRIPTION
+
+Variable_Sector_Short_Term_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Speculative_Normalized_Share
+
+END_DESCRIPTION
+
+Variable_Sector_Speculative_Share
+
+END_DESCRIPTION
+
+Variable_Sector_Stock_Deposits
+
+END_DESCRIPTION
+
+Variable_Sector_Stock_Loans
+
+END_DESCRIPTION
+
+Variable_Sector_Taxation
+
+END_DESCRIPTION
+
+Variable_Sector_Turbulence
+
+END_DESCRIPTION
+
+Parameter_switch_entry
+
+_INIT_
+All 4 instances equal to 0
+END_DESCRIPTION
+
+Parameter_switch_extra_imports
+
+END_DESCRIPTION
+
+Variable_Sector_Min_Energy_Intensity
+
+END_DESCRIPTION
+
+Parameter_sector_energy_imitation_share
+
+_INIT_
+All 4 instances equal to 0.005
+END_DESCRIPTION
+
+Parameter_sector_energy_innovation_share
+
+_INIT_
+All 4 instances equal to 0.005
+END_DESCRIPTION
+
+Parameter_sector_tech_opportunity_energy
+
+_INIT_
+All 4 instances equal to 0.002
+END_DESCRIPTION
+
+Parameter_sector_initial_carbon_intensity
+
+END_DESCRIPTION
+
+Variable_Sector_Emissions
+
+END_DESCRIPTION
+
+Parameter_innovation_imitation_adjustment
+
+_INIT_
+All 4 instances equal to 0.005
+END_DESCRIPTION
+
+Variable_Sector_Technical_Carbon_Intensity
+
+END_DESCRIPTION
+
+Parameter_carbon_intensity_adjustment
+
+_INIT_
+All 4 instances equal to 0
+END_DESCRIPTION
+
+Variable_Sector_Avg_Carbon_Intensity
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Energy_Intensity
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Input_Coefficient
+
+END_DESCRIPTION
+
+Variable_Sector_Energy_Demand
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Energy_Intensity2
+
+END_DESCRIPTION
+
+Parameter_switch_capital_order
+
+_INIT_
+All 4 instances equal to 2
+END_DESCRIPTION
+
+Object_FIRMS
+
+END_DESCRIPTION
+
+Parameter_firm_bank
+
+END_DESCRIPTION
+
+Parameter_firm_date_birth
+
+END_DESCRIPTION
+
+Parameter_firm_effective_loans
+
+END_DESCRIPTION
+
+Parameter_firm_hedge
+
+END_DESCRIPTION
+
+Parameter_firm_id
+
+END_DESCRIPTION
+
+Parameter_firm_ponzi
+
+END_DESCRIPTION
+
+Parameter_firm_speculative
+
+END_DESCRIPTION
+
+Variable_Firm_Available_Funds_After_Replacement
+
+END_DESCRIPTION
+
+Variable_Firm_Available_Funds_Replacement
+
+END_DESCRIPTION
+
+Variable_Firm_Available_Inputs_Ratio
+
+END_DESCRIPTION
+
+Variable_Firm_Available_Loans
+
+END_DESCRIPTION
+
+Variable_Firm_Avg_Debt_Rate
+
+END_DESCRIPTION
+
+Variable_Firm_Avg_Productivity
+
+END_DESCRIPTION
+
+Variable_Firm_Capacity_Utilization
+
+END_DESCRIPTION
+
+Variable_Firm_Capital
+
+END_DESCRIPTION
+
+Variable_Firm_Competitiveness
+
+END_DESCRIPTION
+
+Variable_Firm_Credit_Rationing
+
+END_DESCRIPTION
+
+Variable_Firm_Debt_Payment
+
+END_DESCRIPTION
+
+Variable_Firm_Debt_Rate
+
+END_DESCRIPTION
+
+Variable_Firm_Delivery_Delay
+
+END_DESCRIPTION
+
+Variable_Firm_Demand_Capital_Goods
+
+END_DESCRIPTION
+
+Variable_Firm_Demand_Capital_Goods_Expansion
+
+END_DESCRIPTION
+
+Variable_Firm_Demand_Capital_Goods_Replacement
+
+END_DESCRIPTION
+
+Variable_Firm_Demand_Loans
+
+END_DESCRIPTION
+
+Variable_Firm_Demand_Productive_Capacity_Expansion
+
+END_DESCRIPTION
+
+Variable_Firm_Demand_Productive_Capacity_Replacement
+
+END_DESCRIPTION
+
+Variable_Firm_Deposits_Return
+
+END_DESCRIPTION
+
+Variable_Firm_Depreciated_Productive_Capacity
+
+END_DESCRIPTION
+
+Variable_Firm_Max_Debt_Rate
+
+END_DESCRIPTION
+
+Variable_Firm_Desired_Expansion_Investment_Expenses
+
+END_DESCRIPTION
+
+Variable_Firm_Desired_Investment_Expenses
+
+END_DESCRIPTION
+
+Variable_Firm_Desired_Markup
+
+END_DESCRIPTION
+
+Variable_Firm_Desired_Price
+
+END_DESCRIPTION
+
+Variable_Firm_Desired_Replacement_Investment_Expenses
+
+END_DESCRIPTION
+
+Variable_Firm_Distributed_Profits
+
+END_DESCRIPTION
+
+Variable_Firm_Effective_Capital_Goods_Expansion
+
+END_DESCRIPTION
+
+Variable_Firm_Effective_Capital_Goods_Replacement
+
+END_DESCRIPTION
+
+Variable_Firm_Effective_Expansion_Investment_Expenses
+
+END_DESCRIPTION
+
+Variable_Firm_Effective_Investment_Expenses
+
+END_DESCRIPTION
+
+Variable_Firm_Effective_Loans
+
+END_DESCRIPTION
+
+Variable_Firm_Effective_Market_Share
+
+END_DESCRIPTION
+
+Variable_Firm_Effective_Markup
+
+END_DESCRIPTION
+
+Variable_Firm_Effective_Orders
+
+END_DESCRIPTION
+
+Variable_Firm_Effective_Orders_Capital_Goods
+
+END_DESCRIPTION
+
+Variable_Firm_Effective_Production
+
+END_DESCRIPTION
+
+Variable_Firm_Effective_Productive_Capacity_Variation
+
+END_DESCRIPTION
+
+Variable_Firm_Expected_Demand
+
+END_DESCRIPTION
+
+Variable_Firm_Expected_Sales_Long_Term
+
+END_DESCRIPTION
+
+Variable_Firm_External_Finance_Rate
+
+END_DESCRIPTION
+
+Variable_Firm_Financial_Obligations
+
+END_DESCRIPTION
+
+Variable_Firm_Financial_Position
+
+END_DESCRIPTION
+
+Variable_Firm_Frontier_Productivity
+
+END_DESCRIPTION
+
+Variable_Firm_Imitation_Productivity
+
+END_DESCRIPTION
+
+Variable_Firm_Imitation_Quality
+
+END_DESCRIPTION
+
+Variable_Firm_Indirect_Tax
+
+END_DESCRIPTION
+
+Variable_Firm_Innovation_Productivity
+
+END_DESCRIPTION
+
+Variable_Firm_Innovation_Quality
+
+END_DESCRIPTION
+
+Variable_Firm_Input_Cost
+
+END_DESCRIPTION
+
+Variable_Firm_Input_Demand_Next_Period
+
+END_DESCRIPTION
+
+Variable_Firm_Interest_Payment
+
+END_DESCRIPTION
+
+Variable_Firm_Interest_Rate_Long_Term
+
+END_DESCRIPTION
+
+Variable_Firm_Interest_Rate_Short_Term
+
+END_DESCRIPTION
+
+Variable_Firm_Internal_Finance_Rate
+
+END_DESCRIPTION
+
+Variable_Firm_Internal_Funds
+
+END_DESCRIPTION
+
+Variable_Firm_Inventories_Variation
+
+END_DESCRIPTION
+
+Variable_Firm_Investment_Constraint_Rate
+
+END_DESCRIPTION
+
+Variable_Firm_Investment_Period
+
+END_DESCRIPTION
+
+Variable_Firm_Investment_Rate
+
+END_DESCRIPTION
+
+Variable_Firm_Liquidity_Preference
+
+END_DESCRIPTION
+
+Variable_Firm_Liquidity_Rate
+
+END_DESCRIPTION
+
+Variable_Firm_Market_Share
+
+END_DESCRIPTION
+
+Variable_Firm_Max_Productivity
+
+END_DESCRIPTION
+
+Variable_Firm_Modernization_Rate
+
+END_DESCRIPTION
+
+Variable_Firm_Net_Profits
+
+END_DESCRIPTION
+
+Variable_Firm_Net_Revenue
+
+END_DESCRIPTION
+
+Variable_Firm_Planned_Production
+
+END_DESCRIPTION
+
+Variable_Firm_Price
+
+END_DESCRIPTION
+
+Variable_Firm_Price_Period
+
+END_DESCRIPTION
+
+Variable_Firm_Productive_Capacity
+
+END_DESCRIPTION
+
+Variable_Firm_Productive_Capacity_Depreciation
+
+END_DESCRIPTION
+
+Variable_Firm_Profit_Rate
+
+END_DESCRIPTION
+
+Variable_Firm_Profits
+
+END_DESCRIPTION
+
+Variable_Firm_Quality
+
+END_DESCRIPTION
+
+Variable_Firm_RND_Expenses
+
+END_DESCRIPTION
+
+Variable_Firm_Replacement_Expenses
+
+END_DESCRIPTION
+
+Variable_Firm_Retained_Deposits
+
+END_DESCRIPTION
+
+Variable_Firm_Retained_Profits
+
+END_DESCRIPTION
+
+Variable_Firm_Revenue
+
+END_DESCRIPTION
+
+Variable_Firm_Sales
+
+END_DESCRIPTION
+
+Variable_Firm_Stock_Deposits
+
+END_DESCRIPTION
+
+Variable_Firm_Stock_Inputs
+
+END_DESCRIPTION
+
+Variable_Firm_Stock_Inventories
+
+END_DESCRIPTION
+
+Variable_Firm_Stock_Loans
+
+END_DESCRIPTION
+
+Variable_Firm_Stock_Loans_Long_Term
+
+END_DESCRIPTION
+
+Variable_Firm_Stock_Loans_Short_Term
+
+END_DESCRIPTION
+
+Variable_Firm_Total_Funds
+
+END_DESCRIPTION
+
+Variable_Firm_Unit_Financial_Cost
+
+END_DESCRIPTION
+
+Variable_Firm_Variable_Cost
+
+END_DESCRIPTION
+
+Variable_Firm_Wage
+
+END_DESCRIPTION
+
+Variable_Firm_Input_Imports
+
+END_DESCRIPTION
+
+Variable_Firm_Imitation_Input
+
+END_DESCRIPTION
+
+Variable_Firm_Innovation_Input
+
+END_DESCRIPTION
+
+Variable_Firm_Energy_Demand
+
+END_DESCRIPTION
+
+Variable_Firm_Imitation_Energy_Intensity
+
+END_DESCRIPTION
+
+Variable_Firm_Innovation_Energy_Intensity
+
+END_DESCRIPTION
+
+Variable_Firm_Avg_Energy_Intensity
+
+END_DESCRIPTION
+
+Variable_Firm_Avg_Input_Tech_Coefficient
+
+END_DESCRIPTION
+
+Variable_Firm_Frontier_Energy_Intensity
+
+END_DESCRIPTION
+
+Variable_Firm_Frontier_Input_Tech_Coefficient
+
+END_DESCRIPTION
+
+Variable_Firm_Avg_Carbon_Intensity
+
+END_DESCRIPTION
+
+Variable_Firm_Emissions
+
+END_DESCRIPTION
+
+Variable_Firm_Innovation_RND_Share
+
+END_DESCRIPTION
+
+Variable_Firm_Desired_Market_Share
+
+END_DESCRIPTION
+
+Object_CAPITALS
+
+END_DESCRIPTION
+
+Parameter_capital_good_date_birth
+
+END_DESCRIPTION
+
+Parameter_capital_good_depreciation_period
+
+END_DESCRIPTION
+
+Parameter_capital_good_productive_capacity
+
+END_DESCRIPTION
+
+Parameter_capital_good_productivity_initial
+
+END_DESCRIPTION
+
+Parameter_capital_good_to_depreciate
+
+END_DESCRIPTION
+
+Parameter_capital_good_to_replace
+
+END_DESCRIPTION
+
+Parameter_id_capital_good_number
+
+END_DESCRIPTION
+
+Variable_Capital_Good_Acumulated_Production
+
+END_DESCRIPTION
+
+Variable_Capital_Good_Production
+
+END_DESCRIPTION
+
+Variable_Capital_Good_Productivity
+
+END_DESCRIPTION
+
+Parameter_capital_good_energy_intensity
+
+END_DESCRIPTION
+
+Parameter_capital_good_input_tech_coefficient
+
+END_DESCRIPTION
+
+Parameter_capital_good_carbon_intensity
+
+END_DESCRIPTION
+
+Object_FIRM_LOANS
+
+END_DESCRIPTION
+
+Parameter_firm_loan_fixed_amortization
+
+END_DESCRIPTION
+
+Parameter_firm_loan_fixed_object
+
+END_DESCRIPTION
+
+Parameter_firm_loan_interest_rate
+
+END_DESCRIPTION
+
+Parameter_firm_loan_total_amount
+
+END_DESCRIPTION
+
+Parameter_id_firm_loan_long_term
+
+END_DESCRIPTION
+
+Parameter_id_firm_loan_short_term
+
+END_DESCRIPTION
+
+Object_ANALYSIS
+
+END_DESCRIPTION
+
+Variable_C
+
+END_DESCRIPTION
+
+Variable_Cri
+
+END_DESCRIPTION
+
+Variable_G_n
+
+END_DESCRIPTION
+
+Variable_I
+
+END_DESCRIPTION
+
+Variable_U
+
+END_DESCRIPTION
+
+Variable_P
+
+END_DESCRIPTION
+
+Variable_C_r
+
+END_DESCRIPTION
+
+Variable_I_r
+
+END_DESCRIPTION
+
+Variable_CON_G
+
+END_DESCRIPTION
+
+Variable_GDP_G
+
+END_DESCRIPTION
+
+Variable_GOV_G
+
+END_DESCRIPTION
+
+Variable_INV_G
+
+END_DESCRIPTION
+
+Variable_P_G
+
+END_DESCRIPTION
+
+Variable_PDEBT
+
+END_DESCRIPTION
+
+Variable_PDEBT_G
+
+END_DESCRIPTION
+
+Variable_PROD
+
+END_DESCRIPTION
+
+Variable_PROD_G
+
+END_DESCRIPTION
+
+Variable_G_r
+
+END_DESCRIPTION
+
+Variable_M_r
+
+END_DESCRIPTION
+
+Variable_PROFITS
+
+END_DESCRIPTION
+
+Variable_PROFITS_G
+
+END_DESCRIPTION
+
+Variable_WAGE
+
+END_DESCRIPTION
+
+Variable_WAGE_G
+
+END_DESCRIPTION
+
+Variable_EMP
+
+END_DESCRIPTION
+
+Variable_INVE_G
+
+END_DESCRIPTION
+
+Variable_INVE_r
+
+END_DESCRIPTION
+
+Variable_K_G
+
+END_DESCRIPTION
+
+Variable_K_r
+
+END_DESCRIPTION
+
+Variable_NX_G
+
+END_DESCRIPTION
+
+Variable_NX_r
+
+END_DESCRIPTION
+
+Variable_X_G
+
+END_DESCRIPTION
+
+Variable_X_r
+
+END_DESCRIPTION
+
+Variable_M_G
+
+END_DESCRIPTION
+
+Variable_MK
+
+END_DESCRIPTION
+
+Variable_MK_G
+
+END_DESCRIPTION
+
+Variable_HHI_C
+
+END_DESCRIPTION
+
+Variable_HHI_I
+
+END_DESCRIPTION
+
+Variable_HHI_K
+
+END_DESCRIPTION
+
+Variable_MK_C
+
+END_DESCRIPTION
+
+Variable_MK_I
+
+END_DESCRIPTION
+
+Variable_MK_K
+
+END_DESCRIPTION
+
+Variable_P_C
+
+END_DESCRIPTION
+
+Variable_P_I
+
+END_DESCRIPTION
+
+Variable_P_K
+
+END_DESCRIPTION
+
+Variable_PROD_C
+
+END_DESCRIPTION
+
+Variable_PROD_I
+
+END_DESCRIPTION
+
+Variable_PROD_K
+
+END_DESCRIPTION
+
+Variable_U_C
+
+END_DESCRIPTION
+
+Variable_U_I
+
+END_DESCRIPTION
+
+Variable_U_K
+
+END_DESCRIPTION
+
+Variable_W_C
+
+END_DESCRIPTION
+
+Variable_W_I
+
+END_DESCRIPTION
+
+Variable_W_K
+
+END_DESCRIPTION
+
+Variable_DEBT_FS
+
+END_DESCRIPTION
+
+Variable_DEBT_FS_G
+
+END_DESCRIPTION
+
+Variable_DEBT_FS_LT
+
+END_DESCRIPTION
+
+Variable_DEBT_FS_LT_G
+
+END_DESCRIPTION
+
+Variable_DEBT_FS_ST
+
+END_DESCRIPTION
+
+Variable_DEBT_FS_ST_G
+
+END_DESCRIPTION
+
+Variable_DEBT_RT_C
+
+END_DESCRIPTION
+
+Variable_DEBT_RT_CL
+
+END_DESCRIPTION
+
+Variable_DEBT_RT_FI
+
+END_DESCRIPTION
+
+Variable_DEBT_RT_I
+
+END_DESCRIPTION
+
+Variable_DEBT_RT_K
+
+END_DESCRIPTION
+
+Variable_DEP_FS
+
+END_DESCRIPTION
+
+Variable_DEP_FS_G
+
+END_DESCRIPTION
+
+Variable_FS_HHI
+
+END_DESCRIPTION
+
+Variable_FS_LEV
+
+END_DESCRIPTION
+
+Variable_FS_STR
+
+END_DESCRIPTION
+
+Variable_FS_DEF
+
+END_DESCRIPTION
+
+Variable_FS_DR
+
+END_DESCRIPTION
+
+Variable_FS_PR
+
+END_DESCRIPTION
+
+Variable_HEDGE
+
+END_DESCRIPTION
+
+Variable_IR
+
+END_DESCRIPTION
+
+Variable_IR_DEP
+
+END_DESCRIPTION
+
+Variable_IR_LT
+
+END_DESCRIPTION
+
+Variable_IR_ST
+
+END_DESCRIPTION
+
+Variable_PONZI
+
+END_DESCRIPTION
+
+Variable_SPEC
+
+END_DESCRIPTION
+
+Variable_GGDP
+
+END_DESCRIPTION
+
+Variable_IGDP
+
+END_DESCRIPTION
+
+Variable_INVGDP
+
+END_DESCRIPTION
+
+Variable_KGDP
+
+END_DESCRIPTION
+
+Variable_NXGDP
+
+END_DESCRIPTION
+
+Variable_CGDP
+
+END_DESCRIPTION
+
+Variable_KL
+
+END_DESCRIPTION
+
+Variable_PCU
+
+END_DESCRIPTION
+
+Variable_PR
+
+END_DESCRIPTION
+
+Variable_EMP_G
+
+END_DESCRIPTION
+
+Variable_BKR
+
+END_DESCRIPTION
+
+Variable_BKR_RT
+
+END_DESCRIPTION
+
+Variable_CPI
+
+END_DESCRIPTION
+
+Variable_CPI_G
+
+END_DESCRIPTION
+
+Variable_GDP
+
+END_DESCRIPTION
+
+Variable_GDP_r
+
+END_DESCRIPTION
+
+Variable_PSH
+
+END_DESCRIPTION
+
+Variable_WSH
+
+END_DESCRIPTION
+
+Variable_WSH_A
+
+END_DESCRIPTION
+
+Variable_YSH_A
+
+END_DESCRIPTION
+
+Variable_CF
+
+END_DESCRIPTION
+
+Variable_DT
+
+END_DESCRIPTION
+
+Variable_ER
+
+END_DESCRIPTION
+
+Variable_G
+
+END_DESCRIPTION
+
+Variable_GDPX_r
+
+END_DESCRIPTION
+
+Variable_IT
+
+END_DESCRIPTION
+
+Variable_M
+
+END_DESCRIPTION
+
+Variable_NX
+
+END_DESCRIPTION
+
+Variable_PDEBT_GDP
+
+END_DESCRIPTION
+
+Variable_PS_GDP
+
+END_DESCRIPTION
+
+Variable_PST
+
+END_DESCRIPTION
+
+Variable_RES
+
+END_DESCRIPTION
+
+Variable_RES_GDP
+
+END_DESCRIPTION
+
+Variable_TT
+
+END_DESCRIPTION
+
+Variable_X
+
+END_DESCRIPTION
+
+Variable_FS_DMET
+
+END_DESCRIPTION
+
+Variable_FS_RES
+
+END_DESCRIPTION
+
+Variable_PX_C
+
+END_DESCRIPTION
+
+Variable_PX_I
+
+END_DESCRIPTION
+
+Variable_PX_K
+
+END_DESCRIPTION
+
+Variable_IRLT_C
+
+END_DESCRIPTION
+
+Variable_IRLT_I
+
+END_DESCRIPTION
+
+Variable_IRLT_K
+
+END_DESCRIPTION
+
+Variable_IRST_C
+
+END_DESCRIPTION
+
+Variable_IRST_I
+
+END_DESCRIPTION
+
+Variable_IRST_K
+
+END_DESCRIPTION
+
+Variable_MGDP
+
+END_DESCRIPTION
+
+Variable_XGDP
+
+END_DESCRIPTION
+
+Variable_DX_GDP
+
+END_DESCRIPTION
+
+Variable_PROF_r
+
+END_DESCRIPTION
+
+Variable_WAGE_r
+
+END_DESCRIPTION
+
+Variable_CI
+
+END_DESCRIPTION
+
+Variable_CI_C
+
+END_DESCRIPTION
+
+Variable_CI_E
+
+END_DESCRIPTION
+
+Variable_CI_I
+
+END_DESCRIPTION
+
+Variable_CI_K
+
+END_DESCRIPTION
+
+Variable_ED
+
+END_DESCRIPTION
+
+Variable_ED_C
+
+END_DESCRIPTION
+
+Variable_ED_E
+
+END_DESCRIPTION
+
+Variable_ED_I
+
+END_DESCRIPTION
+
+Variable_ED_K
+
+END_DESCRIPTION
+
+Variable_EI
+
+END_DESCRIPTION
+
+Variable_EI_C
+
+END_DESCRIPTION
+
+Variable_EI_E
+
+END_DESCRIPTION
+
+Variable_EI_I
+
+END_DESCRIPTION
+
+Variable_EI_K
+
+END_DESCRIPTION
+
+Variable_EM
+
+END_DESCRIPTION
+
+Variable_EM_C
+
+END_DESCRIPTION
+
+Variable_EM_E
+
+END_DESCRIPTION
+
+Variable_EM_I
+
+END_DESCRIPTION
+
+Variable_EM_K
+
+END_DESCRIPTION
+
+Variable_P_E
+
+END_DESCRIPTION
+
+Variable_MK_E
+
+END_DESCRIPTION
+
+Variable_PROD_E
+
+END_DESCRIPTION
+
+Variable_W_E
+
+END_DESCRIPTION
+
+Variable_CI_G
+
+END_DESCRIPTION
+
+Variable_ED_G
+
+END_DESCRIPTION
+
+Variable_EI_G
+
+END_DESCRIPTION
+
+Variable_EM_G
+
+END_DESCRIPTION
+
+
+DOCUOBSERVE
+
+END_DOCUOBSERVE
+
+
+DOCUINITIAL
+
+END_DOCUINITIAL
+
+
+EQ_FILE
+//#define EIGENLIB			// uncomment to use Eigen linear algebra library
+//#define NO_POINTER_INIT	// uncomment to disable pointer checking
+
+#include "fun_head_fast.h"
+#define FAST_FULL
+#include "fun_support.h"
+
+//Create global pointers
+object *country;
+object *external;
+object *government;
+object *financial;
+object *consumption;
+object *capital;
+object *input;
+object *energy;
+object *centralbank;
+object *aclass;
+object *bclass;
+object *cclass;
+
+MODELBEGIN
+
+/*****EQUATION FILES*****/
+
+#include "fun_time_step.h"          				// Time Step Variable
+#include "fun_init_2.h"               				// Initialization Variables
+#include "fun_macro.h"              				// Macro Object Variables 
+	#include "fun_classes.h"            			// Income Classes Object Variables
+	#include "fun_government.h"         			// Government Object Variables
+	#include "fun_external_sector.h"    			// External Sector Object Variables
+	#include "fun_financial.h"    					// Financial Sector Object Variables
+	#include "fun_banks.h"    						// Bank Object Variables
+		#include "fun_entry_exit.h"       			// Entry and Exit Variables (inside Sector Object)
+		#include "fun_sector_demand.h"				// Sector Variables for Demand Calculations
+		#include "fun_sector_aggregates.h"			// Sector Agreggates and Averages Variables
+			#include "fun_firm_rnd.h"				// Firm's R&D Variables			
+			#include "fun_firm_production.h"		// Firm's Production Variables
+			#include "fun_firm_investment.h"		// Firm's Investment Variables
+			#include "fun_firm_sales.h"				// Firm's Sales Variables
+			#include "fun_firm_price.h"				// Firm's Price Variables
+			#include "fun_firm_profit.h"			// Firm's Profit Variables
+			#include "fun_firm_finance.h"			// Firm's Finance Variables
+			#include "fun_firm_inputs.h" 			// Firm's Input Variable      
+				#include "fun_capital_goods.h"  	// Capital Goods Object Variables
+#include "fun_analysis.h"           				// Variables for Analysis
+
+
+
+MODELEND
+
+// do not add Equations in this area
+
+void close_sim( void )
+{
+// close simulation special commands go here
+}
+
+END_EQ_FILE
