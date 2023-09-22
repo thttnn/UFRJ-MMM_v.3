@@ -9,8 +9,3 @@ MMM_v.3.6
 #
 595x462+456+20
 1042x591+822+323
-R/Expectations/Sim_5.lsd
-SECTORS
-1
-14
-0.0
