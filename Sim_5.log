@@ -1,7 +1,7 @@
 
-Processing configuration file C:\LSD\Work\MMM_v.3\Sim_5.lsd ...
+Processing configuration file Sim_5.lsd...
 
-Simulation 1 of 1 running...
+Simulation 1 of 1 running (seed=1)...
 Nominal GDP is 1000.000000.
 Government Debt is 500.000000.
 Basic Interest Rate is 0.003000.
@@ -50,7 +50,7 @@ Class 2 Tax Rate is 0.160260.
 Class 2 Propensity to Import 0.133869.
 Class 3 Tax Rate is 0.160260.
 Class 3 Propensity to Import 0.034452.
-Simulation 1 of 1 finished at case 600 (55.80 sec.)
-Saving results to file C:\LSD\Work\MMM_v.3\Sim_5_1.res.gz... Done
+Simulation 1 of 1 finished at case 600 (39.52 sec.)
+Saving results to file C:\Users\thttn\Documents\LSD\Work\UFRJ-MMM_v.3\Sim_5_1.res.gz... Done
 
-Saving totals to file C:\LSD\Work\MMM_v.3\Sim_5_1_1.tot.gz... Done
+Finished processing Sim_5.lsd
