@@ -777,7 +777,7 @@ Param: begin_expenses_ceiling_rule 0 n + n n	-1
 Param: begin_flexible_exchange_rate 0 n + n n	0
 Param: begin_flexible_surplus_target 0 n + n n	0
 Param: begin_monetary_policy 0 n + n n	0
-Param: begin_surplus_target_rule 0 n + n n	0
+Param: begin_surplus_target_rule 0 n + n n	-1
 Param: country_initial_depreciation_share_GDP 0 n + n n	0.1
 Param: country_initial_exports_share_GDP 0 n + n n	0.1
 Param: country_initial_government_share_GDP 0 n + n n	0.2
@@ -1536,7 +1536,7 @@ END_DESCRIPTION
 Parameter_begin_surplus_target_rule
 
 _INIT_
-All 1 instances equal to 0.
+All 1 instances equal to -1
 END_DESCRIPTION
 
 Parameter_country_initial_depreciation_share_GDP

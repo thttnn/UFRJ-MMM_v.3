@@ -1,0 +1,264 @@
+
+Processing configuration file Policy_3.lsd...
+
+Simulation 1 of 5 running (seed=1)...
+Nominal GDP is 1000.000000.
+Government Debt is 500.000000.
+Basic Interest Rate is 0.003000.
+Government Interest Payment is 1.500000.
+Government Primary Expenses is 200.000000.
+Total Taxes is 201.500000.
+Government Nominal Consumption is 0.000000.
+Government Nominal Investment 80.000000.
+Government Nominal Inputs is 0.000000.
+Government Nominal Wages is 120.000000.
+Government Surplus Target is 0.001500.
+External Nominal Income is 1000.000000.
+Capital Flows is 0.000000.
+International Reserves is 0.000000.
+Nominal Exports is 100.000000.
+Nominal Imports is 100.000000.
+Nominal Consumption Exports is 30.000000.
+Nominal Capital Exports 40.000000.
+Nominal Input Exports is 30.000000.
+Real Consumption Demand is 628.500000.
+Real Capital Demand 110.000000.
+Real Input Demand is 501.016129.
+Sector 1 Desired Capacity Uilization is 0.897857.
+Sector 1 Profit Distribution Rate is 0.812782.
+Sector 1 Wage Rate is 0.190915.
+Sector 1 Markup is 1.692290.
+Sector 1 Exports Coefficient is 0.032662.
+Sector 1 Desired Market Share is 0.020000.
+Sector 2 Desired Capacity Uilization is 0.916667.
+Sector 2 Profit Distribution Rate is 0.735152.
+Sector 2 Wage Rate is 0.832433.
+Sector 2 Markup is 1.622807.
+Sector 2 Exports Coefficient is 0.021775.
+Sector 2 Desired Market Share is 0.050000.
+Sector 3 Desired Capacity Uilization is 0.927808.
+Sector 3 Profit Distribution Rate is 0.875852.
+Sector 3 Wage Rate is 0.192516.
+Sector 3 Markup is 1.687718.
+Sector 3 Exports Coefficient is 0.032662.
+Sector 3 Desired Market Share is 0.033333.
+Pseudo Taxation 250.888161.0
+Taxation 134.024194.0
+Class 1 Tax Rate is 0.160260.
+Class 1 Propensity to Import 0.370379.
+Class 2 Tax Rate is 0.160260.
+Class 2 Propensity to Import 0.133869.
+Class 3 Tax Rate is 0.160260.
+Class 3 Propensity to Import 0.034452.
+Simulation 1 of 5 finished at case 600 (54.64 sec.)
+Saving results to file C:\Users\thttn\Documents\LSD\Work\UFRJ-MMM_v.3\Policy_3_1.res.gz... Done
+
+Simulation 2 of 5 running (seed=2)...
+Nominal GDP is 1000.000000.
+Government Debt is 500.000000.
+Basic Interest Rate is 0.003000.
+Government Interest Payment is 1.500000.
+Government Primary Expenses is 200.000000.
+Total Taxes is 201.500000.
+Government Nominal Consumption is 0.000000.
+Government Nominal Investment 80.000000.
+Government Nominal Inputs is 0.000000.
+Government Nominal Wages is 120.000000.
+Government Surplus Target is 0.001500.
+External Nominal Income is 1000.000000.
+Capital Flows is 0.000000.
+International Reserves is 0.000000.
+Nominal Exports is 100.000000.
+Nominal Imports is 100.000000.
+Nominal Consumption Exports is 30.000000.
+Nominal Capital Exports 40.000000.
+Nominal Input Exports is 30.000000.
+Real Consumption Demand is 628.500000.
+Real Capital Demand 110.000000.
+Real Input Demand is 501.016129.
+Sector 1 Desired Capacity Uilization is 0.897857.
+Sector 1 Profit Distribution Rate is 0.812782.
+Sector 1 Wage Rate is 0.190915.
+Sector 1 Markup is 1.692290.
+Sector 1 Exports Coefficient is 0.032662.
+Sector 1 Desired Market Share is 0.020000.
+Sector 2 Desired Capacity Uilization is 0.916667.
+Sector 2 Profit Distribution Rate is 0.735152.
+Sector 2 Wage Rate is 0.832433.
+Sector 2 Markup is 1.622807.
+Sector 2 Exports Coefficient is 0.021775.
+Sector 2 Desired Market Share is 0.050000.
+Sector 3 Desired Capacity Uilization is 0.927808.
+Sector 3 Profit Distribution Rate is 0.875852.
+Sector 3 Wage Rate is 0.192516.
+Sector 3 Markup is 1.687718.
+Sector 3 Exports Coefficient is 0.032662.
+Sector 3 Desired Market Share is 0.033333.
+Pseudo Taxation 250.888161.0
+Taxation 134.024194.0
+Class 1 Tax Rate is 0.160260.
+Class 1 Propensity to Import 0.370379.
+Class 2 Tax Rate is 0.160260.
+Class 2 Propensity to Import 0.133869.
+Class 3 Tax Rate is 0.160260.
+Class 3 Propensity to Import 0.034452.
+Simulation 2 of 5 finished at case 600 (79.64 sec.)
+Saving results to file C:\Users\thttn\Documents\LSD\Work\UFRJ-MMM_v.3\Policy_3_2.res.gz... Done
+
+Simulation 3 of 5 running (seed=3)...
+Nominal GDP is 1000.000000.
+Government Debt is 500.000000.
+Basic Interest Rate is 0.003000.
+Government Interest Payment is 1.500000.
+Government Primary Expenses is 200.000000.
+Total Taxes is 201.500000.
+Government Nominal Consumption is 0.000000.
+Government Nominal Investment 80.000000.
+Government Nominal Inputs is 0.000000.
+Government Nominal Wages is 120.000000.
+Government Surplus Target is 0.001500.
+External Nominal Income is 1000.000000.
+Capital Flows is 0.000000.
+International Reserves is 0.000000.
+Nominal Exports is 100.000000.
+Nominal Imports is 100.000000.
+Nominal Consumption Exports is 30.000000.
+Nominal Capital Exports 40.000000.
+Nominal Input Exports is 30.000000.
+Real Consumption Demand is 628.500000.
+Real Capital Demand 110.000000.
+Real Input Demand is 501.016129.
+Sector 1 Desired Capacity Uilization is 0.897857.
+Sector 1 Profit Distribution Rate is 0.812782.
+Sector 1 Wage Rate is 0.190915.
+Sector 1 Markup is 1.692290.
+Sector 1 Exports Coefficient is 0.032662.
+Sector 1 Desired Market Share is 0.020000.
+Sector 2 Desired Capacity Uilization is 0.916667.
+Sector 2 Profit Distribution Rate is 0.735152.
+Sector 2 Wage Rate is 0.832433.
+Sector 2 Markup is 1.622807.
+Sector 2 Exports Coefficient is 0.021775.
+Sector 2 Desired Market Share is 0.050000.
+Sector 3 Desired Capacity Uilization is 0.927808.
+Sector 3 Profit Distribution Rate is 0.875852.
+Sector 3 Wage Rate is 0.192516.
+Sector 3 Markup is 1.687718.
+Sector 3 Exports Coefficient is 0.032662.
+Sector 3 Desired Market Share is 0.033333.
+Pseudo Taxation 250.888161.0
+Taxation 134.024194.0
+Class 1 Tax Rate is 0.160260.
+Class 1 Propensity to Import 0.370379.
+Class 2 Tax Rate is 0.160260.
+Class 2 Propensity to Import 0.133869.
+Class 3 Tax Rate is 0.160260.
+Class 3 Propensity to Import 0.034452.
+Simulation 3 of 5 finished at case 600 (64.28 sec.)
+Saving results to file C:\Users\thttn\Documents\LSD\Work\UFRJ-MMM_v.3\Policy_3_3.res.gz... Done
+
+Simulation 4 of 5 running (seed=4)...
+Nominal GDP is 1000.000000.
+Government Debt is 500.000000.
+Basic Interest Rate is 0.003000.
+Government Interest Payment is 1.500000.
+Government Primary Expenses is 200.000000.
+Total Taxes is 201.500000.
+Government Nominal Consumption is 0.000000.
+Government Nominal Investment 80.000000.
+Government Nominal Inputs is 0.000000.
+Government Nominal Wages is 120.000000.
+Government Surplus Target is 0.001500.
+External Nominal Income is 1000.000000.
+Capital Flows is 0.000000.
+International Reserves is 0.000000.
+Nominal Exports is 100.000000.
+Nominal Imports is 100.000000.
+Nominal Consumption Exports is 30.000000.
+Nominal Capital Exports 40.000000.
+Nominal Input Exports is 30.000000.
+Real Consumption Demand is 628.500000.
+Real Capital Demand 110.000000.
+Real Input Demand is 501.016129.
+Sector 1 Desired Capacity Uilization is 0.897857.
+Sector 1 Profit Distribution Rate is 0.812782.
+Sector 1 Wage Rate is 0.190915.
+Sector 1 Markup is 1.692290.
+Sector 1 Exports Coefficient is 0.032662.
+Sector 1 Desired Market Share is 0.020000.
+Sector 2 Desired Capacity Uilization is 0.916667.
+Sector 2 Profit Distribution Rate is 0.735152.
+Sector 2 Wage Rate is 0.832433.
+Sector 2 Markup is 1.622807.
+Sector 2 Exports Coefficient is 0.021775.
+Sector 2 Desired Market Share is 0.050000.
+Sector 3 Desired Capacity Uilization is 0.927808.
+Sector 3 Profit Distribution Rate is 0.875852.
+Sector 3 Wage Rate is 0.192516.
+Sector 3 Markup is 1.687718.
+Sector 3 Exports Coefficient is 0.032662.
+Sector 3 Desired Market Share is 0.033333.
+Pseudo Taxation 250.888161.0
+Taxation 134.024194.0
+Class 1 Tax Rate is 0.160260.
+Class 1 Propensity to Import 0.370379.
+Class 2 Tax Rate is 0.160260.
+Class 2 Propensity to Import 0.133869.
+Class 3 Tax Rate is 0.160260.
+Class 3 Propensity to Import 0.034452.
+Simulation 4 of 5 finished at case 600 (62.63 sec.)
+Saving results to file C:\Users\thttn\Documents\LSD\Work\UFRJ-MMM_v.3\Policy_3_4.res.gz... Done
+
+Simulation 5 of 5 running (seed=5)...
+Nominal GDP is 1000.000000.
+Government Debt is 500.000000.
+Basic Interest Rate is 0.003000.
+Government Interest Payment is 1.500000.
+Government Primary Expenses is 200.000000.
+Total Taxes is 201.500000.
+Government Nominal Consumption is 0.000000.
+Government Nominal Investment 80.000000.
+Government Nominal Inputs is 0.000000.
+Government Nominal Wages is 120.000000.
+Government Surplus Target is 0.001500.
+External Nominal Income is 1000.000000.
+Capital Flows is 0.000000.
+International Reserves is 0.000000.
+Nominal Exports is 100.000000.
+Nominal Imports is 100.000000.
+Nominal Consumption Exports is 30.000000.
+Nominal Capital Exports 40.000000.
+Nominal Input Exports is 30.000000.
+Real Consumption Demand is 628.500000.
+Real Capital Demand 110.000000.
+Real Input Demand is 501.016129.
+Sector 1 Desired Capacity Uilization is 0.897857.
+Sector 1 Profit Distribution Rate is 0.812782.
+Sector 1 Wage Rate is 0.190915.
+Sector 1 Markup is 1.692290.
+Sector 1 Exports Coefficient is 0.032662.
+Sector 1 Desired Market Share is 0.020000.
+Sector 2 Desired Capacity Uilization is 0.916667.
+Sector 2 Profit Distribution Rate is 0.735152.
+Sector 2 Wage Rate is 0.832433.
+Sector 2 Markup is 1.622807.
+Sector 2 Exports Coefficient is 0.021775.
+Sector 2 Desired Market Share is 0.050000.
+Sector 3 Desired Capacity Uilization is 0.927808.
+Sector 3 Profit Distribution Rate is 0.875852.
+Sector 3 Wage Rate is 0.192516.
+Sector 3 Markup is 1.687718.
+Sector 3 Exports Coefficient is 0.032662.
+Sector 3 Desired Market Share is 0.033333.
+Pseudo Taxation 250.888161.0
+Taxation 134.024194.0
+Class 1 Tax Rate is 0.160260.
+Class 1 Propensity to Import 0.370379.
+Class 2 Tax Rate is 0.160260.
+Class 2 Propensity to Import 0.133869.
+Class 3 Tax Rate is 0.160260.
+Class 3 Propensity to Import 0.034452.
+Simulation 5 of 5 finished at case 600 (55.52 sec.)
+Saving results to file C:\Users\thttn\Documents\LSD\Work\UFRJ-MMM_v.3\Policy_3_5.res.gz... Done
+
+Finished processing Policy_3.lsd
