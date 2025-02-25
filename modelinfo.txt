@@ -9,8 +9,8 @@ MMM_v.3.6
 #
 595x462+768+366
 1042x591+561+267
-Policy_4.lsd
-COUNTRY
+Sim_1.lsd
+SECTORS
 1
 0
 0.0
