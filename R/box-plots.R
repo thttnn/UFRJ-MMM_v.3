@@ -57,7 +57,7 @@ box_plots <- function( mcData, nExp, nSize, TmaxStat, TmaskStat, warmUpStat,
     stat <- stat + 1
     names[[ stat ]] <- "Volatility of GDP"
     units[[ stat ]] <- "Standard deviation of GDP"
-    temp <- mcData[[ k ]][ TmaskStat, "Real_GDP", ]
+    temp <- mcData[[ k ]][ TmaskStat, "GDP_r", ]
     temp[is.infinite(temp)] <- sign(temp[is.infinite(temp)] )
     x <- colSds( temp, na.rm = TRUE )
     bPlotStats <- boxplot.stats( x, coef = bPlotCoef )

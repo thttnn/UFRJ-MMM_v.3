@@ -18,25 +18,25 @@ time_plots <- function( mcData, Adata, mdata, Mdata, Sdata, nExp, nSize, nTsteps
   # select data to plot
   for( k in 1 : nExp ){
     # MC averages
-    exps[[ k ]] <- list( log0( Adata[[ k ]]$Real_GDP[ TmaskPlot ] ),
+    exps[[ k ]] <- list( log0( Adata[[ k ]]$GDP_r[ TmaskPlot ] ),
                        log0( Adata[[ k ]]$I_r[ TmaskPlot ] ),
                        log0( Adata[[ k ]]$C_r[ TmaskPlot ] ) )
     # minimum and maximum MC runs
-    min[[ k ]] <- list( log0( mdata[[ k ]]$Real_GDP[ TmaskPlot ] ),
+    min[[ k ]] <- list( log0( mdata[[ k ]]$GDP_r[ TmaskPlot ] ),
                       log0( mdata[[ k ]]$I_r[ TmaskPlot ] ),
                       log0( mdata[[ k ]]$C_r[ TmaskPlot ] ) )
-    max[[ k ]] <- list( log0( Mdata[[ k ]]$Real_GDP[ TmaskPlot ] ),
+    max[[ k ]] <- list( log0( Mdata[[ k ]]$GDP_r[ TmaskPlot ] ),
                       log0( Mdata[[ k ]]$I_r[ TmaskPlot ] ),
                       log0( Mdata[[ k ]]$C_r[ TmaskPlot ] ) )
     # MC confidence interval
-    lo[[ k ]] <- list( log0( Adata[[ k ]]$Real_GDP[ TmaskPlot ] -
-                             qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$Real_GDP[ TmaskPlot ] / sqrt( nSize ) ),
+    lo[[ k ]] <- list( log0( Adata[[ k ]]$GDP_r[ TmaskPlot ] -
+                             qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$GDP_r[ TmaskPlot ] / sqrt( nSize ) ),
                      log0( Adata[[ k ]]$I_r[ TmaskPlot ] -
                              qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$I_r[ TmaskPlot ] / sqrt( nSize ) ),
                      log0( Adata[[ k ]]$C_r[ TmaskPlot ] -
                              qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$C_r[ TmaskPlot ]  / sqrt( nSize ) ) )
-    hi[[ k ]] <- list( log0( Adata[[ k ]]$Real_GDP[ TmaskPlot ] +
-                             qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$Real_GDP[ TmaskPlot ] / sqrt( nSize ) ),
+    hi[[ k ]] <- list( log0( Adata[[ k ]]$GDP_r[ TmaskPlot ] +
+                             qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$GDP_r[ TmaskPlot ] / sqrt( nSize ) ),
                      log0( Adata[[ k ]]$I_r[ TmaskPlot ] +
                              qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$I_r[ TmaskPlot ] / sqrt( nSize ) ),
                      log0( Adata[[ k ]]$C_r[ TmaskPlot ] +
@@ -55,25 +55,25 @@ time_plots <- function( mcData, Adata, mdata, Mdata, Sdata, nExp, nSize, nTsteps
   # select data to plot
   for( k in 1 : nExp ){
     # MC averages
-    exps[[ k ]] <- list( log0( Adata[[ k ]]$Real_GDP[ TmaskPlot ] ),
+    exps[[ k ]] <- list( log0( Adata[[ k ]]$GDP_r[ TmaskPlot ] ),
                          log0( Adata[[ k ]]$M_r[ TmaskPlot ] ),
                          log0( Adata[[ k ]]$X_r[ TmaskPlot ] ) )
     # minimum and maximum MC runs
-    min[[ k ]] <- list( log0( mdata[[ k ]]$Real_GDP[ TmaskPlot ] ),
+    min[[ k ]] <- list( log0( mdata[[ k ]]$GDP_r[ TmaskPlot ] ),
                         log0( mdata[[ k ]]$M_r[ TmaskPlot ] ),
                         log0( mdata[[ k ]]$X_r[ TmaskPlot ] ) )
-    max[[ k ]] <- list( log0( Mdata[[ k ]]$Real_GDP[ TmaskPlot ] ),
+    max[[ k ]] <- list( log0( Mdata[[ k ]]$GDP_r[ TmaskPlot ] ),
                         log0( Mdata[[ k ]]$M_r[ TmaskPlot ] ),
                         log0( Mdata[[ k ]]$X_r[ TmaskPlot ] ) )
     # MC confidence interval
-    lo[[ k ]] <- list( log0( Adata[[ k ]]$Real_GDP[ TmaskPlot ] -
-                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$Real_GDP[ TmaskPlot ] / sqrt( nSize ) ),
+    lo[[ k ]] <- list( log0( Adata[[ k ]]$GDP_r[ TmaskPlot ] -
+                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$GDP_r[ TmaskPlot ] / sqrt( nSize ) ),
                        log0( Adata[[ k ]]$M_r[ TmaskPlot ] -
                                qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$M_r[ TmaskPlot ] / sqrt( nSize ) ),
                        log0( Adata[[ k ]]$X_r[ TmaskPlot ] -
                                qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$X_r[ TmaskPlot ]  / sqrt( nSize ) ) )
-    hi[[ k ]] <- list( log0( Adata[[ k ]]$Real_GDP[ TmaskPlot ] +
-                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$Real_GDP[ TmaskPlot ] / sqrt( nSize ) ),
+    hi[[ k ]] <- list( log0( Adata[[ k ]]$GDP_r[ TmaskPlot ] +
+                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$GDP_r[ TmaskPlot ] / sqrt( nSize ) ),
                        log0( Adata[[ k ]]$M_r[ TmaskPlot ] +
                                qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$M_r[ TmaskPlot ] / sqrt( nSize ) ),
                        log0( Adata[[ k ]]$X_r[ TmaskPlot ] +
@@ -92,25 +92,25 @@ time_plots <- function( mcData, Adata, mdata, Mdata, Sdata, nExp, nSize, nTsteps
   # select data to plot
   for( k in 1 : nExp ){
     # MC averages
-    exps[[ k ]] <- list( log0( Adata[[ k ]]$Real_GDP[ TmaskPlot ] ),
+    exps[[ k ]] <- list( log0( Adata[[ k ]]$GDP_r[ TmaskPlot ] ),
                          log0( Adata[[ k ]]$G_r[ TmaskPlot ] ),
                          log0( Adata[[ k ]]$NX_r[ TmaskPlot ] ) )
     # minimum and maximum MC runs
-    min[[ k ]] <- list( log0( mdata[[ k ]]$Real_GDP[ TmaskPlot ] ),
+    min[[ k ]] <- list( log0( mdata[[ k ]]$GDP_r[ TmaskPlot ] ),
                         log0( mdata[[ k ]]$G_r[ TmaskPlot ] ),
                         log0( mdata[[ k ]]$NX_r[ TmaskPlot ] ) )
-    max[[ k ]] <- list( log0( Mdata[[ k ]]$Real_GDP[ TmaskPlot ] ),
+    max[[ k ]] <- list( log0( Mdata[[ k ]]$GDP_r[ TmaskPlot ] ),
                         log0( Mdata[[ k ]]$G_r[ TmaskPlot ] ),
                         log0( Mdata[[ k ]]$NX_r[ TmaskPlot ] ) )
     # MC confidence interval
-    lo[[ k ]] <- list( log0( Adata[[ k ]]$Real_GDP[ TmaskPlot ] -
-                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$Real_GDP[ TmaskPlot ] / sqrt( nSize ) ),
+    lo[[ k ]] <- list( log0( Adata[[ k ]]$GDP_r[ TmaskPlot ] -
+                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$GDP_r[ TmaskPlot ] / sqrt( nSize ) ),
                        log0( Adata[[ k ]]$G_r[ TmaskPlot ] -
                                qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$G_r[ TmaskPlot ] / sqrt( nSize ) ),
                        log0( Adata[[ k ]]$NX_r[ TmaskPlot ] -
                                qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$NX_r[ TmaskPlot ]  / sqrt( nSize ) ) )
-    hi[[ k ]] <- list( log0( Adata[[ k ]]$Real_GDP[ TmaskPlot ] +
-                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$Real_GDP[ TmaskPlot ] / sqrt( nSize ) ),
+    hi[[ k ]] <- list( log0( Adata[[ k ]]$GDP_r[ TmaskPlot ] +
+                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$GDP_r[ TmaskPlot ] / sqrt( nSize ) ),
                        log0( Adata[[ k ]]$G_r[ TmaskPlot ] +
                                qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$G_r[ TmaskPlot ] / sqrt( nSize ) ),
                        log0( Adata[[ k ]]$NX_r[ TmaskPlot ] +
@@ -214,28 +214,28 @@ time_plots <- function( mcData, Adata, mdata, Mdata, Sdata, nExp, nSize, nTsteps
   for( k in 1 : nExp ){
     # MC averages
     
-    exps[[ k ]] <- list( Adata[[ k ]]$Wage_Share[ TmaskPlot ], 
-                         Adata[[ k ]]$Profit_Share[ TmaskPlot ])
+    exps[[ k ]] <- list( Adata[[ k ]]$WSH[ TmaskPlot ], 
+                         Adata[[ k ]]$PSH[ TmaskPlot ])
     
     # minimum and maximum MC runs
     
-    min[[ k ]] <- list( mdata[[ k ]]$Wage_Share[ TmaskPlot ],
-                        mdata[[ k ]]$Profit_Share[ TmaskPlot ] )
+    min[[ k ]] <- list( mdata[[ k ]]$WSH[ TmaskPlot ],
+                        mdata[[ k ]]$PSH[ TmaskPlot ] )
     
-    max[[ k ]] <- list( Mdata[[ k ]]$Wage_Share[ TmaskPlot ],
-                        Mdata[[ k ]]$Profit_Share[ TmaskPlot ])
+    max[[ k ]] <- list( Mdata[[ k ]]$WSH[ TmaskPlot ],
+                        Mdata[[ k ]]$PSH[ TmaskPlot ])
     
     # MC confidence interval
     
-    lo[[ k ]] <- list( Adata[[ k ]]$Wage_Share[ TmaskPlot ] -
-                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$Wage_Share[ TmaskPlot ] / sqrt( nSize ),
-                       Adata[[ k ]]$Profit_Share[ TmaskPlot ] -
-                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$Profit_Share[ TmaskPlot ] / sqrt( nSize ))
+    lo[[ k ]] <- list( Adata[[ k ]]$WSH[ TmaskPlot ] -
+                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$WSH[ TmaskPlot ] / sqrt( nSize ),
+                       Adata[[ k ]]$PSH[ TmaskPlot ] -
+                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$PSH[ TmaskPlot ] / sqrt( nSize ))
     
-    hi[[ k ]] <- list( Adata[[ k ]]$Wage_Share[ TmaskPlot ] +
-                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$Wage_Share[ TmaskPlot ] / sqrt( nSize ),
-                       Adata[[ k ]]$Profit_Share[ TmaskPlot ] +
-                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$Profit_Share[ TmaskPlot ] / sqrt( nSize ))
+    hi[[ k ]] <- list( Adata[[ k ]]$WSH[ TmaskPlot ] +
+                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$WSH[ TmaskPlot ] / sqrt( nSize ),
+                       Adata[[ k ]]$PSH[ TmaskPlot ] +
+                               qnorm(1 - (1 - CI ) / 2) * Sdata[[ k ]]$PSH[ TmaskPlot ] / sqrt( nSize ))
   }
   
   plot_lists( exps, min, max, lo, hi, leg = legends, mrk = transMk, col = colors,

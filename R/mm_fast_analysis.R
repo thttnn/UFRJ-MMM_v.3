@@ -10,8 +10,8 @@
 #
 #******************************************************************
 
-folder    <- "./experiments"                  # data files folder
-baseName  <- "Sim"                     # data files base name (same as .lsd file)
+folder    <- "./Policy"                  # data files folder
+baseName  <- "Sim_"                     # data files base name (same as .lsd file)
 nExp      <- 8                          # number of experiments (sensitivity/different cases)
 iniDrop   <- 0                          # initial time steps to drop from analysis (0=none)
 nKeep     <- -1                         # number of time steps to keep (-1=all)
@@ -29,7 +29,7 @@ expVal <- c( "Baseline",
              )                           # case parameter values
 
 # Aggregated variables to use
-logVars <- c( "Real_GDP",               # Real GDP
+logVars <- c( "GDP_r",               # Real GDP
               "C_r",                    # Real Consumption
               "I_r",                    # Real Investment
               "G_r",                    # Real Government Expenses
@@ -41,7 +41,7 @@ logVars <- c( "Real_GDP",               # Real GDP
               "P",                      # Price Index
               "PROFITS",                # Real Profits
               "WAGE",                   # Real Wages
-              "DEBT",                   # Private Stock of Debt
+              "DEBT_FS",                   # Private Stock of DEBT_FS
               "PDEBT",                  # Public Stock of Debt
               "PROD",                   # Average Labor Productivity
               "MK",                     # Average Markup
@@ -61,13 +61,13 @@ aggrVars <- append( logVars,
                         "INVE_G",       # Real Stock of Inventories Growth
                         "PROFITS_G",    # Real Profits Growth
                         "WAGE_G",       # Real Wages Growth
-                        "DEBT_G",       # Private Stock of Debt Growth
+                        "DEBT_FS_G",       # Private Stock of Debt Growth
                         "PDEBT_G",      # Public Sotck of Debt Growth
                         "PROD_G",       # Labor Productivity Growth
                         "MK_G",         # Markup Growth
                         "U",            # Unemployment Rate
-                        "Profit_Share", # Profit Share 
-                        "Wage_Share"    # Wage Share
+                        "PSH", # Profit Share 
+                        "WSH"    # Wage Share
                         ) )
 
 # Variables to test for stationarity and ergodicity
@@ -83,13 +83,13 @@ aggrVars <- append( logVars,
                         "INVE_G",       # Real Stock of Inventories Growth
                         "PROFITS_G",    # Real Profits Growth
                         "WAGE_G",       # Real Wages Growth
-                        "DEBT_G",       # Private Stock of Debt Growth
+                        "DEBT_FS_G",       # Private Stock of Debt Growth
                         "PDEBT_G",      # Public Sotck of Debt Growth
                         "PROD_G",       # Labor Productivity Growth
                         "MK_G",         # Markup Growth
                         "U",            # Unemployment Rate
-                        "Profit_Share", # Profit Share 
-                        "Wage_Share"    # Wage Share
+                        "PSH", # Profit Share 
+                        "WSH"    # Wage Share
                     )
 
 # Temporary data file suffix
@@ -456,7 +456,7 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
     # ---- Bandpass filtered GDP, consumption and investment cycles graphic ----
     #
     
-    plot_bpf( list( log0( Adata[[ k ]]$Real_GDP ), log0( Adata[[ k ]]$C_r ), 
+    plot_bpf( list( log0( Adata[[ k ]]$GDP_r ), log0( Adata[[ k ]]$C_r ), 
                     log0( Adata[[ k ]]$I_r ), log0(  Adata[[ k ]]$G_r ) ),
               pl = lowP, pu = highP, nfix = bpfK, mask = TmaskPlot,
               mrk = transMk, # uncomment to add vertical line in selected point (e.g. mark of regime change)
@@ -482,21 +482,21 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       mr_gr[ j ]        <- mcData[[ k ]][ nTstat, "M_G", j ]
       profits_gr[ j ]   <- mcData[[ k ]][ nTstat, "PROFITS_G", j ]
       wage_gr[ j ]      <- mcData[[ k ]][ nTstat, "WAGE_G", j ]
-      debt_gr[ j ]      <- mcData[[ k ]][ nTstat, "DEBT_G", j ]
+      debt_gr[ j ]      <- mcData[[ k ]][ nTstat, "DEBT_FS_G", j ]
       pdebt_gr[ j ]     <- mcData[[ k ]][ nTstat, "PDEBT_G", j ]
       x_gr [ j ]        <- mcData[[ k ]][ nTstat, "X_G", j ]
       nx_gr [ j ]       <- mcData[[ k ]][ nTstat, "NX_G", j ]
       inve_gr [ j ]     <- mcData[[ k ]][ nTstat, "INVE_G", j ]
       k_gr [ j ]        <- mcData[[ k ]][ nTstat, "K_G", j ]
-      pr_sh [ j ]       <- mcData[[ k ]][ nTstat, "Profit_Share", j ]
-      wg_sh [ j ]       <- mcData[[ k ]][ nTstat, "Wage_Share", j ]
+      pr_sh [ j ]       <- mcData[[ k ]][ nTstat, "PSH", j ]
+      wg_sh [ j ]       <- mcData[[ k ]][ nTstat, "WSH", j ]
       prod_gr [ j ]     <- mcData[[ k ]][ nTstat, "PROD_G", j ]
       u_gr [ j ]        <- mcData[[ k ]][ nTstat, "U", j ]
       mk_gr [ j ]       <- mcData[[ k ]][ nTstat, "MK_G", j ]
       emp_gr [ j ]      <- mcData[[ k ]][ nTstat, "EMP", j ]
       
       # Apply Baxter-King filter to the series
-      gdp_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "Real_GDP", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      gdp_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "GDP_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
       con_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "C_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
       inv_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "I_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
       gov_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "G_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
@@ -504,7 +504,7 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       p_bpf       <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "P", j ] ), pl = lowP, pu = highP, nfix = bpfK )
       profits_bpf <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "PROFITS", j ] ), pl = lowP, pu = highP, nfix = bpfK )
       wage_bpf    <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "WAGE", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      debt_bpf    <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEBT", j ] ), pl = lowP, pu = highP, nfix = bpfK )
+      debt_bpf    <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "DEBT_FS", j ] ), pl = lowP, pu = highP, nfix = bpfK )
       pdebt_bpf   <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "PDEBT", j ] ), pl = lowP, pu = highP, nfix = bpfK )
       prod_bpf    <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "PROD", j ] ), pl = lowP, pu = highP, nfix = bpfK )
       u_bpf       <- bkfilter( mcData[[ k ]][ TmaskStat, "U", j ] , pl = lowP, pu = highP, nfix = bpfK )
@@ -513,12 +513,12 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       k_bpf       <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "K_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
       inve_bpf    <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "INVE_r", j ] ), pl = lowP, pu = highP, nfix = bpfK )
       emp_bpf     <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "EMP", j ] ), pl = lowP, pu = highP, nfix = bpfK )
-      pr_sh_bpf   <- bkfilter( mcData[[ k ]][ TmaskStat, "Profit_Share", j ] , pl = lowP, pu = highP, nfix = bpfK )
-      wg_sh_bpf   <- bkfilter( mcData[[ k ]][ TmaskStat, "Wage_Share", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      pr_sh_bpf   <- bkfilter( mcData[[ k ]][ TmaskStat, "PSH", j ] , pl = lowP, pu = highP, nfix = bpfK )
+      wg_sh_bpf   <- bkfilter( mcData[[ k ]][ TmaskStat, "WSH", j ] , pl = lowP, pu = highP, nfix = bpfK )
       mk_bpf      <- bkfilter( log0( mcData[[ k ]][ TmaskStat, "MK", j ] ), pl = lowP, pu = highP, nfix = bpfK )
       
       # Augmented Dickey-Fuller tests for unit roots
-      adf_gdp_r[[ j ]]    <- adf.test( log0( mcData[[ k ]][ TmaskStat, "Real_GDP", j ] ) )
+      adf_gdp_r[[ j ]]    <- adf.test( log0( mcData[[ k ]][ TmaskStat, "GDP_r", j ] ) )
       adf_con_r[[ j ]]    <- adf.test( log0( mcData[[ k ]][ TmaskStat, "C_r", j ] ) )
       adf_inv_r[[ j ]]    <- adf.test( log0( mcData[[ k ]][ TmaskStat, "I_r", j ] ) )
       adf_gov_r[[ j ]]    <- adf.test( log0( mcData[[ k ]][ TmaskStat, "G_r", j ] ) )
@@ -526,7 +526,7 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       adf_p[[ j ]]        <- adf.test( log0( mcData[[ k ]][ TmaskStat, "P", j ] ) )
       adf_profits[[ j ]]  <- adf.test( log0( mcData[[ k ]][ TmaskStat, "PROFITS", j ] ) )
       adf_wage[[ j ]]     <- adf.test( log0( mcData[[ k ]][ TmaskStat, "WAGE", j ] ) )
-      adf_debt[[ j ]]     <- adf.test( log0( mcData[[ k ]][ TmaskStat, "DEBT", j ] ) )
+      adf_debt[[ j ]]     <- adf.test( log0( mcData[[ k ]][ TmaskStat, "DEBT_FS", j ] ) )
       adf_pdebt[[ j ]]    <- adf.test( log0( mcData[[ k ]][ TmaskStat, "PDEBT", j ] ) )
       adf_prod[[ j ]]     <- adf.test( log0( mcData[[ k ]][ TmaskStat, "PROD", j ] ) )
       adf_x[[ j ]]        <- adf.test( log0( mcData[[ k ]][ TmaskStat, "X_r", j ] ) )
@@ -535,8 +535,8 @@ tryCatch({    # enter error handling mode so PDF can be closed in case of error/
       adf_inve[[ j ]]     <- adf.test( log0( mcData[[ k ]][ TmaskStat, "INVE_r", j ] ) )
       adf_u[[ j ]]        <- adf.test( mcData[[ k ]][ TmaskStat, "U", j ] ) 
       adf_emp[[ j ]]      <- adf.test( log0( mcData[[ k ]][ TmaskStat, "EMP", j ] ) )
-      adf_pr_sh[[ j ]]    <- adf.test( mcData[[ k ]][ TmaskStat, "Profit_Share", j ]  )
-      adf_wg_sh[[ j ]]    <- adf.test( mcData[[ k ]][ TmaskStat, "Wage_Share", j ]  )
+      adf_pr_sh[[ j ]]    <- adf.test( mcData[[ k ]][ TmaskStat, "PSH", j ]  )
+      adf_wg_sh[[ j ]]    <- adf.test( mcData[[ k ]][ TmaskStat, "WSH", j ]  )
       adf_mk[[ j ]]       <- adf.test( log0( mcData[[ k ]][ TmaskStat, "MK", j ] ) )
       
       # Standard deviations of filtered series
